@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@plugin 'tailwind-scrollbar';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -119,4 +120,12 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@theme {
+  --container-8xl: 96rem;
+}
+
+@utility container {
+  @apply mx-auto;
 }
