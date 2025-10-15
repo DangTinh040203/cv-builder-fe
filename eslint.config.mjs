@@ -60,7 +60,7 @@ const eslintConfig = [
       "@typescript-eslint/no-unsafe-call": 0,
       "@typescript-eslint/no-unsafe-return": 0,
       "@typescript-eslint/no-empty-object-type": 0,
-      "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/no-unused-vars": 0,
       "simple-import-sort/imports": "error",
       "simple-import-sort/exports": "error",
       "@typescript-eslint/consistent-type-imports": [
@@ -72,7 +72,7 @@ const eslintConfig = [
       semi: "warn",
       curly: ["error", "multi-line"],
       "prettier/prettier": "warn",
-      "no-console": ["warn", { allow: ["warn", "error"] }],
+      "no-console": 0,
       "react/jsx-wrap-multilines": [
         "error",
         {
