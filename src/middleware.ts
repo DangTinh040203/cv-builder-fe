@@ -3,19 +3,28 @@ import { NextResponse } from "next/server";
 import { getToken, type JWT } from "next-auth/jwt";
 
 import { Env } from "@/configs/env.config";
+import { Route } from "@/constants/route.constant";
 
 export default async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const secret = Env.AUTH_SECRET;
   const token: JWT | null = await getToken({ req, secret });
 
-  // Allow the requests
-  const allowedUnauthenticatedPaths = ["/sign-in", "/sign-up", "/verify-email"];
-  const isAllowedUnauthenticatedPath = allowedUnauthenticatedPaths.some(
-    (path) => pathname.startsWith(path),
-  );
+  const allowedUnauthenticatedPaths = [
+    Route.Home,
+    Route.SignIn,
+    Route.SignUp,
+    Route.VerifyOtp,
+  ];
+
+  const isAllowedUnauthenticatedPath =
+    allowedUnauthenticatedPaths.includes(pathname as Route) ||
+    allowedUnauthenticatedPaths
+      .filter((p) => p !== "/")
+      .some((p) => pathname.startsWith(p));
+
   if (isAllowedUnauthenticatedPath) {
-    if (token) {
+    if (token && pathname !== "/") {
       return NextResponse.redirect(new URL("/", req.url));
     } else {
       return NextResponse.next();

@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/input-otp";
 import { Separator } from "@/components/ui/separator";
 import { Spinner } from "@/components/ui/spinner";
+import { Route } from "@/constants/route.constant";
 import { authService } from "@/services/auth.service";
 import { type ResponseError } from "@/types/error.type";
 
@@ -46,7 +47,7 @@ const VerifyOtp = () => {
       setLoading(true);
       await authService.verifyEmail(otp, email);
       toast.success("Email verified successfully!");
-      router.push("/sign-in");
+      router.push(Route.SignIn);
       setOtp("");
     } catch (error) {
       if (isAxiosError(error)) {
@@ -94,7 +95,7 @@ const VerifyOtp = () => {
           <Separator className="my-2" />
           <p className="text-center text-sm">
             <span>{`Already have an account?`}</span>
-            <Link href="/sign-in">
+            <Link href={Route.SignIn}>
               <Button variant="link">Login</Button>
             </Link>
           </p>

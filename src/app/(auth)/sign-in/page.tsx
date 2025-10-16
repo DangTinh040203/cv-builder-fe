@@ -29,6 +29,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Spinner } from "@/components/ui/spinner";
+import { Route } from "@/constants/route.constant";
 
 const formSchema = z.object({
   email: z.email("Invalid email address"),
@@ -162,7 +163,7 @@ function SignIn() {
               <Separator className="my-2" />
               <p className="text-center text-sm">
                 <span>{`Don't have an account?`}</span>
-                <Link href="/sign-up">
+                <Link href={Route.SignUp}>
                   <Button variant="link">Create Account</Button>
                 </Link>
               </p>
