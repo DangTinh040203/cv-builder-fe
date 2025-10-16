@@ -7,6 +7,13 @@ declare module "next-auth" {
   }
 }
 
+declare module "next-auth/jwt" {
+  interface JWT extends AppUser {
+    accessToken: string;
+    refreshToken: string;
+  }
+}
+
 export interface User {
   _id: string;
   displayName: string;

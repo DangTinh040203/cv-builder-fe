@@ -13,7 +13,6 @@ import { type User } from "@/types/user.type";
  * Subsequent logins
  * jwt -> session
  */
-
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
@@ -51,9 +50,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   callbacks: {
     jwt: async ({ token, user }) => {
-      /*
-       * Merge user info to token at the first time login
-       */
       if (user) {
         token = {
           ...token,
