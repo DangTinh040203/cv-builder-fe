@@ -3,6 +3,7 @@ import "@/styles/globals.css";
 import type { Metadata } from "next";
 
 import { Toaster } from "@/components/ui/sonner";
+import StoreProvider from "@/components/ui/store-provider";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 
 export const metadata: Metadata = {
@@ -26,8 +27,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Toaster richColors position="top-right" />
-          {children}
+          <StoreProvider>
+            <Toaster richColors position="top-right" />
+            {children}
+          </StoreProvider>
         </ThemeProvider>
       </body>
     </html>
