@@ -1,6 +1,3 @@
-import axios from "axios";
-
-import { axiosConfig } from "@/configs/axios.config";
 import { HttpService } from "@/services/http.service";
 
 interface SignInPayload {
@@ -13,23 +10,28 @@ export interface Tokens {
   refreshToken: string;
 }
 
-export class AuthServiceClient extends HttpService {
+export class AuthService extends HttpService {
   async signIn(payload: SignInPayload) {
     const { data } = await this.post<SignInPayload, Tokens>(
-      "sign-in/credentials",
+      "auth/sign-in/credentials",
       payload,
     );
     return data;
   }
-}
 
-export class AuthServiceServer {
-  async signIn(payload: SignInPayload) {
-    const response = await axios.post<Tokens>(
-      "sign-in/credentials",
+  async signUp(payload: SignInPayload) {
+    await this.post<SignInPayload, unknown>(
+      "auth/sign-up/credentials",
       payload,
-      axiosConfig,
     );
-    return response.data;
+  }
+
+  async verifyEmail(otp: string, email: string) {
+    await this.post<{ otp: string; email: string }, unknown>(
+      "auth/verify-email",
+      { otp, email },
+    );
   }
 }
+
+export const authService = new AuthService();
