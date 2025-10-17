@@ -1,3 +1,5 @@
+import { type JWT } from "next-auth/jwt";
+
 import { type User as AppUser } from "@/types/user.type";
 
 declare module "next-auth" {
@@ -12,6 +14,10 @@ declare module "next-auth/jwt" {
     accessToken: string;
     refreshToken: string;
   }
+}
+
+declare module "next-auth" {
+  interface Session extends JWT {}
 }
 
 export interface User {

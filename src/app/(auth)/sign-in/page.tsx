@@ -3,7 +3,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { getSession, signIn } from "next-auth/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -30,9 +31,12 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Spinner } from "@/components/ui/spinner";
 import { Route } from "@/constants/route.constant";
+import { setUser } from "@/stores/features/user.slice";
+import { useAppDispatch } from "@/stores/store";
+import { type User } from "@/types/user.type";
 
 const formSchema = z.object({
-  email: z.email("Invalid email address"),
+  email: z.email(),
   password: z
     .string()
     .min(6, "Password must be between 6 and 50 characters")
@@ -42,6 +46,9 @@ const formSchema = z.object({
 function SignIn() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -64,6 +71,13 @@ function SignIn() {
         toast.error("Invalid email or password");
       } else {
         toast.success("Login successfully");
+        const session = await getSession();
+        if (session) {
+          dispatch(setUser(session as User));
+          router.push(Route.Home);
+        } else {
+          toast.error("Something went wrong. Please try again.");
+        }
       }
     } catch (error) {
       toast.error("Something went wrong. Please try again.");
