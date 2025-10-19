@@ -2,7 +2,7 @@
 import { Award, LogOut, Settings, UserPen } from "lucide-react";
 import Link from "next/link";
 import { getSession, signOut } from "next-auth/react";
-import React, { useLayoutEffect } from "react";
+import React, { useLayoutEffect, useState } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -45,24 +45,31 @@ const Header = () => {
   };
 
   return (
-    <div className="container flex items-center justify-between py-4">
-      <div>Logo</div>
+    <div className={`container-full flex items-center justify-between py-4`}>
+      <p>LOGO</p>
 
       <div className="flex items-center gap-2">
-        <ModeToggle />
         {!user ? (
           <>
             <Link href={Route.SignUp}>
-              <Button variant={"outline"}>Sign Up</Button>
+              <Button
+                className="min-w-24 rounded-full"
+                variant={"outline"}
+                size={"lg"}
+              >
+                Sign Up
+              </Button>
             </Link>
             <Link href={Route.SignIn}>
-              <Button>Sign In</Button>
+              <Button className="min-w-24 rounded-full" size={"lg"}>
+                Sign In
+              </Button>
             </Link>
           </>
         ) : (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Avatar className="cursor-pointer">
+              <Avatar className="cursor-pointer select-none">
                 <AvatarImage src={user.avatar} />
                 <AvatarFallback>{user.displayName}</AvatarFallback>
               </Avatar>

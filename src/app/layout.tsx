@@ -1,6 +1,8 @@
 import "@/styles/globals.css";
 
+import clsx from "clsx";
 import type { Metadata } from "next";
+import { Figtree } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 
 import { auth } from "@/auth";
@@ -9,10 +11,17 @@ import StoreProvider from "@/components/ui/store-provider";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 
 export const metadata: Metadata = {
-  title: "Cv Builder",
+  title: "AI-Powered CV Builder",
   description:
     "Create your professional CV in minutes with our AI-powered CV builder. Choose from a variety of templates and customize your resume to stand out to employers.",
 };
+
+const figtree = Figtree({
+  subsets: ["latin"],
+  variable: "--font-figtree",
+  display: "swap",
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
+});
 
 export default async function RootLayout({
   children,
@@ -24,7 +33,7 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
-      <body>
+      <body className={clsx(figtree.className)}>
         <SessionProvider session={session}>
           <ThemeProvider
             attribute="class"
