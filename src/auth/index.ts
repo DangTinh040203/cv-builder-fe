@@ -14,6 +14,7 @@ import { type User } from "@/types/user.type";
  * jwt -> session
  */
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  trustHost: true,
   providers: [
     Credentials({
       credentials: {

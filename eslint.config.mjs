@@ -50,6 +50,7 @@ const eslintConfig = [
       },
     },
     rules: {
+      "react-hooks/refs": 0,
       "@typescript-eslint/triple-slash-reference": 0,
       "import/no-unresolved": "error",
       "@typescript-eslint/no-redundant-type-constituents": "error",
@@ -58,6 +59,7 @@ const eslintConfig = [
       "@typescript-eslint/no-unsafe-assignment": 0,
       "@typescript-eslint/no-explicit-any": 0,
       "@typescript-eslint/no-unsafe-call": 0,
+      "import/no-named-as-default": 0,
       "@typescript-eslint/no-unsafe-return": 0,
       "@typescript-eslint/no-empty-object-type": 0,
       "@typescript-eslint/no-unused-vars": 0,
