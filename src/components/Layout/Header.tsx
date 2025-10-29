@@ -45,68 +45,70 @@ const Header = () => {
   };
 
   return (
-    <div className={`container-full flex items-center justify-between py-4`}>
-      <p>LOGO</p>
+    <div className="border-b">
+      <div className={`container-full flex items-center justify-between py-4`}>
+        <p>LOGO</p>
 
-      <div className="flex items-center gap-2">
-        {!user ? (
-          <>
-            <Link href={Route.SignUp}>
-              <Button
-                className="min-w-24 rounded-full"
-                variant={"outline"}
-                size={"lg"}
-              >
-                Sign Up
-              </Button>
-            </Link>
-            <Link href={Route.SignIn}>
-              <Button className="min-w-24 rounded-full" size={"lg"}>
-                Sign In
-              </Button>
-            </Link>
-          </>
-        ) : (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Avatar className="cursor-pointer select-none">
-                <AvatarImage src={user.avatar} />
-                <AvatarFallback>{user.displayName}</AvatarFallback>
-              </Avatar>
-            </DropdownMenuTrigger>
+        <div className="flex items-center gap-2">
+          {!user ? (
+            <>
+              <Link href={Route.SignUp}>
+                <Button
+                  className="min-w-24 rounded-full"
+                  variant={"outline"}
+                  size={"lg"}
+                >
+                  Sign Up
+                </Button>
+              </Link>
+              <Link href={Route.SignIn}>
+                <Button className="min-w-24 rounded-full" size={"lg"}>
+                  Sign In
+                </Button>
+              </Link>
+            </>
+          ) : (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Avatar className="cursor-pointer select-none">
+                  <AvatarImage src={user.avatar} />
+                  <AvatarFallback>{user.displayName}</AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
 
-            <DropdownMenuContent className="w-44" align="end" side="bottom">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuGroup>
-                <DropdownMenuItem>
-                  Profile
+              <DropdownMenuContent className="w-44" align="end" side="bottom">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuGroup>
+                  <DropdownMenuItem>
+                    Profile
+                    <DropdownMenuShortcut>
+                      <UserPen />
+                    </DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem disabled>
+                    Billing
+                    <DropdownMenuShortcut>
+                      <Award />
+                    </DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem disabled>
+                    Settings
+                    <DropdownMenuShortcut>
+                      <Settings />
+                    </DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleSignOut}>
+                  Log out
                   <DropdownMenuShortcut>
-                    <UserPen />
+                    <LogOut />
                   </DropdownMenuShortcut>
                 </DropdownMenuItem>
-                <DropdownMenuItem disabled>
-                  Billing
-                  <DropdownMenuShortcut>
-                    <Award />
-                  </DropdownMenuShortcut>
-                </DropdownMenuItem>
-                <DropdownMenuItem disabled>
-                  Settings
-                  <DropdownMenuShortcut>
-                    <Settings />
-                  </DropdownMenuShortcut>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleSignOut}>
-                Log out
-                <DropdownMenuShortcut>
-                  <LogOut />
-                </DropdownMenuShortcut>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+        </div>
       </div>
     </div>
   );
