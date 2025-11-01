@@ -2,7 +2,7 @@
 import { Award, LogOut, Settings, UserPen } from "lucide-react";
 import Link from "next/link";
 import { getSession, signOut } from "next-auth/react";
-import React, { useLayoutEffect, useState } from "react";
+import { useLayoutEffect } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -16,7 +16,6 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ModeToggle } from "@/components/ui/ModeToggle";
 import { Route } from "@/constants/route.constant";
 import { setUser, userSelector } from "@/stores/features/user.slice";
 import { useAppDispatch, useAppSelector } from "@/stores/store";
@@ -35,7 +34,7 @@ const Header = () => {
       }
     };
 
-    checkUser();
+    void checkUser();
   }, [dispatch]);
 
   const handleSignOut = async () => {

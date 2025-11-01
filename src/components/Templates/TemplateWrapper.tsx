@@ -1,22 +1,21 @@
 "use client";
 import { type DocumentProps } from "@react-pdf/renderer";
-import type React from "react";
 import { type ReactElement, useMemo } from "react";
 import { useMeasure } from "react-use";
 
 import DocumentPDF from "@/components/Templates/DocumentPDF";
 
-export interface TemplateSize {
+export interface Size {
   width: number;
   height: number;
 }
 
-export const A4_SIZE: TemplateSize = {
+export const A4_SIZE: Size = {
   width: 21,
   height: 29.7,
 } as const;
 
-export const DEFAULT_DOCUMENT_SIZE: TemplateSize = {
+export const DEFAULT_DOCUMENT_SIZE: Size = {
   width: 500,
   height: (A4_SIZE.height * 500) / A4_SIZE.width,
 };
@@ -25,9 +24,8 @@ interface TemplateWrapperProps {
   document: ReactElement<DocumentProps>;
 }
 
-const TemplateWrapper: React.FC<TemplateWrapperProps> = ({ document }) => {
+const TemplateWrapper = ({ document }: TemplateWrapperProps) => {
   const [ref, bounds] = useMeasure<HTMLDivElement>();
-
   const size = useMemo(() => {
     return {
       height:
@@ -40,8 +38,8 @@ const TemplateWrapper: React.FC<TemplateWrapperProps> = ({ document }) => {
   return (
     <div
       className={`
-        group scrollbar-none relative w-full overflow-y-scroll rounded
-        shadow-xl
+        group scrollbar-none relative w-full overflow-y-scroll rounded-sm
+        shadow-lg
       `}
       ref={ref}
       style={{ height: size.height, maxHeight: size.height }}

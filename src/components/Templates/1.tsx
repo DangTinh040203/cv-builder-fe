@@ -1,6 +1,8 @@
-import { Document, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
+"use client";
 
-// Create styles
+import { Page, Text, View } from "@rawwee/react-pdf-html";
+import { StyleSheet } from "@react-pdf/renderer";
+
 const styles = StyleSheet.create({
   page: {
     flexDirection: "row",
@@ -13,8 +15,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const Template1 = () => (
-  <Document>
+const Template1 = () => {
+  return (
     <Page size="A4" style={styles.page}>
       <View style={styles.section}>
         <Text>Section #1</Text>
@@ -23,7 +25,7 @@ const Template1 = () => (
         <Text>Section #2</Text>
       </View>
     </Page>
-  </Document>
-);
+  );
+};
 
 export default Template1;

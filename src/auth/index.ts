@@ -43,7 +43,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             accessToken,
             refreshToken,
           };
-        } catch (error) {
+        } catch {
           return null;
         }
       },

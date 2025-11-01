@@ -1,4 +1,5 @@
 "use client";
+
 import Template1 from "@/components/Templates/1";
 import TemplateWrapper from "@/components/Templates/TemplateWrapper";
 

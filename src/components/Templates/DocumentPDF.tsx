@@ -1,7 +1,7 @@
 "use client";
-import { type ReactElement } from "react";
 import { Document } from "@rawwee/react-pdf-html";
 import { type DocumentProps } from "@react-pdf/renderer";
+import { type ReactElement } from "react";
 
 interface ExportPDFProps {
   document: ReactElement<DocumentProps>;

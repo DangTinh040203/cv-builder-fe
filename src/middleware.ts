@@ -20,7 +20,7 @@ export default async function middleware(req: NextRequest) {
   const isAllowedUnauthenticatedPath =
     allowedUnauthenticatedPaths.includes(pathname as Route) ||
     allowedUnauthenticatedPaths
-      .filter((p) => p !== "/")
+      .filter((p) => p !== Route.Home)
       .some((p) => pathname.startsWith(p));
 
   if (isAllowedUnauthenticatedPath) {

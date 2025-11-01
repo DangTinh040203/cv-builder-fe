@@ -1,3 +1,4 @@
+import tsParser from "@typescript-eslint/parser";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { FlatCompat } from "@eslint/eslintrc";
@@ -10,10 +11,22 @@ const compat = new FlatCompat({
   recommendedConfig: {},
 });
 
+const callees = [
+  "clsx",
+  "cva",
+  "ctl",
+  "twMerge",
+  "cx",
+  "cn",
+  ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+];
+
 const eslintConfig = [
   {
     ignores: [
       "next-env.d.ts",
+      "eslint.config.mjs",
+      "postcss.config.mjs",
       ".next/**",
       "node_modules/**",
       "dist/**",
@@ -27,12 +40,12 @@ const eslintConfig = [
     "next/core-web-vitals",
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:import/errors",
     "plugin:import/warnings",
     "plugin:import/typescript",
     "plugin:react/jsx-runtime",
     "plugin:prettier/recommended",
-    "plugin:@lexical/recommended",
   ),
   ...compat.plugins(
     "immer",
@@ -40,29 +53,36 @@ const eslintConfig = [
     "simple-import-sort",
     "@typescript-eslint",
     "readable-tailwind",
+    "import-alias",
   ),
   {
-    files: ["src/**/*.{js,jsx,ts,tsx}"],
+    files: ["**/*.{js,jsx,ts,tsx,cjs}"],
     languageOptions: {
+      parser: tsParser,
+      ecmaVersion: 5,
+      sourceType: "script",
       parserOptions: {
         projectService: true,
-        tsconfigRootDir: __dirname,
+        tsconfigRootDir: import.meta.dirname,
+        project: ["./tsconfig.json", "tsconfig.eslint.json"],
       },
     },
     rules: {
-      "react-hooks/refs": 0,
-      "@typescript-eslint/triple-slash-reference": 0,
-      "import/no-unresolved": "error",
-      "@typescript-eslint/no-redundant-type-constituents": "error",
-      "@typescript-eslint/no-unsafe-argument": 0,
-      "@typescript-eslint/no-unsafe-member-access": 0,
-      "@typescript-eslint/no-unsafe-assignment": 0,
-      "@typescript-eslint/no-explicit-any": 0,
-      "@typescript-eslint/no-unsafe-call": 0,
-      "import/no-named-as-default": 0,
-      "@typescript-eslint/no-unsafe-return": 0,
-      "@typescript-eslint/no-empty-object-type": 0,
-      "@typescript-eslint/no-unused-vars": 0,
+      "import-alias/import-alias": [
+        "error",
+        {
+          aliases: [
+            {
+              alias: "@",
+              matcher: "./src",
+            },
+          ],
+        },
+      ],
+      "@typescript-eslint/require-await": "warn",
+      "@typescript-eslint/no-floating-promises": "warn",
+      "@typescript-eslint/require-await": "warn",
+      "@typescript-eslint/no-empty-object-type": "warn",
       "simple-import-sort/imports": "error",
       "simple-import-sort/exports": "error",
       "@typescript-eslint/consistent-type-imports": [
@@ -74,7 +94,7 @@ const eslintConfig = [
       semi: "warn",
       curly: ["error", "multi-line"],
       "prettier/prettier": "warn",
-      "no-console": 0,
+      "no-console": "warn",
       "react/jsx-wrap-multilines": [
         "error",
         {
@@ -109,26 +129,26 @@ const eslintConfig = [
       "readable-tailwind/multiline": [
         "warn",
         {
-          callees: ["tw", "twMerge", "cva", "cn", "clsx"],
+          callees,
           printWidth: 80,
         },
       ],
       "readable-tailwind/no-unnecessary-whitespace": [
         "warn",
         {
-          callees: ["tw", "twMerge", "cva", "cn", "clsx"],
+          callees,
         },
       ],
       "readable-tailwind/sort-classes": [
         "warn",
         {
-          callees: ["tw", "twMerge", "cva", "cn", "clsx"],
+          callees,
         },
       ],
       "readable-tailwind/no-duplicate-classes": [
         "error",
         {
-          callees: ["tw", "twMerge", "cva", "cn", "clsx"],
+          callees,
         },
       ],
     },
