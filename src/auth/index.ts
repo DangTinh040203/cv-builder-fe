@@ -6,13 +6,6 @@ import { Env } from "@/configs/env.config";
 import { type Tokens } from "@/services/auth.service";
 import { type User } from "@/types/user.type";
 
-/*
- * First time login
- * authorize -> signIn -> jwt -> session
- *
- * Subsequent logins
- * jwt -> session
- */
 export const { handlers, signIn, signOut, auth } = NextAuth({
   trustHost: true,
   providers: [
