@@ -30,7 +30,7 @@ const Header = () => {
     const checkUser = async () => {
       const session = await getSession();
       if (session) {
-        dispatch(setUser(session as User));
+        dispatch(setUser(session.user));
       }
     };
 

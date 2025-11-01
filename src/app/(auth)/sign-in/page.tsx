@@ -33,7 +33,6 @@ import { Spinner } from "@/components/ui/spinner";
 import { Route } from "@/constants/route.constant";
 import { setUser } from "@/stores/features/user.slice";
 import { useAppDispatch } from "@/stores/store";
-import { type User } from "@/types/user.type";
 
 const formSchema = z.object({
   email: z.email(),
@@ -73,7 +72,7 @@ function SignIn() {
         toast.success("Login successfully");
         const session = await getSession();
         if (session) {
-          dispatch(setUser(session as User));
+          dispatch(setUser(session.user));
           router.push(Route.Home);
         } else {
           toast.error("Something went wrong. Please try again.");

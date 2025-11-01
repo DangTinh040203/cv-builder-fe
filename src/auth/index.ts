@@ -4,6 +4,7 @@ import Credentials from "next-auth/providers/credentials";
 
 import { Env } from "@/configs/env.config";
 import { type Tokens } from "@/services/auth.service";
+import { type NextAuthUser } from "@/types/next-auth";
 import { type User } from "@/types/user.type";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -22,7 +23,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             { baseURL: Env.NEXT_PUBLIC_BASE_URL },
           );
 
-          const { accessToken, refreshToken } = data;
+          const { accessToken } = data;
 
           const { data: user } = await axios.get<User>("/user/profile", {
             baseURL: Env.NEXT_PUBLIC_BASE_URL,
@@ -31,11 +32,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             },
           });
 
-          return {
-            ...user,
-            accessToken,
-            refreshToken,
-          };
+          return { ...user, ...data };
         } catch {
           return null;
         }
@@ -45,13 +42,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     jwt: async ({ token, user }) => {
       if (user) {
-        token = { ...token, ...user };
+        const nextAuthUser = user as NextAuthUser;
+        token.user = {
+          ...nextAuthUser,
+        };
       }
 
       return token;
     },
     session: async ({ session, token }) => {
-      return { ...session, ...token };
+      return {
+        ...session,
+        user: token.user,
+      };
     },
   },
 });

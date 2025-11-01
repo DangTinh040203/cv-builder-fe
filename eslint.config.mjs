@@ -68,6 +68,7 @@ const eslintConfig = [
       },
     },
     rules: {
+      "@typescript-eslint/require-await": 0,
       "import-alias/import-alias": [
         "error",
         {
@@ -79,9 +80,8 @@ const eslintConfig = [
           ],
         },
       ],
-      "@typescript-eslint/require-await": "warn",
+      "@typescript-eslint/no-unused-vars": "warn",
       "@typescript-eslint/no-floating-promises": "warn",
-      "@typescript-eslint/require-await": "warn",
       "@typescript-eslint/no-empty-object-type": "warn",
       "simple-import-sort/imports": "error",
       "simple-import-sort/exports": "error",
