@@ -38,7 +38,7 @@ const TemplateWrapper = ({ document }: TemplateWrapperProps) => {
   return (
     <div
       className={`
-        group scrollbar-none relative w-full overflow-y-scroll rounded-sm
+        group scrollbar-none relative w-full overflow-y-scroll rounded-lg
         shadow-lg
       `}
       ref={ref}

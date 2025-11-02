@@ -68,6 +68,7 @@ const eslintConfig = [
       },
     },
     rules: {
+      "@typescript-eslint/no-unsafe-call": 0,
       "@typescript-eslint/require-await": 0,
       "import-alias/import-alias": [
         "error",

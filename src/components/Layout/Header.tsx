@@ -19,7 +19,6 @@ import {
 import { Route } from "@/constants/route.constant";
 import { setUser, userSelector } from "@/stores/features/user.slice";
 import { useAppDispatch, useAppSelector } from "@/stores/store";
-import { type User } from "@/types/user.type";
 
 const Header = () => {
   const { user } = useAppSelector(userSelector);
