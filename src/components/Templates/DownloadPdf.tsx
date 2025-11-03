@@ -7,64 +7,40 @@ import { useEffect, useState } from "react";
 import Template1 from "@/components/Templates/1";
 import DocumentPDF from "@/components/Templates/DocumentPDF";
 import { Button } from "@/components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Spinner } from "@/components/ui/spinner";
 
 const DownloadPdf = () => {
-  const [open, setOpen] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-
   const { setHtml } = usePDFComponentsAreHTML();
   const [instance, update] = usePDF({});
 
-  const handleOnClick = () => {
+  const handleDownload = () => {
+    setHtml(false);
+
     setIsProcessing(true);
 
-    const document = <DocumentPDF document={<Template1 />} />;
-    update(document);
+    setTimeout(() => {
+      const document = <DocumentPDF document={<Template1 />} />;
+      update(document);
+    }, 0);
   };
 
   useEffect(() => {
-    if (open) {
-      setHtml(false);
-    }
-  }, [open, setHtml]);
-
-  useEffect(() => {
     if (isProcessing && !instance.loading && instance.url) {
-      const a = window.document.createElement("a");
+      const a = document.createElement("a");
       a.href = instance.url;
       a.download = "document.pdf";
       a.click();
 
+      setHtml(true);
       setIsProcessing(false);
     }
-  }, [isProcessing, instance.loading, instance.url]);
+  }, [isProcessing, instance.loading, instance.url, setHtml]);
 
   return (
-    <Popover open={open}>
-      <PopoverTrigger asChild>
-        <Button
-          className="px-6"
-          onClick={() => {
-            setOpen(true);
-          }}
-        >
-          Download
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent
-        onInteractOutside={() => {
-          setHtml(true);
-          setOpen(false);
-        }}
-      >
-        <Button onClick={handleOnClick}>Download now</Button>
-      </PopoverContent>
-    </Popover>
+    <Button className="px-6" disabled={isProcessing} onClick={handleDownload}>
+      {isProcessing && <Spinner />} Download
+    </Button>
   );
 };
 

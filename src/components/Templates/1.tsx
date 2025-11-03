@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
   page: {
     display: "flex",
     flexDirection: "column",
-    backgroundColor: "#E4E4E4",
+    backgroundColor: "red",
   },
   section: {
     width: "100%",
