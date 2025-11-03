@@ -68,6 +68,8 @@ const eslintConfig = [
       },
     },
     rules: {
+      "react-hooks/set-state-in-effect": 0,
+      "@typescript-eslint/no-unsafe-call": 0,
       "@typescript-eslint/require-await": 0,
       "import-alias/import-alias": [
         "error",

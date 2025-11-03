@@ -40,6 +40,7 @@ export default async function RootLayout({
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
+            forcedTheme="light"
           >
             <StoreProvider>
               <Toaster richColors position="bottom-right" />
