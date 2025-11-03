@@ -5,10 +5,12 @@ import { StyleSheet } from "@react-pdf/renderer";
 
 const styles = StyleSheet.create({
   page: {
-    flexDirection: "row",
+    display: "flex",
+    flexDirection: "column",
     backgroundColor: "#E4E4E4",
   },
   section: {
+    width: "100%",
     margin: 10,
     padding: 10,
     flexGrow: 1,
@@ -21,6 +23,7 @@ const Template1 = () => {
       <View style={styles.section}>
         <Text>Section #1</Text>
       </View>
+
       <View style={styles.section}>
         <Text>Section #2</Text>
       </View>
