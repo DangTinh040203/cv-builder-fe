@@ -5,8 +5,6 @@ export const templateGlobalStyles = StyleSheet.create({
     padding: 20,
     display: "flex",
     flexDirection: "column",
-    rowGap: 20,
-    fontSize: 12,
   },
 
   gapSm: { gap: 10 },

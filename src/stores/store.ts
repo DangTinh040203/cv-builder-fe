@@ -2,12 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector, useStore } from "react-redux";
 
 import { StorageSliceName } from "@/constants/slice.constant";
+import { templateReducer } from "@/stores/features/template.slice";
 import { userReducer } from "@/stores/features/user.slice";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       [StorageSliceName.User]: userReducer,
+      [StorageSliceName.Template]: templateReducer,
     },
   });
 };

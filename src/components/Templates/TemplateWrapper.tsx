@@ -44,7 +44,10 @@ const TemplateWrapper = ({ document }: TemplateWrapperProps) => {
   return (
     <div
       ref={ref}
-      className="relative w-full overflow-hidden rounded-lg border shadow-lg"
+      className={`
+        scrollbar-none relative w-full overflow-hidden overflow-y-auto
+        rounded-lg border shadow-lg
+      `}
       style={{ aspectRatio: "210 / 297" }}
     >
       {!ready ? (
