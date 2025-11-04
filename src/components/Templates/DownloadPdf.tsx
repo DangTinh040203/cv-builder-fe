@@ -39,7 +39,7 @@ const DownloadPdf = () => {
 
   return (
     <Button className="px-6" disabled={isProcessing} onClick={handleDownload}>
-      {isProcessing && <Spinner />} Download
+      Download
     </Button>
   );
 };

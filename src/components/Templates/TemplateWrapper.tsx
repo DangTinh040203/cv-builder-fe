@@ -4,6 +4,7 @@ import { type ReactElement, useMemo } from "react";
 import { useMeasure } from "react-use";
 
 import DocumentPDF from "@/components/Templates/DocumentPDF";
+import { Spinner } from "@/components/ui/spinner";
 
 export interface Size {
   width: number;
@@ -15,10 +16,12 @@ export const A4_SIZE: Size = {
   height: 29.7,
 } as const;
 
-export const DEFAULT_DOCUMENT_SIZE: Size = {
-  width: 500,
-  height: (A4_SIZE.height * 500) / A4_SIZE.width,
+export const A4_PX_SIZE = {
+  width: 595.28, // 21cm * 72dpi / 2.54
+  height: 841.89, // 29.7cm * 72dpi / 2.54
 };
+
+const DEFAULT_DOCUMENT_SIZE = A4_PX_SIZE;
 
 interface TemplateWrapperProps {
   document: ReactElement<DocumentProps>;
@@ -26,34 +29,40 @@ interface TemplateWrapperProps {
 
 const TemplateWrapper = ({ document }: TemplateWrapperProps) => {
   const [ref, bounds] = useMeasure<HTMLDivElement>();
+
   const size = useMemo(() => {
+    const width = bounds.width || DEFAULT_DOCUMENT_SIZE.width;
     return {
       height:
-        (DEFAULT_DOCUMENT_SIZE.height * bounds.width) /
-        DEFAULT_DOCUMENT_SIZE.width,
-      scale: bounds.width / DEFAULT_DOCUMENT_SIZE.width,
+        (DEFAULT_DOCUMENT_SIZE.height * width) / DEFAULT_DOCUMENT_SIZE.width,
+      scale: width / DEFAULT_DOCUMENT_SIZE.width,
     };
   }, [bounds.width]);
 
+  const ready = bounds.width > 0;
+
   return (
     <div
-      className={`
-        group scrollbar-none relative w-full overflow-y-scroll rounded-lg
-        shadow-lg
-      `}
       ref={ref}
-      style={{ height: size.height, maxHeight: size.height }}
+      className="relative w-full overflow-hidden rounded-lg border shadow-lg"
+      style={{ aspectRatio: "210 / 297" }}
     >
-      <div
-        className="absolute top-0 left-0 origin-top-left"
-        style={{
-          width: DEFAULT_DOCUMENT_SIZE.width,
-          height: DEFAULT_DOCUMENT_SIZE.height,
-          transform: `scale(${size.scale})`,
-        }}
-      >
-        <DocumentPDF document={document} />
-      </div>
+      {!ready ? (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <Spinner className="animate-spin" />
+        </div>
+      ) : (
+        <div
+          className="absolute top-0 left-0 origin-top-left"
+          style={{
+            width: DEFAULT_DOCUMENT_SIZE.width,
+            height: DEFAULT_DOCUMENT_SIZE.height,
+            transform: `scale(${size.scale})`,
+          }}
+        >
+          <DocumentPDF document={document} />
+        </div>
+      )}
     </div>
   );
 };

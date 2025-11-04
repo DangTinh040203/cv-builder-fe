@@ -14,6 +14,14 @@ pnpm dev
 bun dev
 ```
 
+ENV
+
+```bash
+AUTH_SECRET=pU7arRzFCcZR92kLS0m/JMiXGU08z54lxRtCrMaB+eU=
+NEXT_PUBLIC_BASE_URL=http://localhost:3000/api/v1
+NEXT_PUBLIC_REQUEST_TIMEOUT=30000
+```
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
