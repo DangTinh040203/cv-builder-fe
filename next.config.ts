@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  experimental: {},
+  serverExternalPackages: ["@react-pdf/renderer", "@rawwee/react-pdf-html"],
 };
 
 export default nextConfig;

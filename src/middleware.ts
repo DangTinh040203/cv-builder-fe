@@ -24,8 +24,8 @@ export default async function middleware(req: NextRequest) {
       .some((p) => pathname.startsWith(p));
 
   if (isAllowedUnauthenticatedPath) {
-    if (token && pathname !== "/") {
-      return NextResponse.redirect(new URL("/", req.url));
+    if (token && pathname !== Route.Home.toString()) {
+      return NextResponse.redirect(new URL(Route.Home, req.url));
     } else {
       return NextResponse.next();
     }

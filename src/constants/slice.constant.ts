@@ -1,4 +1,4 @@
 export enum StorageSliceName {
-  Counter = "counter",
   User = "user",
+  Template = "template",
 }

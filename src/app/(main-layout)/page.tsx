@@ -1,21 +1,16 @@
 "use client";
 
-import dynamic from "next/dynamic";
-
 import Template1 from "@/components/Templates/1";
-// import DownloadPdf from "@/components/Templates/DownloadPdf";
 import TemplateWrapper from "@/components/Templates/TemplateWrapper";
-
-const DownloadPdf = dynamic(
-  () => import("@/components/Templates/DownloadPdf"),
-  { ssr: false },
-);
+import { TEMPLATE_MOCK_DATA } from "@/constants";
+import { templateFormatSelector } from "@/stores/features/template.slice";
+import { useAppSelector } from "@/stores/store";
 
 const HomePage = () => {
+  const templateFormat = useAppSelector(templateFormatSelector);
+
   return (
     <div className="container my-4 space-y-2">
-      <DownloadPdf />
-
       <div
         id="templates_list"
         className={`
@@ -25,7 +20,14 @@ const HomePage = () => {
           2xl:grid-cols-5
         `}
       >
-        <TemplateWrapper document={<Template1 />} />
+        <TemplateWrapper
+          document={
+            <Template1
+              templateFormat={templateFormat}
+              data={TEMPLATE_MOCK_DATA}
+            />
+          }
+        />
       </div>
     </div>
   );

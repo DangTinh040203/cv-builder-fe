@@ -1,5 +1,6 @@
 "use client";
 import { Award, LogOut, Settings, UserPen } from "lucide-react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { getSession, signOut } from "next-auth/react";
 import { useLayoutEffect } from "react";
@@ -19,6 +20,11 @@ import {
 import { Route } from "@/constants/route.constant";
 import { setUser, userSelector } from "@/stores/features/user.slice";
 import { useAppDispatch, useAppSelector } from "@/stores/store";
+
+const DownloadPdf = dynamic(
+  () => import("@/components/Templates/DownloadPdf").then((mod) => mod.default),
+  { ssr: false },
+);
 
 const Header = () => {
   const { user } = useAppSelector(userSelector);
@@ -46,6 +52,8 @@ const Header = () => {
     <div className="border-b">
       <div className={`container-full flex items-center justify-between py-4`}>
         <p>LOGO</p>
+
+        <DownloadPdf />
 
         <div className="flex items-center gap-2">
           {!user ? (

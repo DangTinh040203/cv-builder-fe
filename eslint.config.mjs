@@ -68,6 +68,8 @@ const eslintConfig = [
       },
     },
     rules: {
+      "@typescript-eslint/no-unsafe-assignment": 0,
+      "@typescript-eslint/no-unsafe-member-access": 0,
       "react-hooks/set-state-in-effect": 0,
       "@typescript-eslint/no-unsafe-call": 0,
       "@typescript-eslint/require-await": 0,
