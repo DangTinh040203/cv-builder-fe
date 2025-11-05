@@ -21,11 +21,6 @@ import { Route } from "@/constants/route.constant";
 import { setUser, userSelector } from "@/stores/features/user.slice";
 import { useAppDispatch, useAppSelector } from "@/stores/store";
 
-const DownloadPdf = dynamic(
-  () => import("@/components/Templates/DownloadPdf").then((mod) => mod.default),
-  { ssr: false },
-);
-
 const Header = () => {
   const { user } = useAppSelector(userSelector);
 
@@ -49,11 +44,13 @@ const Header = () => {
   };
 
   return (
-    <div className="border-b">
-      <div className={`container-full flex items-center justify-between py-4`}>
-        <p>LOGO</p>
-
-        <DownloadPdf />
+    <div className="flex h-14 w-full border-b">
+      <div
+        className={`container-full flex w-full items-center justify-between`}
+      >
+        <Link href={Route.Home}>
+          <p>LOGO</p>
+        </Link>
 
         <div className="flex items-center gap-2">
           {!user ? (

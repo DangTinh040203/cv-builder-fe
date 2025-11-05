@@ -147,6 +147,7 @@ const Template1: React.FC<Template1Props> = ({ templateFormat, data }) => {
         gap: 10,
         borderBottom: "1px solid #ccc",
       },
+
       projectInfoRowFirst: {
         borderTop: "1px solid #ccc",
       },
