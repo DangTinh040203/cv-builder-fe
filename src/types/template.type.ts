@@ -33,9 +33,10 @@ export interface Skill {
 
 export interface Project {
   _id: string;
-  title: string;
-  subTitle: string;
-  information: Information[];
+  name: string;
+  startDate: Date;
+  endDate: Date | null;
+  information: Array<Information>;
   order: number;
 }
 

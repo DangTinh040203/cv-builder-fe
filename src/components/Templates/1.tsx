@@ -244,6 +244,78 @@ const Template1: React.FC<Template1Props> = ({ templateFormat, data }) => {
           ))}
         </View>
       </View>
+
+      {/* Projects */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Projects</Text>
+        <View style={styles.separator} />
+        <View style={styles.sectionContent}>
+          {projects.map((project) => (
+            <View
+              wrap={false}
+              key={project._id}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                paddingBottom: 10,
+              }}
+            >
+              {/* Project Header */}
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  paddingTop: 2,
+                  paddingBottom: 2,
+                }}
+              >
+                <Text style={{ fontWeight: 600 }}>{project.name}</Text>
+                <Text style={{ fontWeight: 600 }}>
+                  {dayjs(project.startDate).format("MM/YYYY")} -{" "}
+                  {project.endDate
+                    ? dayjs(project.endDate).format("MM/YYYY")
+                    : "Present"}
+                </Text>
+              </View>
+
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                {project.information.map((info, index) => (
+                  <View
+                    key={info._id}
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "flex-start",
+                      gap: 10,
+                      borderBottom: "1px solid #ccc",
+                      ...(index === 0 ? { borderTop: "1px solid #ccc" } : {}),
+                    }}
+                  >
+                    <Text
+                      style={{
+                        minWidth: 120,
+                        paddingTop: 4,
+                        paddingBottom: 4,
+                      }}
+                    >
+                      {info.label}
+                    </Text>
+                    <Text style={{ flex: 1, paddingTop: 4, paddingBottom: 4 }}>
+                      {info.value}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            </View>
+          ))}
+        </View>
+      </View>
     </Page>
   );
 };
