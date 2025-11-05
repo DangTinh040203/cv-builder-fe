@@ -172,67 +172,87 @@ applications and continuously improving skills to stay up to date with the lates
   projects: [
     {
       _id: uuid(),
-      title: "Personal Portfolio Website",
-      subTitle:
-        "A showcase of my skills and projects as a developer more details follow... ",
+      name: "Personal Portfolio Website",
+      startDate: new Date("2022-01-01"),
+      endDate: new Date("2022-03-01"),
       information: [
-        {
-          _id: uuid(),
-          label: "Technologies",
-          value: "React, TypeScript, Tailwind CSS",
-          order: 1,
-        },
         {
           _id: uuid(),
           label: "Description",
           value:
-            "Developed a personal portfolio website to showcase my skills, projects, and experience. Implemented responsive design and interactive features.",
+            "Developed a personal portfolio website to showcase projects and skills using React and Tailwind CSS.",
+          order: 1,
+        },
+        {
+          _id: uuid(),
+          label: "Technologies",
+          value: "React, Tailwind CSS, Vercel",
           order: 2,
         },
         {
           _id: uuid(),
-          label: "GitHub",
+          label: "Technologies",
+          value: "React, Tailwind CSS, Vercel",
+          order: 2,
+        },
+        {
+          _id: uuid(),
+          label: "Sources",
           value: "github.com/yourusername/portfolio-website",
           order: 3,
+        },
+        {
+          _id: uuid(),
+          label: "Live Demo",
+          value: "yourwebsite.com",
+          order: 4,
+        },
+        {
+          _id: uuid(),
+          label: "Responsibilities",
+          value:
+            "Developed user-friendly interfaces and ensured cross-browser compatibility.",
+          order: 5,
         },
       ],
       order: 1,
     },
     {
       _id: uuid(),
-      title: "E-commerce Platform",
-      subTitle:
-        "An online marketplace for buying and selling products more details follow... ",
+      name: "E-commerce Platform",
+      startDate: new Date("2021-05-01"),
+      endDate: new Date("2021-10-01"),
       information: [
-        {
-          _id: uuid(),
-          label: "Technologies",
-          value: "Node.js, Express, MongoDB, React",
-          order: 1,
-        },
         {
           _id: uuid(),
           label: "Description",
           value:
-            "Built a full-featured e-commerce platform with user authentication, product listings, shopping cart, and payment integration.",
+            "Built a full-featured e-commerce platform with shopping cart, payment integration, and admin dashboard using MERN stack.",
+          order: 1,
+        },
+        {
+          _id: uuid(),
+          label: "Technologies",
+          value: "MongoDB, Express.js, React, Node.js, Stripe API",
           order: 2,
         },
         {
           _id: uuid(),
-          label: "GitHub",
+          label: "Sources",
           value: "github.com/yourusername/ecommerce-platform",
           order: 3,
         },
         {
           _id: uuid(),
           label: "Live Demo",
-          value: "www.ecommerce-demo.com",
+          value: "ecommerce.yourwebsite.com",
           order: 4,
         },
         {
           _id: uuid(),
-          label: "Role",
-          value: "Fullstack Developer",
+          label: "Responsibilities",
+          value:
+            "Implemented backend APIs, integrated payment gateway, and designed responsive UI.",
           order: 5,
         },
       ],
@@ -240,59 +260,44 @@ applications and continuously improving skills to stay up to date with the lates
     },
     {
       _id: uuid(),
-      title: "Task Management App",
-      subTitle:
-        "A productivity app to manage tasks and projects more details follow... ",
+      name: "Task Management App",
+      startDate: new Date("2020-03-01"),
+      endDate: new Date("2020-06-01"),
       information: [
-        {
-          _id: uuid(),
-          label: "Technologies",
-          value: "Vue.js, Firebase",
-          order: 1,
-        },
         {
           _id: uuid(),
           label: "Description",
           value:
-            "Created a task management application that allows users to create, edit, and track tasks and projects with real-time collaboration features.",
+            "Created a task management application to help users organize and prioritize their tasks using Vue.js and Firebase.",
+          order: 1,
+        },
+        {
+          _id: uuid(),
+          label: "Technologies",
+          value: "Vue.js, Firebase, Vuetify",
           order: 2,
         },
         {
           _id: uuid(),
-          label: "GitHub",
+          label: "Sources",
           value: "github.com/yourusername/task-management-app",
           order: 3,
         },
+        {
+          _id: uuid(),
+          label: "Live Demo",
+          value: "tasks.yourwebsite.com",
+          order: 4,
+        },
+        {
+          _id: uuid(),
+          label: "Responsibilities",
+          value:
+            "Developed frontend components and integrated Firebase for real-time data synchronization.",
+          order: 5,
+        },
       ],
       order: 3,
-    },
-    {
-      _id: uuid(),
-      title: "Blog Platform",
-      subTitle:
-        "A content management system for blogging more details follow... ",
-      information: [
-        {
-          _id: uuid(),
-          label: "Technologies",
-          value: "Django, PostgreSQL, Bootstrap",
-          order: 1,
-        },
-        {
-          _id: uuid(),
-          label: "Description",
-          value:
-            "Developed a blog platform with features such as user authentication, post creation, commenting, and categorization.",
-          order: 2,
-        },
-        {
-          _id: uuid(),
-          label: "GitHub",
-          value: "github.com/yourusername/blog-platform",
-          order: 3,
-        },
-      ],
-      order: 4,
     },
   ],
 };

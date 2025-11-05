@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { getSession, signIn } from "next-auth/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -45,6 +45,7 @@ const formSchema = z.object({
 function SignIn() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const searchParams = useSearchParams();
 
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -73,7 +74,10 @@ function SignIn() {
         const session = await getSession();
         if (session) {
           dispatch(setUser(session.user));
-          router.push(Route.Home);
+
+          const callbackUrl = searchParams.get("callbackUrl");
+
+          router.push(callbackUrl || Route.Home);
         } else {
           toast.error("Something went wrong. Please try again.");
         }
