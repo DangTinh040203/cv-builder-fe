@@ -29,179 +29,203 @@ const Template1: React.FC<Template1Props> = ({ templateFormat, data }) => {
     experiences,
   } = data;
 
-  const styles = useMemo(
-    () =>
-      StyleSheet.create({
-        page: {
-          ...templateGlobalStyles.page,
-          padding: 20,
-          display: "flex",
-          flexDirection: "column",
-          rowGap: templateFormat.sectionSpacing,
-          lineHeight: templateFormat.lineHeight,
-          fontSize: templateFormat.fontSize,
-        },
+  const styles = useMemo(() => {
+    const theme = {
+      color: templateFormat.color,
+      fontSize: templateFormat.fontSize,
+      lineHeight: templateFormat.lineHeight,
+      sectionSpacing: templateFormat.sectionSpacing,
+    };
 
-        section: {
-          display: "flex",
-          flexDirection: "column",
-          width: "100%",
-          gap: 4,
-        },
+    return StyleSheet.create({
+      // === Layout ===
+      page: {
+        ...templateGlobalStyles.page,
+        padding: 20,
+        flexDirection: "column",
+        rowGap: theme.sectionSpacing,
+        fontSize: theme.fontSize,
+        lineHeight: theme.lineHeight,
+      },
 
-        sectionContent: {
-          display: "flex",
-          flexDirection: "column",
-          gap: 4,
-          marginTop: 6,
-        },
+      section: {
+        flexDirection: "column",
+        width: "100%",
+        gap: 4,
+      },
 
-        title: {
-          ...templateGlobalStyles.heading1,
-          ...templateGlobalStyles.fontWeight600,
-          color: templateFormat.color,
-          lineHeight: 1.1,
-        },
+      sectionContent: {
+        flexDirection: "column",
+        gap: 4,
+        marginTop: 6,
+      },
 
-        subTitle: {
-          ...templateGlobalStyles.heading2,
-          ...templateGlobalStyles.fontWeight600,
-          lineHeight: 1.2,
-        },
+      separator: {
+        height: 1,
+        width: "100%",
+        backgroundColor: "gray",
+      },
 
-        informationGroup: {
-          ...templateGlobalStyles.gapXl,
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "flex-start",
-          width: "100%",
-        },
+      // === Typography ===
+      text: {
+        fontSize: theme.fontSize,
+        lineHeight: theme.lineHeight,
+      },
 
-        informationItem: {
-          ...templateGlobalStyles.flexRow,
-          fontStyle: "normal",
-        },
+      title: {
+        ...templateGlobalStyles.heading1,
+        ...templateGlobalStyles.fontWeight600,
+        color: theme.color,
+        lineHeight: 1.1,
+      },
 
-        informationLabel: {
-          ...templateGlobalStyles.fontWeight600,
-          minWidth: 70,
-          display: "flex",
-        },
+      subTitle: {
+        ...templateGlobalStyles.heading2,
+        ...templateGlobalStyles.fontWeight600,
+        lineHeight: 1.2,
+      },
 
-        overview: {
-          lineHeight: templateFormat.lineHeight,
-          fontSize: templateFormat.fontSize,
-        },
+      sectionTitle: {
+        ...templateGlobalStyles.heading3,
+        ...templateGlobalStyles.fontWeight600,
+        color: theme.color,
+      },
 
-        sectionTitle: {
-          ...templateGlobalStyles.heading3,
-          ...templateGlobalStyles.fontWeight600,
-          color: templateFormat.color,
-        },
+      label: {
+        ...templateGlobalStyles.fontWeight600,
+        minWidth: 70,
+      },
 
-        separator: {
-          height: 1,
-          width: "100%",
-          backgroundColor: "gray",
-        },
-      }),
-    [templateFormat],
-  );
+      // === Information Section ===
+      informationGroup: {
+        ...templateGlobalStyles.gapXl,
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        width: "100%",
+      },
 
+      informationItem: {
+        flexDirection: "row",
+        fontStyle: "normal",
+      },
+
+      informationLabel: {
+        ...templateGlobalStyles.fontWeight600,
+        minWidth: 70,
+      },
+
+      // === Table / Row ===
+      row: {
+        flexDirection: "row",
+        gap: 10,
+      },
+
+      rowBetween: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+      },
+
+      col: {
+        flexDirection: "column",
+      },
+
+      // === Project Section ===
+      projectContainer: {
+        flexDirection: "column",
+        paddingBottom: 10,
+      },
+
+      projectHeader: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        paddingVertical: 2,
+      },
+
+      projectInfoRow: {
+        flexDirection: "row",
+        alignItems: "flex-start",
+        gap: 10,
+        borderBottom: "1px solid #ccc",
+      },
+      projectInfoRowFirst: {
+        borderTop: "1px solid #ccc",
+      },
+    });
+  }, [templateFormat]);
+
+  // === Derived Data ===
   const informationGroup = useMemo(() => {
     const sorted = information.sort((a, b) => a.order - b.order);
-
     return {
-      infoLeftColumn: sorted.filter((_, index) => index % 2 === 0),
-      infoRightColumn: sorted.filter((_, index) => index % 2 === 1),
+      left: sorted.filter((_, i) => i % 2 === 0),
+      right: sorted.filter((_, i) => i % 2 === 1),
     };
   }, [information]);
 
   return (
     <Page size="A4" style={styles.page}>
-      {/* RESUME TITLE */}
-      <View style={{ flexDirection: "column", gap: 2 }}>
+      {/* HEADER */}
+      <View style={styles.col}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.subTitle}>{subTitle}</Text>
       </View>
 
-      {/* RESUME INFO GROUP */}
+      {/* INFO */}
       <View style={styles.section}>
         <View style={styles.informationGroup}>
-          {/* Left */}
-          <View>
-            <View style={{ flexDirection: "column", gap: 4 }}>
-              {informationGroup.infoLeftColumn.map((info) => (
-                <View key={info._id} style={styles.informationItem}>
-                  <Text style={styles.informationLabel}>{info.label}:</Text>
-                  <Text style={{ textOverflow: "ellipsis" }}>{info.value}</Text>
-                </View>
-              ))}
-            </View>
-          </View>
-
-          {/* Right */}
-          <View>
-            <View style={{ flexDirection: "column", gap: 4 }}>
-              {informationGroup.infoRightColumn.map((info) => (
+          {[informationGroup.left, informationGroup.right].map((col, i) => (
+            <View key={i} style={styles.col}>
+              {col.map((info) => (
                 <View key={info._id} style={styles.informationItem}>
                   <Text style={styles.informationLabel}>{info.label}:</Text>
                   <Text>{info.value}</Text>
                 </View>
               ))}
             </View>
-          </View>
+          ))}
         </View>
       </View>
 
-      {/* Overview */}
+      {/* OVERVIEW */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Overview</Text>
         <View style={styles.separator} />
-        <HtmlToPdf style={styles.overview} content={overview} />
+        <HtmlToPdf style={styles.text} content={overview} />
       </View>
 
-      {/* Skill */}
+      {/* SKILLS */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Skills</Text>
         <View style={styles.separator} />
         <View style={styles.sectionContent}>
           {skills.map((skill) => (
-            <View
-              key={skill._id}
-              style={{ gap: 10, display: "flex", flexDirection: "row" }}
-            >
-              <Text style={{ minWidth: 80, fontWeight: 600 }}>
-                {skill.label}
-              </Text>
+            <View key={skill._id} style={styles.row}>
+              <Text style={styles.label}>{skill.label}</Text>
               <Text>{skill.value}</Text>
             </View>
           ))}
         </View>
       </View>
 
-      {/* Education */}
+      {/* EDUCATION */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Education</Text>
         <View style={styles.separator} />
         <View style={styles.sectionContent}>
-          {educations.map((education) => (
-            <View
-              key={education._id}
-              style={{ gap: 10, display: "flex", flexDirection: "row" }}
-            >
-              <View style={{ minWidth: 120, fontWeight: 600 }}>
+          {educations.map((edu) => (
+            <View key={edu._id} style={styles.row}>
+              <View style={{ minWidth: 120 }}>
                 <Text>
-                  {dayjs(education.startDate).format("MM/YYYY")} -{" "}
-                  {education.endDate
-                    ? dayjs(education.endDate).format("MM/YYYY")
+                  {dayjs(edu.startDate).format("MM/YYYY")} -{" "}
+                  {edu.endDate
+                    ? dayjs(edu.endDate).format("MM/YYYY")
                     : "Present"}
                 </Text>
               </View>
-              <View style={{ display: "flex", flexDirection: "column" }}>
-                <Text style={{ fontWeight: 600 }}>{education.schoolName}</Text>
+              <View style={styles.col}>
+                <Text style={{ fontWeight: 600 }}>{edu.schoolName}</Text>
                 <Text>
-                  {education.major} - {education.degree}
+                  {edu.major} - {edu.degree}
                 </Text>
               </View>
             </View>
@@ -209,67 +233,46 @@ const Template1: React.FC<Template1Props> = ({ templateFormat, data }) => {
         </View>
       </View>
 
-      {/* Experience */}
+      {/* EXPERIENCE */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Experience</Text>
         <View style={styles.separator} />
         <View style={styles.sectionContent}>
-          {experiences.map((experience) => (
+          {experiences.map((exp) => (
             <View
-              key={experience._id}
-              style={{
-                gap: 10,
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "flex-start",
-              }}
+              key={exp._id}
+              style={[styles.row, { alignItems: "flex-start" }]}
               wrap={false}
             >
-              <View style={{ minWidth: 120, fontWeight: 600 }}>
+              <View style={{ minWidth: 120 }}>
                 <Text>
-                  {dayjs(experience.startDate).format("MM/YYYY")} -{" "}
-                  {experience.endDate
-                    ? dayjs(experience.endDate).format("MM/YYYY")
+                  {dayjs(exp.startDate).format("MM/YYYY")} -{" "}
+                  {exp.endDate
+                    ? dayjs(exp.endDate).format("MM/YYYY")
                     : "Present"}
                 </Text>
               </View>
-
-              <View
-                style={{ display: "flex", flexDirection: "column", flex: 1 }}
-              >
-                <Text style={{ fontWeight: 600 }}>{experience.company}</Text>
-                <Text>{experience.description}</Text>
+              <View style={[styles.col, { flex: 1 }]}>
+                <Text style={{ fontWeight: 600 }}>{exp.company}</Text>
+                <Text>{exp.description}</Text>
               </View>
             </View>
           ))}
         </View>
       </View>
 
-      {/* Projects */}
+      {/* PROJECTS */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Projects</Text>
         <View style={styles.separator} />
         <View style={styles.sectionContent}>
           {projects.map((project) => (
             <View
-              wrap={false}
               key={project._id}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                paddingBottom: 10,
-              }}
+              style={styles.projectContainer}
+              wrap={false}
             >
-              {/* Project Header */}
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  paddingTop: 2,
-                  paddingBottom: 2,
-                }}
-              >
+              <View style={styles.projectHeader}>
                 <Text style={{ fontWeight: 600 }}>{project.name}</Text>
                 <Text style={{ fontWeight: 600 }}>
                   {dayjs(project.startDate).format("MM/YYYY")} -{" "}
@@ -279,34 +282,19 @@ const Template1: React.FC<Template1Props> = ({ templateFormat, data }) => {
                 </Text>
               </View>
 
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
+              <View style={styles.col}>
                 {project.information.map((info, index) => (
                   <View
                     key={info._id}
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "flex-start",
-                      gap: 10,
-                      borderBottom: "1px solid #ccc",
-                      ...(index === 0 ? { borderTop: "1px solid #ccc" } : {}),
-                    }}
+                    style={[
+                      styles.projectInfoRow,
+                      ...(index === 0 ? [styles.projectInfoRowFirst] : []),
+                    ]}
                   >
-                    <Text
-                      style={{
-                        minWidth: 120,
-                        paddingTop: 4,
-                        paddingBottom: 4,
-                      }}
-                    >
+                    <Text style={{ minWidth: 120, paddingVertical: 4 }}>
                       {info.label}
                     </Text>
-                    <Text style={{ flex: 1, paddingTop: 4, paddingBottom: 4 }}>
+                    <Text style={{ flex: 1, paddingVertical: 4 }}>
                       {info.value}
                     </Text>
                   </View>
