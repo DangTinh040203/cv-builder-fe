@@ -19,3 +19,9 @@ declare module "next-auth" {
     user: NextAuthUser;
   }
 }
+
+export interface JwtDecodedPayload {
+  _id: string;
+  iat: number;
+  exp: number;
+}
