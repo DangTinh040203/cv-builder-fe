@@ -25,11 +25,11 @@ export const CvBuilderSidebar = () => {
             <div
               className={clsx(
                 `
-                  relative flex size-10 items-center justify-center rounded-full
+                  relative flex size-8 items-center justify-center rounded-full
                   bg-white font-bold text-[#07142b]
                 `,
                 String(item.href) === pathname &&
-                  "border-2 border-gray-400 scale-120 transition-all",
+                  "border-2 border-gray-400 scale-110 transition-all",
               )}
             >
               {index}
