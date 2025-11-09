@@ -1,17 +1,19 @@
 "use client";
 
-import Link from "next/link";
+import { useRouter } from "nextjs-toploader/app";
 
-import Template1 from "@/components/Templates/1";
 import TemplateWrapper from "@/components/Templates/TemplateWrapper";
 import { Button } from "@/components/ui/button";
 import { TEMPLATE_MOCK_DATA } from "@/constants";
 import { Route } from "@/constants/route.constant";
-import { templateFormatSelector } from "@/stores/features/template.slice";
-import { useAppSelector } from "@/stores/store";
+import useGetTemplates from "@/hooks/useGetTemplates";
+import { updateTemplateSelected } from "@/stores/features/template.slice";
+import { useAppDispatch } from "@/stores/store";
 
 const HomePage = () => {
-  const templateFormat = useAppSelector(templateFormatSelector);
+  const { templates, templateFormat } = useGetTemplates();
+  const router = useRouter();
+  const dispatch = useAppDispatch();
 
   return (
     <div className="container my-4 space-y-2">
@@ -24,28 +26,36 @@ const HomePage = () => {
           2xl:grid-cols-5
         `}
       >
-        <div className="group relative">
-          <TemplateWrapper
-            document={
-              <Template1
-                templateFormat={templateFormat}
-                data={TEMPLATE_MOCK_DATA}
-              />
-            }
-          />
+        {Object.keys(templates).map((key) => {
+          const Template = templates[key];
 
-          <Link href={Route.CvBuilderHeadings}>
-            <Button
-              className={`
-                absolute bottom-6 left-1/2 z-10 -translate-x-1/2 rounded-full
-                px-6 opacity-0 transition-all duration-500
-                group-hover:opacity-100
-              `}
-            >
-              Use this Template
-            </Button>
-          </Link>
-        </div>
+          return (
+            <div className="group relative" key={key}>
+              <TemplateWrapper
+                document={
+                  <Template
+                    templateFormat={templateFormat}
+                    data={TEMPLATE_MOCK_DATA}
+                  />
+                }
+              />
+
+              <Button
+                onClick={() => {
+                  dispatch(updateTemplateSelected(key));
+                  router.push(Route.CvBuilderHeadings);
+                }}
+                className={`
+                  absolute bottom-6 left-1/2 z-10 -translate-x-1/2 rounded-full
+                  px-6 opacity-0 transition-all duration-500
+                  group-hover:opacity-100
+                `}
+              >
+                Use this Template
+              </Button>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

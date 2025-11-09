@@ -33,7 +33,7 @@ export default async function middleware(req: NextRequest) {
 
   if (!token) {
     const signInUrl = new URL("/sign-in", req.url);
-    signInUrl.searchParams.set("callbackUrl", req.url);
+    signInUrl.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(signInUrl);
   }
 

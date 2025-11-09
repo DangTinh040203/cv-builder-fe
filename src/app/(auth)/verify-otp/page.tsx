@@ -1,7 +1,8 @@
 "use client";
 import { isAxiosError } from "axios";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 

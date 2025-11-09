@@ -2,7 +2,8 @@
 import { Award, LogOut, Settings, UserPen } from "lucide-react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { getSession, signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "nextjs-toploader/app";
 import { useLayoutEffect } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -21,21 +22,32 @@ import { Route } from "@/constants/route.constant";
 import { setUser, userSelector } from "@/stores/features/user.slice";
 import { useAppDispatch, useAppSelector } from "@/stores/store";
 
+const DownloadPdf = dynamic(
+  () => import("@/components/Templates/DownloadPdf"),
+  { ssr: false },
+);
+
 const Header = () => {
   const { user } = useAppSelector(userSelector);
+  const { data } = useSession();
+  const router = useRouter();
 
   const dispatch = useAppDispatch();
 
   useLayoutEffect(() => {
     const checkUser = async () => {
-      const session = await getSession();
-      if (session) {
-        dispatch(setUser(session.user));
+      if (data) {
+        if (data.isExpired) {
+          dispatch(setUser(null));
+          router.replace(Route.SignIn);
+        } else {
+          dispatch(setUser(data.user));
+        }
       }
     };
 
     void checkUser();
-  }, [dispatch]);
+  }, [data, dispatch, router]);
 
   const handleSignOut = async () => {
     await signOut();
@@ -51,6 +63,8 @@ const Header = () => {
         <Link href={Route.Home}>
           <p>LOGO</p>
         </Link>
+
+        <DownloadPdf />
 
         <div className="flex items-center gap-2">
           {!user ? (
