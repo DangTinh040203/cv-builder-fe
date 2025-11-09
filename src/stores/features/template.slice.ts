@@ -18,6 +18,7 @@ export interface TemplateConfig {
 
 interface TemplateState {
   templateConfig: TemplateConfig;
+  templateSelected: string | null;
 }
 
 export const defaultFormat: Format = {
@@ -33,6 +34,7 @@ const initialState: TemplateState = {
   templateConfig: {
     format: defaultFormat,
   },
+  templateSelected: null,
 };
 
 const templateSlice = createSlice({
@@ -48,9 +50,18 @@ const templateSlice = createSlice({
         ...action.payload,
       };
     },
+    updateTemplateSelected: (state, action: PayloadAction<string | null>) => {
+      state.templateSelected = action.payload;
+    },
   },
 });
 
 export const templateFormatSelector = (state: RootState) =>
   state.template.templateConfig.format;
+export const templateSelectedSelector = (state: RootState) =>
+  state.template.templateSelected;
+
+export const { updateTemplateConfigFormat, updateTemplateSelected } =
+  templateSlice.actions;
+
 export const templateReducer = templateSlice.reducer;

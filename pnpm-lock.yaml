@@ -83,6 +83,9 @@ importers:
       next-themes:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      nextjs-toploader:
+        specifier: ^3.9.17
+        version: 3.9.17(next@15.5.5(@babel/core@7.28.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react:
         specifier: 19.1.0
         version: 19.1.0
@@ -2707,6 +2710,13 @@ packages:
       sass:
         optional: true
 
+  nextjs-toploader@3.9.17:
+    resolution: {integrity: sha512-9OF0KSSLtoSAuNg2LZ3aTl4hR9mBDj5L9s9DZiFCbMlXehyICGjkIz5dVGzuATU2bheJZoBdFgq9w07AKSuQQw==}
+    peerDependencies:
+      next: '>= 6.0.0'
+      react: '>= 16.0.0'
+      react-dom: '>= 16.0.0'
+
   node-html-parser@6.1.13:
     resolution: {integrity: sha512-qIsTMOY4C/dAa5Q5vsobRpOOvPfC4pB61UVW2uSwZNUp0QU/jCekTal1vMmbO0DgdHeLUJpv/ARmDqErVxA3Sg==}
 
@@ -2719,6 +2729,9 @@ packages:
 
   normalize-svg-path@1.1.0:
     resolution: {integrity: sha512-r9KHKG2UUeB5LoTouwDzBy2VxXlHsiM6fyLQvnJa0S5hrhzqElH/CH7TUGhT1fVvIYBIKf3OpY4YJ4CK+iaqHg==}
+
+  nprogress@0.2.0:
+    resolution: {integrity: sha512-I19aIingLgR1fmhftnbWWO3dXc0hSxqHQHQb3H8m+K3TnEn/iSeTZZOyvKXWqQESMwuUVnatlCnZdLBZZt2VSA==}
 
   nth-check@2.1.1:
     resolution: {integrity: sha512-lqjrjmaOoAnWfMmBPL+XNnynZh2+swxiX3WUE0s4yEHI6m+AwrK2UZOimIRl3X/4QctVqS8AiZjFqyOGrMXb/w==}
@@ -6200,6 +6213,14 @@ snapshots:
       - '@babel/core'
       - babel-plugin-macros
 
+  nextjs-toploader@3.9.17(next@15.5.5(@babel/core@7.28.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+    dependencies:
+      next: 15.5.5(@babel/core@7.28.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      nprogress: 0.2.0
+      prop-types: 15.8.1
+      react: 19.1.0
+      react-dom: 19.1.0(react@19.1.0)
+
   node-html-parser@6.1.13:
     dependencies:
       css-select: 5.2.2
@@ -6212,6 +6233,8 @@ snapshots:
   normalize-svg-path@1.1.0:
     dependencies:
       svg-arc-to-cubic-bezier: 3.2.0
+
+  nprogress@0.2.0: {}
 
   nth-check@2.1.1:
     dependencies:

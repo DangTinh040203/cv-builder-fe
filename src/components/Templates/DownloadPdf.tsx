@@ -8,26 +8,17 @@ import Template1 from "@/components/Templates/1";
 import DocumentPDF from "@/components/Templates/DocumentPDF";
 import { Button } from "@/components/ui/button";
 import { TEMPLATE_MOCK_DATA } from "@/constants";
-import { templateFormatSelector } from "@/stores/features/template.slice";
-import { useAppSelector } from "@/stores/store";
+import useGetTemplates from "@/hooks/useGetTemplates";
 
 const DownloadPdf = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const { setHtml } = usePDFComponentsAreHTML();
   const [instance, update] = usePDF({});
-  const templateFormat = useAppSelector(templateFormatSelector);
+  const { templateFormat } = useGetTemplates();
 
   const handleDownload = () => {
     setHtml(false);
-
     setIsProcessing(true);
-
-    /*
-     * Using setTimeout to ensure that the PDF generation starts
-     * after the state update for setHtml(false) has taken effect.
-     * This prevents potential race conditions where the PDF might be
-     * generated before the HTML mode is disabled.
-     */
     setTimeout(() => {
       const document = (
         <DocumentPDF

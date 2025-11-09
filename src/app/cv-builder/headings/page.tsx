@@ -1,106 +1,216 @@
-import React from "react";
+"use client";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowRight, Plus, RefreshCcw, Trash2, Upload } from "lucide-react";
+import Image from "next/image";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { v4 as uuid } from "uuid";
+import { z } from "zod";
+
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { DEFAULT_INFORMATION } from "@/constants";
+import { userSelector } from "@/stores/features/user.slice";
+import { useAppSelector } from "@/stores/store";
+import { type Information } from "@/types/template.type";
+
+const formSchema = z.object({
+  title: z
+    .string("Title is required")
+    .min(1, "Title is too short")
+    .max(200, "Title is too long, max 200 characters"),
+  subTitle: z
+    .string("Subtitle is required")
+    .min(1, "Subtitle is too short")
+    .max(200, "Subtitle is too long, max 200 characters"),
+});
 
 const CvBuilderHeading = () => {
+  const [information, setInformation] =
+    useState<Array<Information>>(DEFAULT_INFORMATION);
+
+  const { user } = useAppSelector(userSelector);
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: "Your Name",
+      subTitle: "Professional",
+    },
+  });
+
+  const handleRemoveInformation = (id: string) => {
+    setInformation((prev) => prev.filter((info) => info._id !== id));
+  };
+
+  const handleAddInformation = () => {
+    setInformation((prev) => [
+      ...prev,
+      {
+        _id: uuid(),
+        label: "Label",
+        value: "Value",
+        order: prev.length + 1,
+      },
+    ]);
+  };
+
+  const handleChangeLabel = (id: string, label: string) => {
+    setInformation((prev) =>
+      prev.map((info) => (info._id === id ? { ...info, label: label } : info)),
+    );
+  };
+
+  const handleChangeValue = (id: string, value: string) => {
+    setInformation((prev) =>
+      prev.map((info) => (info._id === id ? { ...info, value: value } : info)),
+    );
+  };
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values);
+  }
+
   return (
-    <div>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium,
-      deleniti. Atque reiciendis architecto nihil. Fuga laboriosam qui fugiat
-      accusamus. Rerum sed voluptates esse, qui libero quas ut voluptatum odio
-      eius. Officia harum, officiis voluptatibus ex iusto modi debitis saepe
-      ducimus cum ratione tenetur, dolor quidem doloribus. Sit obcaecati animi
-      exercitationem recusandae itaque, eius quae quaerat vel assumenda
-      cupiditate, maiores quis. Sint debitis rem aperiam ea suscipit? Quod odit
-      amet voluptatem aliquid esse error incidunt recusandae vitae? Error
-      corporis optio culpa? Eos qui eaque est, doloribus rem ratione
-      exercitationem sapiente quae. Nostrum rem ipsum fugit fuga harum quam
-      accusamus sit vel. Magni aspernatur dignissimos voluptate aperiam tempora
-      accusantium quam at cumque ab? Porro cum provident, aut aliquam voluptatem
-      illum vero fugiat? Aut voluptas recusandae fugit nemo nihil, dolores quod
-      placeat commodi asperiores quam sequi? Perspiciatis distinctio
-      accusantium, reiciendis rerum fuga explicabo nihil possimus iusto laborum
-      quisquam quibusdam, eum quo doloribus enim. Vel temporibus inventore,
-      voluptatum expedita aliquam necessitatibus libero vitae modi pariatur,
-      sapiente dolore maxime nostrum repudiandae qui optio, harum eaque
-      excepturi? Quasi harum dolorem illum neque quae vel accusantium nulla.
-      Natus laboriosam doloribus expedita iusto tempore, assumenda velit esse
-      cupiditate voluptas laborum fugiat impedit et optio architecto minus rerum
-      modi inventore dolorem! Dignissimos minima vitae beatae modi corrupti
-      debitis ipsa. Quas, odio. Minima magni beatae ipsa nulla explicabo eius,
-      eveniet atque pariatur et iusto unde ex vitae nesciunt at rerum ab iure
-      excepturi blanditiis adipisci modi incidunt voluptas eum? Repellat! Ex
-      debitis, natus, dolorum doloremque eius praesentium rerum et dolore
-      recusandae esse iusto numquam. Nulla consequuntur esse necessitatibus
-      laboriosam in eius vitae quidem praesentium maxime accusantium,
-      dignissimos similique earum? Pariatur! Dolorem, fuga mollitia iste, ea
-      perferendis debitis, possimus voluptate minus provident amet molestias
-      quis assumenda obcaecati totam. Soluta deleniti laudantium similique est
-      quam. Animi dignissimos omnis pariatur in quis neque? Lorem ipsum dolor
-      sit amet consectetur adipisicing elit. Corrupti suscipit nemo aliquid
-      repellendus omnis, numquam, beatae rerum veniam ducimus tenetur aspernatur
-      adipisci repellat ad nostrum eaque nam reprehenderit debitis
-      necessitatibus. Aut, deleniti ex. Cupiditate maxime enim numquam nesciunt
-      repellendus. Soluta accusantium deleniti reiciendis odit voluptates
-      cupiditate quas, perspiciatis earum rem laborum itaque, ea magni beatae!
-      Nostrum quisquam esse consequuntur magnam. Illum labore quasi quis, dolor
-      mollitia facere itaque ipsum vero sint molestias natus quibusdam veniam
-      velit deserunt, deleniti rem eius. Sed blanditiis dignissimos tempore
-      animi quo deleniti. Ea, sequi sint. Tempora ex iusto, repellat modi quam
-      adipisci fugiat nihil quibusdam quo. Rem adipisci quisquam itaque est sed
-      culpa architecto, iste beatae, sit ullam, iure quidem praesentium
-      consectetur veniam at illum. Illum, odit architecto. Quidem reiciendis
-      harum amet tempore? Ullam deleniti praesentium odit necessitatibus quaerat
-      officiis quia, obcaecati eligendi quibusdam nesciunt vitae illo quas,
-      officia ratione omnis ipsum! Amet, quibusdam dolorem? Commodi, voluptas
-      minus corrupti in ut dicta suscipit recusandae, nostrum ratione fugit,
-      enim amet facilis aliquid. Quaerat natus fugit cum tempore optio beatae
-      qui. Error laudantium officia rem dignissimos iure? Porro inventore ea
-      distinctio dolore, atque hic voluptatum similique nulla exercitationem
-      ipsa veritatis impedit saepe corporis libero sint cupiditate vero!
-      Suscipit labore eum ut iure molestias. Explicabo, corrupti molestias?
-      Sint? Accusantium repudiandae omnis ipsam illum vitae voluptatibus itaque,
-      perspiciatis eligendi facilis doloremque, consequatur blanditiis in rem
-      asperiores unde necessitatibus. Similique saepe sint quis quam rerum illum
-      accusamus maxime ipsum adipisci. Error animi neque provident dolor
-      obcaecati, harum accusantium ducimus corporis sint eos quidem quia
-      sapiente beatae dolorum! Quibusdam nihil culpa enim inventore ipsa facilis
-      facere, accusantium autem non. Beatae, harum! Corrupti recusandae impedit
-      nobis magni, accusamus reprehenderit ratione incidunt quia maxime beatae
-      ab dolorum magnam aspernatur distinctio voluptatum. Expedita minus saepe
-      doloremque animi repellat molestias dignissimos. Blanditiis voluptas ipsum
-      ea? Iste similique autem iusto possimus excepturi dignissimos illum magni
-      voluptates officia deserunt. Quasi dolores aliquam quae magni velit dolor
-      cupiditate similique soluta sunt, placeat minus iste voluptatibus quos
-      commodi. Nam. Pariatur, reiciendis hic! Nam deserunt iure aliquam nemo
-      aliquid, minus fugiat debitis quaerat perspiciatis. Laboriosam totam sunt,
-      eum, neque nemo esse debitis similique iusto corrupti ipsam quisquam,
-      aliquam tenetur nihil. Aspernatur sed in neque ad repudiandae. Nisi
-      obcaecati, itaque qui accusantium commodi nihil eaque! Earum quis sequi,
-      hic impedit nobis consequuntur repellat. Corporis harum quae assumenda
-      minima inventore doloremque? Placeat? Aspernatur, quos ad dolorem beatae
-      explicabo quisquam? Aperiam earum perspiciatis repellendus odit dolor rem
-      asperiores nulla voluptatibus. Unde nihil at minima quasi blanditiis
-      commodi molestias et amet, in cum reiciendis. Distinctio voluptatum error
-      quibusdam cupiditate minima consequuntur, unde molestiae maiores dicta
-      explicabo beatae nihil alias voluptatem! Dolorum fugiat alias reiciendis
-      nisi modi porro molestiae minus molestias laudantium, quis deleniti at?
-      Aliquam, a debitis? Aliquam necessitatibus, corporis doloribus saepe
-      ducimus nulla modi, facilis voluptas beatae nesciunt possimus ipsum id
-      porro! Porro quam libero cupiditate corrupti sit inventore blanditiis unde
-      nostrum officia. Quaerat nobis, vero, sint ipsum numquam reiciendis
-      consequuntur soluta deleniti placeat maiores fugit necessitatibus impedit
-      ipsa dignissimos, voluptatum ab. Aut facilis mollitia nisi dolorem commodi
-      sint temporibus quibusdam voluptatibus eaque! Tempora atque adipisci
-      architecto, doloribus ea earum ex. Id provident impedit fugit nesciunt
-      porro debitis quasi quas quidem dolorum vero cum illum necessitatibus
-      labore, cumque doloribus inventore, quaerat aspernatur dolor. Eius nulla
-      ducimus officia nobis, et doloribus praesentium natus aperiam dolore
-      laborum reiciendis sequi, dicta quis quidem amet sed magni? Quos provident
-      sapiente iure recusandae deleniti incidunt adipisci eaque harum! Quo
-      dolores incidunt quidem necessitatibus nostrum quae, labore numquam fugiat
-      harum earum voluptates! Earum cum, architecto asperiores rerum omnis
-      tenetur dolores hic deleniti quae, dolorum fugiat, excepturi beatae at
-      quos.
-    </div>
+    user && (
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <div>
+            <h2 className="text-2xl font-bold">
+              What’s the best way for employers to contact you?
+            </h2>
+            <p>We suggest including an email and phone number.</p>
+          </div>
+
+          <div className="grid grid-cols-5 gap-8">
+            <div className="flex flex-col items-center gap-4">
+              <div className="relative aspect-square w-full">
+                <Image
+                  src={user.avatar}
+                  fetchPriority="high"
+                  quality={100}
+                  sizes="auto"
+                  alt=""
+                  fill
+                  priority
+                />
+              </div>
+              <Button variant={"outline"} size={"sm"}>
+                <Upload /> Upload Photo
+              </Button>
+            </div>
+
+            <div className="col-span-4 grid grid-cols-12 gap-6">
+              <div className="col-span-12">
+                <FormField
+                  control={form.control}
+                  name="title"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-bold">Resume Title</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Your Name" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="col-span-12">
+                <FormField
+                  control={form.control}
+                  name="subTitle"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-bold">
+                        Resume Subtitle
+                      </FormLabel>
+                      <FormControl>
+                        <Input placeholder="Professional" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              {information.length > 0 && (
+                <div className="col-span-12 space-y-2">
+                  <Label className="font-bold">Information</Label>
+                  <div className="space-y-4">
+                    {information.map((info) => (
+                      <div key={info._id} className="grid grid-cols-12 gap-4">
+                        <Input
+                          placeholder={"Label"}
+                          className="col-span-3"
+                          value={info.label}
+                          onChange={(e) =>
+                            handleChangeLabel(info._id, e.target.value)
+                          }
+                        />
+
+                        <Input
+                          className="col-span-8"
+                          placeholder={"Value"}
+                          value={info.value}
+                          onChange={(e) =>
+                            handleChangeValue(info._id, e.target.value)
+                          }
+                        />
+
+                        <div className="flex items-center justify-center">
+                          <Button
+                            size={"icon"}
+                            variant={"secondary"}
+                            onClick={() => handleRemoveInformation(info._id)}
+                          >
+                            <Trash2 />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="flex items-center gap-4">
+                <Button
+                  className="min-w-32"
+                  variant={"outline"}
+                  onClick={handleAddInformation}
+                >
+                  <Plus /> Add More
+                </Button>
+                <Button
+                  className="min-w-32"
+                  variant={"outline"}
+                  onClick={() => setInformation(DEFAULT_INFORMATION)}
+                >
+                  <RefreshCcw /> Reset to Default
+                </Button>
+              </div>
+
+              <div className="col-span-12 flex justify-end">
+                <Button size={"lg"} className="h-12 min-w-40" type="submit">
+                  Next Step <ArrowRight />
+                </Button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </Form>
+    )
   );
 };
 

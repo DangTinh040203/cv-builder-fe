@@ -5,19 +5,13 @@ import { Font, StyleSheet } from "@react-pdf/renderer";
 import dayjs from "dayjs";
 import { useMemo } from "react";
 
+import { type TemplateProp } from "@/components/Templates";
 import HtmlToPdf from "@/components/Templates/HtmlToPdf";
 import { templateGlobalStyles } from "@/configs/template.config";
-import { type Format } from "@/stores/features/template.slice";
-import { type Template } from "@/types/template.type";
 
 Font.registerHyphenationCallback((word) => [word]);
 
-interface Template1Props {
-  templateFormat: Format;
-  data: Template;
-}
-
-const Template1: React.FC<Template1Props> = ({ templateFormat, data }) => {
+const Template1: React.FC<TemplateProp> = ({ templateFormat, data }) => {
   const {
     title,
     subTitle,

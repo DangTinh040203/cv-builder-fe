@@ -3,8 +3,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { getSession, signIn } from "next-auth/react";
+import { useRouter } from "nextjs-toploader/app";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -71,16 +72,8 @@ function SignIn() {
         toast.error("Invalid email or password");
       } else {
         toast.success("Login successfully");
-        const session = await getSession();
-        if (session) {
-          dispatch(setUser(session.user));
-
-          const callbackUrl = searchParams.get("callbackUrl");
-
-          router.push(callbackUrl || Route.Home);
-        } else {
-          toast.error("Something went wrong. Please try again.");
-        }
+        const callbackUrl = searchParams.get("callbackUrl");
+        router.push(callbackUrl || Route.Home);
       }
     } catch {
       toast.error("Something went wrong. Please try again.");

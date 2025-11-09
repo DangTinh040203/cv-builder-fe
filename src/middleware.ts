@@ -10,7 +10,7 @@ export default async function middleware(req: NextRequest) {
   const secret = Env.AUTH_SECRET;
   const token: JWT | null = await getToken({ req, secret });
 
-  const allowedUnauthenticatedPaths = [
+  const publicRoutes = [
     Route.Home,
     Route.SignIn,
     Route.SignUp,
@@ -18,22 +18,20 @@ export default async function middleware(req: NextRequest) {
   ];
 
   const isAllowedUnauthenticatedPath =
-    allowedUnauthenticatedPaths.includes(pathname as Route) ||
-    allowedUnauthenticatedPaths
+    publicRoutes.includes(pathname as Route) ||
+    publicRoutes
       .filter((p) => p !== Route.Home)
       .some((p) => pathname.startsWith(p));
 
   if (isAllowedUnauthenticatedPath) {
     if (token && pathname !== Route.Home.toString()) {
       return NextResponse.redirect(new URL(Route.Home, req.url));
-    } else {
-      return NextResponse.next();
     }
   }
 
-  if (!token) {
+  if (!token && !isAllowedUnauthenticatedPath) {
     const signInUrl = new URL("/sign-in", req.url);
-    signInUrl.searchParams.set("callbackUrl", req.url);
+    signInUrl.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(signInUrl);
   }
 

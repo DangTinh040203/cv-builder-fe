@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 
-import { type Template } from "@/types/template.type";
+import { type Information, type Template } from "@/types/template.type";
 
 export const TEMPLATE_MOCK_DATA: Template = {
   title: "Your Name",
@@ -301,3 +301,42 @@ applications and continuously improving skills to stay up to date with the lates
     },
   ],
 };
+
+export const DEFAULT_INFORMATION: Array<Information> = [
+  {
+    _id: uuid(),
+    label: "Email",
+    value: "your_email@example.com",
+    order: 1,
+  },
+  {
+    _id: uuid(),
+    label: "Phone",
+    value: "+123 456 7890",
+    order: 2,
+  },
+  {
+    _id: uuid(),
+    label: "Address",
+    value: "123 Main St, City, Country",
+    order: 3,
+  },
+  {
+    _id: uuid(),
+    label: "LinkedIn",
+    value: "www.linkedin.com/in/dang-tinh-18709528b",
+    order: 4,
+  },
+  {
+    _id: uuid(),
+    label: "Website",
+    value: "www.yourwebsite.com",
+    order: 5,
+  },
+  {
+    _id: uuid(),
+    label: "GitHub",
+    value: "github.com/yourusername",
+    order: 6,
+  },
+];
