@@ -1,5 +1,5 @@
 "use client";
-import clsx from "clsx";
+import { clsx } from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
@@ -23,22 +23,24 @@ export const CvBuilderSidebar = () => {
             onClick={() => router.push(item.href)}
             className="flex cursor-pointer items-center gap-4"
           >
-            <div
-              className={clsx(
-                `
-                  relative flex size-8 items-center justify-center rounded-full
-                  bg-white font-bold text-[#07142b]
-                `,
-                String(item.href) === pathname &&
-                  "border-2 border-gray-400 scale-110 transition-all",
-              )}
-            >
-              {index}
+            <div className="relative">
+              <div
+                className={clsx(
+                  `
+                    relative z-50 flex size-8 items-center justify-center
+                    rounded-full bg-white font-bold text-[#07142b]
+                  `,
+                  String(item.href) === pathname &&
+                    "border-3 border-primary scale-120 transition-all relative z-50",
+                )}
+              >
+                {index}
+              </div>
 
               {index < SIDEBAR_ROUTES.length - 1 && (
                 <div
                   className={`
-                    absolute bottom-0 left-1/2 h-10 w-1 -translate-x-1/2
+                    absolute bottom-0 left-1/2 z-0 h-10 w-1 -translate-x-1/2
                     translate-y-full bg-white
                   `}
                 />

@@ -68,6 +68,7 @@ const eslintConfig = [
       },
     },
     rules: {
+      "eslint(react-hooks/static-components": 0,
       "@typescript-eslint/no-unsafe-assignment": 0,
       "@typescript-eslint/no-unsafe-member-access": 0,
       "react-hooks/set-state-in-effect": 0,
