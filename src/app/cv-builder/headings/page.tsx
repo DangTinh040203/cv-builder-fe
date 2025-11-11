@@ -1,16 +1,9 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import clsx from "clsx";
-import {
-  ArrowRight,
-  Loader2,
-  Plus,
-  RefreshCcw,
-  Trash2,
-  Upload,
-} from "lucide-react";
+import { ArrowRight, Loader, Plus, Trash2, Upload } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "nextjs-toploader/app";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -27,6 +20,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Spinner } from "@/components/ui/spinner";
+import { Route } from "@/constants/route.constant";
+import { resumeService } from "@/services/resume.service";
 import { resumeSelector, updateResume } from "@/stores/features/resume.slice";
 import { userSelector } from "@/stores/features/user.slice";
 import { useAppDispatch, useAppSelector } from "@/stores/store";
@@ -45,10 +41,13 @@ const formSchema = z.object({
 
 const CvBuilderHeading = () => {
   const [avatarSelected, setAvatarSelected] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const { user } = useAppSelector(userSelector);
   const { resume } = useAppSelector(resumeSelector);
+
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -102,6 +101,7 @@ const CvBuilderHeading = () => {
 
     dispatch(
       updateResume({
+        ...resume,
         information: [...resume.information, newInformation],
       }),
     );
@@ -137,11 +137,27 @@ const CvBuilderHeading = () => {
     );
   };
 
-  function onSubmit(values: z.infer<typeof formSchema>) {}
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!resume) return;
+
+    try {
+      setLoading(true);
+      await resumeService.updateResume(resume._id, {
+        ...resume,
+        ...values,
+      });
+
+      router.push(Route.CvBuilderSummary);
+    } catch {
+      toast.error("Failed to update resume. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return !resume ? (
     <div className="flex min-h-96 w-full items-center justify-center">
-      <Loader2 className="animate-spin" />
+      <Spinner />
     </div>
   ) : (
     <>
@@ -313,8 +329,13 @@ const CvBuilderHeading = () => {
                 </div>
 
                 <div className="col-span-12 flex justify-end">
-                  <Button size={"lg"} className="h-12 min-w-40" type="submit">
-                    Next Step <ArrowRight />
+                  <Button
+                    size={"lg"}
+                    className="h-12 min-w-40"
+                    type="submit"
+                    disabled={loading}
+                  >
+                    Next Step {loading ? <Spinner /> : <ArrowRight />}
                   </Button>
                 </div>
               </div>

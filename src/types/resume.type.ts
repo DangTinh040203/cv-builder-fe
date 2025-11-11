@@ -57,6 +57,7 @@ export interface Section {
 }
 
 export interface Resume {
+  _id: string;
   userId: string;
   title: string;
   subTitle: string;
