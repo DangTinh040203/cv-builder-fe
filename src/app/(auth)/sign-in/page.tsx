@@ -32,6 +32,8 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Spinner } from "@/components/ui/spinner";
 import { Route } from "@/constants/route.constant";
+import { resumeService } from "@/services/resume.service";
+import { setResume } from "@/stores/features/resume.slice";
 import { setUser } from "@/stores/features/user.slice";
 import { useAppDispatch } from "@/stores/store";
 
@@ -71,6 +73,16 @@ function SignIn() {
       if (result.error) {
         toast.error("Invalid email or password");
       } else {
+        const [session, resumeRes] = await Promise.all([
+          getSession(),
+          resumeService.getResume(),
+        ]);
+
+        if (session && session.user && resumeRes) {
+          dispatch(setUser(session.user));
+          dispatch(setResume(resumeRes));
+        }
+
         toast.success("Login successfully");
         const callbackUrl = searchParams.get("callbackUrl");
         router.push(callbackUrl || Route.Home);
@@ -156,10 +168,20 @@ function SignIn() {
               </div>
             </CardContent>
             <CardFooter className="flex-col gap-4">
-              <Button type="submit" className="w-full" disabled={loading}>
+              <Button
+                type="submit"
+                className="w-full"
+                size={"lg"}
+                disabled={loading}
+              >
                 {loading && <Spinner />} Login
               </Button>
-              <Button variant="outline" className="w-full" type="button">
+              <Button
+                variant="outline"
+                className="w-full"
+                size={"lg"}
+                type="button"
+              >
                 <div className="relative size-4">
                   <Image
                     src={"/sign-in/Google__G__logo.webp"}

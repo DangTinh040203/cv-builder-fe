@@ -11,7 +11,12 @@ export const CvBuilderSidebar = () => {
   const router = useRouter();
 
   return (
-    <div className="h-full w-72 space-y-14 bg-[#07142b] p-8 text-white">
+    <div
+      className={`
+        min-h-screen space-y-14 bg-[#07142b] p-8 text-white
+        lg:w-72
+      `}
+    >
       <div className="flex items-center justify-center">
         <Link href={Route.Home}>Logo</Link>
       </div>
@@ -49,7 +54,10 @@ export const CvBuilderSidebar = () => {
 
             <p
               className={clsx(
-                "text-lg",
+                `
+                  hidden text-lg
+                  lg:block
+                `,
                 String(item.href) === pathname && "font-semibold",
               )}
             >

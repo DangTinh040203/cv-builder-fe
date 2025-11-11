@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import clsx from "clsx";
 import {
   ArrowRight,
   Loader2,
@@ -12,7 +13,7 @@ import {
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { v4 as uuid } from "uuid";
+import { toast } from "sonner";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -26,11 +27,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { DEFAULT_INFORMATION } from "@/constants";
-import { resumeSelector } from "@/stores/features/resume.slice";
+import { resumeSelector, updateResume } from "@/stores/features/resume.slice";
 import { userSelector } from "@/stores/features/user.slice";
-import { useAppSelector } from "@/stores/store";
-import { type Information } from "@/types/template.type";
+import { useAppDispatch, useAppSelector } from "@/stores/store";
+import { type Information } from "@/types/resume.type";
 
 const formSchema = z.object({
   title: z
@@ -44,16 +44,17 @@ const formSchema = z.object({
 });
 
 const CvBuilderHeading = () => {
-  const [information, setInformation] = useState<Array<Information>>([]);
+  const [avatarSelected, setAvatarSelected] = useState<File | null>(null);
 
   const { user } = useAppSelector(userSelector);
   const { resume } = useAppSelector(resumeSelector);
+  const dispatch = useAppDispatch();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "Your Name",
-      subTitle: "Professional",
+      title: "",
+      subTitle: "",
     },
   });
 
@@ -63,46 +64,80 @@ const CvBuilderHeading = () => {
         title: resume.title,
         subTitle: resume.subTitle,
       });
-
-      setInformation(resume.information);
     }
-  }, [form, resume]);
+  }, [resume]);
+
+  const handleSelectAvatar = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please select a valid image file");
+      return;
+    }
+    setAvatarSelected(file);
+  };
 
   const handleRemoveInformation = (order: number) => {
-    setInformation((prev) => prev.filter((info) => info.order !== order));
+    if (!resume) return;
+
+    dispatch(
+      updateResume({
+        ...resume,
+        information: resume.information.filter((info) => info.order !== order),
+      }),
+    );
   };
 
   const handleAddInformation = () => {
-    const maxOrder = information.reduce(
-      (max, info) => (info.order > max ? info.order : max),
-      0,
-    );
+    if (!resume) return;
 
-    setInformation((prev) => [
-      ...prev,
-      { order: maxOrder + 1, label: "Label", value: "Value" },
-    ]);
+    const newInformation: Information = {
+      label: "Label",
+      value: "Value",
+      order:
+        resume.information.length > 0
+          ? Math.max(...resume.information.map((info) => info.order)) + 1
+          : 1,
+    };
+
+    dispatch(
+      updateResume({
+        information: [...resume.information, newInformation],
+      }),
+    );
   };
 
   const handleChangeLabel = (order: number, label: string) => {
-    setInformation((prev) =>
-      prev.map((info) =>
-        info.order === order ? { ...info, label: label } : info,
-      ),
+    if (!resume) return;
+
+    const updatedInformation = resume.information.map((info) =>
+      info.order === order ? { ...info, label } : info,
+    );
+
+    dispatch(
+      updateResume({
+        ...resume,
+        information: updatedInformation,
+      }),
     );
   };
 
   const handleChangeValue = (order: number, value: string) => {
-    setInformation((prev) =>
-      prev.map((info) =>
-        info.order === order ? { ...info, value: value } : info,
-      ),
+    if (!resume) return;
+
+    const updatedInformation = resume.information.map((info) =>
+      info.order === order ? { ...info, value } : info,
+    );
+
+    dispatch(
+      updateResume({
+        ...resume,
+        information: updatedInformation,
+      }),
     );
   };
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-  }
+  function onSubmit(values: z.infer<typeof formSchema>) {}
 
   return !resume ? (
     <div className="flex min-h-96 w-full items-center justify-center">
@@ -122,25 +157,47 @@ const CvBuilderHeading = () => {
 
             <div className="grid grid-cols-5 gap-8">
               {resume.avatar && (
-                <div className="flex flex-col items-center gap-4">
-                  <div
+                <div
+                  className={`
+                    group relative aspect-square overflow-hidden rounded-md
+                    shadow-xl
+                  `}
+                >
+                  <Label
+                    htmlFor="avatar"
                     className={`
-                      relative aspect-square w-full overflow-hidden rounded-md
+                      bg-background/80 absolute top-0 left-0 z-10 flex size-full
+                      cursor-pointer items-center justify-center opacity-0
+                      transition-all
+                      group-hover:opacity-100
                     `}
                   >
+                    <Upload size={16} />
+                    <Input
+                      hidden
+                      id="avatar"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleSelectAvatar}
+                    />
+                  </Label>
+
+                  <div className={`relative size-full`}>
                     <Image
-                      src={resume.avatar}
+                      src={
+                        avatarSelected
+                          ? URL.createObjectURL(avatarSelected)
+                          : resume.avatar
+                      }
                       fetchPriority="high"
                       quality={100}
                       sizes="auto"
+                      className="object-cover"
                       alt=""
                       fill
                       priority
                     />
                   </div>
-                  <Button variant={"outline"} size={"sm"}>
-                    <Upload /> Upload Photo
-                  </Button>
                 </div>
               )}
 
@@ -155,7 +212,20 @@ const CvBuilderHeading = () => {
                           Resume Title
                         </FormLabel>
                         <FormControl>
-                          <Input placeholder="Your Name" {...field} />
+                          <Input
+                            placeholder="Your Name"
+                            {...field}
+                            onChange={(e) => {
+                              field.onChange(e);
+                              if (resume) {
+                                dispatch(
+                                  updateResume({
+                                    title: e.target.value,
+                                  }),
+                                );
+                              }
+                            }}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -173,7 +243,20 @@ const CvBuilderHeading = () => {
                           Resume Subtitle
                         </FormLabel>
                         <FormControl>
-                          <Input placeholder="Professional" {...field} />
+                          <Input
+                            placeholder="Professional"
+                            {...field}
+                            onChange={(e) => {
+                              field.onChange(e);
+                              if (resume) {
+                                dispatch(
+                                  updateResume({
+                                    subTitle: e.target.value,
+                                  }),
+                                );
+                              }
+                            }}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -181,49 +264,42 @@ const CvBuilderHeading = () => {
                   />
                 </div>
 
-                {information.length > 0 && (
-                  <div className="col-span-12 space-y-2">
-                    <Label className="font-bold">Information</Label>
-                    <div className="space-y-4">
-                      {information.map((info) => (
-                        <div
-                          key={info.order}
-                          className="grid grid-cols-12 gap-4"
-                        >
-                          <Input
-                            placeholder={"Label"}
-                            className="col-span-3"
-                            value={info.label}
-                            onChange={(e) =>
-                              handleChangeLabel(info.order, e.target.value)
-                            }
-                          />
+                <div className="col-span-12 space-y-2">
+                  <Label className="font-bold">Information</Label>
+                  <div className="space-y-4">
+                    {resume.information.map((info) => (
+                      <div key={info.order} className="grid grid-cols-12 gap-4">
+                        <Input
+                          placeholder={"Label"}
+                          className="col-span-3"
+                          value={info.label}
+                          onChange={(e) =>
+                            handleChangeLabel(info.order, e.target.value)
+                          }
+                        />
 
-                          <Input
-                            className="col-span-8"
-                            placeholder={"Value"}
-                            value={info.value}
-                            onChange={(e) =>
-                              handleChangeValue(info.order, e.target.value)
-                            }
-                          />
+                        <Input
+                          className="col-span-8"
+                          placeholder={"Value"}
+                          value={info.value}
+                          onChange={(e) =>
+                            handleChangeValue(info.order, e.target.value)
+                          }
+                        />
 
-                          <div className="flex items-center justify-center">
-                            <Button
-                              size={"icon"}
-                              variant={"secondary"}
-                              onClick={() =>
-                                handleRemoveInformation(info.order)
-                              }
-                            >
-                              <Trash2 />
-                            </Button>
-                          </div>
+                        <div className="flex items-center justify-center">
+                          <Button
+                            size={"icon"}
+                            variant={"secondary"}
+                            onClick={() => handleRemoveInformation(info.order)}
+                          >
+                            <Trash2 />
+                          </Button>
                         </div>
-                      ))}
-                    </div>
+                      </div>
+                    ))}
                   </div>
-                )}
+                </div>
 
                 <div className="flex items-center gap-4">
                   <Button
@@ -233,14 +309,6 @@ const CvBuilderHeading = () => {
                     onClick={handleAddInformation}
                   >
                     <Plus /> Add More
-                  </Button>
-                  <Button
-                    type="button"
-                    className="min-w-32"
-                    variant={"outline"}
-                    onClick={() => setInformation(DEFAULT_INFORMATION)}
-                  >
-                    <RefreshCcw /> Reset to Default
                   </Button>
                 </div>
 

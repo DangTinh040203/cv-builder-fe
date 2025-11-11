@@ -1,342 +1,87 @@
-import { v4 as uuid } from "uuid";
+import { type Resume, SectionType } from "@/types/resume.type";
 
-import { type Information, type Template } from "@/types/template.type";
-
-export const TEMPLATE_MOCK_DATA: Template = {
+export const RESUME_MOCK_DATA: Resume = {
+  userId: "user-12345",
   title: "Your Name",
-  subTitle: "Position",
-  // overview: `
-  //           Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores,
-  //           aperiam quos voluptatem deserunt nam mollitia deleniti recusandae facere
-  //           ipsum cum quidem fuga autem cupiditate quisquam praesentium consequuntur
-  //           dicta labore iste.
-  //           Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores,
-  //           aperiam quos voluptatem deserunt nam mollitia deleniti recusandae facere
-  //           ipsum cum quidem fuga autem cupiditate quisquam praesentium consequuntur
-  //           dicta labore iste.
-  //         `,
-  overview: `
-    Over 3 as a with strong communication skills and a quick ability to learn and adapt to
-new technologies. Specializing in Front-end development and Back-end development
-, with a solid understanding of modern web technologies. Passionate about building scalable, high-performance web
-applications and continuously improving skills to stay up to date with the latest industry trends.
-  `,
-
+  subTitle: "Full Stack Developer",
+  avatar: "https://avatars.githubusercontent.com/u/000000?v=4",
+  overview:
+    "A passionate software engineer with 3+ years of experience in building full-stack web applications, specializing in TypeScript, React, and AWS Cloud infrastructure. Proven track record of delivering scalable solutions and leading development teams to success. Seeking to leverage my expertise to contribute to innovative projects and drive technological advancements.",
   information: [
-    {
-      _id: uuid(),
-      label: "Email",
-      value: "your_email@example.com",
+    { label: "Email", value: "john.doe@example.com", order: 1 },
+    { label: "Phone", value: "+84 123 456 789", order: 2 },
+    { label: "Location", value: "Ho Chi Minh City, Vietnam", order: 3 },
+    { label: "LinkedIn", value: "linkedin.com/in/johndoe", order: 4 },
+    { label: "GitHub", value: "github.com/johndoe", order: 5 },
+  ],
+  section: {
+    educations: {
       order: 1,
+      type: SectionType.EDUCATION,
+      content: [
+        {
+          school: "University of Information Technology - VNUHCM",
+          degree: "Bachelor of Science",
+          major: "Computer Science",
+          startDate: new Date("2018-09-01"),
+          endDate: new Date("2022-06-01"),
+          order: 1,
+        },
+      ],
     },
-    {
-      _id: uuid(),
-      label: "Phone",
-      value: "+123 456 7890",
+    workExperiences: {
       order: 2,
+      type: SectionType.WORK_EXPERIENCE,
+      content: [
+        {
+          company: "TechNova Solutions",
+          position: "Web Developer",
+          description:
+            "Developed and maintained large-scale SaaS applications using React, Next.js, and NestJS. Led CI/CD automation with AWS ECS Fargate and GitHub Actions.",
+          startDate: new Date("2022-08-01"),
+          endDate: new Date("2025-01-01"),
+          order: 1,
+        },
+        {
+          company: "Freelance",
+          position: "Frontend Engineer",
+          description:
+            "Built dynamic landing pages and dashboards using React, TailwindCSS, and TypeScript for various startup clients.",
+          startDate: new Date("2021-01-01"),
+          endDate: new Date("2022-07-01"),
+          order: 2,
+        },
+      ],
     },
-    {
-      _id: uuid(),
-      label: "Address",
-      value: "123 Main St, City, Country",
+    projects: {
       order: 3,
+      type: SectionType.PROJECTS,
+      content: [
+        {
+          title: "Task Management System",
+          subTitle: "Cloud-based productivity platform",
+          information: [
+            { label: "Tech Stack", value: "Next.js, NestJS, AWS", order: 1 },
+            { label: "Role", value: "Lead Developer", order: 2 },
+            {
+              label: "Outcome",
+              value: "Improved team productivity by 40%",
+              order: 3,
+            },
+          ],
+          order: 1,
+        },
+      ],
     },
-    {
-      _id: uuid(),
-      label: "LinkedIn",
-      value: "www.linkedin.com/in/dang-tinh-18709528b",
+    skills: {
       order: 4,
-    },
-    {
-      _id: uuid(),
-      label: "Website",
-      value: "www.yourwebsite.com",
-      order: 5,
-    },
-    {
-      _id: uuid(),
-      label: "GitHub",
-      value: "github.com/yourusername",
-      order: 6,
-    },
-  ],
-
-  skills: [
-    {
-      _id: uuid(),
-      label: "Language",
-      value: "React, Vue, Angular, HTML, CSS, JavaScript, TypeScript...",
-    },
-    {
-      _id: uuid(),
-      label: "Framework",
-      value: "React.js, Next.js, Node.js, Express.js, Nest.js, Spring Boot,...",
-    },
-    {
-      _id: uuid(),
-      label: "Database",
-      value: "MySQL, PostgreSQL, MongoDB, Redis, Elasticsearch, Supabase, ...",
-    },
-    {
-      _id: uuid(),
-      label: "Deployment",
-      value: "Docker, Kubernetes, AWS, Azure, GCP, CI/CD,...",
-    },
-  ],
-
-  educations: [
-    {
-      _id: uuid(),
-      schoolName: "City High School",
-      degree: "High School Diploma",
-      major: "Science Stream",
-      startDate: new Date("2012-09-01"),
-      endDate: null,
-      order: 2,
-    },
-  ],
-
-  experiences: [
-    {
-      _id: uuid(),
-      startDate: new Date("2019-07-01"),
-      endDate: null,
-      company: "Tech Solutions Inc.",
-      position: "Fullstack Developer",
-      description:
-        "Developed and maintained web applications using React and Node.js. Collaborated with cross-functional teams to deliver high-quality software solutions.",
-      order: 1,
-    },
-    {
-      _id: uuid(),
-      startDate: new Date("2018-06-01"),
-      endDate: new Date("2019-06-30"),
-      company: "Web Innovations Ltd.",
-      position: "Frontend Developer Intern",
-      description:
-        "Assisted in the development of user interfaces using HTML, CSS, and JavaScript. Participated in code reviews and contributed to improving application performance.",
-      order: 2,
-    },
-    {
-      _id: uuid(),
-      startDate: new Date("2017-06-01"),
-      endDate: new Date("2017-08-31"),
-      company: "Startup Hub",
-      position: "Software Engineering Intern",
-      description:
-        "Worked on various projects, gaining experience in fullstack development and agile methodologies. Collaborated with senior developers to enhance coding skills.",
-      order: 3,
-    },
-    {
-      _id: uuid(),
-      startDate: new Date("2016-06-01"),
-      endDate: new Date("2016-08-31"),
-      company: "IT Solutions Co.",
-      position: "IT Intern",
-      description:
-        "Provided technical support and assisted in maintaining company IT infrastructure. Gained hands-on experience with networking and system administration.",
-      order: 4,
-    },
-    {
-      _id: uuid(),
-      startDate: new Date("2015-06-01"),
-      endDate: new Date("2015-08-31"),
-      company: "Local Tech Firm",
-      position: "Junior Developer Intern",
-      description:
-        "Contributed to small-scale projects and learned about software development life cycle. Worked closely with the development team to understand coding best practices.",
-      order: 5,
-    },
-    {
-      _id: uuid(),
-      startDate: new Date("2014-06-01"),
-      endDate: new Date("2014-08-31"),
-      company: "Community IT Center",
-      position: "IT Support Intern",
-      description:
-        "Assisted in providing IT support to community members. Gained experience in troubleshooting hardware and software issues.",
-      order: 6,
-    },
-    {
-      _id: uuid(),
-      startDate: new Date("2013-06-01"),
-      endDate: new Date("2013-08-31"),
-      company: "Tech Education Program",
-      position: "IT Trainee",
-      description:
-        "Participated in a summer program focused on IT skills development. Learned the basics of programming, networking, and computer hardware.",
-      order: 7,
-    },
-  ],
-
-  projects: [
-    {
-      _id: uuid(),
-      name: "Personal Portfolio Website",
-      startDate: new Date("2022-01-01"),
-      endDate: new Date("2022-03-01"),
-      information: [
-        {
-          _id: uuid(),
-          label: "Description",
-          value:
-            "Developed a personal portfolio website to showcase projects and skills using React and Tailwind CSS.",
-          order: 1,
-        },
-        {
-          _id: uuid(),
-          label: "Technologies",
-          value: "React, Tailwind CSS, Vercel",
-          order: 2,
-        },
-        {
-          _id: uuid(),
-          label: "Technologies",
-          value: "React, Tailwind CSS, Vercel",
-          order: 2,
-        },
-        {
-          _id: uuid(),
-          label: "Sources",
-          value: "github.com/yourusername/portfolio-website",
-          order: 3,
-        },
-        {
-          _id: uuid(),
-          label: "Live Demo",
-          value: "yourwebsite.com",
-          order: 4,
-        },
-        {
-          _id: uuid(),
-          label: "Responsibilities",
-          value:
-            "Developed user-friendly interfaces and ensured cross-browser compatibility.",
-          order: 5,
-        },
+      type: SectionType.SKILLS,
+      content: [
+        { label: "Frontend", value: "React, Next.js, TailwindCSS" },
+        { label: "Backend", value: "NestJS, Fastify, Prisma, PostgreSQL" },
+        { label: "DevOps", value: "AWS, Docker, ECS Fargate, CI/CD" },
+        { label: "AI/ML", value: "OpenAI API, LangChain, HuggingFace" },
       ],
-      order: 1,
     },
-    {
-      _id: uuid(),
-      name: "E-commerce Platform",
-      startDate: new Date("2021-05-01"),
-      endDate: new Date("2021-10-01"),
-      information: [
-        {
-          _id: uuid(),
-          label: "Description",
-          value:
-            "Built a full-featured e-commerce platform with shopping cart, payment integration, and admin dashboard using MERN stack.",
-          order: 1,
-        },
-        {
-          _id: uuid(),
-          label: "Technologies",
-          value: "MongoDB, Express.js, React, Node.js, Stripe API",
-          order: 2,
-        },
-        {
-          _id: uuid(),
-          label: "Sources",
-          value: "github.com/yourusername/ecommerce-platform",
-          order: 3,
-        },
-        {
-          _id: uuid(),
-          label: "Live Demo",
-          value: "ecommerce.yourwebsite.com",
-          order: 4,
-        },
-        {
-          _id: uuid(),
-          label: "Responsibilities",
-          value:
-            "Implemented backend APIs, integrated payment gateway, and designed responsive UI.",
-          order: 5,
-        },
-      ],
-      order: 2,
-    },
-    {
-      _id: uuid(),
-      name: "Task Management App",
-      startDate: new Date("2020-03-01"),
-      endDate: new Date("2020-06-01"),
-      information: [
-        {
-          _id: uuid(),
-          label: "Description",
-          value:
-            "Created a task management application to help users organize and prioritize their tasks using Vue.js and Firebase.",
-          order: 1,
-        },
-        {
-          _id: uuid(),
-          label: "Technologies",
-          value: "Vue.js, Firebase, Vuetify",
-          order: 2,
-        },
-        {
-          _id: uuid(),
-          label: "Sources",
-          value: "github.com/yourusername/task-management-app",
-          order: 3,
-        },
-        {
-          _id: uuid(),
-          label: "Live Demo",
-          value: "tasks.yourwebsite.com",
-          order: 4,
-        },
-        {
-          _id: uuid(),
-          label: "Responsibilities",
-          value:
-            "Developed frontend components and integrated Firebase for real-time data synchronization.",
-          order: 5,
-        },
-      ],
-      order: 3,
-    },
-  ],
+  },
 };
-
-export const DEFAULT_INFORMATION: Array<Information> = [
-  {
-    _id: uuid(),
-    label: "Email",
-    value: "your_email@example.com",
-    order: 1,
-  },
-  {
-    _id: uuid(),
-    label: "Phone",
-    value: "+123 456 7890",
-    order: 2,
-  },
-  {
-    _id: uuid(),
-    label: "Address",
-    value: "123 Main St, City, Country",
-    order: 3,
-  },
-  {
-    _id: uuid(),
-    label: "LinkedIn",
-    value: "www.linkedin.com/in/dang-tinh-18709528b",
-    order: 4,
-  },
-  {
-    _id: uuid(),
-    label: "Website",
-    value: "www.yourwebsite.com",
-    order: 5,
-  },
-  {
-    _id: uuid(),
-    label: "GitHub",
-    value: "github.com/yourusername",
-    order: 6,
-  },
-];

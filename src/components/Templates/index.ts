@@ -1,7 +1,7 @@
 import { type Format } from "@/stores/features/template.slice";
-import { type Template } from "@/types/template.type";
+import { type Resume } from "@/types/resume.type";
 
 export interface TemplateProp {
   templateFormat: Format;
-  data: Template;
+  resume: Resume;
 }

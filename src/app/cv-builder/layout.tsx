@@ -1,114 +1,79 @@
 "use client";
-import { ArrowLeft, Loader2, UserCog } from "lucide-react";
-import { useSession } from "next-auth/react";
-import { useRouter } from "nextjs-toploader/app";
+import { Settings } from "lucide-react";
 import type React from "react";
-import {
-  type PropsWithChildren,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-} from "react";
+import { type PropsWithChildren, useMemo } from "react";
 
 import { CvBuilderSidebar } from "@/components/Layout/CvBuilderSidebar";
 import TemplateWrapper from "@/components/Templates/TemplateWrapper";
 import { Button } from "@/components/ui/button";
-import { TEMPLATE_MOCK_DATA } from "@/constants";
-import { Route } from "@/constants/route.constant";
-import useCheckEditable from "@/hooks/useCheckEditable";
+import { Spinner } from "@/components/ui/spinner";
 import useGetTemplates from "@/hooks/useGetTemplates";
-import { resumeService } from "@/services/resume.service";
-import { resumeSelector, setResume } from "@/stores/features/resume.slice";
-import { setUser, userSelector } from "@/stores/features/user.slice";
-import { useAppDispatch, useAppSelector } from "@/stores/store";
+import { resumeSelector } from "@/stores/features/resume.slice";
+import { userSelector } from "@/stores/features/user.slice";
+import { useAppSelector } from "@/stores/store";
 
 const CvBuilderLayout: React.FC<PropsWithChildren> = ({ children }) => {
-  const { templateFormat, templates } = useGetTemplates();
-  const templateSelected = useCheckEditable();
-  const router = useRouter();
-  const dispatch = useAppDispatch();
+  const { templates, templateFormat, templateSelected } = useGetTemplates();
 
-  const resume = useAppSelector(resumeSelector);
+  const { resume } = useAppSelector(resumeSelector);
   const { user } = useAppSelector(userSelector);
-  const { data } = useSession();
 
   const Template = useMemo(() => {
     if (!templateSelected) return null;
     return templates[templateSelected];
   }, [templateSelected, templates]);
 
-  useLayoutEffect(() => {
-    const checkUser = async () => {
-      if (data) {
-        if (data.isExpired) {
-          dispatch(setUser(null));
-          router.replace(Route.SignIn);
-        } else {
-          dispatch(setUser(data.user));
-        }
-      }
-    };
+  const isEditableResume = useMemo(() => {
+    return Boolean(user && resume && Template);
+  }, [user, resume, Template]);
 
-    void checkUser();
-  }, [data, dispatch, router]);
+  return (
+    <div className="flex h-screen">
+      <CvBuilderSidebar />
 
-  useEffect(() => {
-    const fetchResumeData = async () => {
-      const resumeRes = await resumeService.getResume();
-      dispatch(setResume(resumeRes));
-    };
+      {!isEditableResume ? (
+        <div className={`flex min-h-96 flex-1 items-center justify-center`}>
+          <Spinner />
+        </div>
+      ) : (
+        <div className="scrollbar-thin flex-1 overflow-y-auto py-10">
+          <div className="container-full mx-auto max-w-7xl space-y-4">
+            <div className="grid grid-cols-3 gap-8">
+              <div className="col-span-2">{children}</div>
 
-    void fetchResumeData();
-  }, [dispatch]);
-
-  return resume ? (
-    <>
-      {Template && user && (
-        <div className="flex h-screen">
-          <CvBuilderSidebar />
-
-          <div className="scrollbar-thin flex-1 overflow-y-auto py-10">
-            <div className="container-full mx-auto max-w-7xl space-y-4">
-              <Button
-                variant={"link"}
-                onClick={() => {
-                  router.back();
-                }}
-              >
-                <ArrowLeft /> Go Back
-              </Button>
-
-              <div className="grid grid-cols-3 gap-8">
-                <div className="col-span-2">{children}</div>
-
+              {resume && Template && (
                 <div className="relative col-span-1">
                   <div
                     className={`
-                      sticky top-10 left-0 flex flex-col items-center gap-4
+                      sticky top-0 left-0 flex flex-col items-center gap-4
                     `}
                   >
                     <TemplateWrapper
                       document={
                         <Template
                           templateFormat={templateFormat}
-                          data={TEMPLATE_MOCK_DATA}
+                          resume={resume}
                         />
                       }
                     />
-                    <Button className="min-w-40">
-                      <UserCog /> Config
-                    </Button>
+                    <div
+                      className={`flex w-full items-center justify-center gap-4`}
+                    >
+                      <Button
+                        className="min-w-40 shadow-lg"
+                        size={"lg"}
+                        variant={"outline"}
+                      >
+                        <Settings /> Change Template
+                      </Button>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
       )}
-    </>
-  ) : (
-    <div className="flex h-screen w-screen items-center justify-center">
-      <Loader2 className="animate-spin" />
     </div>
   );
 };

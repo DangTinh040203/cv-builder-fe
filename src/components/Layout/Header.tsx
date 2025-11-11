@@ -2,9 +2,8 @@
 import { Award, LogOut, Settings, UserPen } from "lucide-react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { useRouter } from "nextjs-toploader/app";
-import { useLayoutEffect } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -19,7 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Route } from "@/constants/route.constant";
-import { setUser, userSelector } from "@/stores/features/user.slice";
+import { userSelector } from "@/stores/features/user.slice";
 import { persistor, useAppDispatch, useAppSelector } from "@/stores/store";
 
 const DownloadPdf = dynamic(
@@ -29,25 +28,9 @@ const DownloadPdf = dynamic(
 
 const Header = () => {
   const { user } = useAppSelector(userSelector);
-  const { data } = useSession();
   const router = useRouter();
 
   const dispatch = useAppDispatch();
-
-  useLayoutEffect(() => {
-    const checkUser = async () => {
-      if (data) {
-        if (data.isExpired) {
-          dispatch(setUser(null));
-          router.replace(Route.SignIn);
-        } else {
-          dispatch(setUser(data.user));
-        }
-      }
-    };
-
-    void checkUser();
-  }, [data, dispatch, router]);
 
   const handleSignOut = async () => {
     await signOut();

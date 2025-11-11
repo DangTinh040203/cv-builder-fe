@@ -12,17 +12,14 @@ import { templateGlobalStyles } from "@/configs/template.config";
 
 Font.registerHyphenationCallback((word) => [word]);
 
-const Template1: React.FC<TemplateProp> = ({ templateFormat, data }) => {
+const Template1: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
   const {
     title,
     subTitle,
     overview,
     information,
-    skills,
-    educations,
-    projects,
-    experiences,
-  } = data;
+    section: { educations, projects, skills, workExperiences },
+  } = resume;
 
   const styles = useMemo(() => {
     const theme = {
@@ -151,7 +148,7 @@ const Template1: React.FC<TemplateProp> = ({ templateFormat, data }) => {
 
   // === Derived Data ===
   const informationGroup = useMemo(() => {
-    const sorted = information.sort((a, b) => a.order - b.order);
+    const sorted = [...information].sort((a, b) => a.order - b.order);
     return {
       left: sorted.filter((_, i) => i % 2 === 0),
       right: sorted.filter((_, i) => i % 2 === 1),
@@ -167,20 +164,22 @@ const Template1: React.FC<TemplateProp> = ({ templateFormat, data }) => {
       </View>
 
       {/* INFO */}
-      <View style={styles.section}>
-        <View style={styles.informationGroup}>
-          {[informationGroup.left, informationGroup.right].map((col, i) => (
-            <View key={i} style={styles.col} wrap={false}>
-              {col.map((info) => (
-                <View key={uuid()} style={styles.informationItem}>
-                  <Text style={styles.informationLabel}>{info.label}:</Text>
-                  <Text>{info.value}</Text>
-                </View>
-              ))}
-            </View>
-          ))}
+      {information.length > 0 && (
+        <View style={styles.section}>
+          <View style={styles.informationGroup}>
+            {[informationGroup.left, informationGroup.right].map((col, i) => (
+              <View key={i} style={styles.col} wrap={false}>
+                {col.map((info) => (
+                  <View key={uuid()} style={styles.informationItem}>
+                    <Text style={styles.informationLabel}>{info.label}:</Text>
+                    <Text>{info.value}</Text>
+                  </View>
+                ))}
+              </View>
+            ))}
+          </View>
         </View>
-      </View>
+      )}
 
       {/* OVERVIEW */}
       <View style={styles.section}>
@@ -190,116 +189,120 @@ const Template1: React.FC<TemplateProp> = ({ templateFormat, data }) => {
       </View>
 
       {/* SKILLS */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Skills</Text>
-        <View style={styles.separator} />
-        <View style={styles.sectionContent}>
-          {skills.map((skill) => (
-            <View key={skill._id} style={styles.row}>
-              <Text style={styles.label}>{skill.label}</Text>
-              <Text>{skill.value}</Text>
-            </View>
-          ))}
+      {skills && (
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Skills</Text>
+          <View style={styles.separator} />
+          <View style={styles.sectionContent}>
+            {skills.content.map((skill) => (
+              <View key={uuid()} style={styles.row}>
+                <Text style={styles.label}>{skill.label}</Text>
+                <Text>{skill.value}</Text>
+              </View>
+            ))}
+          </View>
         </View>
-      </View>
+      )}
 
       {/* EDUCATION */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Education</Text>
-        <View style={styles.separator} />
-        <View style={styles.sectionContent}>
-          {educations.map((edu) => (
-            <View key={edu._id} style={styles.row}>
-              <View style={{ minWidth: 120 }}>
-                <Text>
-                  {dayjs(edu.startDate).format("MM/YYYY")} -{" "}
-                  {edu.endDate
-                    ? dayjs(edu.endDate).format("MM/YYYY")
-                    : "Present"}
-                </Text>
+      {educations && (
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Education</Text>
+          <View style={styles.separator} />
+          <View style={styles.sectionContent}>
+            {educations.content.map((edu) => (
+              <View key={uuid()} style={styles.row}>
+                <View style={{ minWidth: 120 }}>
+                  <Text>
+                    {dayjs(edu.startDate).format("MM/YYYY")} -{" "}
+                    {edu.endDate
+                      ? dayjs(edu.endDate).format("MM/YYYY")
+                      : "Present"}
+                  </Text>
+                </View>
+                <View style={styles.col}>
+                  <Text style={{ fontWeight: 600 }}>{edu.school}</Text>
+                  <Text>
+                    {edu.major} - {edu.degree}
+                  </Text>
+                </View>
               </View>
-              <View style={styles.col}>
-                <Text style={{ fontWeight: 600 }}>{edu.schoolName}</Text>
-                <Text>
-                  {edu.major} - {edu.degree}
-                </Text>
-              </View>
-            </View>
-          ))}
+            ))}
+          </View>
         </View>
-      </View>
+      )}
 
       {/* EXPERIENCE */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Experience</Text>
-        <View style={styles.separator} />
-        <View style={styles.sectionContent}>
-          {experiences.map((exp) => (
-            <View
-              key={exp._id}
-              style={[styles.row, { alignItems: "flex-start" }]}
-              wrap={false}
-            >
-              <View style={{ minWidth: 120 }}>
-                <Text>
-                  {dayjs(exp.startDate).format("MM/YYYY")} -{" "}
-                  {exp.endDate
-                    ? dayjs(exp.endDate).format("MM/YYYY")
-                    : "Present"}
-                </Text>
+      {workExperiences && (
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Experience</Text>
+          <View style={styles.separator} />
+          <View style={styles.sectionContent}>
+            {workExperiences.content.map((exp) => (
+              <View
+                key={uuid()}
+                style={[styles.row, { alignItems: "flex-start" }]}
+                wrap={false}
+              >
+                <View style={{ minWidth: 120 }}>
+                  <Text>
+                    {dayjs(exp.startDate).format("MM/YYYY")} -{" "}
+                    {exp.endDate
+                      ? dayjs(exp.endDate).format("MM/YYYY")
+                      : "Present"}
+                  </Text>
+                </View>
+                <View style={[styles.col, { flex: 1 }]}>
+                  <Text style={{ fontWeight: 600 }}>{exp.company}</Text>
+                  <Text>{exp.description}</Text>
+                </View>
               </View>
-              <View style={[styles.col, { flex: 1 }]}>
-                <Text style={{ fontWeight: 600 }}>{exp.company}</Text>
-                <Text>{exp.description}</Text>
-              </View>
-            </View>
-          ))}
+            ))}
+          </View>
         </View>
-      </View>
+      )}
 
       {/* PROJECTS */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Projects</Text>
-        <View style={styles.separator} />
-        <View style={styles.sectionContent}>
-          {projects.map((project) => (
-            <View
-              key={project._id}
-              style={styles.projectContainer}
-              wrap={false}
-            >
-              <View style={styles.projectHeader}>
-                <Text style={{ fontWeight: 600 }}>{project.name}</Text>
-                <Text style={{ fontWeight: 600 }}>
-                  {dayjs(project.startDate).format("MM/YYYY")} -{" "}
-                  {project.endDate
-                    ? dayjs(project.endDate).format("MM/YYYY")
-                    : "Present"}
-                </Text>
-              </View>
+      {projects && (
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Projects</Text>
+          <View style={styles.separator} />
+          <View style={styles.sectionContent}>
+            {projects.content.map((project) => (
+              <View key={uuid()} style={styles.projectContainer} wrap={false}>
+                <View style={styles.projectHeader}>
+                  <Text style={{ fontWeight: 600 }}>{project.title}</Text>
+                  {/* <Text style={{ fontWeight: 600 }}>
+                    {dayjs(project.).format("MM/YYYY")} -{" "}
+                    {project.endDate
+                      ? dayjs(project.endDate).format("MM/YYYY")
+                      : "Present"}
+                  </Text> */}
+                </View>
 
-              <View style={styles.col}>
-                {project.information.map((info, index) => (
-                  <View
-                    key={uuid()}
-                    style={[
-                      styles.projectInfoRow,
-                      ...(index === 0 ? [styles.projectInfoRowFirst] : []),
-                    ]}
-                  >
-                    <Text style={{ minWidth: 120, paddingVertical: 4 }}>
-                      {info.label}
-                    </Text>
-                    <Text style={{ flex: 1, paddingVertical: 4 }}>
-                      {info.value}
-                    </Text>
-                  </View>
-                ))}
+                <View style={styles.col}>
+                  {project.information.map((info, index) => (
+                    <View
+                      key={uuid()}
+                      style={[
+                        styles.projectInfoRow,
+                        ...(index === 0 ? [styles.projectInfoRowFirst] : []),
+                      ]}
+                    >
+                      <Text style={{ minWidth: 120, paddingVertical: 4 }}>
+                        {info.label}
+                      </Text>
+                      <Text style={{ flex: 1, paddingVertical: 4 }}>
+                        {info.value}
+                      </Text>
+                    </View>
+                  ))}
+                </View>
               </View>
-            </View>
-          ))}
+            ))}
+          </View>
         </View>
-      </View>
+      )}
     </Page>
   );
 };

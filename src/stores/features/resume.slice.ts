@@ -18,9 +18,17 @@ const resumeSlice = createSlice({
     setResume: (state, action: { payload: Resume | null }) => {
       state.resume = action.payload;
     },
+    updateResume: (
+      state,
+      action: { payload: Partial<Omit<Resume, "_id">> },
+    ) => {
+      if (state.resume) {
+        state.resume = { ...state.resume, ...action.payload };
+      }
+    },
   },
 });
 
 export const resumeSelector = (state: { resume: ResumeState }) => state.resume;
-export const { setResume } = resumeSlice.actions;
+export const { setResume, updateResume } = resumeSlice.actions;
 export const resumeReducer = resumeSlice.reducer;

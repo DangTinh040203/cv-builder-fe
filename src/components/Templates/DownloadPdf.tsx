@@ -2,36 +2,38 @@
 
 import { usePDFComponentsAreHTML } from "@rawwee/react-pdf-html";
 import { usePDF } from "@react-pdf/renderer";
+import { Download } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import Template1 from "@/components/Templates/1";
 import DocumentPDF from "@/components/Templates/DocumentPDF";
 import { Button } from "@/components/ui/button";
-import { TEMPLATE_MOCK_DATA } from "@/constants";
 import useGetTemplates from "@/hooks/useGetTemplates";
+import { resumeSelector } from "@/stores/features/resume.slice";
+import { useAppSelector } from "@/stores/store";
 
 const DownloadPdf = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const { setHtml } = usePDFComponentsAreHTML();
   const [instance, update] = usePDF({});
   const { templateFormat } = useGetTemplates();
+  const { resume } = useAppSelector(resumeSelector);
 
   const handleDownload = () => {
-    setHtml(false);
-    setIsProcessing(true);
-    setTimeout(() => {
-      const document = (
-        <DocumentPDF
-          document={
-            <Template1
-              templateFormat={templateFormat}
-              data={TEMPLATE_MOCK_DATA}
-            />
-          }
-        />
-      );
-      update(document);
-    }, 0);
+    if (resume) {
+      setHtml(false);
+      setIsProcessing(true);
+      setTimeout(() => {
+        const document = (
+          <DocumentPDF
+            document={
+              <Template1 templateFormat={templateFormat} resume={resume} />
+            }
+          />
+        );
+        update(document);
+      }, 0);
+    }
   };
 
   useEffect(() => {
@@ -47,8 +49,8 @@ const DownloadPdf = () => {
   }, [isProcessing, instance.loading, instance.url, setHtml]);
 
   return (
-    <Button className="px-6" disabled={isProcessing} onClick={handleDownload}>
-      Download
+    <Button disabled={isProcessing} onClick={handleDownload} size={"lg"}>
+      <Download /> Download
     </Button>
   );
 };

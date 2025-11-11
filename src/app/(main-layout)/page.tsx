@@ -4,7 +4,7 @@ import { useRouter } from "nextjs-toploader/app";
 
 import TemplateWrapper from "@/components/Templates/TemplateWrapper";
 import { Button } from "@/components/ui/button";
-import { TEMPLATE_MOCK_DATA } from "@/constants";
+import { RESUME_MOCK_DATA } from "@/constants";
 import { Route } from "@/constants/route.constant";
 import useGetTemplates from "@/hooks/useGetTemplates";
 import { updateTemplateSelected } from "@/stores/features/template.slice";
@@ -12,6 +12,7 @@ import { useAppDispatch } from "@/stores/store";
 
 const HomePage = () => {
   const { templates, templateFormat } = useGetTemplates();
+
   const router = useRouter();
   const dispatch = useAppDispatch();
 
@@ -31,20 +32,23 @@ const HomePage = () => {
 
           return (
             <div className="group relative" key={key}>
-              <TemplateWrapper
-                document={
-                  <Template
-                    templateFormat={templateFormat}
-                    data={TEMPLATE_MOCK_DATA}
-                  />
-                }
-              />
+              {
+                <TemplateWrapper
+                  document={
+                    <Template
+                      templateFormat={templateFormat}
+                      resume={RESUME_MOCK_DATA}
+                    />
+                  }
+                />
+              }
 
               <Button
                 onClick={() => {
                   dispatch(updateTemplateSelected(key));
                   router.push(Route.CvBuilderHeadings);
                 }}
+                size={"lg"}
                 className={`
                   absolute bottom-6 left-1/2 z-10 -translate-x-1/2 rounded-full
                   px-6 opacity-0 transition-all duration-500

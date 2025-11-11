@@ -3,11 +3,12 @@ import "@/styles/globals.css";
 import clsx from "clsx";
 import type { Metadata } from "next";
 import { Figtree } from "next/font/google";
-import { SessionProvider } from "next-auth/react";
 import NextTopLoader from "nextjs-toploader";
+import { type PropsWithChildren } from "react";
 
+import StoreProvider from "@/components/Providers/StorageProvider";
+import UserSessionProvider from "@/components/Providers/UserSessionProvider";
 import { Toaster } from "@/components/ui/sonner";
-import StoreProvider from "@/components/ui/store-provider";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 
 export const metadata: Metadata = {
@@ -23,22 +24,18 @@ const figtree = Figtree({
   weight: ["300", "400", "500", "600", "700", "800", "900"],
 });
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
       <body className={clsx(figtree.className)}>
-        <SessionProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            forcedTheme="light"
-          >
-            <StoreProvider>
+        <StoreProvider>
+          <UserSessionProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="light"
+              forcedTheme="light"
+            >
               <NextTopLoader
                 showSpinner={false}
                 easing="ease-in-out"
@@ -46,9 +43,9 @@ export default function RootLayout({
               />
               <Toaster richColors position="bottom-right" />
               {children}
-            </StoreProvider>
-          </ThemeProvider>
-        </SessionProvider>
+            </ThemeProvider>
+          </UserSessionProvider>
+        </StoreProvider>
       </body>
     </html>
   );
