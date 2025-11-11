@@ -19,7 +19,7 @@ export const TEMPLATE_MOCK_DATA: Template = {
     Over 3 as a with strong communication skills and a quick ability to learn and adapt to
 new technologies. Specializing in Front-end development and Back-end development
 , with a solid understanding of modern web technologies. Passionate about building scalable, high-performance web
-applications and continuously improving skills to stay up to date with the latest industry trends
+applications and continuously improving skills to stay up to date with the latest industry trends.
   `,
 
   information: [

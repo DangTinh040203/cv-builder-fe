@@ -4,6 +4,7 @@ import { Page, Text, View } from "@rawwee/react-pdf-html";
 import { Font, StyleSheet } from "@react-pdf/renderer";
 import dayjs from "dayjs";
 import { useMemo } from "react";
+import { v4 as uuid } from "uuid";
 
 import { type TemplateProp } from "@/components/Templates";
 import HtmlToPdf from "@/components/Templates/HtmlToPdf";
@@ -169,9 +170,9 @@ const Template1: React.FC<TemplateProp> = ({ templateFormat, data }) => {
       <View style={styles.section}>
         <View style={styles.informationGroup}>
           {[informationGroup.left, informationGroup.right].map((col, i) => (
-            <View key={i} style={styles.col}>
+            <View key={i} style={styles.col} wrap={false}>
               {col.map((info) => (
-                <View key={info._id} style={styles.informationItem}>
+                <View key={uuid()} style={styles.informationItem}>
                   <Text style={styles.informationLabel}>{info.label}:</Text>
                   <Text>{info.value}</Text>
                 </View>
@@ -280,7 +281,7 @@ const Template1: React.FC<TemplateProp> = ({ templateFormat, data }) => {
               <View style={styles.col}>
                 {project.information.map((info, index) => (
                   <View
-                    key={info._id}
+                    key={uuid()}
                     style={[
                       styles.projectInfoRow,
                       ...(index === 0 ? [styles.projectInfoRowFirst] : []),

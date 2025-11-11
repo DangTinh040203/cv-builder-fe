@@ -9,6 +9,8 @@ import axios, {
   type AxiosResponse,
   type InternalAxiosRequestConfig,
 } from "axios";
+import { redirect } from "next/navigation";
+import { getSession } from "next-auth/react";
 
 import { axiosConfig } from "@/configs/axios.config";
 
@@ -70,6 +72,14 @@ export class HttpService {
   private onRequest = async (
     config: InternalAxiosRequestConfig,
   ): Promise<InternalAxiosRequestConfig> => {
+    const session = await getSession();
+    if (!session) {
+      redirect("/sign-in");
+    }
+
+    const token = session.user.accessToken;
+    config.headers.Authorization = `Bearer ${token}`;
+
     return config;
   };
 

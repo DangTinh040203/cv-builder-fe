@@ -6,7 +6,6 @@ import { Figtree } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import NextTopLoader from "nextjs-toploader";
 
-import { auth } from "@/auth";
 import { Toaster } from "@/components/ui/sonner";
 import StoreProvider from "@/components/ui/store-provider";
 import { ThemeProvider } from "@/components/ui/theme-provider";
