@@ -1,6 +1,44 @@
-import { type Resume, SectionType } from "@/types/resume.type";
+import {
+  type Information,
+  type Resume,
+  SectionType,
+} from "@/types/resume.type";
+
+export const RESUME_INFORMATION_SEED_DATA: Array<Information> = [
+  {
+    label: "Email",
+    value: "your_email@example.com",
+    order: 1,
+  },
+  {
+    label: "Phone",
+    value: "+123 456 7890",
+    order: 2,
+  },
+  {
+    label: "Address",
+    value: "123 Main St, City, Country",
+    order: 3,
+  },
+  {
+    label: "LinkedIn",
+    value: "www.linkedin.com/in/dang-tinh-18709528b",
+    order: 4,
+  },
+  {
+    label: "Website",
+    value: "www.yourwebsite.com",
+    order: 5,
+  },
+  {
+    label: "GitHub",
+    value: "github.com/yourusername",
+    order: 6,
+  },
+];
 
 export const RESUME_MOCK_DATA: Resume = {
+  _id: "resume-12345",
   userId: "user-12345",
   title: "Your Name",
   subTitle: "Full Stack Developer",

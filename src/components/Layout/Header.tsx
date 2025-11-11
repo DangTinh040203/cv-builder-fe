@@ -1,6 +1,5 @@
 "use client";
 import { Award, LogOut, Settings, UserPen } from "lucide-react";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { useRouter } from "nextjs-toploader/app";
@@ -20,11 +19,6 @@ import {
 import { Route } from "@/constants/route.constant";
 import { userSelector } from "@/stores/features/user.slice";
 import { persistor, useAppDispatch, useAppSelector } from "@/stores/store";
-
-const DownloadPdf = dynamic(
-  () => import("@/components/Templates/DownloadPdf"),
-  { ssr: false },
-);
 
 const Header = () => {
   const { user } = useAppSelector(userSelector);
@@ -50,8 +44,6 @@ const Header = () => {
         <Link href={Route.Home}>
           <p>LOGO</p>
         </Link>
-
-        <DownloadPdf />
 
         <div className="flex items-center gap-2">
           {!user ? (

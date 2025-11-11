@@ -1,7 +1,11 @@
-import React from "react";
-
 const Summary = () => {
-  return <div>Summary</div>;
+  return (
+    <div>
+      <h2 className="text-2xl font-bold">
+        Briefly tell us about your background
+      </h2>
+    </div>
+  );
 };
 
 export default Summary;

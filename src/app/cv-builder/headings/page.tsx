@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight, Loader, Plus, Trash2, Upload } from "lucide-react";
+import { ArrowRight, Plus, RefreshCcw, Trash2, Upload } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "nextjs-toploader/app";
 import { useEffect, useState } from "react";
@@ -21,6 +21,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
+import { RESUME_INFORMATION_SEED_DATA } from "@/constants";
 import { Route } from "@/constants/route.constant";
 import { resumeService } from "@/services/resume.service";
 import { resumeSelector, updateResume } from "@/stores/features/resume.slice";
@@ -81,7 +82,6 @@ const CvBuilderHeading = () => {
 
     dispatch(
       updateResume({
-        ...resume,
         information: resume.information.filter((info) => info.order !== order),
       }),
     );
@@ -101,7 +101,6 @@ const CvBuilderHeading = () => {
 
     dispatch(
       updateResume({
-        ...resume,
         information: [...resume.information, newInformation],
       }),
     );
@@ -116,7 +115,6 @@ const CvBuilderHeading = () => {
 
     dispatch(
       updateResume({
-        ...resume,
         information: updatedInformation,
       }),
     );
@@ -131,7 +129,6 @@ const CvBuilderHeading = () => {
 
     dispatch(
       updateResume({
-        ...resume,
         information: updatedInformation,
       }),
     );
@@ -139,12 +136,23 @@ const CvBuilderHeading = () => {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!resume) return;
+    const existBlankInformation = resume.information.some(
+      (info) => !info.label || !info.value,
+    );
+
+    if (existBlankInformation) {
+      toast.error("Please fill in all information fields or remove them.");
+      return;
+    }
 
     try {
       setLoading(true);
       await resumeService.updateResume(resume._id, {
         ...resume,
         ...values,
+        information: resume.information.filter(
+          (info) => info.label && info.value,
+        ),
       });
 
       router.push(Route.CvBuilderSummary);
@@ -306,7 +314,7 @@ const CvBuilderHeading = () => {
                         <div className="flex items-center justify-center">
                           <Button
                             size={"icon"}
-                            variant={"secondary"}
+                            variant={"outline"}
                             onClick={() => handleRemoveInformation(info.order)}
                           >
                             <Trash2 />
@@ -325,6 +333,20 @@ const CvBuilderHeading = () => {
                     onClick={handleAddInformation}
                   >
                     <Plus /> Add More
+                  </Button>
+                  <Button
+                    type="button"
+                    className="min-w-28"
+                    variant={"outline"}
+                    onClick={() => {
+                      dispatch(
+                        updateResume({
+                          information: RESUME_INFORMATION_SEED_DATA,
+                        }),
+                      );
+                    }}
+                  >
+                    <RefreshCcw /> Reset
                   </Button>
                 </div>
 
