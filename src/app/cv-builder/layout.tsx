@@ -4,6 +4,7 @@ import type React from "react";
 import { type PropsWithChildren, useMemo } from "react";
 
 import { CvBuilderSidebar } from "@/components/Layout/CvBuilderSidebar";
+import DownloadPdf from "@/components/Templates/DownloadPdf";
 import TemplateWrapper from "@/components/Templates/TemplateWrapper";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
@@ -57,7 +58,9 @@ const CvBuilderLayout: React.FC<PropsWithChildren> = ({ children }) => {
                       }
                     />
                     <div
-                      className={`flex w-full items-center justify-center gap-4`}
+                      className={`
+                        flex w-full flex-wrap items-center justify-center gap-4
+                      `}
                     >
                       <Button
                         className="min-w-40 shadow-lg"
@@ -66,6 +69,7 @@ const CvBuilderLayout: React.FC<PropsWithChildren> = ({ children }) => {
                       >
                         <Settings /> Change Template
                       </Button>
+                      <DownloadPdf />
                     </div>
                   </div>
                 </div>
