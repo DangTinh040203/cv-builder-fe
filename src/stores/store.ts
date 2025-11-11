@@ -1,8 +1,8 @@
 "use client";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { type Action, combineReducers, configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import { persistReducer } from "redux-persist";
+import { persistReducer, persistStore } from "redux-persist";
 
 import { StorageSliceName } from "@/constants/slice.constant";
 import { resumeReducer } from "@/stores/features/resume.slice";
@@ -26,20 +26,31 @@ const createNoopStorage = () => {
 const storage =
   typeof window !== "undefined" ? AsyncStorage : createNoopStorage();
 
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
   [StorageSliceName.User]: userReducer,
   [StorageSliceName.Template]: templateReducer,
   [StorageSliceName.Resume]: resumeReducer,
 });
 
-const persistedReducer = persistReducer<ReturnType<typeof rootReducer>>(
+export const rootReducer = (
+  state: ReturnType<typeof appReducer> | undefined,
+  action: Action,
+) => {
+  if (action.type === "root/reset") {
+    state = undefined;
+  }
+
+  return appReducer(state, action);
+};
+
+const persistedReducer = persistReducer<ReturnType<typeof appReducer>>(
   {
     key: "root",
     storage,
     whitelist: [StorageSliceName.Template],
     transforms: [],
   },
-  rootReducer,
+  appReducer,
 );
 
 export const makeStore = () => {
@@ -49,11 +60,21 @@ export const makeStore = () => {
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         serializableCheck: {
-          ignoredActions: ["persist/PERSIST", "persist/REHYDRATE"],
+          ignoredActions: [
+            "persist/PERSIST",
+            "persist/REHYDRATE",
+            "persist/PAUSE",
+            "persist/FLUSH",
+            "persist/PURGE",
+            "persist/REGISTER",
+          ],
         },
       }),
   });
 };
+
+export const store = makeStore();
+export const persistor = persistStore(store);
 
 export type AppStore = ReturnType<typeof makeStore>;
 export type RootState = ReturnType<AppStore["getState"]>;

@@ -60,8 +60,8 @@ const CvBuilderHeading = () => {
   useEffect(() => {
     if (resume) {
       form.reset({
-        title: resume.title || "Your Name",
-        subTitle: resume.subTitle || "Professional",
+        title: resume.title,
+        subTitle: resume.subTitle,
       });
 
       setInformation(resume.information);
@@ -73,14 +73,14 @@ const CvBuilderHeading = () => {
   };
 
   const handleAddInformation = () => {
+    const maxOrder = information.reduce(
+      (max, info) => (info.order > max ? info.order : max),
+      0,
+    );
+
     setInformation((prev) => [
       ...prev,
-      {
-        _id: uuid(),
-        label: "Label",
-        value: "Value",
-        order: prev.length + 1,
-      },
+      { order: maxOrder + 1, label: "Label", value: "Value" },
     ]);
   };
 
@@ -123,7 +123,11 @@ const CvBuilderHeading = () => {
             <div className="grid grid-cols-5 gap-8">
               {resume.avatar && (
                 <div className="flex flex-col items-center gap-4">
-                  <div className="relative aspect-square w-full">
+                  <div
+                    className={`
+                      relative aspect-square w-full overflow-hidden rounded-md
+                    `}
+                  >
                     <Image
                       src={resume.avatar}
                       fetchPriority="high"
@@ -223,6 +227,7 @@ const CvBuilderHeading = () => {
 
                 <div className="flex items-center gap-4">
                   <Button
+                    type="button"
                     className="min-w-32"
                     variant={"outline"}
                     onClick={handleAddInformation}
@@ -230,6 +235,7 @@ const CvBuilderHeading = () => {
                     <Plus /> Add More
                   </Button>
                   <Button
+                    type="button"
                     className="min-w-32"
                     variant={"outline"}
                     onClick={() => setInformation(DEFAULT_INFORMATION)}

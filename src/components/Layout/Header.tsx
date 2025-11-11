@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Route } from "@/constants/route.constant";
 import { setUser, userSelector } from "@/stores/features/user.slice";
-import { useAppDispatch, useAppSelector } from "@/stores/store";
+import { persistor, useAppDispatch, useAppSelector } from "@/stores/store";
 
 const DownloadPdf = dynamic(
   () => import("@/components/Templates/DownloadPdf"),
@@ -51,8 +51,12 @@ const Header = () => {
 
   const handleSignOut = async () => {
     await signOut();
+    await persistor.purge();
+    dispatch({ type: "root/reset" });
+    localStorage.clear();
+    sessionStorage.clear();
 
-    dispatch(setUser(null));
+    router.push(Route.SignIn);
   };
 
   return (
