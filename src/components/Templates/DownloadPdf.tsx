@@ -2,15 +2,19 @@
 
 import { usePDFComponentsAreHTML } from "@rawwee/react-pdf-html";
 import { pdf } from "@react-pdf/renderer";
+import dayjs from "dayjs";
 import { Download } from "lucide-react";
 import { useEffect, useState } from "react";
+import slugify from "slugify";
 
 import Template1 from "@/components/Templates/1";
 import DocumentPDF from "@/components/Templates/DocumentPDF";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import useGetTemplates from "@/hooks/useGetTemplates";
+import { resumeService } from "@/services/resume.service";
 import { resumeSelector } from "@/stores/features/resume.slice";
+import { userSelector } from "@/stores/features/user.slice";
 import { useAppSelector } from "@/stores/store";
 
 const DownloadPdf = () => {
@@ -19,11 +23,13 @@ const DownloadPdf = () => {
   const { setHtml } = usePDFComponentsAreHTML();
   const { templateFormat } = useGetTemplates();
   const { resume } = useAppSelector(resumeSelector);
+  const { user } = useAppSelector(userSelector);
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     if (!resume) return;
     setHtml(false);
     setIsProcessing(true);
+    await resumeService.updateResume(resume._id, resume);
 
     setTimeout(() => {
       setShouldRender(true);
@@ -31,7 +37,7 @@ const DownloadPdf = () => {
   };
 
   useEffect(() => {
-    if (!shouldRender || !resume) return;
+    if (!shouldRender || !resume || !user) return;
 
     const generate = async () => {
       try {
@@ -48,7 +54,7 @@ const DownloadPdf = () => {
 
         const link = document.createElement("a");
         link.href = blobUrl;
-        link.download = `resume-${Date.now()}.pdf`;
+        link.download = `${slugify(user.displayName)}-${dayjs().format("YYYY-MM-DD-H-mm-ss")}.pdf`;
         link.click();
 
         URL.revokeObjectURL(blobUrl);
@@ -61,10 +67,15 @@ const DownloadPdf = () => {
     };
 
     void generate();
-  }, [shouldRender, resume, templateFormat, setHtml]);
+  }, [shouldRender, resume, templateFormat, setHtml, user]);
 
   return (
-    <Button disabled={isProcessing} onClick={handleDownload} size="lg">
+    <Button
+      disabled={isProcessing}
+      onClick={handleDownload}
+      className="shadow-xl"
+      size="lg"
+    >
       {isProcessing ? <Spinner /> : <Download />}
       Download
     </Button>
