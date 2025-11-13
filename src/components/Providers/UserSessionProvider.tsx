@@ -1,5 +1,5 @@
 "use client";
-import { getSession, SessionProvider } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { type PropsWithChildren, useLayoutEffect } from "react";
 
 import { resumeService } from "@/services/resume.service";
@@ -12,21 +12,15 @@ const UserSessionProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const { user } = useAppSelector(userSelector);
 
   const dispatch = useAppDispatch();
+  const session = useSession();
 
   useLayoutEffect(() => {
-    const fetchUser = async () => {
-      if (!user) {
-        const session = await getSession();
-        if (session && !session.isExpired && session.user) {
-          dispatch(setUser(session.user));
-        } else {
-          dispatch(setUser(null));
-        }
-      }
-    };
-
-    void fetchUser();
-  }, [dispatch, user]);
+    if (!session.data?.user || session.data.isExpired) {
+      dispatch(setUser(null));
+    } else {
+      dispatch(setUser(session.data.user));
+    }
+  }, [dispatch, session]);
 
   useLayoutEffect(() => {
     const fetchUserResume = async () => {
@@ -41,7 +35,7 @@ const UserSessionProvider: React.FC<PropsWithChildren> = ({ children }) => {
     void fetchUserResume();
   }, [dispatch, resume, user]);
 
-  return <SessionProvider>{children}</SessionProvider>;
+  return children;
 };
 
 export default UserSessionProvider;

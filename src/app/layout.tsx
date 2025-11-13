@@ -3,6 +3,7 @@ import "@/styles/globals.css";
 import clsx from "clsx";
 import type { Metadata } from "next";
 import { Figtree } from "next/font/google";
+import { SessionProvider } from "next-auth/react";
 import NextTopLoader from "nextjs-toploader";
 import { type PropsWithChildren } from "react";
 
@@ -30,21 +31,23 @@ export default function RootLayout({ children }: PropsWithChildren) {
       <head />
       <body className={clsx(figtree.className)}>
         <StoreProvider>
-          <UserSessionProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="light"
-              forcedTheme="light"
-            >
-              <NextTopLoader
-                showSpinner={false}
-                easing="ease-in-out"
-                color="#4d31ff"
-              />
-              <Toaster richColors position="bottom-right" />
-              {children}
-            </ThemeProvider>
-          </UserSessionProvider>
+          <SessionProvider>
+            <UserSessionProvider>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="light"
+                forcedTheme="light"
+              >
+                <NextTopLoader
+                  showSpinner={false}
+                  easing="ease-in-out"
+                  color="#4d31ff"
+                />
+                <Toaster richColors position="bottom-right" />
+                {children}
+              </ThemeProvider>
+            </UserSessionProvider>
+          </SessionProvider>
         </StoreProvider>
       </body>
     </html>

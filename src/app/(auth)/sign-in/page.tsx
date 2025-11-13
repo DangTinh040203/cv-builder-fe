@@ -4,7 +4,7 @@ import { Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { getSession, signIn } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "nextjs-toploader/app";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -32,9 +32,6 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Spinner } from "@/components/ui/spinner";
 import { Route } from "@/constants/route.constant";
-import { resumeService } from "@/services/resume.service";
-import { setResume } from "@/stores/features/resume.slice";
-import { setUser } from "@/stores/features/user.slice";
 import { useAppDispatch } from "@/stores/store";
 
 const formSchema = z.object({
@@ -51,7 +48,6 @@ function SignIn() {
   const searchParams = useSearchParams();
 
   const router = useRouter();
-  const dispatch = useAppDispatch();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -73,16 +69,6 @@ function SignIn() {
       if (result.error) {
         toast.error("Invalid email or password");
       } else {
-        const [session, resumeRes] = await Promise.all([
-          getSession(),
-          resumeService.getResume(),
-        ]);
-
-        if (session && session.user && resumeRes) {
-          dispatch(setUser(session.user));
-          dispatch(setResume(resumeRes));
-        }
-
         toast.success("Login successfully");
         const callbackUrl = searchParams.get("callbackUrl");
         router.push(callbackUrl || Route.Home);

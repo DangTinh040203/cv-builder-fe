@@ -1,9 +1,6 @@
-/**
- * HttpService: minimal Axios wrapper with shared config + interceptors.
- * Exposes typed helpers: get, post, put, patch, delete, head.
- */
 import axios, {
   type AxiosError,
+  AxiosHeaders,
   type AxiosInstance,
   type AxiosRequestConfig,
   type AxiosResponse,
@@ -14,97 +11,138 @@ import { getSession } from "next-auth/react";
 
 import { axiosConfig } from "@/configs/axios.config";
 
-/** Centralized Axios instance with shared config and interceptors. */
+let refreshPromise: Promise<void> | null = null;
+
+interface RetryAxiosRequestConfig extends InternalAxiosRequestConfig {
+  _retry?: boolean;
+}
+
 export class HttpService {
   private instance: AxiosInstance;
 
-  /** Create service; uses project axiosConfig by default. */
   constructor(config = axiosConfig) {
-    const axiosConfigs = config;
-    const instance = axios.create({ ...axiosConfigs });
+    const instance = axios.create({ ...config });
     Object.assign(instance, this.setupInterceptorsTo(instance));
     this.instance = instance;
     this.setHttpConfigs(config);
   }
 
-  /** DELETE request. */
-  public async delete(url: string, config?: AxiosRequestConfig) {
-    return await this.instance.delete(url, config);
+  public delete(url: string, config?: AxiosRequestConfig) {
+    return this.instance.delete(url, config);
   }
 
-  /** GET request. Returns AxiosResponse<T>. */
-  public async get<T>(url: string, config?: AxiosRequestConfig) {
-    return await this.instance.get<T>(url, config);
+  public get<T>(url: string, config?: AxiosRequestConfig) {
+    return this.instance.get<T>(url, config);
   }
 
-  /** PATCH request. */
-  public async patch<T, R>(url: string, data: T, config?: AxiosRequestConfig) {
-    return await this.instance.patch<R>(url, data, config);
+  public patch<T, R>(url: string, data: T, config?: AxiosRequestConfig) {
+    return this.instance.patch<R>(url, data, config);
   }
 
-  /** POST request. */
-  public async post<T, R>(url: string, data?: T, config?: AxiosRequestConfig) {
-    return await this.instance.post<R>(url, data, config);
+  public post<T, R>(url: string, data?: T, config?: AxiosRequestConfig) {
+    return this.instance.post<R>(url, data, config);
   }
 
-  /** PUT request. */
-  public async put<T, R>(url: string, data?: T, config?: AxiosRequestConfig) {
-    return await this.instance.put<R>(url, data, config);
+  public put<T, R>(url: string, data?: T, config?: AxiosRequestConfig) {
+    return this.instance.put<R>(url, data, config);
   }
 
-  /** HEAD request (no body). */
-  public async head<T>(url: string, config?: AxiosRequestConfig) {
-    return await this.instance.head<T>(url, config);
+  public head<T>(url: string, config?: AxiosRequestConfig) {
+    return this.instance.head<T>(url, config);
   }
 
-  /** Apply baseURL and merge defaults. */
   private setHttpConfigs(config?: Partial<AxiosRequestConfig>) {
     if (config?.baseURL) {
       this.instance.defaults.baseURL = config.baseURL;
     }
-
-    this.instance.defaults = {
-      ...this.instance.defaults,
-    };
   }
 
-  /** Request interceptor. Add headers/logging as needed. */
+  /** REQUEST INTERCEPTOR */
   private onRequest = async (
     config: InternalAxiosRequestConfig,
   ): Promise<InternalAxiosRequestConfig> => {
-    const session = await getSession();
-    if (!session) {
-      redirect("/sign-in");
-    }
+    const session = await this.ensureSessionIsFresh();
 
-    const token = session.user.accessToken;
-    config.headers.Authorization = `Bearer ${token}`;
+    if (!session) redirect("/sign-in");
+
+    const token = session?.accessToken;
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
 
     return config;
   };
 
-  /** Request error handler. */
-  private onRequestError = (error: AxiosError): Promise<AxiosError> => {
+  private onRequestError = (error: AxiosError) => Promise.reject(error);
+
+  private onResponse = (response: AxiosResponse) => response;
+
+  /** RETRY LOGIC WITHOUT ANY */
+  private onResponseError = async (error: AxiosError) => {
+    const config = error.config as RetryAxiosRequestConfig;
+
+    if (!config) {
+      return Promise.reject(error);
+    }
+
+    if (error.response?.status === 401 && !config._retry) {
+      config._retry = true;
+
+      const session = await this.ensureSessionIsFresh();
+      const newToken = session?.accessToken;
+
+      if (newToken) {
+        if (!config.headers) {
+          config.headers = new AxiosHeaders();
+        }
+        config.headers["Authorization"] = `Bearer ${newToken}`;
+        return this.instance(config);
+      }
+    }
+
     return Promise.reject(error);
   };
 
-  /** Response interceptor. */
-  private onResponse = (response: AxiosResponse) => {
-    return response;
-  };
-
-  /** Response error handler. Map/normalize errors here. */
-  private onResponseError = async (error: AxiosError): Promise<AxiosError> => {
-    return Promise.reject(error);
-  };
-
-  /** Register request/response interceptors. */
-  private setupInterceptorsTo(axiosInstance: AxiosInstance): AxiosInstance {
+  private setupInterceptorsTo(axiosInstance: AxiosInstance) {
     axiosInstance.interceptors.request.use(this.onRequest, this.onRequestError);
     axiosInstance.interceptors.response.use(
       this.onResponse,
       this.onResponseError,
     );
     return axiosInstance;
+  }
+
+  /** 🔥 Ensure session fresh with refresh lock */
+  private async ensureSessionIsFresh() {
+    const session = await getSession();
+
+    if (!session) return null;
+
+    const now = Math.floor(Date.now() / 1000);
+
+    if (session.expiresAt && now < session.expiresAt) {
+      return session;
+    }
+
+    // Already refreshing? wait
+    if (refreshPromise) {
+      await refreshPromise;
+      return await getSession();
+    }
+
+    // Trigger refresh
+    refreshPromise = fetch("/api/auth/session?update", {
+      method: "GET",
+      cache: "no-store",
+    })
+      .then(() => {})
+      .finally(() => {
+        refreshPromise = null;
+      });
+
+    await refreshPromise;
+
+    return await getSession();
   }
 }

@@ -41,7 +41,7 @@ export const RESUME_MOCK_DATA: Resume = {
   _id: "resume-12345",
   userId: "user-12345",
   title: "Your Name",
-  subTitle: "Full Stack Developer",
+  subTitle: "Web Developer",
   avatar: "https://avatars.githubusercontent.com/u/000000?v=4",
   overview:
     "A passionate software engineer with 3+ years of experience in building full-stack web applications, specializing in TypeScript, React, and AWS Cloud infrastructure. Proven track record of delivering scalable solutions and leading development teams to success. Seeking to leverage my expertise to contribute to innovative projects and drive technological advancements.",

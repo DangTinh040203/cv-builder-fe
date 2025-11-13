@@ -8,6 +8,7 @@ import { type Tokens } from "@/services/auth.service";
 import { type JwtDecodedPayload, type NextAuthUser } from "@/types/next-auth";
 import { type User } from "@/types/user.type";
 
+let refreshPromise: Promise<void> | null = null;
 export const { handlers, signIn, signOut, auth } = NextAuth({
   trustHost: true,
 
@@ -45,8 +46,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       try {
+        // First login
         if (user) {
           const nextAuthUser = user as NextAuthUser;
+
           const decoded = jwtDecode<JwtDecodedPayload>(
             nextAuthUser.accessToken,
           );
@@ -56,56 +59,75 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             accessToken: nextAuthUser.accessToken,
             refreshToken: nextAuthUser.refreshToken,
             expiresAt: decoded.exp,
-
             user: nextAuthUser,
             isExpired: false,
           };
         }
 
         const now = Math.floor(Date.now() / 1000);
-        const bufferTime = 5 * 60;
 
-        if (token.expiresAt && now + bufferTime < token.expiresAt) {
+        // Still valid
+        if (token.expiresAt && now < token.expiresAt) {
           return { ...token, isExpired: false };
         }
 
+        // No refresh token?
         if (!token.refreshToken) {
           return { ...token, isExpired: true };
         }
 
-        const rtDecoded = jwtDecode<JwtDecodedPayload>(token.refreshToken);
+        // Decode refresh token safely
+        let rtDecoded: JwtDecodedPayload;
+        try {
+          rtDecoded = jwtDecode<JwtDecodedPayload>(token.refreshToken);
+        } catch {
+          return { ...token, isExpired: true };
+        }
+
         if (now > rtDecoded.exp) {
           return { ...token, isExpired: true };
         }
 
-        // 🔄 REFRESH
-        const { data } = await axios.post<Tokens>(
-          `/auth/refresh-token`,
-          {},
-          {
-            baseURL: Env.NEXT_PUBLIC_BASE_URL,
-            headers: {
-              Authorization: `Bearer ${token.refreshToken}`,
-            },
-          },
-        );
+        // 🔄 REFRESH TOKEN WITH LOCK
+        if (!refreshPromise) {
+          refreshPromise = axios
+            .post<Tokens>(
+              `/auth/refresh-token`,
+              {},
+              {
+                baseURL: Env.NEXT_PUBLIC_BASE_URL,
+                headers: {
+                  Authorization: `Bearer ${token.refreshToken}`,
+                },
+              },
+            )
+            .then((response) => {
+              const data = response.data;
+              const decoded = jwtDecode<JwtDecodedPayload>(data.accessToken);
 
-        const decoded = jwtDecode<JwtDecodedPayload>(data.accessToken);
-        const newToken = {
-          ...token,
-          accessToken: data.accessToken,
-          refreshToken: data.refreshToken,
-          expiresAt: decoded.exp,
-          isExpired: false,
-          user: {
-            ...token.user,
-            accessToken: data.accessToken,
-            refreshToken: data.refreshToken,
-          },
-        };
+              token.accessToken = data.accessToken;
+              token.refreshToken = data.refreshToken;
+              token.expiresAt = decoded.exp;
+              token.isExpired = false;
+              token.user = {
+                ...token.user,
+                accessToken: data.accessToken,
+                refreshToken: data.refreshToken,
+              };
+            })
+            .catch((err) => {
+              console.error("Error refreshing token:", err);
+              token.isExpired = true;
+            })
+            .finally(() => {
+              refreshPromise = null;
+            });
+        }
+        await refreshPromise;
 
-        return newToken;
-      } catch {
+        return { ...token };
+      } catch (err) {
+        console.error("Error refreshing token:", err);
         return { ...token, isExpired: true };
       }
     },
