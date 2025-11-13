@@ -43,7 +43,7 @@ const Template1: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
       section: {
         flexDirection: "column",
         width: "100%",
-        gap: 4,
+        gap: 2,
       },
 
       sectionContent: {

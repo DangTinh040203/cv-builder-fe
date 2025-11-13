@@ -115,8 +115,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 refreshToken: data.refreshToken,
               };
             })
-            .catch((err) => {
-              console.error("Error refreshing token:", err);
+            .catch(() => {
               token.isExpired = true;
             })
             .finally(() => {
@@ -126,8 +125,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         await refreshPromise;
 
         return { ...token };
-      } catch (err) {
-        console.error("Error refreshing token:", err);
+      } catch {
         return { ...token, isExpired: true };
       }
     },

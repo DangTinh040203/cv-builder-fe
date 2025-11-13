@@ -31,7 +31,7 @@ type MinimalEditor = {
 export default function OverviewEditor({
   value,
   onChange,
-  maxLength = 500,
+  maxLength = 1000,
 }: OverviewEditorProps) {
   const [loading, setLoading] = useState(false);
   const { resume } = useAppSelector(resumeSelector);
@@ -94,12 +94,7 @@ export default function OverviewEditor({
         placeholder="Write a brief summary about yourself..."
       />
 
-      <div
-        className={`
-          mt-4 flex items-center justify-end gap-8
-          lg:mt-20
-        `}
-      >
+      <div className={`mt-4 flex items-center justify-end gap-8`}>
         <p
           className={`
             text-sm
