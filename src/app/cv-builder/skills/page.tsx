@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { SKILL_SEED_DATA } from "@/constants";
 import { Route } from "@/constants/route.constant";
+import { resumeService } from "@/services/resume.service";
 import { resumeSelector, updateResume } from "@/stores/features/resume.slice";
 import { useAppDispatch, useAppSelector } from "@/stores/store";
 import type { Skill } from "@/types/resume.type";
@@ -128,10 +129,21 @@ const Skills = () => {
     syncToRedux(cloned);
   };
 
-  const onSubmit = (data: SkillsFormValues) => {
+  const onSubmit = async (data: SkillsFormValues) => {
     if (!resume || !resume.section.skills) return;
 
     setLoading(true);
+
+    await resumeService.updateResume(resume._id, {
+      ...resume,
+      section: {
+        ...resume.section,
+        skills: {
+          ...resume.section.skills,
+          content: data.skills,
+        },
+      },
+    });
 
     setLoading(false);
     router.push(Route.CvBuilderExperience);

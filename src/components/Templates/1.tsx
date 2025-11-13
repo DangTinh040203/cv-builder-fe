@@ -30,7 +30,6 @@ const Template1: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
     };
 
     return StyleSheet.create({
-      // === Layout ===
       page: {
         ...templateGlobalStyles.page,
         padding: 20,
@@ -58,7 +57,6 @@ const Template1: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
         backgroundColor: "gray",
       },
 
-      // === Typography ===
       text: {
         fontSize: theme.fontSize,
         lineHeight: theme.lineHeight,
@@ -88,7 +86,6 @@ const Template1: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
         minWidth: 70,
       },
 
-      // === Information Section ===
       informationGroup: {
         ...templateGlobalStyles.gapXl,
         flexDirection: "row",
@@ -106,7 +103,6 @@ const Template1: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
         minWidth: 70,
       },
 
-      // === Table / Row ===
       row: {
         flexDirection: "row",
         gap: 10,
@@ -121,7 +117,6 @@ const Template1: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
         flexDirection: "column",
       },
 
-      // === Project Section ===
       projectContainer: {
         flexDirection: "column",
         paddingBottom: 10,
@@ -146,7 +141,6 @@ const Template1: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
     });
   }, [templateFormat]);
 
-  // === Derived Data ===
   const informationGroup = useMemo(() => {
     const sorted = [...information].sort((a, b) => a.order - b.order);
     return {
