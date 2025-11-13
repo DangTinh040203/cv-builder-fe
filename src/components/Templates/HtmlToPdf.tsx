@@ -19,6 +19,8 @@ const HtmlToPdf = ({ content = "", style = {} }: HtmlToPdfProps) => {
       style={{
         ...style,
         a: { textDecoration: "underline" },
+        marginTop: -6,
+        marginBottom: -6,
       }}
     >
       {content}
