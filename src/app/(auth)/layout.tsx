@@ -6,7 +6,8 @@ import { auth } from "@/auth";
 const AuthLayout: React.FC<PropsWithChildren> = async ({ children }) => {
   const session = await auth();
 
-  if (session?.user) {
+  /* Prevent when user click back button after login */
+  if (session?.user && !session.isExpired) {
     redirect("/");
   }
 

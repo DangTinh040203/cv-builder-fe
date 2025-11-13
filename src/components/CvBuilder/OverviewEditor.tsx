@@ -1,7 +1,7 @@
 "use client";
 import "react-quill-new/dist/quill.snow.css";
 
-import { ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useRouter } from "nextjs-toploader/app";
 import { useCallback, useState } from "react";
@@ -94,28 +94,41 @@ export default function OverviewEditor({
         placeholder="Write a brief summary about yourself..."
       />
 
-      <div className={`mt-4 flex items-center justify-end gap-8`}>
-        <p
-          className={`
-            text-sm
-            ${
-              charCount > maxLength * 0.9
-                ? "text-red-500"
-                : "text-muted-foreground"
-            }
-          `}
-        >
-          {charCount}/{maxLength}
-        </p>
+      <div className="mt-4 flex items-center justify-between">
         <Button
           size={"lg"}
           className="h-12 min-w-40"
-          type="submit"
-          disabled={loading}
-          onClick={handleNextStep}
+          type="button"
+          variant={"outline"}
+          onClick={() => router.push(Route.CvBuilderHeadings)}
         >
-          Next Step {loading ? <Spinner /> : <ArrowRight />}
+          <ArrowLeft />
+          Back Step
         </Button>
+
+        <div className={`flex items-center gap-8`}>
+          <p
+            className={`
+              text-sm
+              ${
+                charCount > maxLength * 0.9
+                  ? "text-red-500"
+                  : "text-muted-foreground"
+              }
+            `}
+          >
+            {charCount}/{maxLength}
+          </p>
+          <Button
+            size={"lg"}
+            className="h-12 min-w-40"
+            type="submit"
+            disabled={loading}
+            onClick={handleNextStep}
+          >
+            Next Step {loading ? <Spinner /> : <ArrowRight />}
+          </Button>
+        </div>
       </div>
     </div>
   );
