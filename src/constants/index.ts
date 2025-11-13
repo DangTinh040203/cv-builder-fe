@@ -2,6 +2,7 @@ import {
   type Information,
   type Resume,
   SectionType,
+  type Skill,
 } from "@/types/resume.type";
 
 export const RESUME_INFORMATION_SEED_DATA: Array<Information> = [
@@ -37,6 +38,17 @@ export const RESUME_INFORMATION_SEED_DATA: Array<Information> = [
   },
 ];
 
+export const SKILL_SEED_DATA: Array<Skill> = [
+  {
+    label: "Frontend",
+    value: "React, Next.js, TailwindCSS",
+    order: 0,
+  },
+  { label: "Backend", value: "NestJS, Fastify, Prisma, PostgreSQL", order: 1 },
+  { label: "DevOps", value: "AWS, Docker, ECS Fargate, CI/CD", order: 2 },
+  { label: "AI/ML", value: "OpenAI API, LangChain, HuggingFace", order: 3 },
+];
+
 export const RESUME_MOCK_DATA: Resume = {
   _id: "resume-12345",
   userId: "user-12345",
@@ -45,13 +57,7 @@ export const RESUME_MOCK_DATA: Resume = {
   avatar: "https://avatars.githubusercontent.com/u/000000?v=4",
   overview:
     "A passionate software engineer with 3+ years of experience in building full-stack web applications, specializing in TypeScript, React, and AWS Cloud infrastructure. Proven track record of delivering scalable solutions and leading development teams to success. Seeking to leverage my expertise to contribute to innovative projects and drive technological advancements.",
-  information: [
-    { label: "Email", value: "john.doe@example.com", order: 1 },
-    { label: "Phone", value: "+84 123 456 789", order: 2 },
-    { label: "Location", value: "Ho Chi Minh City, Vietnam", order: 3 },
-    { label: "LinkedIn", value: "linkedin.com/in/johndoe", order: 4 },
-    { label: "GitHub", value: "github.com/johndoe", order: 5 },
-  ],
+  information: RESUME_INFORMATION_SEED_DATA,
   section: {
     educations: {
       order: 1,
@@ -114,12 +120,7 @@ export const RESUME_MOCK_DATA: Resume = {
     skills: {
       order: 4,
       type: SectionType.SKILLS,
-      content: [
-        { label: "Frontend", value: "React, Next.js, TailwindCSS" },
-        { label: "Backend", value: "NestJS, Fastify, Prisma, PostgreSQL" },
-        { label: "DevOps", value: "AWS, Docker, ECS Fargate, CI/CD" },
-        { label: "AI/ML", value: "OpenAI API, LangChain, HuggingFace" },
-      ],
+      content: SKILL_SEED_DATA,
     },
   },
 };

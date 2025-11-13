@@ -1,10 +1,10 @@
 "use client";
 import { Settings } from "lucide-react";
+import dynamic from "next/dynamic";
 import type React from "react";
 import { type PropsWithChildren, useMemo } from "react";
 
 import { CvBuilderSidebar } from "@/components/Layout/CvBuilderSidebar";
-import DownloadPdf from "@/components/Templates/DownloadPdf";
 import TemplateWrapper from "@/components/Templates/TemplateWrapper";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
@@ -12,6 +12,11 @@ import useGetTemplates from "@/hooks/useGetTemplates";
 import { resumeSelector } from "@/stores/features/resume.slice";
 import { userSelector } from "@/stores/features/user.slice";
 import { useAppSelector } from "@/stores/store";
+
+const DownloadPdf = dynamic(
+  () => import("@/components/Templates/DownloadPdf"),
+  { ssr: false },
+);
 
 const CvBuilderLayout: React.FC<PropsWithChildren> = ({ children }) => {
   const { templates, templateFormat, templateSelected } = useGetTemplates();
