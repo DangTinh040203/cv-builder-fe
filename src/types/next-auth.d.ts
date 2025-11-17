@@ -10,21 +10,21 @@ export interface NextAuthUser extends User {
 
 declare module "next-auth/jwt" {
   interface JWT extends DefaultJWT {
-    user: NextAuthUser;
+    user: NextAuthUser | null;
     isExpired: boolean;
-    accessToken: string;
-    refreshToken: string;
-    expiresAt: number;
+    accessToken?: string | null;
+    refreshToken?: string | null;
+    expiresAt?: number | null;
   }
 }
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
-    user: NextAuthUser;
+    user: NextAuthUser | null;
     isExpired: boolean;
-    accessToken: string;
-    refreshToken: string;
-    expiresAt: number;
+    accessToken?: string | null;
+    refreshToken?: string | null;
+    expiresAt?: number | null;
   }
 }
 
