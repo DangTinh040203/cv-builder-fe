@@ -158,22 +158,20 @@ const Template1: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
       </View>
 
       {/* INFO */}
-      {information.length > 0 && (
-        <View style={styles.section}>
-          <View style={styles.informationGroup}>
-            {[informationGroup.left, informationGroup.right].map((col, i) => (
-              <View key={i} style={styles.col} wrap={false}>
-                {col.map((info) => (
-                  <View key={uuid()} style={styles.informationItem}>
-                    <Text style={styles.informationLabel}>{info.label}:</Text>
-                    <Text>{info.value}</Text>
-                  </View>
-                ))}
-              </View>
-            ))}
-          </View>
+      <View style={styles.section}>
+        <View style={styles.informationGroup}>
+          {[informationGroup.left, informationGroup.right].map((col, i) => (
+            <View key={i} style={styles.col} wrap={false}>
+              {col.map((info) => (
+                <View key={uuid()} style={styles.informationItem}>
+                  <Text style={styles.informationLabel}>{info.label}:</Text>
+                  <Text>{info.value}</Text>
+                </View>
+              ))}
+            </View>
+          ))}
         </View>
-      )}
+      </View>
 
       {/* OVERVIEW */}
       <View style={styles.section}>

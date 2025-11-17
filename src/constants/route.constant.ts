@@ -31,12 +31,12 @@ export const SIDEBAR_ROUTES: SidebarItem[] = [
     href: Route.CvBuilderSkills,
   },
   {
-    label: "Experience",
-    href: Route.CvBuilderExperience,
-  },
-  {
     label: "Education",
     href: Route.CvBuilderEducation,
+  },
+  {
+    label: "Experience",
+    href: Route.CvBuilderExperience,
   },
   {
     label: "Projects",

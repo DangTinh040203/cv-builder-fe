@@ -4,12 +4,31 @@ export interface Information {
   order: number;
 }
 
+export const DegreeOptions = [
+  "Associate of Applied Science",
+  "Associate of Arts",
+  "Associate of Science",
+  "BBA",
+  "Bachelor of Arts",
+  "Bachelor of Science",
+  "Enter a different degree",
+  "GED",
+  "High School Diploma",
+  "J.D.",
+  "M.D.",
+  "MBA",
+  "Master of Arts",
+  "Master of Science",
+  "No Degree",
+  "Ph.D.",
+];
+
 export interface Education {
   school: string;
   degree: string;
   major: string;
   startDate: Date;
-  endDate: Date;
+  endDate: Date | null;
   order: number;
 }
 

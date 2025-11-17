@@ -1,4 +1,5 @@
 import {
+  type Education,
   type Information,
   type Resume,
   SectionType,
@@ -47,6 +48,17 @@ export const SKILL_SEED_DATA: Array<Skill> = [
   { label: "Backend", value: "NestJS, Fastify, Prisma, PostgreSQL", order: 1 },
   { label: "DevOps", value: "AWS, Docker, ECS Fargate, CI/CD", order: 2 },
   { label: "AI/ML", value: "OpenAI API, LangChain, HuggingFace", order: 3 },
+];
+
+export const EDUCATION_SEED_DATA: Array<Education> = [
+  {
+    school: "University of Information Technology - VNUHCM",
+    degree: "Bachelor of Science",
+    major: "Computer Science",
+    startDate: new Date("2018-09-01"),
+    endDate: new Date("2022-06-01"),
+    order: 1,
+  },
 ];
 
 export const RESUME_MOCK_DATA: Resume = {

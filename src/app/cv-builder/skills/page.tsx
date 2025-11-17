@@ -146,7 +146,7 @@ const Skills = () => {
     });
 
     setLoading(false);
-    router.push(Route.CvBuilderExperience);
+    router.push(Route.CvBuilderEducation);
   };
 
   if (!resume) {

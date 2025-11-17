@@ -32,7 +32,6 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Spinner } from "@/components/ui/spinner";
 import { Route } from "@/constants/route.constant";
-import { useAppDispatch } from "@/stores/store";
 
 const formSchema = z.object({
   email: z.email(),
@@ -69,7 +68,6 @@ function SignIn() {
       if (result.error) {
         toast.error("Invalid email or password");
       } else {
-        toast.success("Login successfully");
         const callbackUrl = searchParams.get("callbackUrl");
         router.push(callbackUrl || Route.Home);
       }
