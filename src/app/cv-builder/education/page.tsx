@@ -13,6 +13,7 @@ import {
 import { useRouter } from "nextjs-toploader/app";
 import { useEffect, useState } from "react";
 import { type FieldErrors, useFieldArray, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 import {
@@ -23,6 +24,7 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
   FormControl,
@@ -32,6 +34,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Popover,
   PopoverContent,
@@ -57,42 +60,28 @@ const educationSchema = z
     school: z.string().min(1, "Please enter your school name."),
     degree: z.string().min(1, "Please select your degree."),
     major: z.string().min(1, "Please enter your major."),
-    startDate: z
-      .date()
-      .refine((val) => val instanceof Date && !isNaN(val.getTime()), {
-        message: "Please select a start date.",
-      }),
-    endDate: z.date().nullable(),
+    startDate: z.string({ error: "Please select a start date." }),
+    endDate: z.string({ error: "Please select a start date." }).nullable(),
+    checkedEndDate: z.boolean(),
     order: z.number(),
   })
-  .refine((data) => !data.endDate || data.endDate > data.startDate, {
-    message: "End date must be after the start date.",
-    path: ["endDate"],
-  });
+  .refine(
+    (data) => {
+      if (!data.endDate) return true;
+      return dayjs(data.endDate).isAfter(dayjs(data.startDate));
+    },
+    {
+      message: "End date must be after the start date.",
+      path: ["endDate"],
+    },
+  );
 
 const educationFormSchema = z.object({
   education: z.array(educationSchema),
 });
 
-type EducationFormValues = z.infer<typeof educationFormSchema>;
-
-type SerializableEducation = Omit<Education, "startDate" | "endDate"> & {
-  startDate: string;
-  endDate: string | null;
-};
-
-const normalizeEducationDates = (educations: Education[]): Education[] =>
-  educations.map((edu) => ({
-    ...edu,
-    startDate:
-      edu.startDate instanceof Date ? edu.startDate : new Date(edu.startDate),
-    endDate:
-      edu.endDate === null
-        ? null
-        : edu.endDate instanceof Date
-          ? edu.endDate
-          : new Date(edu.endDate),
-  }));
+type EducationFormInput = z.input<typeof educationFormSchema>;
+type EducationFormValues = z.output<typeof educationFormSchema>;
 
 const CvBuilderEducation = () => {
   const { resume } = useAppSelector(resumeSelector);
@@ -103,17 +92,16 @@ const CvBuilderEducation = () => {
   const [initialized, setInitialized] = useState(false);
   const [openItems, setOpenItems] = useState<string[]>([]);
 
-  const defaultEducations: Education[] = normalizeEducationDates(
-    resume?.section.educations?.content ?? EDUCATION_SEED_DATA,
-  );
+  const defaultEducations: Education[] =
+    resume?.section.educations?.content ?? EDUCATION_SEED_DATA;
 
-  const form = useForm<EducationFormValues>({
+  const form = useForm<EducationFormInput, EducationFormValues>({
     resolver: zodResolver(educationFormSchema),
     defaultValues: { education: defaultEducations },
     mode: "onChange",
   });
 
-  const { control, getValues, handleSubmit, watch } = form;
+  const { control, getValues, handleSubmit, watch, setValue } = form;
 
   const { fields, append, remove, replace } = useFieldArray({
     control,
@@ -125,29 +113,13 @@ const CvBuilderEducation = () => {
   const syncToRedux = (education: Education[]) => {
     if (!resume || !resume.section.educations) return;
 
-    const serializableEducation: SerializableEducation[] = education.map(
-      (edu) => ({
-        ...edu,
-        startDate:
-          edu.startDate instanceof Date
-            ? edu.startDate.toISOString()
-            : (edu.startDate as string),
-        endDate:
-          edu.endDate instanceof Date
-            ? edu.endDate.toISOString()
-            : (edu.endDate ?? null),
-      }),
-    );
-
     dispatch(
       updateResume({
         section: {
           ...resume.section,
           educations: {
             ...resume.section.educations,
-            content: serializableEducation,
-          } as typeof resume.section.educations & {
-            content: SerializableEducation[];
+            content: education,
           },
         },
       }),
@@ -162,16 +134,10 @@ const CvBuilderEducation = () => {
       0,
     );
 
-    const newEducationItem: Education = {
-      school: "Your School Name",
-      degree: DegreeOptions[0],
-      major: "Your Major",
-      startDate: new Date(),
-      endDate: null,
-      order: maxOrder + 1,
-    };
-
-    append(newEducationItem);
+    const newItem = EDUCATION_SEED_DATA[0];
+    if (newItem) {
+      append({ ...newItem, order: maxOrder + 1, checkedEndDate: false });
+    }
   };
 
   const handleRemoveEducation = (idx: number) => {
@@ -179,33 +145,38 @@ const CvBuilderEducation = () => {
   };
 
   const handleResetEducation = () => {
-    const cloned = normalizeEducationDates(EDUCATION_SEED_DATA);
-    replace(cloned);
+    replace(
+      EDUCATION_SEED_DATA.map((edu) => ({ ...edu, checkedEndDate: false })),
+    );
   };
 
-  const onSubmit = async (data: EducationFormValues) => {
+  const onSubmit = async (data: EducationFormInput) => {
     if (!resume || !resume.section.educations) return;
 
-    syncToRedux(data.education as Education[]);
+    try {
+      syncToRedux(data.education.map((edu) => ({ ...edu })));
 
-    setLoading(true);
+      setLoading(true);
 
-    await resumeService.updateResume(resume._id, {
-      ...resume,
-      section: {
-        ...resume.section,
-        educations: {
-          ...resume.section.educations,
-          content: data.education,
+      await resumeService.updateResume(resume._id, {
+        ...resume,
+        section: {
+          ...resume.section,
+          educations: {
+            ...resume.section.educations,
+            content: data.education.map((edu) => ({ ...edu })),
+          },
         },
-      },
-    });
+      });
 
-    setLoading(false);
-    router.push(Route.CvBuilderExperience);
+      setLoading(false);
+      router.push(Route.CvBuilderExperience);
+    } catch {
+      toast.error("Failed to update education. Please try again.");
+    }
   };
 
-  const onInvalid = (errors: FieldErrors<EducationFormValues>) => {
+  const onInvalid = (errors: FieldErrors<EducationFormInput>) => {
     const itemsWithError: string[] = [];
 
     if (Array.isArray(errors.education)) {
@@ -226,11 +197,12 @@ const CvBuilderEducation = () => {
     if (!resume?.section.educations) return;
     if (initialized) return;
 
-    const educationsFromResume = normalizeEducationDates(
-      resume.section.educations.content ?? [],
+    replace(
+      resume?.section.educations.content.map((edu) => ({
+        ...edu,
+        checkedEndDate: false,
+      })) ?? [],
     );
-
-    replace(educationsFromResume);
     setInitialized(true);
   }, [resume, initialized, replace]);
 
@@ -238,7 +210,7 @@ const CvBuilderEducation = () => {
     if (!initialized) return;
     if (!educationValues) return;
 
-    syncToRedux(educationValues as Education[]);
+    syncToRedux(educationValues.map((edu) => ({ ...edu })));
   }, [educationValues, initialized]);
 
   if (!resume) {
@@ -263,11 +235,11 @@ const CvBuilderEducation = () => {
         <Form {...form}>
           <form
             onSubmit={handleSubmit(onSubmit, onInvalid)}
-            className="space-y-4"
+            className="space-y-8"
           >
             <Accordion
               type="multiple"
-              className="space-y-4"
+              className="space-y-6"
               value={openItems}
               onValueChange={(values) => setOpenItems(values)}
             >
@@ -277,17 +249,6 @@ const CvBuilderEducation = () => {
                 const school = current?.school ?? field.school ?? "School";
                 const degree = current?.degree ?? field.degree ?? "Degree";
                 const major = current?.major ?? field.major ?? "Major";
-
-                const startDateValue =
-                  current?.startDate ??
-                  field.startDate ??
-                  defaultEducations[index]?.startDate ??
-                  null;
-                const endDateValue =
-                  current?.endDate ??
-                  field.endDate ??
-                  defaultEducations[index]?.endDate ??
-                  null;
 
                 return (
                   <div className="flex items-start gap-4" key={field.id}>
@@ -308,12 +269,12 @@ const CvBuilderEducation = () => {
                           >
                             <p className="text-lg font-medium">{school}</p>
                             <p className="text-muted-foreground">
-                              {startDateValue
-                                ? dayjs(startDateValue).format("MMM YYYY")
+                              {field.startDate
+                                ? dayjs(field.startDate).format("MMM YYYY")
                                 : "Start"}{" "}
                               -{" "}
-                              {endDateValue
-                                ? dayjs(endDateValue).format("MMM YYYY")
+                              {field.endDate
+                                ? dayjs(field.endDate).format("MMM YYYY")
                                 : "Present"}
                             </p>
                           </div>
@@ -422,11 +383,14 @@ const CvBuilderEducation = () => {
                                         <Calendar
                                           mode="single"
                                           selected={
-                                            dateField.value ?? undefined
+                                            new Date(dateField.value) ??
+                                            undefined
                                           }
                                           captionLayout="dropdown"
                                           onSelect={(date) =>
-                                            dateField.onChange(date ?? null)
+                                            dateField.onChange(
+                                              date ? new Date(date) : null,
+                                            )
                                           }
                                         />
                                       </PopoverContent>
@@ -448,17 +412,20 @@ const CvBuilderEducation = () => {
                                         <Button
                                           variant="outline"
                                           id="date"
+                                          disabled={current?.checkedEndDate}
                                           className={`
                                             border-border text-foreground h-12
                                             justify-between rounded-lg
                                             font-normal
                                           `}
                                         >
-                                          {dateField.value
-                                            ? dayjs(dateField.value).format(
-                                                "MMM DD, YYYY",
-                                              )
-                                            : "Select date"}
+                                          {current?.checkedEndDate
+                                            ? "Present"
+                                            : dateField.value
+                                              ? dayjs(dateField.value).format(
+                                                  "MMM DD, YYYY",
+                                                )
+                                              : "Select date"}
                                           <ChevronDownIcon />
                                         </Button>
                                       </PopoverTrigger>
@@ -469,17 +436,55 @@ const CvBuilderEducation = () => {
                                         <Calendar
                                           mode="single"
                                           selected={
-                                            dateField.value ?? undefined
+                                            dateField.value
+                                              ? new Date(dateField.value)
+                                              : undefined
                                           }
                                           captionLayout="dropdown"
                                           onSelect={(date) =>
-                                            dateField.onChange(date ?? null)
+                                            dateField.onChange(
+                                              date ? new Date(date) : null,
+                                            )
                                           }
                                         />
                                       </PopoverContent>
                                     </Popover>
                                   </FormControl>
                                   <FormMessage />
+
+                                  <FormField
+                                    control={form.control}
+                                    name={`education.${index}.checkedEndDate`}
+                                    render={({ field: checkboxField }) => (
+                                      <div
+                                        className={`
+                                          mt-2 flex items-center gap-3
+                                        `}
+                                      >
+                                        <Checkbox
+                                          id={`education-${index}-checkedEndDate`}
+                                          checked={checkboxField.value}
+                                          onCheckedChange={(val) => {
+                                            const isChecked = !!val;
+                                            checkboxField.onChange(isChecked);
+                                            setValue(
+                                              `education.${index}.endDate`,
+                                              isChecked
+                                                ? null
+                                                : getValues(
+                                                    `education.${index}.endDate`,
+                                                  ),
+                                            );
+                                          }}
+                                        />
+                                        <Label
+                                          htmlFor={`education-${index}-checkedEndDate`}
+                                        >
+                                          I am currently studying here
+                                        </Label>
+                                      </div>
+                                    )}
+                                  />
                                 </FormItem>
                               )}
                             />
@@ -491,7 +496,10 @@ const CvBuilderEducation = () => {
                       size="icon"
                       variant="outline"
                       className="mt-2"
-                      onClick={() => {
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
                         handleRemoveEducation(index);
                       }}
                     >
@@ -507,7 +515,11 @@ const CvBuilderEducation = () => {
                 type="button"
                 className="min-w-32"
                 variant="outline"
-                onClick={handleAddEducation}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  handleAddEducation();
+                }}
               >
                 <Plus /> Add More
               </Button>
@@ -515,7 +527,11 @@ const CvBuilderEducation = () => {
                 type="button"
                 className="min-w-28"
                 variant="outline"
-                onClick={handleResetEducation}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  handleResetEducation();
+                }}
               >
                 <RefreshCcw /> Reset
               </Button>

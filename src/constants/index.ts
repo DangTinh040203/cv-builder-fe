@@ -55,8 +55,8 @@ export const EDUCATION_SEED_DATA: Array<Education> = [
     school: "University of Information Technology - VNUHCM",
     degree: "Bachelor of Science",
     major: "Computer Science",
-    startDate: new Date("2018-09-01"),
-    endDate: new Date("2022-06-01"),
+    startDate: "2018-09-01",
+    endDate: null,
     order: 1,
   },
 ];
@@ -74,16 +74,7 @@ export const RESUME_MOCK_DATA: Resume = {
     educations: {
       order: 1,
       type: SectionType.EDUCATION,
-      content: [
-        {
-          school: "University of Information Technology - VNUHCM",
-          degree: "Bachelor of Science",
-          major: "Computer Science",
-          startDate: new Date("2018-09-01"),
-          endDate: new Date("2022-06-01"),
-          order: 1,
-        },
-      ],
+      content: EDUCATION_SEED_DATA,
     },
     workExperiences: {
       order: 2,
