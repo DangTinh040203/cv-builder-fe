@@ -206,12 +206,10 @@ const CvBuilderEducation = () => {
     setInitialized(true);
   }, [resume, initialized, replace]);
 
-  useEffect(() => {
-    if (!initialized) return;
-    if (!educationValues) return;
-
-    syncToRedux(educationValues.map((edu) => ({ ...edu })));
-  }, [educationValues, initialized]);
+  const handleFieldBlur = () => {
+    const values = getValues("education") ?? [];
+    syncToRedux(values.map((edu) => ({ ...edu })));
+  };
 
   if (!resume) {
     return (
@@ -235,6 +233,7 @@ const CvBuilderEducation = () => {
         <Form {...form}>
           <form
             onSubmit={handleSubmit(onSubmit, onInvalid)}
+            onBlur={handleFieldBlur}
             className="space-y-8"
           >
             <Accordion
