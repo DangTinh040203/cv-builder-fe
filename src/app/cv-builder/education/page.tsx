@@ -11,7 +11,7 @@ import {
   Trash,
 } from "lucide-react";
 import { useRouter } from "nextjs-toploader/app";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { type FieldErrors, useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -61,20 +61,27 @@ const educationSchema = z
     degree: z.string().min(1, "Please select your degree."),
     major: z.string().min(1, "Please enter your major."),
     startDate: z.string({ error: "Please select a start date." }),
-    endDate: z.string({ error: "Please select a start date." }).nullable(),
+    endDate: z.string({ error: "Please select an end date." }).nullable(),
     checkedEndDate: z.boolean(),
     order: z.number(),
   })
-  .refine(
-    (data) => {
-      if (!data.endDate) return true;
-      return dayjs(data.endDate).isAfter(dayjs(data.startDate));
-    },
-    {
-      message: "End date must be after the start date.",
-      path: ["endDate"],
-    },
-  );
+  .superRefine((data, ctx) => {
+    if (!data.checkedEndDate && !data.endDate) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Please select an end date.",
+        path: ["endDate"],
+      });
+    }
+
+    if (data.endDate && !dayjs(data.endDate).isAfter(dayjs(data.startDate))) {
+      ctx.addIssue({
+        code: "custom",
+        message: "End date must be after the start date.",
+        path: ["endDate"],
+      });
+    }
+  });
 
 const educationFormSchema = z.object({
   education: z.array(educationSchema),
@@ -101,14 +108,12 @@ const CvBuilderEducation = () => {
     mode: "onChange",
   });
 
-  const { control, getValues, handleSubmit, watch, setValue } = form;
+  const { control, getValues, handleSubmit, setValue } = form;
 
   const { fields, append, remove, replace } = useFieldArray({
     control,
     name: "education",
   });
-
-  const educationValues = watch("education");
 
   const syncToRedux = (education: Education[]) => {
     if (!resume || !resume.section.educations) return;
@@ -142,6 +147,9 @@ const CvBuilderEducation = () => {
 
   const handleRemoveEducation = (idx: number) => {
     remove(idx);
+
+    const currentSkills = getValues("education") ?? [];
+    syncToRedux(currentSkills.map((edu) => ({ ...edu })));
   };
 
   const handleResetEducation = () => {
@@ -243,6 +251,7 @@ const CvBuilderEducation = () => {
               onValueChange={(values) => setOpenItems(values)}
             >
               {fields.map((field, index) => {
+                const educationValues = getValues("education") ?? [];
                 const current = educationValues?.[index];
 
                 const school = current?.school ?? field.school ?? "School";
@@ -388,7 +397,11 @@ const CvBuilderEducation = () => {
                                           captionLayout="dropdown"
                                           onSelect={(date) =>
                                             dateField.onChange(
-                                              date ? new Date(date) : null,
+                                              date
+                                                ? dayjs(date).format(
+                                                    "YYYY-MM-DD",
+                                                  )
+                                                : null,
                                             )
                                           }
                                         />
@@ -442,7 +455,11 @@ const CvBuilderEducation = () => {
                                           captionLayout="dropdown"
                                           onSelect={(date) =>
                                             dateField.onChange(
-                                              date ? new Date(date) : null,
+                                              date
+                                                ? dayjs(date).format(
+                                                    "YYYY-MM-DD",
+                                                  )
+                                                : null,
                                             )
                                           }
                                         />

@@ -20,7 +20,7 @@ import { useAppSelector } from "@/stores/store";
 const DownloadPdf = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [shouldRender, setShouldRender] = useState(false);
-  const { setHtml } = usePDFComponentsAreHTML();
+  const { isHTML, setHtml } = usePDFComponentsAreHTML();
   const { templateFormat } = useGetTemplates();
   const { resume } = useAppSelector(resumeSelector);
   const { user } = useAppSelector(userSelector);
@@ -29,10 +29,12 @@ const DownloadPdf = () => {
     if (!resume) return;
     setHtml(false);
     setIsProcessing(true);
-    await resumeService.updateResume(resume._id, resume);
 
     setTimeout(() => {
-      setShouldRender(true);
+      if (isHTML) {
+        setShouldRender(true);
+        void resumeService.updateResume(resume._id, resume);
+      }
     }, 0);
   };
 
@@ -54,7 +56,7 @@ const DownloadPdf = () => {
 
         const link = document.createElement("a");
         link.href = blobUrl;
-        link.download = `${slugify(user.displayName)}-${dayjs().format("YYYY-MM-DD-H-mm-ss")}.pdf`;
+        link.download = `${slugify(`${resume.title} ${resume.subTitle}`)}-${dayjs(Date.now()).format("YYYY-MM-DD")}.pdf`;
         link.click();
 
         URL.revokeObjectURL(blobUrl);
