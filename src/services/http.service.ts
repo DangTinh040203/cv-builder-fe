@@ -117,7 +117,9 @@ export class HttpService {
   private async ensureSessionIsFresh() {
     const session = await getSession();
 
-    if (!session) return null;
+    if (!session || session.isExpired) {
+      return null;
+    }
 
     const now = Math.floor(Date.now() / 1000);
 
