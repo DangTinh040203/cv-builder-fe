@@ -71,6 +71,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           return { ...token, isExpired: false };
         }
 
+        // Refresh process already failed, bail out early to avoid loops
+        if (token.isExpired) {
+          return { ...token, isExpired: true };
+        }
+
         // No refresh token?
         if (!token.refreshToken) {
           return { ...token, isExpired: true };
