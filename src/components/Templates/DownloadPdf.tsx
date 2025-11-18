@@ -7,7 +7,6 @@ import { Download } from "lucide-react";
 import { useEffect, useState } from "react";
 import slugify from "slugify";
 
-import Template1 from "@/components/Templates/1";
 import DocumentPDF from "@/components/Templates/DocumentPDF";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
@@ -21,7 +20,7 @@ const DownloadPdf = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [shouldRender, setShouldRender] = useState(false);
   const { isHTML, setHtml } = usePDFComponentsAreHTML();
-  const { templateFormat } = useGetTemplates();
+  const { templateFormat, templateSelected, templates } = useGetTemplates();
   const { resume } = useAppSelector(resumeSelector);
   const { user } = useAppSelector(userSelector);
 
@@ -39,14 +38,16 @@ const DownloadPdf = () => {
   };
 
   useEffect(() => {
-    if (!shouldRender || !resume || !user) return;
+    if (!shouldRender || !resume || !user || !templateSelected) return;
 
     const generate = async () => {
       try {
+        const Template = templates[templateSelected];
+
         const doc = (
           <DocumentPDF
             document={
-              <Template1 templateFormat={templateFormat} resume={resume} />
+              <Template templateFormat={templateFormat} resume={resume} />
             }
           />
         );
@@ -69,7 +70,15 @@ const DownloadPdf = () => {
     };
 
     void generate();
-  }, [shouldRender, resume, templateFormat, setHtml, user]);
+  }, [
+    shouldRender,
+    resume,
+    templateFormat,
+    user,
+    templateSelected,
+    templates,
+    setHtml,
+  ]);
 
   return (
     <Button

@@ -18,6 +18,7 @@ const markTokenAsExpired = (token: JWT) => {
   token.expiresAt = null;
   token.user = null;
 };
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   trustHost: true,
 
@@ -114,7 +115,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           return { ...token };
         }
 
-        // 🔄 REFRESH TOKEN WITH LOCK
+        // REFRESH TOKEN WITH LOCK
         if (!refreshPromise) {
           refreshPromise = axios
             .post<Tokens>(

@@ -11,7 +11,7 @@ import {
   Trash,
 } from "lucide-react";
 import { useRouter } from "nextjs-toploader/app";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { type FieldErrors, useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -141,7 +141,7 @@ const CvBuilderEducation = () => {
 
     const newItem = EDUCATION_SEED_DATA[0];
     if (newItem) {
-      append({ ...newItem, order: maxOrder + 1, checkedEndDate: false });
+      append({ ...newItem, order: maxOrder + 1, checkedEndDate: true });
     }
   };
 
@@ -153,9 +153,13 @@ const CvBuilderEducation = () => {
   };
 
   const handleResetEducation = () => {
-    replace(
-      EDUCATION_SEED_DATA.map((edu) => ({ ...edu, checkedEndDate: false })),
-    );
+    const payload = EDUCATION_SEED_DATA.map((edu) => ({
+      ...edu,
+      checkedEndDate: true,
+    }));
+
+    replace(payload);
+    syncToRedux(payload);
   };
 
   const onSubmit = async (data: EducationFormInput) => {
@@ -208,7 +212,7 @@ const CvBuilderEducation = () => {
     replace(
       resume?.section.educations.content.map((edu) => ({
         ...edu,
-        checkedEndDate: false,
+        checkedEndDate: true,
       })) ?? [],
     );
     setInitialized(true);
@@ -293,71 +297,69 @@ const CvBuilderEducation = () => {
                       </AccordionTrigger>
 
                       <AccordionContent>
-                        <div className="grid grid-cols-2 items-start gap-6">
-                          <FormField
-                            control={form.control}
-                            name={`education.${index}.school`}
-                            render={({ field: inputField }) => (
-                              <FormItem>
-                                <FormLabel>Institution</FormLabel>
-                                <FormControl>
-                                  <Input
-                                    placeholder="School Name"
-                                    {...inputField}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={form.control}
-                            name={`education.${index}.major`}
-                            render={({ field: inputField }) => (
-                              <FormItem>
-                                <FormLabel>Major</FormLabel>
-                                <FormControl>
-                                  <Input
-                                    placeholder="Computer Science"
-                                    {...inputField}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={form.control}
-                            name={`education.${index}.degree`}
-                            render={({ field: selectField }) => (
-                              <FormItem>
-                                <FormLabel>Degree</FormLabel>
-                                <FormControl>
-                                  <Select
-                                    value={selectField.value}
-                                    onValueChange={selectField.onChange}
-                                  >
-                                    <SelectTrigger className="h-12! w-full">
-                                      <SelectValue placeholder="Select Degree" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                      {DegreeOptions.map((deg) => (
-                                        <SelectItem key={deg} value={deg}>
-                                          {deg}
-                                        </SelectItem>
-                                      ))}
-                                    </SelectContent>
-                                  </Select>
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <div
-                            className={`
-                              col-span-2 grid grid-cols-2 items-start gap-6
-                            `}
-                          >
+                        <div>
+                          <div className="grid grid-cols-2 items-start gap-6">
+                            <FormField
+                              control={form.control}
+                              name={`education.${index}.school`}
+                              render={({ field: inputField }) => (
+                                <FormItem>
+                                  <FormLabel>Institution</FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      placeholder="School Name"
+                                      {...inputField}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name={`education.${index}.major`}
+                              render={({ field: inputField }) => (
+                                <FormItem>
+                                  <FormLabel>Major</FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      placeholder="Computer Science"
+                                      {...inputField}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <div className="col-span-2 grid grid-cols-2 gap-6">
+                              <FormField
+                                control={form.control}
+                                name={`education.${index}.degree`}
+                                render={({ field: selectField }) => (
+                                  <FormItem>
+                                    <FormLabel>Degree</FormLabel>
+                                    <FormControl>
+                                      <Select
+                                        value={selectField.value}
+                                        onValueChange={selectField.onChange}
+                                      >
+                                        <SelectTrigger className="h-12! w-full">
+                                          <SelectValue placeholder="Select Degree" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                          {DegreeOptions.map((deg) => (
+                                            <SelectItem key={deg} value={deg}>
+                                              {deg}
+                                            </SelectItem>
+                                          ))}
+                                        </SelectContent>
+                                      </Select>
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                            </div>
                             <FormField
                               control={form.control}
                               name={`education.${index}.startDate`}
@@ -508,6 +510,7 @@ const CvBuilderEducation = () => {
                         </div>
                       </AccordionContent>
                     </AccordionItem>
+
                     <Button
                       size="icon"
                       variant="outline"

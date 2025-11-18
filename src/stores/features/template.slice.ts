@@ -24,7 +24,7 @@ interface TemplateState {
 export const defaultFormat: Format = {
   fontSize: 12,
   titleSize: 35,
-  sectionSpacing: 14,
+  sectionSpacing: 10,
   paragraphIndent: 0,
   lineHeight: 1.5,
   color: "blue",

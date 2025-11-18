@@ -179,7 +179,6 @@ const Skills = () => {
                         {...field}
                         onBlur={() => {
                           field.onBlur?.();
-                          // Sync on blur
                           const currentSkills = getValues("skills") ?? [];
                           syncToRedux(currentSkills.map((s) => ({ ...s })));
                         }}
@@ -202,7 +201,6 @@ const Skills = () => {
                         {...field}
                         onBlur={() => {
                           field.onBlur?.();
-                          // Sync on blur
                           const currentSkills = getValues("skills") ?? [];
                           syncToRedux(currentSkills.map((s) => ({ ...s })));
                         }}

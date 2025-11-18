@@ -11,7 +11,7 @@ const buttonVariants = cva(
     dark:aria-invalid:ring-destructive/40 dark:text-white
     inline-flex h-10 shrink-0 cursor-pointer items-center justify-center gap-2
     rounded-full text-sm font-medium whitespace-nowrap transition-all
-    outline-none
+    outline-none select-none
     disabled:pointer-events-none disabled:opacity-50
     [&_svg]:pointer-events-none [&_svg]:shrink-0
     [&_svg:not([class*='size-'])]:size-4

@@ -1,23 +1,11 @@
 "use client";
 import "react-quill-new/dist/quill.snow.css";
 
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import dynamic from "next/dynamic";
-import { useRouter } from "nextjs-toploader/app";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import type { QuillOptionsStatic } from "react-quill-new";
-import { toast } from "sonner";
+import ReactQuill from "react-quill-new";
 
-import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
-import { Route } from "@/constants/route.constant";
-import { resumeService } from "@/services/resume.service";
-import { resumeSelector } from "@/stores/features/resume.slice";
-import { useAppSelector } from "@/stores/store";
-
-const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
-
-interface OverviewEditorProps {
+interface EditorProps {
   value: string;
   onChange: (val: string) => void;
   maxLength?: number;
@@ -28,14 +16,7 @@ type MinimalEditor = {
   getSelection: () => { index: number; length: number } | null;
 };
 
-export default function OverviewEditor({
-  value,
-  onChange,
-  maxLength = 1000,
-}: OverviewEditorProps) {
-  const { resume } = useAppSelector(resumeSelector);
-  const router = useRouter();
-
+const Editor = ({ value, onChange, maxLength = 1000 }: EditorProps) => {
   const modules: QuillOptionsStatic["modules"] = {
     toolbar: [["bold", "italic", "underline"], ["link"], [{ color: [] }]],
   };
@@ -64,10 +45,8 @@ export default function OverviewEditor({
 
   const charCount = value.replace(/<[^>]*>?/gm, "").trim().length;
 
-  
-
   return (
-    <div className="relative">
+    <div>
       <ReactQuill
         theme="snow"
         value={value}
@@ -76,6 +55,23 @@ export default function OverviewEditor({
         formats={formats}
         placeholder="Write a brief summary about yourself..."
       />
+
+      <div className="mt-2">
+        <p
+          className={`
+            text-sm
+            ${
+              charCount > maxLength * 0.9
+                ? "text-red-500"
+                : "text-muted-foreground"
+            }
+          `}
+        >
+          {charCount}/{maxLength}
+        </p>
+      </div>
     </div>
   );
-}
+};
+
+export default Editor;

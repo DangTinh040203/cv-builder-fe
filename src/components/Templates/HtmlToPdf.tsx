@@ -2,10 +2,15 @@
 import { usePDFComponentsAreHTML } from "@rawwee/react-pdf-html";
 import { Html } from "react-pdf-html";
 
-interface HtmlToPdfProps {
-  content?: string;
-  style?: React.CSSProperties;
+export interface HtmlToPdf {
+  content: string;
+  style: React.CSSProperties;
 }
+
+type HtmlToPdfProps = Partial<HtmlToPdf>;
+const bufferStyle: React.CSSProperties = {
+  marginTop: -8,
+};
 
 const HtmlToPdf = ({ content = "", style = {} }: HtmlToPdfProps) => {
   const { isHTML } = usePDFComponentsAreHTML();
@@ -13,18 +18,13 @@ const HtmlToPdf = ({ content = "", style = {} }: HtmlToPdfProps) => {
   if (!content.trim()) return null;
 
   return isHTML ? (
-    <div style={style} dangerouslySetInnerHTML={{ __html: content }} />
+    <div
+      style={style}
+      className="no-tailwindcss"
+      dangerouslySetInnerHTML={{ __html: content }}
+    />
   ) : (
-    <Html
-      style={{
-        ...style,
-        a: { textDecoration: "underline" },
-        marginTop: -6,
-        marginBottom: -6,
-      }}
-    >
-      {content}
-    </Html>
+    <Html style={{ ...style, ...bufferStyle }}>{content}</Html>
   );
 };
 

@@ -13,7 +13,7 @@ export const CvBuilderSidebar = () => {
   return (
     <div
       className={`
-        min-h-screen space-y-14 bg-[#07142b] p-8 text-white
+        sticky top-0 left-0 h-screen space-y-14 bg-[#07142b] p-8 text-white
         lg:w-72
       `}
     >

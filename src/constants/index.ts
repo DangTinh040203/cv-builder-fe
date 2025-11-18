@@ -4,6 +4,7 @@ import {
   type Resume,
   SectionType,
   type Skill,
+  type WorkExperience,
 } from "@/types/resume.type";
 
 export const RESUME_INFORMATION_SEED_DATA: Array<Information> = [
@@ -61,6 +62,27 @@ export const EDUCATION_SEED_DATA: Array<Education> = [
   },
 ];
 
+export const EXPERIENCE_SEED_DATA: Array<WorkExperience> = [
+  {
+    company: "Tech Solutions Inc.",
+    position: "Full Stack Developer",
+    startDate: "2022-07-01",
+    endDate: null,
+    description:
+      "Developed and maintained web applications using React and Node.js. Collaborated with cross-functional teams to design scalable solutions and improve application performance.",
+    order: 1,
+  },
+  {
+    company: "Web Innovators LLC",
+    position: "Frontend Developer Intern",
+    startDate: "2021-06-01",
+    endDate: "2021-08-31",
+    description:
+      "Assisted in the development of user interfaces using HTML, CSS, and JavaScript. Participated in code reviews and contributed to improving the overall user experience of the company website.",
+    order: 2,
+  },
+];
+
 export const RESUME_MOCK_DATA: Resume = {
   _id: "resume-12345",
   userId: "user-12345",
@@ -79,26 +101,7 @@ export const RESUME_MOCK_DATA: Resume = {
     workExperiences: {
       order: 2,
       type: SectionType.WORK_EXPERIENCE,
-      content: [
-        {
-          company: "TechNova Solutions",
-          position: "Web Developer",
-          description:
-            "Developed and maintained large-scale SaaS applications using React, Next.js, and NestJS. Led CI/CD automation with AWS ECS Fargate and GitHub Actions.",
-          startDate: new Date("2022-08-01"),
-          endDate: new Date("2025-01-01"),
-          order: 1,
-        },
-        {
-          company: "Freelance",
-          position: "Frontend Engineer",
-          description:
-            "Built dynamic landing pages and dashboards using React, TailwindCSS, and TypeScript for various startup clients.",
-          startDate: new Date("2021-01-01"),
-          endDate: new Date("2022-07-01"),
-          order: 2,
-        },
-      ],
+      content: EXPERIENCE_SEED_DATA,
     },
     projects: {
       order: 3,

@@ -203,7 +203,7 @@ const Template1: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
           <View style={styles.separator} />
           <View style={styles.sectionContent}>
             {educations.content.map((edu) => (
-              <View key={uuid()} style={styles.row}>
+              <View key={uuid()} style={{ ...styles.row, marginBottom: 4 }}>
                 <View style={{ minWidth: 120 }}>
                   <Text>
                     {dayjs(edu.startDate).format("MM/YYYY")} -{" "}
@@ -233,7 +233,10 @@ const Template1: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
             {workExperiences.content.map((exp) => (
               <View
                 key={uuid()}
-                style={[styles.row, { alignItems: "flex-start" }]}
+                style={[
+                  styles.row,
+                  { alignItems: "flex-start", marginBottom: 4 },
+                ]}
                 wrap={false}
               >
                 <View style={{ minWidth: 120 }}>
