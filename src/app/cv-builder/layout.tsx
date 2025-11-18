@@ -42,13 +42,13 @@ const CvBuilderLayout: React.FC<PropsWithChildren> = ({ children }) => {
           <Spinner />
         </div>
       ) : (
-        <div className="scrollbar-thin flex-1 overflow-y-auto py-10">
+        <div className="flex-1 py-10">
           <div className="container-full mx-auto max-w-7xl space-y-4">
             <div className="relative grid grid-cols-3 items-start gap-8">
               <div className="col-span-2">{children}</div>
 
               {resume && Template && (
-                <div className="sticky top-0 left-0 col-span-1">
+                <div className="sticky top-10 left-0 col-span-1">
                   <div className={`flex flex-col items-center gap-4`}>
                     <TemplateWrapper
                       document={

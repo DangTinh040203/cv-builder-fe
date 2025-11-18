@@ -29,7 +29,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
-      <body className={clsx(figtree.className)}>
+      <body className={clsx(figtree.className, "scrollbar-thin")}>
         <StoreProvider>
           <SessionProvider>
             <UserSessionProvider>

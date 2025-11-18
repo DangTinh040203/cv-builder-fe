@@ -134,7 +134,18 @@
   .container-full {
     @apply mx-auto px-4 lg:px-10;
   }
-  .no-tailwindcss {
-    all: unset;
+
+  .no-tailwindcss a {
+    color: #1a0dab !important;
+    text-decoration: underline !important;
+    cursor: pointer !important;
+  }
+
+  .no-tailwindcss strong {
+    font-weight: bold !important;
+  }
+
+  .no-tailwindcss em {
+    font-style: italic !important;
   }
 }
