@@ -25,6 +25,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Checkbox } from "@/components/ui/checkbox";
+import Editor from "@/components/ui/editor";
 import {
   Form,
   FormControl,
@@ -202,6 +203,7 @@ const Experience = () => {
     }
   };
 
+  /* Initialize form with resume data */
   useEffect(() => {
     if (!resume?.section.workExperiences) return;
     if (initialized) return;
@@ -461,14 +463,42 @@ const Experience = () => {
                               </FormItem>
                             )}
                           />
+                          <FormField
+                            control={form.control}
+                            name={`workExperience.${index}.description`}
+                            render={({ field: descField }) => (
+                              <FormItem className="col-span-2">
+                                <FormLabel>Description</FormLabel>
+                                <FormControl>
+                                  <div>
+                                    <Editor
+                                      value={descField.value}
+                                      onChange={(val) => {
+                                        descField.onChange(val);
+                                        const updated = getValues(
+                                          "workExperience",
+                                        ).map((exp, idx) =>
+                                          idx === index
+                                            ? { ...exp, description: val }
+                                            : { ...exp },
+                                        );
+                                        syncToRedux(updated);
+                                      }}
+                                    />
+                                  </div>
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
                         </div>
                       </AccordionContent>
                     </AccordionItem>
                     <Button
-                      size="icon"
                       variant="outline"
                       className="mt-2"
                       type="button"
+                      size={"icon"}
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
@@ -481,7 +511,6 @@ const Experience = () => {
                 );
               })}
             </Accordion>
-
             <div className="flex items-center gap-4">
               <Button
                 type="button"

@@ -1,14 +1,14 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight, Plus, RefreshCcw, Trash2, Upload } from "lucide-react";
-import Image from "next/image";
+import { ArrowRight, Plus, RefreshCcw } from "lucide-react";
 import { useRouter } from "nextjs-toploader/app";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
+import UploadAvatar from "@/components/CvBuilderHeadingScreen/UploadAvatar";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -18,6 +18,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import InformationInput from "@/components/ui/information-input";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
@@ -181,48 +182,14 @@ const CvBuilderHeading = () => {
 
             <div className="grid grid-cols-5 gap-8">
               {resume.avatar && (
-                <div
-                  className={`
-                    group relative aspect-square overflow-hidden rounded-md
-                    shadow-xl
-                  `}
-                >
-                  <Label
-                    htmlFor="avatar"
-                    className={`
-                      bg-background/80 absolute top-0 left-0 z-10 flex size-full
-                      cursor-pointer items-center justify-center opacity-0
-                      transition-all
-                      group-hover:opacity-100
-                    `}
-                  >
-                    <Upload size={16} />
-                    <Input
-                      hidden
-                      id="avatar"
-                      type="file"
-                      accept="image/*"
-                      onChange={handleSelectAvatar}
-                    />
-                  </Label>
-
-                  <div className={`relative size-full`}>
-                    <Image
-                      src={
-                        avatarSelected
-                          ? URL.createObjectURL(avatarSelected)
-                          : resume.avatar
-                      }
-                      fetchPriority="high"
-                      quality={100}
-                      sizes="auto"
-                      className="object-cover"
-                      alt=""
-                      fill
-                      priority
-                    />
-                  </div>
-                </div>
+                <UploadAvatar
+                  handleSelectAvatar={handleSelectAvatar}
+                  avatar={
+                    avatarSelected
+                      ? URL.createObjectURL(avatarSelected)
+                      : resume.avatar
+                  }
+                />
               )}
 
               <div className="col-span-4 grid grid-cols-12 gap-6">
@@ -292,35 +259,18 @@ const CvBuilderHeading = () => {
                   <Label className="font-bold">Information</Label>
                   <div className="space-y-4">
                     {resume.information.map((info) => (
-                      <div key={info.order} className="grid grid-cols-12 gap-4">
-                        <Input
-                          placeholder={"Label"}
-                          className="col-span-3"
-                          value={info.label}
-                          onChange={(e) =>
-                            handleChangeLabel(info.order, e.target.value)
-                          }
-                        />
-
-                        <Input
-                          className="col-span-8"
-                          placeholder={"Value"}
-                          value={info.value}
-                          onChange={(e) =>
-                            handleChangeValue(info.order, e.target.value)
-                          }
-                        />
-
-                        <div className="flex items-center justify-center">
-                          <Button
-                            size={"icon"}
-                            variant={"outline"}
-                            onClick={() => handleRemoveInformation(info.order)}
-                          >
-                            <Trash2 />
-                          </Button>
-                        </div>
-                      </div>
+                      <InformationInput
+                        key={info.order}
+                        label={info.label}
+                        value={info.value}
+                        handleChangeLabel={(e) => {
+                          handleChangeLabel(info.order, e.target.value);
+                        }}
+                        handleChangeValue={(e) => {
+                          handleChangeValue(info.order, e.target.value);
+                        }}
+                        handleDelete={() => handleRemoveInformation(info.order)}
+                      />
                     ))}
                   </div>
                 </div>

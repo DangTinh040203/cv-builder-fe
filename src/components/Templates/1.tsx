@@ -185,11 +185,11 @@ const Template1: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Skills</Text>
           <View style={styles.separator} />
-          <View style={styles.sectionContent}>
+          <View style={{ ...styles.sectionContent, gap: 2 }}>
             {skills.content.map((skill) => (
               <View key={uuid()} style={styles.row}>
                 <Text style={styles.label}>{skill.label}</Text>
-                <Text>{skill.value}</Text>
+                <Text style={styles.text}>{skill.value}</Text>
               </View>
             ))}
           </View>
@@ -213,7 +213,7 @@ const Template1: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
                   </Text>
                 </View>
                 <View style={styles.col}>
-                  <Text style={{ fontWeight: 600 }}>{edu.school}</Text>
+                  <Text style={{ fontWeight: 700 }}>{edu.school}</Text>
                   <Text>
                     {edu.major} - {edu.degree}
                   </Text>
@@ -248,8 +248,11 @@ const Template1: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
                   </Text>
                 </View>
                 <View style={[styles.col, { flex: 1 }]}>
-                  <Text style={{ fontWeight: 600 }}>{exp.company}</Text>
-                  <Text>{exp.description}</Text>
+                  <Text style={{ fontWeight: 700 }}>{exp.company}</Text>
+                  <HtmlToPdf
+                    style={{ ...styles.text, margin: 0 }}
+                    content={exp.description}
+                  />
                 </View>
               </View>
             ))}
@@ -267,12 +270,6 @@ const Template1: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
               <View key={uuid()} style={styles.projectContainer} wrap={false}>
                 <View style={styles.projectHeader}>
                   <Text style={{ fontWeight: 600 }}>{project.title}</Text>
-                  {/* <Text style={{ fontWeight: 600 }}>
-                    {dayjs(project.).format("MM/YYYY")} -{" "}
-                    {project.endDate
-                      ? dayjs(project.endDate).format("MM/YYYY")
-                      : "Present"}
-                  </Text> */}
                 </View>
 
                 <View style={styles.col}>

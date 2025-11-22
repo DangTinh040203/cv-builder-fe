@@ -120,6 +120,11 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Hide scrollbar */
+  *::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @theme {
@@ -147,5 +152,13 @@
 
   .no-tailwindcss em {
     font-style: italic !important;
+  }
+
+  .quill .ql-toolbar {
+    @apply rounded-tr-md rounded-tl-md select-none;
+  }
+
+  .quill .ql-container.ql-snow {
+    @apply rounded-br-md rounded-bl-md min-h-28;
   }
 }

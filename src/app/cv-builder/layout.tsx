@@ -35,7 +35,7 @@ const CvBuilderLayout: React.FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <div className="relative flex">
-      <CvBuilderSidebar />
+      {/* <CvBuilderSidebar /> */}
 
       {!isEditableResume ? (
         <div className={`flex min-h-96 flex-1 items-center justify-center`}>

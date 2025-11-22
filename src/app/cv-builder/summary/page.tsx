@@ -4,8 +4,8 @@ import { useRouter } from "nextjs-toploader/app";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import Editor from "@/components/CvBuilder/Editor";
 import { Button } from "@/components/ui/button";
+import Editor from "@/components/ui/editor";
 import { Spinner } from "@/components/ui/spinner";
 import { Route } from "@/constants/route.constant";
 import { resumeService } from "@/services/resume.service";
