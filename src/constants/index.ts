@@ -1,6 +1,7 @@
 import {
   type Education,
   type Information,
+  type Project,
   type Resume,
   SectionType,
   type Skill,
@@ -83,6 +84,79 @@ export const EXPERIENCE_SEED_DATA: Array<WorkExperience> = [
   },
 ];
 
+export const PROJECTS_SEED_DATA: Array<Project> = [
+  {
+    title: "Task Management System",
+    subTitle: "Cloud-based productivity platform",
+    information: [
+      { label: "Tech Stack", value: "Next.js, NestJS, AWS", order: 1 },
+      { label: "Role", value: "Lead Developer", order: 2 },
+      {
+        label: "Outcome",
+        value: "Improved team productivity by 40%",
+        order: 3,
+      },
+    ],
+    order: 1,
+  },
+  {
+    title: "E-Commerce Platform",
+    subTitle: "Multi-vendor online marketplace",
+    information: [
+      { label: "Tech Stack", value: "React, Node.js, MongoDB", order: 1 },
+      { label: "Role", value: "Full Stack Developer", order: 2 },
+      {
+        label: "Outcome",
+        value: "Enabled 100+ vendors to sell products online",
+        order: 3,
+      },
+    ],
+    order: 2,
+  },
+  {
+    title: "Real-Time Chat App",
+    subTitle: "Cross-platform messaging application",
+    information: [
+      { label: "Tech Stack", value: "Flutter, Firebase", order: 1 },
+      { label: "Role", value: "Mobile Developer", order: 2 },
+      {
+        label: "Outcome",
+        value: "Achieved 10,000+ downloads in 3 months",
+        order: 3,
+      },
+    ],
+    order: 3,
+  },
+  {
+    title: "Portfolio Website",
+    subTitle: "Personal branding and showcase site",
+    information: [
+      { label: "Tech Stack", value: "Next.js, TailwindCSS", order: 1 },
+      { label: "Role", value: "Designer & Developer", order: 2 },
+      {
+        label: "Outcome",
+        value: "Increased freelance inquiries by 60%",
+        order: 3,
+      },
+    ],
+    order: 4,
+  },
+  {
+    title: "IoT Device Dashboard",
+    subTitle: "Monitoring and analytics for smart devices",
+    information: [
+      { label: "Tech Stack", value: "Vue.js, Express, MQTT", order: 1 },
+      { label: "Role", value: "Backend Developer", order: 2 },
+      {
+        label: "Outcome",
+        value: "Reduced device downtime by 25%",
+        order: 3,
+      },
+    ],
+    order: 5,
+  },
+];
+
 export const RESUME_MOCK_DATA: Resume = {
   _id: "resume-12345",
   userId: "user-12345",
@@ -106,22 +180,7 @@ export const RESUME_MOCK_DATA: Resume = {
     projects: {
       order: 3,
       type: SectionType.PROJECTS,
-      content: [
-        {
-          title: "Task Management System",
-          subTitle: "Cloud-based productivity platform",
-          information: [
-            { label: "Tech Stack", value: "Next.js, NestJS, AWS", order: 1 },
-            { label: "Role", value: "Lead Developer", order: 2 },
-            {
-              label: "Outcome",
-              value: "Improved team productivity by 40%",
-              order: 3,
-            },
-          ],
-          order: 1,
-        },
-      ],
+      content: PROJECTS_SEED_DATA,
     },
     skills: {
       order: 4,
