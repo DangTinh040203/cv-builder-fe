@@ -65,6 +65,20 @@ export const config = [
       curly: ["error", "multi-line"],
       "no-console": "warn",
 
+      // Prevent importing from apps into shared packages
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["**/apps/**", "@/apps/**", "apps/**"],
+              message:
+                "Cannot import from apps into shared packages. Only import from shared into apps.",
+            },
+          ],
+        },
+      ],
+
       // Tailwind readable
       "readable-tailwind/multiline": [
         "warn",
