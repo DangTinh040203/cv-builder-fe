@@ -200,7 +200,7 @@ const Header = () => {
               initial="hidden"
               animate="visible"
             >
-              <Link href="/auth">
+              <Link href="/auth/sign-in">
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -215,7 +215,7 @@ const Header = () => {
               initial="hidden"
               animate="visible"
             >
-              <Link href="/auth">
+              <Link href="/auth/sign-in">
                 <motion.div
                   whileHover={{
                     scale: 1.05,
@@ -307,7 +307,7 @@ const Header = () => {
                   animate="visible"
                   exit="exit"
                 >
-                  <Link href="/auth" onClick={() => setIsOpen(false)}>
+                  <Link href="/auth/sign-in" onClick={() => setIsOpen(false)}>
                     <motion.div
                       whileTap={{ scale: 0.98 }}
                       whileHover={{
