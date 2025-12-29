@@ -83,7 +83,7 @@ const Footer = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
         >
-          © 2024 CVCraft. All rights reserved.
+          © 2025 CVCraft - CDT. All rights reserved.
         </motion.div>
       </div>
     </footer>

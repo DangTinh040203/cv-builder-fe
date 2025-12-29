@@ -70,11 +70,7 @@ const CTASection = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <Button
-                    size="lg"
-                    variant="secondary"
-                    className="rounded-full px-8 text-lg"
-                  >
+                  <Button size="lg" className="rounded-full px-8 text-lg">
                     Start Building for Free
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>

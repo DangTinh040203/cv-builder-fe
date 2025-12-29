@@ -2,10 +2,16 @@
 
 import { Button } from "@shared/ui/components/button";
 import { cn } from "@shared/ui/lib/utils";
+import {
+  AnimatePresence,
+  motion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import { FileText, Menu, MessageSquare, Sparkles, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const navLinks = [
   { href: "/templates", label: "Templates", icon: FileText },
@@ -13,101 +19,313 @@ const navLinks = [
   { href: "/interview", label: "Mock Interview", icon: MessageSquare },
 ];
 
+// Animation variants
+const headerVariants = {
+  hidden: { y: -100, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: { duration: 0.6, ease: "easeOut" as const },
+  },
+};
+
+const navItemVariants = {
+  hidden: { opacity: 0, y: -20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: 0.3 + i * 0.1,
+      duration: 0.5,
+      ease: "easeOut" as const,
+    },
+  }),
+};
+
+const logoVariants = {
+  hidden: { opacity: 0, scale: 0.8, rotate: -10 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    rotate: 0,
+    transition: { duration: 0.6, ease: "easeOut" as const },
+  },
+};
+
+const mobileMenuVariants = {
+  hidden: { opacity: 0, height: 0 },
+  visible: {
+    opacity: 1,
+    height: "auto",
+    transition: { duration: 0.3, ease: "easeOut" as const },
+  },
+  exit: {
+    opacity: 0,
+    height: 0,
+    transition: { duration: 0.2, ease: "easeIn" as const },
+  },
+};
+
+const mobileItemVariants = {
+  hidden: { opacity: 0, x: -20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    x: 0,
+    transition: { delay: i * 0.1, duration: 0.3 },
+  }),
+  exit: { opacity: 0, x: -20 },
+};
+
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
+  const { scrollY } = useScroll();
+  const headerShadow = useTransform(
+    scrollY,
+    [0, 100],
+    ["0 0 0 rgba(0,0,0,0)", "0 4px 20px rgba(0,0,0,0.1)"],
+  );
+
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const isActive = (path: string) => pathname === path;
 
   return (
-    <nav
-      className={`
-        glass border-border/50 fixed top-0 right-0 left-0 z-50 border-b
-      `}
+    <motion.nav
+      className={cn(
+        "glass border-border/50 fixed top-0 right-0 left-0 z-50 border-b",
+        isScrolled && "shadow-md",
+      )}
+      variants={headerVariants}
+      initial="hidden"
+      animate="visible"
+      style={{
+        boxShadow: headerShadow,
+      }}
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto overflow-x-hidden px-4">
         <div className="flex h-16 items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="group flex items-center gap-2">
-            <div
-              className={`
-                gradient-bg flex h-9 w-9 items-center justify-center rounded-lg
-                shadow-md transition-shadow duration-300
-                group-hover:shadow-glow
-              `}
+          {/* Animated Logo */}
+          <motion.div
+            variants={logoVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <Link
+              href="/"
+              className="group flex items-center gap-2 select-none"
             >
-              <FileText className="text-primary-foreground h-5 w-5" />
-            </div>
-            <span className="font-display text-xl font-bold">
-              CV<span className="gradient-text">Craft</span>
-            </span>
-          </Link>
+              <motion.div
+                className={`
+                  gradient-bg flex h-9 w-9 items-center justify-center
+                  rounded-lg shadow-md
+                `}
+                whileHover={{
+                  scale: 1.1,
+                  rotate: 5,
+                  boxShadow: "0 0 20px rgba(124, 58, 237, 0.5)",
+                }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              >
+                <motion.div>
+                  <FileText className="text-primary-foreground h-5 w-5" />
+                </motion.div>
+              </motion.div>
+              <motion.span
+                className="font-display text-xl font-bold"
+                whileHover={{ scale: 1.05 }}
+              >
+                CV<span className="gradient-text">Craft</span>
+              </motion.span>
+            </Link>
+          </motion.div>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation with staggered animation */}
           <div
             className={`
               hidden items-center gap-4
               md:flex
             `}
           >
-            {navLinks.map((link) => (
-              <Link key={link.href} href={link.href}>
-                <Button
-                  className={cn("gap-2")}
-                  variant={isActive(link.href) ? "secondary" : "ghost"}
-                >
-                  <link.icon className="h-4 w-4" />
-                  {link.label}
-                </Button>
-              </Link>
+            {navLinks.map((link, i) => (
+              <motion.div
+                key={link.href}
+                custom={i}
+                variants={navItemVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                <Link href={link.href}>
+                  <motion.div
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                  >
+                    <Button
+                      className={cn("relative gap-2 overflow-hidden")}
+                      variant={isActive(link.href) ? "default" : "ghost"}
+                    >
+                      <motion.span
+                        animate={
+                          isActive(link.href) ? { rotate: [0, -10, 10, 0] } : {}
+                        }
+                        transition={{ duration: 0.5 }}
+                      >
+                        <link.icon className="h-4 w-4" />
+                      </motion.span>
+                      {link.label}
+                    </Button>
+                  </motion.div>
+                </Link>
+              </motion.div>
             ))}
           </div>
 
-          {/* Auth Buttons */}
+          {/* Auth Buttons with animation */}
           <div
             className={`
               hidden items-center gap-2
               md:flex
             `}
           >
-            <Link href="/auth">
-              <Button variant="ghost">Sign In</Button>
-            </Link>
-            <Link href="/auth">
-              <Button variant="gradient">Get Started</Button>
-            </Link>
+            <motion.div
+              custom={navLinks.length}
+              variants={navItemVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <Link href="/auth">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Button variant="ghost">Sign In</Button>
+                </motion.div>
+              </Link>
+            </motion.div>
+            <motion.div
+              custom={navLinks.length + 1}
+              variants={navItemVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <Link href="/auth">
+                <motion.div
+                  whileHover={{
+                    scale: 1.05,
+                    boxShadow: "0 10px 30px -10px rgba(124, 58, 237, 0.5)",
+                  }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                >
+                  <Button variant="gradient">Get Started</Button>
+                </motion.div>
+              </Link>
+            </motion.div>
           </div>
 
-          {/* Mobile Menu Button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </Button>
+          {/* Animated Mobile Menu Button */}
+          <motion.div className="md:hidden" whileTap={{ scale: 0.9 }}>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              <AnimatePresence mode="wait">
+                {isOpen ? (
+                  <motion.div
+                    key="close"
+                    initial={{ rotate: -90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <X className="h-5 w-5" />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="menu"
+                    initial={{ rotate: 90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: -90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Menu className="h-5 w-5" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </Button>
+          </motion.div>
         </div>
 
-        {/* Mobile Navigation */}
-        {isOpen && (
-          <div
-            className={`
-              border-border/50 animate-slide-up border-t py-4
-              md:hidden
-            `}
-          >
-            <div className="flex flex-col gap-2">
-              <Link href="/auth" onClick={() => setIsOpen(false)}>
-                <Button variant="gradient" className="mt-2 w-full">
-                  Sign In / Sign Up
-                </Button>
-              </Link>
-            </div>
-          </div>
-        )}
+        {/* Animated Mobile Navigation */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              className={`
+                border-border/50 overflow-hidden border-t
+                md:hidden
+              `}
+              variants={mobileMenuVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              <div className="flex flex-col gap-2 py-4">
+                {navLinks.map((link, i) => (
+                  <motion.div
+                    key={link.href}
+                    custom={i}
+                    variants={mobileItemVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                  >
+                    <Link href={link.href} onClick={() => setIsOpen(false)}>
+                      <motion.div whileTap={{ scale: 0.98, x: 5 }}>
+                        <Button
+                          variant={isActive(link.href) ? "secondary" : "ghost"}
+                          className="w-full justify-start gap-3"
+                        >
+                          <link.icon className="h-4 w-4" />
+                          {link.label}
+                        </Button>
+                      </motion.div>
+                    </Link>
+                  </motion.div>
+                ))}
+                <motion.div
+                  custom={navLinks.length}
+                  variants={mobileItemVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                >
+                  <Link href="/auth" onClick={() => setIsOpen(false)}>
+                    <motion.div
+                      whileTap={{ scale: 0.98 }}
+                      whileHover={{
+                        boxShadow: "0 10px 30px -10px rgba(124, 58, 237, 0.5)",
+                      }}
+                    >
+                      <Button variant="gradient" className="mt-2 w-full">
+                        Sign In / Sign Up
+                      </Button>
+                    </motion.div>
+                  </Link>
+                </motion.div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-    </nav>
+    </motion.nav>
   );
 };
 
