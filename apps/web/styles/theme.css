@@ -3,78 +3,79 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 224 71% 4%;
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.145 0.03 265);
 
-    --card: 0 0% 100%;
-    --card-foreground: 224 71% 4%;
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.145 0.03 265);
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 224 71% 4%;
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.145 0.03 265);
 
-    --primary: 263 70% 50%;
-    --primary-foreground: 0 0% 100%;
+    --primary: oklch(0.4919 0.2403 293.54);
+    --primary-foreground: oklch(0.4919 0.2403 293.54);
 
-    --secondary: 263 30% 96%;
-    --secondary-foreground: 224 71% 4%;
+    --secondary: oklch(0.965 0.012 276);
+    --secondary-foreground: oklch(0.145 0.03 265);
 
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 9% 46%;
+    --muted: oklch(0.965 0.005 250);
+    --muted-foreground: oklch(0.55 0.015 250);
 
-    --accent: 263 70% 50%;
-    --accent-foreground: 0 0% 100%;
+    --accent: oklch(0.4919 0.2403 293.54);
+    --accent-foreground: oklch(1 0 0);
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: oklch(0.63 0.24 25);
+    --destructive-foreground: oklch(1 0 0);
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 263 70% 50%;
+    --border: oklch(0.925 0.005 250);
+    --input: oklch(0.925 0.005 250);
+    --ring: oklch(0.4919 0.2403 293.54);
 
     --radius: 0.75rem;
 
     /* Custom tokens - Purple theme */
     --gradient-primary: linear-gradient(
       135deg,
-      hsl(263 70% 50%) 0%,
-      hsl(280 70% 55%) 100%
+      oklch(0.4919 0.2403 293.54) 0%,
+      oklch(0.55 0.25 290) 100%
     );
     --gradient-hero: linear-gradient(
       135deg,
-      hsl(263 70% 50%) 0%,
-      hsl(280 65% 55%) 50%,
-      hsl(300 60% 60%) 100%
+      oklch(0.4919 0.2403 293.54) 0%,
+      oklch(0.55 0.22 290) 50%,
+      oklch(0.6 0.18 310) 100%
     );
     --gradient-card: linear-gradient(
       180deg,
-      hsl(0 0% 100%) 0%,
-      hsl(263 30% 98%) 100%
+      oklch(1 0 0) 0%,
+      oklch(0.98 0.01 276) 100%
     );
     --gradient-subtle: linear-gradient(
       135deg,
-      hsl(263 30% 98%) 0%,
-      hsl(263 20% 96%) 100%
+      oklch(0.98 0.01 276) 0%,
+      oklch(0.965 0.008 276) 100%
     );
 
-    --shadow-sm: 0 1px 2px 0 hsl(224 71% 4% / 0.05);
+    --shadow-sm: 0 1px 2px 0 oklch(0.145 0.03 265 / 0.05);
     --shadow-md:
-      0 4px 6px -1px hsl(224 71% 4% / 0.1), 0 2px 4px -2px hsl(224 71% 4% / 0.1);
+      0 4px 6px -1px oklch(0.145 0.03 265 / 0.1),
+      0 2px 4px -2px oklch(0.145 0.03 265 / 0.1);
     --shadow-lg:
-      0 10px 15px -3px hsl(224 71% 4% / 0.1),
-      0 4px 6px -4px hsl(224 71% 4% / 0.1);
+      0 10px 15px -3px oklch(0.145 0.03 265 / 0.1),
+      0 4px 6px -4px oklch(0.145 0.03 265 / 0.1);
     --shadow-xl:
-      0 20px 25px -5px hsl(224 71% 4% / 0.1),
-      0 8px 10px -6px hsl(224 71% 4% / 0.1);
-    --shadow-glow: 0 0 40px hsl(263 70% 50% / 0.2);
+      0 20px 25px -5px oklch(0.145 0.03 265 / 0.1),
+      0 8px 10px -6px oklch(0.145 0.03 265 / 0.1);
+    --shadow-glow: 0 0 40px oklch(0.4919 0.2403 293.54 / 0.2);
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 224 71% 4%;
-    --sidebar-primary: 263 70% 50%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 263 30% 96%;
-    --sidebar-accent-foreground: 224 71% 4%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 263 70% 50%;
+    --sidebar-background: oklch(0.99 0 0);
+    --sidebar-foreground: oklch(0.145 0.03 265);
+    --sidebar-primary: oklch(0.4919 0.2403 293.54);
+    --sidebar-primary-foreground: oklch(1 0 0);
+    --sidebar-accent: oklch(0.965 0.012 276);
+    --sidebar-accent-foreground: oklch(0.145 0.03 265);
+    --sidebar-border: oklch(0.925 0.005 250);
+    --sidebar-ring: oklch(0.4919 0.2403 293.54);
   }
 }
 
@@ -106,11 +107,11 @@
 
   .glass {
     backdrop-filter: blur(12px);
-    background: hsl(var(--background) / 0.8);
+    background: oklch(from var(--background) l c h / 0.8);
   }
 
   .dark .glass {
-    background: hsl(var(--card) / 0.8);
+    background: oklch(from var(--card) l c h / 0.8);
   }
 
   .shadow-glow {
@@ -132,17 +133,17 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: hsl(var(--muted));
+  background: var(--muted);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted-foreground) / 0.3);
+  background: oklch(from var(--muted-foreground) l c h / 0.3);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground) / 0.5);
+  background: oklch(from var(--muted-foreground) l c h / 0.5);
 }
 
 /* Animations */
@@ -175,10 +176,10 @@
 @keyframes pulse-glow {
   0%,
   100% {
-    box-shadow: 0 0 20px hsl(var(--primary) / 0.2);
+    box-shadow: 0 0 20px oklch(from var(--primary) l c h / 0.2);
   }
   50% {
-    box-shadow: 0 0 40px hsl(var(--primary) / 0.4);
+    box-shadow: 0 0 40px oklch(from var(--primary) l c h / 0.4);
   }
 }
 
@@ -315,13 +316,13 @@
   0%,
   100% {
     box-shadow:
-      0 0 5px hsl(var(--primary) / 0.2),
-      0 0 20px hsl(var(--primary) / 0.1);
+      0 0 5px oklch(from var(--primary) l c h / 0.2),
+      0 0 20px oklch(from var(--primary) l c h / 0.1);
   }
   50% {
     box-shadow:
-      0 0 20px hsl(var(--primary) / 0.4),
-      0 0 40px hsl(var(--primary) / 0.2);
+      0 0 20px oklch(from var(--primary) l c h / 0.4),
+      0 0 40px oklch(from var(--primary) l c h / 0.2);
   }
 }
 
@@ -412,9 +413,9 @@
 .animate-text-shimmer {
   background: linear-gradient(
     90deg,
-    hsl(var(--foreground)) 0%,
-    hsl(var(--primary)) 50%,
-    hsl(var(--foreground)) 100%
+    var(--foreground) 0%,
+    var(--primary) 50%,
+    var(--foreground) 100%
   );
   background-size: 200% auto;
   -webkit-background-clip: text;
@@ -434,14 +435,14 @@
 }
 .hover-lift:hover {
   transform: translateY(-8px);
-  box-shadow: 0 20px 40px -15px hsl(var(--primary) / 0.2);
+  box-shadow: 0 20px 40px -15px oklch(from var(--primary) l c h / 0.2);
 }
 
 .hover-glow {
   transition: box-shadow 0.3s ease;
 }
 .hover-glow:hover {
-  box-shadow: 0 0 30px hsl(var(--primary) / 0.3);
+  box-shadow: 0 0 30px oklch(from var(--primary) l c h / 0.3);
 }
 
 .hover-scale {

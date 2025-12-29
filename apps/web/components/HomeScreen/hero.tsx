@@ -1,4 +1,5 @@
 "use client";
+import { Badge } from "@shared/ui/components/badge";
 import { Button } from "@shared/ui/components/button";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, MousePointer2, Sparkles } from "lucide-react";
@@ -21,8 +22,8 @@ const HeroSection = () => {
     <section
       ref={heroRef}
       className={`
-        from-background via-primary/5 to-accent/10 relative flex min-h-[90vh]
-        items-center overflow-hidden bg-linear-to-br px-4 pt-32 pb-24
+        from-background via-primary/5 to-accent/10 relative flex min-h-[100vh]
+        items-center overflow-hidden bg-gradient-to-br px-4 pt-32 pb-24
       `}
     >
       <FloatingParticles />
@@ -103,7 +104,7 @@ const HeroSection = () => {
           <motion.div
             className={`
               bg-primary/10 border-primary/20 mb-8 inline-flex items-center
-              gap-2 rounded-full border px-4 py-2
+              gap-2 gap-x-4 rounded-full border px-4 py-2
             `}
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -119,14 +120,10 @@ const HeroSection = () => {
               AI-Powered CV Builder
             </span>
             <motion.span
-              className={`
-                bg-primary/20 text-primary rounded-full px-2 py-0.5 text-xs
-                font-bold
-              `}
               animate={{ scale: [1, 1.1, 1] }}
               transition={{ duration: 2, repeat: Infinity }}
             >
-              NEW
+              <Badge>NEW</Badge>
             </motion.span>
           </motion.div>
 
@@ -156,7 +153,6 @@ const HeroSection = () => {
             </motion.span>
           </motion.h1>
 
-          {/* Subheadline */}
           <motion.p
             className={`
               text-muted-foreground mx-auto mb-10 max-w-xl text-lg

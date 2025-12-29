@@ -9,7 +9,7 @@ import { fadeInUp, scaleIn, staggerContainer } from "@/styles/animation";
 
 const templateCategories = [
   { name: "Professional", count: 4, color: "bg-primary/10 text-primary" },
-  { name: "Modern", count: 2, color: "bg-accent/10 text-accent" },
+  { name: "Modern", count: 2, color: "bg-secondary/10 text-primary" },
   { name: "Creative", count: 2, color: "bg-destructive/10 text-destructive" },
   { name: "Minimal", count: 2, color: "bg-muted text-muted-foreground" },
 ];

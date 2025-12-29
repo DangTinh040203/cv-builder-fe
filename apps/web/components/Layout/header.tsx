@@ -46,18 +46,15 @@ const Header = () => {
           {/* Desktop Navigation */}
           <div
             className={`
-              hidden items-center gap-1
+              hidden items-center gap-4
               md:flex
             `}
           >
             {navLinks.map((link) => (
               <Link key={link.href} href={link.href}>
                 <Button
+                  className={cn("gap-2")}
                   variant={isActive(link.href) ? "secondary" : "ghost"}
-                  className={cn(
-                    "gap-2",
-                    isActive(link.href) && "bg-primary/10 text-primary",
-                  )}
                 >
                   <link.icon className="h-4 w-4" />
                   {link.label}

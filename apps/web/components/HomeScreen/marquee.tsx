@@ -9,7 +9,7 @@ const Marquee = () => {
     <section
       className={`border-border bg-muted/30 overflow-hidden border-b px-4 py-12`}
     >
-      <div className="container mx-auto">
+      <div className="container mx-auto space-y-2">
         <motion.p
           className="text-muted-foreground mb-6 text-center text-sm"
           initial={{ opacity: 0 }}
