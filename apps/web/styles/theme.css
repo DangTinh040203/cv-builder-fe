@@ -1,11 +1,8 @@
 @import "tailwindcss";
 @reference "@shared/ui/globals.css";
 
-@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap");
-
 @layer base {
   :root {
-    /* Clean White & Purple Theme (inspired by Rethinkable) */
     --background: 0 0% 100%;
     --foreground: 224 71% 4%;
 
@@ -79,59 +76,6 @@
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 263 70% 50%;
   }
-
-  .dark {
-    /* Dracula Palette */
-    --background: 231 15% 18%;
-    --foreground: 60 30% 96%;
-
-    --card: 232 14% 21%;
-    --card-foreground: 60 30% 96%;
-
-    --popover: 232 14% 21%;
-    --popover-foreground: 60 30% 96%;
-
-    --primary: 265 89% 78%;
-    --primary-foreground: 231 15% 18%;
-
-    --secondary: 232 14% 31%;
-    --secondary-foreground: 60 30% 96%;
-
-    --muted: 232 14% 31%;
-    --muted-foreground: 225 14% 64%;
-
-    --accent: 191 97% 77%;
-    --accent-foreground: 231 15% 18%;
-
-    --destructive: 0 100% 67%;
-    --destructive-foreground: 231 15% 18%;
-
-    --border: 232 14% 31%;
-    --input: 232 14% 31%;
-    --ring: 265 89% 78%;
-
-    /* Dracula custom tokens */
-    --gradient-primary: linear-gradient(
-      135deg,
-      hsl(265 89% 78%) 0%,
-      hsl(326 100% 74%) 100%
-    );
-    --gradient-hero: linear-gradient(
-      135deg,
-      hsl(232 14% 21%) 0%,
-      hsl(265 40% 30%) 100%
-    );
-    --shadow-glow: 0 0 40px hsl(265 89% 78% / 0.3);
-
-    --sidebar-background: 231 15% 18%;
-    --sidebar-foreground: 60 30% 96%;
-    --sidebar-primary: 265 89% 78%;
-    --sidebar-primary-foreground: 231 15% 18%;
-    --sidebar-accent: 232 14% 31%;
-    --sidebar-accent-foreground: 60 30% 96%;
-    --sidebar-border: 232 14% 31%;
-    --sidebar-ring: 265 89% 78%;
-  }
 }
 
 @layer base {
@@ -141,16 +85,6 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: "Inter", system-ui, sans-serif;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-family: "Plus Jakarta Sans", system-ui, sans-serif;
   }
 }
 
