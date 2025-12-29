@@ -1,14 +1,21 @@
 import js from "@eslint/js";
 import eslintConfigPrettier from "eslint-config-prettier";
 import importPlugin from "eslint-plugin-import";
-import onlyWarn from "eslint-plugin-only-warn";
 import prettier from "eslint-plugin-prettier";
 import readableTailwind from "eslint-plugin-readable-tailwind";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
 import turboPlugin from "eslint-plugin-turbo";
 import tseslint from "typescript-eslint";
 
-const callees = ["clsx", "cva", "ctl", "twMerge", "cx", "cn"];
+const callees = [
+  "clsx",
+  "cva",
+  "ctl",
+  "twMerge",
+  "cx",
+  "cn",
+  ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+];
 
 /**
  * A shared ESLint configuration for the repository.
@@ -22,14 +29,13 @@ export const config = [
   {
     plugins: {
       turbo: turboPlugin,
-      onlyWarn,
     },
     rules: {
       "turbo/no-undeclared-env-vars": "warn",
     },
   },
   {
-    ignores: ["dist/**"],
+    ignores: ["dist/**", "node_modules/**", ".next/**"],
   },
   {
     plugins: {
@@ -59,6 +65,21 @@ export const config = [
       "import/first": "error",
       "import/newline-after-import": "error",
       "import/no-duplicates": "error",
+      "import/extensions": [
+        "error",
+        "never",
+        {
+          css: "always",
+          scss: "always",
+          json: "always",
+          png: "always",
+          jpg: "always",
+          jpeg: "always",
+          svg: "always",
+          js: "ignore",
+          mjs: "ignore",
+        },
+      ],
 
       // General rules
       semi: "warn",
