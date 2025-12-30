@@ -6,7 +6,7 @@ import { ArrowRight, MousePointer2, Sparkles } from "lucide-react";
 import Link from "next/link";
 import React, { useRef } from "react";
 
-import FloatingParticles from "@/components/Common/floating-particles";
+import FloatingParticles from "@/components/common/floating-particles";
 import { fadeInUp, staggerContainer } from "@/styles/animation";
 
 const HeroSection = () => {
