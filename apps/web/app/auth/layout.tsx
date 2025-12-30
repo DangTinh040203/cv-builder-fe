@@ -178,7 +178,12 @@ const AuthLayout: React.FC<PropsWithChildren> = ({ children }) => {
         </div>
       </div>
 
-      <div className="flex flex-1 items-center justify-center p-8">
+      <div
+        className={`
+          flex flex-1 items-center justify-center px-4
+          lg:p-8
+        `}
+      >
         <motion.div
           className="w-full max-w-md"
           initial={{ opacity: 0, x: 20 }}

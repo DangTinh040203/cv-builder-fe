@@ -53,24 +53,31 @@ const buttonVariants = {
   },
 };
 
-const formSchema = z.object({
-  email: z
-    .string()
-    .min(1, "Please enter your email address")
-    .email("Please enter a valid email address"),
-  password: z
-    .string()
-    .min(1, "Please enter your password")
-    .min(5, "Password must be at least 5 characters")
-    .max(50, "Password must be less than 50 characters"),
-});
+const formSchema = z
+  .object({
+    email: z
+      .string()
+      .min(1, "Please enter your email address")
+      .email("Please enter a valid email address"),
+    password: z
+      .string()
+      .min(1, "Please enter your password")
+      .min(8, "Password must be at least 8 characters")
+      .max(50, "Password must be less than 50 characters"),
+    confirmPassword: z.string().min(1, "Please confirm your password"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
-const SignIn = () => {
+const SignUp = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
       password: "",
+      confirmPassword: "",
     },
   });
 
@@ -117,7 +124,32 @@ const SignIn = () => {
                     >
                       <Input
                         {...field}
-                        placeholder="Enter your password"
+                        placeholder="Create a password"
+                        type="password"
+                      />
+                    </motion.div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </motion.div>
+
+          <motion.div variants={itemVariants}>
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Confirm Password</FormLabel>
+                  <FormControl>
+                    <motion.div
+                      whileFocus={{ scale: 1.01 }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                    >
+                      <Input
+                        {...field}
+                        placeholder="Confirm your password"
                         type="password"
                       />
                     </motion.div>
@@ -138,7 +170,7 @@ const SignIn = () => {
             transition={{ type: "spring", stiffness: 400, damping: 17 }}
           >
             <Button type="submit" size="lg" className="w-full rounded-full">
-              Sign In
+              Create Account
               <motion.span
                 initial={{ x: 0 }}
                 whileHover={{ x: 5 }}
@@ -153,9 +185,9 @@ const SignIn = () => {
             variants={itemVariants}
             className="text-muted-foreground text-center text-sm"
           >
-            Don&apos;t have an account?{" "}
+            Already have an account?{" "}
             <Link
-              href="/auth/sign-up"
+              href="/auth/sign-in"
               className={`
                 text-primary font-medium transition-all
                 hover:underline
@@ -165,7 +197,7 @@ const SignIn = () => {
                 whileHover={{ scale: 1.05 }}
                 className="inline-block"
               >
-                Sign Up
+                Sign In
               </motion.span>
             </Link>
           </motion.p>
@@ -175,4 +207,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;

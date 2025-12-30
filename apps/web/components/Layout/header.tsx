@@ -98,8 +98,8 @@ const Header = () => {
   return (
     <motion.nav
       className={cn(
-        "glass border-border/50 fixed top-0 right-0 left-0 z-50 border-b",
-        isScrolled && "shadow-md",
+        "fixed top-0 right-0 left-0 z-50 transition-all duration-300",
+        isScrolled && "glass border-border/50 border-b shadow-md",
       )}
       variants={headerVariants}
       initial="hidden"

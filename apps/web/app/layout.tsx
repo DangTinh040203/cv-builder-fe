@@ -1,6 +1,7 @@
 import "@/styles/theme.css";
 import "@shared/ui/globals.css";
 
+import { ClerkProvider } from "@clerk/nextjs";
 import { type Metadata } from "next";
 import { Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
@@ -26,21 +27,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`
-          ${fontSans.variable}
-          ${fontMono.variable}
-          font-sans antialiased
-        `}
-      >
-        <NextTopLoader
-          color="#6c23d7"
-          showSpinner={false}
-          easing="ease-in-out"
-        />
-        {children}
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" suppressHydrationWarning>
+        <body
+          className={`
+            ${fontSans.variable}
+            ${fontMono.variable}
+            font-sans antialiased
+          `}
+        >
+          <NextTopLoader
+            color="#6c23d7"
+            showSpinner={false}
+            easing="ease-in-out"
+          />
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
