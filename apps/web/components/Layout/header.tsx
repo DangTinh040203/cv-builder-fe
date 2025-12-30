@@ -1,6 +1,20 @@
 "use client";
 
+import { SignOutButton, useUser } from "@clerk/nextjs";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@shared/ui/components/avatar";
 import { Button } from "@shared/ui/components/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@shared/ui/components/dropdown-menu";
 import { cn } from "@shared/ui/lib/utils";
 import {
   AnimatePresence,
@@ -8,7 +22,16 @@ import {
   useScroll,
   useTransform,
 } from "framer-motion";
-import { FileText, Menu, MessageSquare, Sparkles, X } from "lucide-react";
+import {
+  CreditCard,
+  FileText,
+  LogOut,
+  Menu,
+  MessageSquare,
+  Sparkles,
+  User,
+  X,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -77,6 +100,7 @@ const mobileItemVariants = {
 };
 
 const Header = () => {
+  const { isSignedIn, user, isLoaded } = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
@@ -194,39 +218,109 @@ const Header = () => {
               md:flex
             `}
           >
-            <motion.div
-              custom={navLinks.length}
-              variants={navItemVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              <Link href="/auth/sign-in">
+            {!isLoaded ? (
+              // Loading state placeholder - keep layout stable
+              <div className="h-10 w-24"></div>
+            ) : isSignedIn ? (
+              <motion.div
+                custom={navLinks.length}
+                variants={navItemVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                <DropdownMenu modal={false}>
+                  <DropdownMenuTrigger>
+                    <Avatar className="h-9 w-9 border">
+                      <AvatarImage
+                        src={user.imageUrl}
+                        alt={user.fullName || ""}
+                      />
+                      <AvatarFallback>
+                        {user.firstName?.charAt(0) || "U"}
+                      </AvatarFallback>
+                    </Avatar>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56" align="end" forceMount>
+                    <DropdownMenuLabel className="font-normal">
+                      <div className="flex flex-col space-y-1">
+                        <p className="text-sm leading-none font-medium">
+                          {user.fullName}
+                        </p>
+                        <p
+                          className={`
+                            text-muted-foreground text-xs leading-none
+                          `}
+                        >
+                          {user.primaryEmailAddress?.emailAddress}
+                        </p>
+                      </div>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem asChild>
+                      <Link href="/profile" className="cursor-pointer">
+                        <User className="mr-2 h-4 w-4" />
+                        Profile
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/subscription" className="cursor-pointer">
+                        <CreditCard className="mr-2 h-4 w-4" />
+                        Subscription
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem asChild>
+                      <SignOutButton>
+                        <div className="flex w-full cursor-pointer items-center">
+                          <LogOut className="mr-2 h-4 w-4" />
+                          Sign out
+                        </div>
+                      </SignOutButton>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </motion.div>
+            ) : (
+              <>
                 <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  custom={navLinks.length}
+                  variants={navItemVariants}
+                  initial="hidden"
+                  animate="visible"
                 >
-                  <Button variant="ghost">Sign In</Button>
+                  <Link href="/auth/sign-in">
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <Button variant="ghost">Sign In</Button>
+                    </motion.div>
+                  </Link>
                 </motion.div>
-              </Link>
-            </motion.div>
-            <motion.div
-              custom={navLinks.length + 1}
-              variants={navItemVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              <Link href="/auth/sign-in">
                 <motion.div
-                  whileHover={{
-                    scale: 1.05,
-                  }}
-                  whileTap={{ scale: 0.95 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                  custom={navLinks.length + 1}
+                  variants={navItemVariants}
+                  initial="hidden"
+                  animate="visible"
                 >
-                  <Button variant="gradient">Get Started</Button>
+                  <Link href="/auth/sign-in">
+                    <motion.div
+                      whileHover={{
+                        scale: 1.05,
+                      }}
+                      whileTap={{ scale: 0.95 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 400,
+                        damping: 17,
+                      }}
+                    >
+                      <Button variant="gradient">Get Started</Button>
+                    </motion.div>
+                  </Link>
                 </motion.div>
-              </Link>
-            </motion.div>
+              </>
+            )}
           </div>
 
           {/* Animated Mobile Menu Button */}
@@ -306,13 +400,71 @@ const Header = () => {
                   animate="visible"
                   exit="exit"
                 >
-                  <Link href="/auth/sign-in" onClick={() => setIsOpen(false)}>
-                    <motion.div whileTap={{ scale: 0.98 }} whileHover={{}}>
-                      <Button variant="gradient" className="mt-2 w-full">
-                        Sign In / Sign Up
-                      </Button>
-                    </motion.div>
-                  </Link>
+                  {isSignedIn ? (
+                    <>
+                      <div className="border-border/10 mb-2 border-b px-4 py-2">
+                        <div className="flex items-center gap-3">
+                          <Avatar className="h-8 w-8">
+                            <AvatarImage src={user.imageUrl} />
+                            <AvatarFallback>
+                              {user.firstName?.charAt(0)}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="flex flex-col">
+                            <p className="text-sm font-medium">
+                              {user.fullName}
+                            </p>
+                            <p className="text-muted-foreground text-xs">
+                              {user.primaryEmailAddress?.emailAddress}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <Link href="/profile" onClick={() => setIsOpen(false)}>
+                        <Button
+                          variant="ghost"
+                          className="w-full justify-start gap-3"
+                        >
+                          <User className="h-4 w-4" />
+                          Profile
+                        </Button>
+                      </Link>
+                      <Link
+                        href="/subscription"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        <Button
+                          variant="ghost"
+                          className="w-full justify-start gap-3"
+                        >
+                          <CreditCard className="h-4 w-4" />
+                          Subscription
+                        </Button>
+                      </Link>
+                      <div className="border-border/10 mt-2 border-t pt-2">
+                        <SignOutButton>
+                          <Button
+                            variant="ghost"
+                            className={`
+                              w-full justify-start gap-3 text-red-500
+                              hover:bg-red-50 hover:text-red-500
+                            `}
+                          >
+                            <LogOut className="h-4 w-4" />
+                            Sign out
+                          </Button>
+                        </SignOutButton>
+                      </div>
+                    </>
+                  ) : (
+                    <Link href="/auth/sign-in" onClick={() => setIsOpen(false)}>
+                      <motion.div whileTap={{ scale: 0.98 }} whileHover={{}}>
+                        <Button variant="gradient" className="mt-2 w-full">
+                          Sign In / Sign Up
+                        </Button>
+                      </motion.div>
+                    </Link>
+                  )}
                 </motion.div>
               </div>
             </motion.div>
