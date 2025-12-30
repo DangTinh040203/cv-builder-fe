@@ -1,11 +1,12 @@
 "use client";
 
-import { SignOutButton, useUser } from "@clerk/nextjs";
 import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@shared/ui/components/avatar";
+  SignedIn,
+  SignedOut,
+  SignOutButton,
+  UserAvatar,
+  useUser,
+} from "@clerk/nextjs";
 import { Button } from "@shared/ui/components/button";
 import {
   DropdownMenu,
@@ -100,7 +101,7 @@ const mobileItemVariants = {
 };
 
 const Header = () => {
-  const { isSignedIn, user, isLoaded } = useUser();
+  const { user, isLoaded } = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
@@ -218,107 +219,111 @@ const Header = () => {
               md:flex
             `}
           >
+            {/* Loading placeholder handled by Clerk's internal loading state or we can use ClerkLoading if needed */}
             {!isLoaded ? (
-              // Loading state placeholder - keep layout stable
               <div className="h-10 w-24"></div>
-            ) : isSignedIn ? (
-              <motion.div
-                custom={navLinks.length}
-                variants={navItemVariants}
-                initial="hidden"
-                animate="visible"
-              >
-                <DropdownMenu modal={false}>
-                  <DropdownMenuTrigger>
-                    <Avatar className="h-9 w-9 border">
-                      <AvatarImage
-                        src={user.imageUrl}
-                        alt={user.fullName || ""}
-                      />
-                      <AvatarFallback>
-                        {user.firstName?.charAt(0) || "U"}
-                      </AvatarFallback>
-                    </Avatar>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56" align="end" forceMount>
-                    <DropdownMenuLabel className="font-normal">
-                      <div className="flex flex-col space-y-1">
-                        <p className="text-sm leading-none font-medium">
-                          {user.fullName}
-                        </p>
-                        <p
-                          className={`
-                            text-muted-foreground text-xs leading-none
-                          `}
-                        >
-                          {user.primaryEmailAddress?.emailAddress}
-                        </p>
-                      </div>
-                    </DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild>
-                      <Link href="/profile" className="cursor-pointer">
-                        <User className="mr-2 h-4 w-4" />
-                        Profile
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link href="/subscription" className="cursor-pointer">
-                        <CreditCard className="mr-2 h-4 w-4" />
-                        Subscription
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild>
-                      <SignOutButton>
-                        <div className="flex w-full cursor-pointer items-center">
-                          <LogOut className="mr-2 h-4 w-4" />
-                          Sign out
-                        </div>
-                      </SignOutButton>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </motion.div>
             ) : (
               <>
-                <motion.div
-                  custom={navLinks.length}
-                  variants={navItemVariants}
-                  initial="hidden"
-                  animate="visible"
-                >
-                  <Link href="/auth/sign-in">
-                    <motion.div
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <Button variant="ghost">Sign In</Button>
-                    </motion.div>
-                  </Link>
-                </motion.div>
-                <motion.div
-                  custom={navLinks.length + 1}
-                  variants={navItemVariants}
-                  initial="hidden"
-                  animate="visible"
-                >
-                  <Link href="/auth/sign-in">
-                    <motion.div
-                      whileHover={{
-                        scale: 1.05,
-                      }}
-                      whileTap={{ scale: 0.95 }}
-                      transition={{
-                        type: "spring",
-                        stiffness: 400,
-                        damping: 17,
-                      }}
-                    >
-                      <Button variant="gradient">Get Started</Button>
-                    </motion.div>
-                  </Link>
-                </motion.div>
+                <SignedIn>
+                  <motion.div
+                    custom={navLinks.length}
+                    variants={navItemVariants}
+                    initial="hidden"
+                    animate="visible"
+                  >
+                    <DropdownMenu modal={false}>
+                      <DropdownMenuTrigger>
+                        <UserAvatar />
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent
+                        className="w-56"
+                        align="end"
+                        forceMount
+                      >
+                        <DropdownMenuLabel className="font-normal">
+                          <div className="flex flex-col space-y-1">
+                            <p className="text-sm leading-none font-medium">
+                              {user?.fullName}
+                            </p>
+                            <p
+                              className={`
+                                text-muted-foreground text-xs leading-none
+                              `}
+                            >
+                              {user?.primaryEmailAddress?.emailAddress}
+                            </p>
+                          </div>
+                        </DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem asChild>
+                          <Link href="/profile" className="cursor-pointer">
+                            <User className="mr-2 h-4 w-4" />
+                            Profile
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link href="/subscription" className="cursor-pointer">
+                            <CreditCard className="mr-2 h-4 w-4" />
+                            Subscription
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem asChild>
+                          <SignOutButton>
+                            <div
+                              className={`
+                                flex w-full cursor-pointer items-center
+                              `}
+                            >
+                              <LogOut className="mr-2 h-4 w-4" />
+                              Sign out
+                            </div>
+                          </SignOutButton>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </motion.div>
+                </SignedIn>
+
+                <SignedOut>
+                  <motion.div
+                    custom={navLinks.length}
+                    variants={navItemVariants}
+                    initial="hidden"
+                    animate="visible"
+                  >
+                    <Link href="/auth/sign-in">
+                      <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <Button variant="ghost">Sign In</Button>
+                      </motion.div>
+                    </Link>
+                  </motion.div>
+                  <motion.div
+                    custom={navLinks.length + 1}
+                    variants={navItemVariants}
+                    initial="hidden"
+                    animate="visible"
+                  >
+                    <Link href="/auth/sign-in">
+                      <motion.div
+                        whileHover={{
+                          scale: 1.05,
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 400,
+                          damping: 17,
+                        }}
+                      >
+                        <Button variant="gradient">Get Started</Button>
+                      </motion.div>
+                    </Link>
+                  </motion.div>
+                </SignedOut>
               </>
             )}
           </div>
@@ -400,63 +405,54 @@ const Header = () => {
                   animate="visible"
                   exit="exit"
                 >
-                  {isSignedIn ? (
-                    <>
-                      <div className="border-border/10 mb-2 border-b px-4 py-2">
-                        <div className="flex items-center gap-3">
-                          <Avatar className="h-8 w-8">
-                            <AvatarImage src={user.imageUrl} />
-                            <AvatarFallback>
-                              {user.firstName?.charAt(0)}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div className="flex flex-col">
-                            <p className="text-sm font-medium">
-                              {user.fullName}
-                            </p>
-                            <p className="text-muted-foreground text-xs">
-                              {user.primaryEmailAddress?.emailAddress}
-                            </p>
-                          </div>
+                  <SignedIn>
+                    <div className="border-border/10 mb-2 border-b px-4 py-2">
+                      <div className="flex items-center gap-3">
+                        <UserAvatar />
+                        <div className="flex flex-col">
+                          <p className="text-sm font-medium">
+                            {user?.fullName}
+                          </p>
+                          <p className="text-muted-foreground text-xs">
+                            {user?.primaryEmailAddress?.emailAddress}
+                          </p>
                         </div>
                       </div>
-                      <Link href="/profile" onClick={() => setIsOpen(false)}>
-                        <Button
-                          variant="ghost"
-                          className="w-full justify-start gap-3"
-                        >
-                          <User className="h-4 w-4" />
-                          Profile
-                        </Button>
-                      </Link>
-                      <Link
-                        href="/subscription"
-                        onClick={() => setIsOpen(false)}
+                    </div>
+                    <Link href="/profile" onClick={() => setIsOpen(false)}>
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-start gap-3"
                       >
+                        <User className="h-4 w-4" />
+                        Profile
+                      </Button>
+                    </Link>
+                    <Link href="/subscription" onClick={() => setIsOpen(false)}>
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-start gap-3"
+                      >
+                        <CreditCard className="h-4 w-4" />
+                        Subscription
+                      </Button>
+                    </Link>
+                    <div className="border-border/10 mt-2 border-t pt-2">
+                      <SignOutButton>
                         <Button
                           variant="ghost"
-                          className="w-full justify-start gap-3"
+                          className={`
+                            w-full justify-start gap-3 text-red-500
+                            hover:bg-red-50 hover:text-red-500
+                          `}
                         >
-                          <CreditCard className="h-4 w-4" />
-                          Subscription
+                          <LogOut className="h-4 w-4" />
+                          Sign out
                         </Button>
-                      </Link>
-                      <div className="border-border/10 mt-2 border-t pt-2">
-                        <SignOutButton>
-                          <Button
-                            variant="ghost"
-                            className={`
-                              w-full justify-start gap-3 text-red-500
-                              hover:bg-red-50 hover:text-red-500
-                            `}
-                          >
-                            <LogOut className="h-4 w-4" />
-                            Sign out
-                          </Button>
-                        </SignOutButton>
-                      </div>
-                    </>
-                  ) : (
+                      </SignOutButton>
+                    </div>
+                  </SignedIn>
+                  <SignedOut>
                     <Link href="/auth/sign-in" onClick={() => setIsOpen(false)}>
                       <motion.div whileTap={{ scale: 0.98 }} whileHover={{}}>
                         <Button variant="gradient" className="mt-2 w-full">
@@ -464,7 +460,7 @@ const Header = () => {
                         </Button>
                       </motion.div>
                     </Link>
-                  )}
+                  </SignedOut>
                 </motion.div>
               </div>
             </motion.div>
