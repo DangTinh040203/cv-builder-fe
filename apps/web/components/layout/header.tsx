@@ -232,7 +232,7 @@ const Header = () => {
                     animate="visible"
                   >
                     <DropdownMenu modal={false}>
-                      <DropdownMenuTrigger>
+                      <DropdownMenuTrigger className="cursor-pointer">
                         <UserAvatar />
                       </DropdownMenuTrigger>
                       <DropdownMenuContent

@@ -7,6 +7,8 @@ import { type Metadata } from "next";
 import { Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 
+import { ScrollToTop } from "@/components/common/scroll-to-top";
+
 const fontMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
@@ -43,6 +45,7 @@ export default function RootLayout({
             showSpinner={false}
             easing="ease-in-out"
           />
+          <ScrollToTop />
           {children}
         </body>
       </html>
