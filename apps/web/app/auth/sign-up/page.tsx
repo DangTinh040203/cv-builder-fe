@@ -1,4 +1,5 @@
 "use client";
+import { useSignUp } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@shared/ui/components/button";
 import {
@@ -11,47 +12,19 @@ import {
 } from "@shared/ui/components/form";
 import { Input } from "@shared/ui/components/input";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Eye, EyeOff, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "nextjs-toploader/app";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-// Animation variants
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.1,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-      ease: "easeOut" as const,
-    },
-  },
-};
-
-const buttonVariants = {
-  hidden: { opacity: 0, scale: 0.9 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: {
-      duration: 0.4,
-      ease: "easeOut" as const,
-    },
-  },
-};
+import { handleClerkError } from "@/lib/clerk-toast";
+import {
+  buttonScaleVariants,
+  formContainerVariants,
+  formItemVariants,
+} from "@/styles/animation";
 
 const formSchema = z
   .object({
@@ -72,6 +45,13 @@ const formSchema = z
   });
 
 const SignUp = () => {
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+
+  const { isLoaded, signUp } = useSignUp();
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -81,15 +61,42 @@ const SignUp = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!isLoaded) return;
+
+    setIsLoading(true);
+
+    try {
+      await signUp.create({
+        emailAddress: values.email,
+        password: values.password,
+      });
+
+      // Send OTP to email
+      await signUp.prepareEmailAddressVerification({
+        strategy: "email_code",
+      });
+
+      // Redirect to verify OTP page
+      router.push(`/auth/verify-otp?email=${encodeURIComponent(values.email)}`);
+    } catch (error) {
+      handleClerkError(error, {
+        fallbackMessage: "Something went wrong, please try again.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
-    <motion.div variants={containerVariants} initial="hidden" animate="visible">
+    <motion.div
+      variants={formContainerVariants}
+      initial="hidden"
+      animate="visible"
+    >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <motion.div variants={itemVariants}>
+          <motion.div variants={formItemVariants}>
             <FormField
               control={form.control}
               name="email"
@@ -101,7 +108,11 @@ const SignUp = () => {
                       whileFocus={{ scale: 1.01 }}
                       transition={{ type: "spring", stiffness: 300 }}
                     >
-                      <Input placeholder="Enter your email" {...field} />
+                      <Input
+                        placeholder="Enter your email"
+                        disabled={isLoading}
+                        {...field}
+                      />
                     </motion.div>
                   </FormControl>
                   <FormMessage />
@@ -110,7 +121,7 @@ const SignUp = () => {
             />
           </motion.div>
 
-          <motion.div variants={itemVariants}>
+          <motion.div variants={formItemVariants}>
             <FormField
               control={form.control}
               name="password"
@@ -121,12 +132,24 @@ const SignUp = () => {
                     <motion.div
                       whileFocus={{ scale: 1.01 }}
                       transition={{ type: "spring", stiffness: 300 }}
+                      className="relative"
                     >
                       <Input
                         {...field}
                         placeholder="Create a password"
-                        type="password"
+                        type={showPassword ? "text" : "password"}
+                        disabled={isLoading}
+                        className="pr-10"
                       />
+                      <Button
+                        variant="ghost"
+                        size={"icon"}
+                        type="button"
+                        className="absolute top-1/2 right-2 -translate-y-1/2"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? <EyeOff /> : <Eye />}
+                      </Button>
                     </motion.div>
                   </FormControl>
                   <FormMessage />
@@ -135,7 +158,7 @@ const SignUp = () => {
             />
           </motion.div>
 
-          <motion.div variants={itemVariants}>
+          <motion.div variants={formItemVariants}>
             <FormField
               control={form.control}
               name="confirmPassword"
@@ -146,12 +169,26 @@ const SignUp = () => {
                     <motion.div
                       whileFocus={{ scale: 1.01 }}
                       transition={{ type: "spring", stiffness: 300 }}
+                      className="relative"
                     >
                       <Input
                         {...field}
                         placeholder="Confirm your password"
-                        type="password"
+                        type={showConfirmPassword ? "text" : "password"}
+                        disabled={isLoading}
+                        className="pr-10"
                       />
+                      <Button
+                        variant="ghost"
+                        size={"icon"}
+                        type="button"
+                        className="absolute top-1/2 right-2 -translate-y-1/2"
+                        onClick={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
+                      >
+                        {showConfirmPassword ? <EyeOff /> : <Eye />}
+                      </Button>
                     </motion.div>
                   </FormControl>
                   <FormMessage />
@@ -161,28 +198,45 @@ const SignUp = () => {
           </motion.div>
 
           <motion.div
-            variants={buttonVariants}
-            whileHover={{
-              scale: 1.02,
-              boxShadow: "0 10px 30px -10px rgba(124, 58, 237, 0.4)",
-            }}
-            whileTap={{ scale: 0.98 }}
+            variants={buttonScaleVariants}
+            whileHover={
+              isLoading
+                ? {}
+                : {
+                    scale: 1.02,
+                  }
+            }
+            whileTap={isLoading ? {} : { scale: 0.98 }}
             transition={{ type: "spring", stiffness: 400, damping: 17 }}
           >
-            <Button type="submit" size="lg" className="w-full rounded-full">
-              Create Account
-              <motion.span
-                initial={{ x: 0 }}
-                whileHover={{ x: 5 }}
-                transition={{ type: "spring", stiffness: 400 }}
-              >
-                <ArrowRight className="h-5 w-5" />
-              </motion.span>
+            <Button
+              type="submit"
+              size="lg"
+              className="w-full rounded-full"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                  Creating account
+                </>
+              ) : (
+                <>
+                  Create Account
+                  <motion.span
+                    initial={{ x: 0 }}
+                    whileHover={{ x: 5 }}
+                    transition={{ type: "spring", stiffness: 400 }}
+                  >
+                    <ArrowRight className="h-5 w-5" />
+                  </motion.span>
+                </>
+              )}
             </Button>
           </motion.div>
 
           <motion.p
-            variants={itemVariants}
+            variants={formItemVariants}
             className="text-muted-foreground text-center text-sm"
           >
             Already have an account?{" "}

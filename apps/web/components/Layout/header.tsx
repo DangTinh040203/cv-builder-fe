@@ -219,7 +219,6 @@ const Header = () => {
                 <motion.div
                   whileHover={{
                     scale: 1.05,
-                    boxShadow: "0 10px 30px -10px rgba(124, 58, 237, 0.5)",
                   }}
                   whileTap={{ scale: 0.95 }}
                   transition={{ type: "spring", stiffness: 400, damping: 17 }}
@@ -308,12 +307,7 @@ const Header = () => {
                   exit="exit"
                 >
                   <Link href="/auth/sign-in" onClick={() => setIsOpen(false)}>
-                    <motion.div
-                      whileTap={{ scale: 0.98 }}
-                      whileHover={{
-                        boxShadow: "0 10px 30px -10px rgba(124, 58, 237, 0.5)",
-                      }}
-                    >
+                    <motion.div whileTap={{ scale: 0.98 }} whileHover={{}}>
                       <Button variant="gradient" className="mt-2 w-full">
                         Sign In / Sign Up
                       </Button>

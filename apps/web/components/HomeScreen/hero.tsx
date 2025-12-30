@@ -142,7 +142,7 @@ const HeroSection = () => {
             Discover, connect,
             <br />
             <motion.span
-              className="gradient-text inline-block"
+              className="gradient-text inline-block pb-2"
               animate={{
                 backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
               }}

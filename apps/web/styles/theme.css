@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @reference "@shared/ui/globals.css";
+@plugin "tailwind-scrollbar";
 
 @layer base {
   :root {

@@ -2,6 +2,7 @@ import "@/styles/theme.css";
 import "@shared/ui/globals.css";
 
 import { ClerkProvider } from "@clerk/nextjs";
+import { Toaster } from "@shared/ui/components/sonner";
 import { type Metadata } from "next";
 import { Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
@@ -33,9 +34,10 @@ export default function RootLayout({
           className={`
             ${fontSans.variable}
             ${fontMono.variable}
-            font-sans antialiased
+            scrollbar-thin max-w-screen overflow-x-hidden font-sans antialiased
           `}
         >
+          <Toaster richColors />
           <NextTopLoader
             color="#6c23d7"
             showSpinner={false}
