@@ -2,6 +2,7 @@
 
 import { Page, Text, View } from "@rawwee/react-pdf-html";
 import { Font, StyleSheet } from "@react-pdf/renderer";
+import dayjs from "dayjs";
 import { useMemo } from "react";
 import { v4 as uuid } from "uuid";
 
@@ -12,7 +13,16 @@ import { templateGlobalStyles } from "@/configs/template.config";
 Font.registerHyphenationCallback((word) => [word]);
 
 const Template01: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
-  const { title, subTitle, overview, information } = resume;
+  const {
+    title,
+    subTitle,
+    overview,
+    information,
+    skills,
+    projects,
+    workExperiences,
+    educations,
+  } = resume;
 
   const styles = useMemo(() => {
     const theme = {
@@ -22,7 +32,6 @@ const Template01: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
       lineHeight: templateFormat.lineHeight,
       sectionSpacing: templateFormat.sectionSpacing,
       margin: templateFormat.margin,
-      fontFamily: templateFormat.fontFamily,
       pageFormat: templateFormat.pageFormat,
     };
 
@@ -34,7 +43,6 @@ const Template01: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
         rowGap: theme.sectionSpacing,
         fontSize: theme.fontSize,
         lineHeight: theme.lineHeight,
-        fontFamily: theme.fontFamily,
       },
 
       section: {
@@ -178,12 +186,12 @@ const Template01: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
       </View>
 
       {/* SKILLS */}
-      {/* {skills && (
+      {skills && (
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Skills</Text>
           <View style={styles.separator} />
           <View style={{ ...styles.sectionContent, gap: 2 }}>
-            {skills.content.map((skill) => (
+            {skills.map((skill) => (
               <View key={uuid()} style={styles.row}>
                 <Text style={styles.label}>{skill.label}</Text>
                 <Text style={styles.text}>{skill.value}</Text>
@@ -191,15 +199,15 @@ const Template01: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
             ))}
           </View>
         </View>
-      )} */}
+      )}
 
       {/* EDUCATION */}
-      {/* {educations && (
+      {educations && (
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Education</Text>
           <View style={styles.separator} />
           <View style={styles.sectionContent}>
-            {educations.content.map((edu) => (
+            {educations.map((edu) => (
               <View key={uuid()} style={{ ...styles.row, marginBottom: 4 }}>
                 <View style={{ minWidth: 120 }}>
                   <Text>
@@ -219,15 +227,15 @@ const Template01: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
             ))}
           </View>
         </View>
-      )} */}
+      )}
 
       {/* EXPERIENCE */}
-      {/* {workExperiences && (
+      {workExperiences && (
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Experience</Text>
           <View style={styles.separator} />
           <View style={styles.sectionContent}>
-            {workExperiences.content.map((exp) => (
+            {workExperiences.map((exp) => (
               <View
                 key={uuid()}
                 style={[
@@ -255,43 +263,26 @@ const Template01: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
             ))}
           </View>
         </View>
-      )} */}
+      )}
 
       {/* PROJECTS */}
-      {/* {projects && (
+      {projects && (
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Projects</Text>
           <View style={styles.separator} />
           <View style={styles.sectionContent}>
-            {projects.content.map((project) => (
+            {projects.map((project) => (
               <View key={uuid()} style={styles.projectContainer} wrap={false}>
                 <View style={styles.projectHeader}>
                   <Text style={{ fontWeight: 600 }}>{project.title}</Text>
                 </View>
 
-                <View style={styles.col}>
-                  {project.information.map((info, index) => (
-                    <View
-                      key={uuid()}
-                      style={[
-                        styles.projectInfoRow,
-                        ...(index === 0 ? [styles.projectInfoRowFirst] : []),
-                      ]}
-                    >
-                      <Text style={{ minWidth: 120, paddingVertical: 4 }}>
-                        {info.label}
-                      </Text>
-                      <Text style={{ flex: 1, paddingVertical: 4 }}>
-                        {info.value}
-                      </Text>
-                    </View>
-                  ))}
-                </View>
+                <HtmlToPdf style={styles.text} content={project.details} />
               </View>
             ))}
           </View>
         </View>
-      )} */}
+      )}
     </Page>
   );
 };

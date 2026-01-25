@@ -21,7 +21,7 @@ export const MOCK_RESUMES: Resume[] = [
   {
     id: "resume-1",
     userId: "user-1",
-    title: "Senior Full Stack Developer",
+    title: "Cao Dang Tinh",
     subTitle: "Software Engineer",
     overview:
       "Passionate software engineer with 5+ years of experience in building scalable web applications. Expert in React, Node.js, and cloud technologies. Proven track record of delivering high-quality code and leading development teams.",

@@ -11,7 +11,6 @@ export interface Format {
   color: string;
   margin: number;
   pageFormat: "A4";
-  fontFamily: string;
   dateFormat: string;
 }
 
@@ -32,7 +31,6 @@ export const defaultFormat: Format = {
   color: "blue",
   margin: 20,
   pageFormat: "A4",
-  fontFamily: "Roboto",
   dateFormat: "MM/YYYY",
 };
 
