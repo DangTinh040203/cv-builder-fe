@@ -65,21 +65,7 @@ export const config = [
       "import/first": "error",
       "import/newline-after-import": "error",
       "import/no-duplicates": "error",
-      "import/extensions": [
-        "error",
-        "never",
-        {
-          css: "always",
-          scss: "always",
-          json: "always",
-          png: "always",
-          jpg: "always",
-          jpeg: "always",
-          svg: "always",
-          js: "ignore",
-          mjs: "ignore",
-        },
-      ],
+      "import/extensions": 0,
 
       // General rules
       semi: "warn",
