@@ -5,6 +5,13 @@ import { type ReactElement, useMemo } from "react";
 import { useMeasure } from "react-use";
 
 import DocumentPDF from "@/components/templates/document-pdf";
+import { type Format } from "@/stores/features/template.slice";
+import { type Resume } from "@/types/resume.type";
+
+export interface TemplateProp {
+  templateFormat: Format;
+  resume: Resume;
+}
 
 export interface Size {
   width: number;

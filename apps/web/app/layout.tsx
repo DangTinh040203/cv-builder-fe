@@ -8,6 +8,7 @@ import { Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 
 import { ScrollToTop } from "@/components/common/scroll-to-top";
+import StoreProvider from "@/components/providers/store-provider";
 
 const fontMono = Geist_Mono({
   subsets: ["latin"],
@@ -39,14 +40,16 @@ export default function RootLayout({
             scrollbar-thin max-w-screen overflow-x-hidden font-sans antialiased
           `}
         >
-          <Toaster richColors />
-          <NextTopLoader
-            color="#6c23d7"
-            showSpinner={false}
-            easing="ease-in-out"
-          />
-          <ScrollToTop />
-          {children}
+          <StoreProvider>
+            <Toaster richColors />
+            <NextTopLoader
+              color="#6c23d7"
+              showSpinner={false}
+              easing="ease-in-out"
+            />
+            <ScrollToTop />
+            {children}
+          </StoreProvider>
         </body>
       </html>
     </ClerkProvider>

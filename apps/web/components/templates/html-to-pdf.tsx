@@ -7,7 +7,9 @@ export interface HtmlToPdf {
   style: React.CSSProperties;
 }
 
-const HtmlToPdf = ({ content = "" }: HtmlToPdf) => {
+type HtmlToPdfProps = Partial<HtmlToPdf>;
+
+const HtmlToPdf = ({ content = "", style = {} }: HtmlToPdfProps) => {
   const { isHTML } = usePDFComponentsAreHTML();
 
   if (!content.trim()) return null;
@@ -15,13 +17,14 @@ const HtmlToPdf = ({ content = "" }: HtmlToPdf) => {
   if (isHTML) {
     return (
       <div
-        dangerouslySetInnerHTML={{ __html: content }}
+        style={style}
         className="prose m-0 p-0"
+        dangerouslySetInnerHTML={{ __html: content }}
       />
     );
   }
 
-  return <Html>{content}</Html>;
+  return <Html style={style}>{content}</Html>;
 };
 
 export default HtmlToPdf;

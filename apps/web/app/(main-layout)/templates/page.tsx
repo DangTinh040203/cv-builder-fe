@@ -3,11 +3,19 @@ import { Button } from "@shared/ui/components/button";
 import { Input } from "@shared/ui/components/input";
 import { cn } from "@shared/ui/lib/utils";
 import { Check, Search } from "lucide-react";
+import dynamic from "next/dynamic";
 import React, { useState } from "react";
 
 import TemplateWrapper from "@/components/templates/template-wrapper";
 import Template01 from "@/components/templates/Template01";
+import { templateFormatSelector } from "@/stores/features/template.slice";
+import { useAppSelector } from "@/stores/store";
 import { type Resume } from "@/types/resume.type";
+
+const DownloadPdf = dynamic(
+  () => import("@/components/templates/download-pdf"),
+  { ssr: false },
+);
 
 export const MOCK_RESUMES: Resume[] = [
   {
@@ -146,6 +154,7 @@ const categories = [
 const Templates = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const templateFormat = useAppSelector(templateFormatSelector);
 
   return (
     <div className="container min-h-screen">
@@ -204,10 +213,21 @@ const Templates = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-4 gap-6">
-        {MOCK_RESUMES.map((res) => (
-          <TemplateWrapper key={res.id} document={<Template01 />} />
-        ))}
+      <div className="space-y-4">
+        <div className="flex justify-end">
+          <DownloadPdf />
+        </div>
+
+        <div className="grid grid-cols-4 gap-6">
+          {MOCK_RESUMES.map((res) => (
+            <TemplateWrapper
+              key={res.id}
+              document={
+                <Template01 resume={res} templateFormat={templateFormat} />
+              }
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
