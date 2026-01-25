@@ -8,7 +8,6 @@ export interface Format {
   titleSize: number;
   sectionSpacing: number;
   lineHeight: number;
-  paragraphIndent: number;
   color: string;
 }
 
@@ -25,7 +24,6 @@ export const defaultFormat: Format = {
   fontSize: 12,
   titleSize: 35,
   sectionSpacing: 10,
-  paragraphIndent: 0,
   lineHeight: 1.5,
   color: "blue",
 };

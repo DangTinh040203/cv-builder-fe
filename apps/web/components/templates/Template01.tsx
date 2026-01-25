@@ -18,6 +18,7 @@ const Template01: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
     const theme = {
       color: templateFormat.color,
       fontSize: templateFormat.fontSize,
+      titleSize: templateFormat.titleSize,
       lineHeight: templateFormat.lineHeight,
       sectionSpacing: templateFormat.sectionSpacing,
     };
@@ -56,7 +57,7 @@ const Template01: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
       },
 
       title: {
-        ...templateGlobalStyles.heading1,
+        fontSize: theme.titleSize,
         ...templateGlobalStyles.fontWeight600,
         color: theme.color,
         lineHeight: 1.1,
