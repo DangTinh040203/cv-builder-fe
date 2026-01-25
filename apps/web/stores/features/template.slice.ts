@@ -9,6 +9,10 @@ export interface Format {
   sectionSpacing: number;
   lineHeight: number;
   color: string;
+  margin: number;
+  pageFormat: "A4";
+  fontFamily: string;
+  dateFormat: string;
 }
 
 export interface TemplateConfig {
@@ -26,6 +30,10 @@ export const defaultFormat: Format = {
   sectionSpacing: 10,
   lineHeight: 1.5,
   color: "blue",
+  margin: 20,
+  pageFormat: "A4",
+  fontFamily: "Roboto",
+  dateFormat: "MM/YYYY",
 };
 
 const initialState: TemplateState = {

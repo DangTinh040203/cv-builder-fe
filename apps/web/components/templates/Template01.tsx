@@ -21,16 +21,20 @@ const Template01: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
       titleSize: templateFormat.titleSize,
       lineHeight: templateFormat.lineHeight,
       sectionSpacing: templateFormat.sectionSpacing,
+      margin: templateFormat.margin,
+      fontFamily: templateFormat.fontFamily,
+      pageFormat: templateFormat.pageFormat,
     };
 
     return StyleSheet.create({
       page: {
         ...templateGlobalStyles.page,
-        padding: 20,
+        padding: theme.margin,
         flexDirection: "column",
         rowGap: theme.sectionSpacing,
         fontSize: theme.fontSize,
         lineHeight: theme.lineHeight,
+        fontFamily: theme.fontFamily,
       },
 
       section: {
@@ -143,7 +147,7 @@ const Template01: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
   }, [information]);
 
   return (
-    <Page size="A4" style={styles.page}>
+    <Page size={templateFormat.pageFormat} style={styles.page}>
       {/* HEADER */}
       <View style={styles.col}>
         <Text style={styles.title}>{title}</Text>
