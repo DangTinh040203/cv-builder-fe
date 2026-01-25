@@ -22,7 +22,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { getClerkErrorMessage, handleClerkError } from "@/lib/clerk-toast";
+import { getClerkErrorMessage, handleClerkError } from "@/libs/clerk-toast";
 
 const formSchema = z.object({
   code: z

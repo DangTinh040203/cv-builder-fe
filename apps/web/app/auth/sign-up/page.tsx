@@ -19,7 +19,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { handleClerkError } from "@/lib/clerk-toast";
+import { handleClerkError } from "@/libs/clerk-toast";
 import {
   buttonScaleVariants,
   formContainerVariants,

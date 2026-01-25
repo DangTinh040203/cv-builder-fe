@@ -20,7 +20,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { handleClerkError } from "@/lib/clerk-toast";
+import { handleClerkError } from "@/libs/clerk-toast";
 import {
   buttonScaleVariants,
   formContainerVariants,
