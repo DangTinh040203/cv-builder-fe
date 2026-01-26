@@ -37,6 +37,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import { useService } from "@/hooks/use-http";
+import { ResumeService } from "@/services/resume.service";
+
 const navLinks = [
   { href: "/templates", label: "Templates", icon: FileText },
   { href: "/builder", label: "CV Builder", icon: Sparkles },
@@ -104,6 +107,8 @@ const Header = () => {
   const { user, isLoaded } = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+
+  const resumeService = useService(ResumeService);
   const pathname = usePathname();
   const { scrollY } = useScroll();
   const headerShadow = useTransform(

@@ -32,9 +32,15 @@ const DEFAULT_DOCUMENT_SIZE = A4_PX_SIZE;
 
 interface TemplateWrapperProps {
   document: ReactElement<DocumentProps>;
+  scrollable?: boolean;
+  selectable?: boolean;
 }
 
-const TemplateWrapper = ({ document }: TemplateWrapperProps) => {
+const TemplateWrapper = ({
+  document,
+  scrollable = true,
+  selectable = true,
+}: TemplateWrapperProps) => {
   const [ref, bounds] = useMeasure<HTMLDivElement>();
 
   const size = useMemo(() => {
@@ -52,8 +58,10 @@ const TemplateWrapper = ({ document }: TemplateWrapperProps) => {
     <div
       ref={ref}
       className={`
-        scrollbar-none relative w-full overflow-hidden overflow-y-auto
-        rounded-lg border shadow-lg
+        scrollbar-none border/10 bg-background relative z-10 w-full
+        overflow-hidden rounded-xl border shadow-xl
+        ${scrollable ? "overflow-y-auto" : ""}
+        ${!selectable ? "select-none" : ""}
       `}
       style={{ aspectRatio: "210 / 297" }}
     >
@@ -63,7 +71,7 @@ const TemplateWrapper = ({ document }: TemplateWrapperProps) => {
         </div>
       ) : (
         <div
-          className="absolute top-0 left-0 origin-top-left"
+          className="absolute top-0 left-0 z-50 origin-top-left"
           style={{
             width: DEFAULT_DOCUMENT_SIZE.width,
             height: DEFAULT_DOCUMENT_SIZE.height,

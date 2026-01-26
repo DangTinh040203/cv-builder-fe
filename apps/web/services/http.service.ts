@@ -1,3 +1,4 @@
+"use client";
 import axios, {
   type AxiosError,
   type AxiosInstance,
@@ -8,10 +9,20 @@ import axios, {
 
 import { axiosConfig } from "@/configs/axios.config";
 
+export type GetTokenFn = () => Promise<string | null>;
+
+export interface HttpServiceOptions {
+  config?: AxiosRequestConfig;
+  getToken?: GetTokenFn;
+}
+
 export class HttpService {
   private instance: AxiosInstance;
+  private getToken?: GetTokenFn;
 
-  constructor(config = axiosConfig) {
+  constructor(options: HttpServiceOptions = {}) {
+    const { config = axiosConfig, getToken } = options;
+    this.getToken = getToken;
     const instance = axios.create({ ...config });
     Object.assign(instance, this.setupInterceptorsTo(instance));
     this.instance = instance;
@@ -52,6 +63,12 @@ export class HttpService {
   private onRequest = async (
     config: InternalAxiosRequestConfig,
   ): Promise<InternalAxiosRequestConfig> => {
+    if (this.getToken) {
+      const token = await this.getToken();
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    }
     return config;
   };
 

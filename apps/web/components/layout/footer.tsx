@@ -7,7 +7,7 @@ import { fadeInUp, staggerContainer } from "@/styles/animation";
 
 const Footer = () => {
   return (
-    <footer className="border-border bg-muted/30 border-t px-4 py-12">
+    <footer className="border-border bg-muted/30 mt-10 border-t px-4 py-12">
       <div className="container mx-auto">
         <motion.div
           className={`

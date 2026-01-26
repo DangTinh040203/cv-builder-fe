@@ -10,13 +10,18 @@ import { useEffect, useState } from "react";
 import slugify from "slugify";
 import { toast } from "sonner";
 
-import { MOCK_RESUMES } from "@/app/(main-layout)/templates/page";
 import DocumentPDF from "@/components/templates/document-pdf";
 import Template01 from "@/components/templates/Template01";
+import { MOCK_RESUME as resume } from "@/constants/resume.constant";
 import { templateFormatSelector } from "@/stores/features/template.slice";
 import { useAppSelector } from "@/stores/store";
+import { type Resume } from "@/types/resume.type";
 
-const DownloadPdf = () => {
+interface DownloadPdfProps {
+  resume: Resume;
+}
+
+const DownloadPdf: React.FC<DownloadPdfProps> = ({ resume }) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [shouldRender, setShouldRender] = useState(false);
   const { isHTML, setHtml } = usePDFComponentsAreHTML();
@@ -35,8 +40,6 @@ const DownloadPdf = () => {
   };
 
   useEffect(() => {
-    const resume = MOCK_RESUMES[0]!;
-
     if (!shouldRender || !resume) return;
 
     const generate = async () => {
@@ -69,7 +72,7 @@ const DownloadPdf = () => {
     };
 
     void generate();
-  }, [shouldRender, templateFormat, setHtml]);
+  }, [shouldRender, templateFormat, setHtml, resume]);
 
   return (
     <Button
