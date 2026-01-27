@@ -12,7 +12,6 @@ import { toast } from "sonner";
 
 import DocumentPDF from "@/components/templates/document-pdf";
 import Template01 from "@/components/templates/Template01";
-import { MOCK_RESUME as resume } from "@/constants/resume.constant";
 import { templateFormatSelector } from "@/stores/features/template.slice";
 import { useAppSelector } from "@/stores/store";
 import { type Resume } from "@/types/resume.type";
@@ -61,8 +60,7 @@ const DownloadPdf: React.FC<DownloadPdfProps> = ({ resume }) => {
         link.click();
 
         URL.revokeObjectURL(blobUrl);
-      } catch (error) {
-        console.log(error);
+      } catch {
         toast.error("Failed to download PDF");
       } finally {
         setHtml(true);

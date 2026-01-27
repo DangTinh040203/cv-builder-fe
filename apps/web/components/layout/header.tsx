@@ -107,8 +107,8 @@ const Header = () => {
   const { user, isLoaded } = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-
   const resumeService = useService(ResumeService);
+
   const pathname = usePathname();
   const { scrollY } = useScroll();
   const headerShadow = useTransform(
@@ -122,6 +122,16 @@ const Header = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    const fetchResume = async () => {
+      if (user) {
+        const res = await resumeService.getResume();
+        console.log("🚀 ~ fetchResume ~ res:", res);
+      }
+    };
+    fetchResume();
+  }, [resumeService, user]);
 
   const isActive = (path: string) => pathname === path;
 
