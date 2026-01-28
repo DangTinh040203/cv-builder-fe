@@ -1,7 +1,7 @@
 import { StyleSheet } from "@react-pdf/renderer";
 import { useMemo } from "react";
 
-import { templateGlobalStyles } from "@/configs/template.config";
+import { templateGlobalStyles } from "@/configs/template-style.config";
 import { type Format } from "@/stores/features/template.slice";
 
 export const useTemplateStyle = (templateFormat: Format) => {

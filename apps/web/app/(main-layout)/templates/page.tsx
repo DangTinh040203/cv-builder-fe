@@ -5,8 +5,9 @@ import { cn } from "@shared/ui/lib/utils";
 import { Check, Search } from "lucide-react";
 import React, { useState } from "react";
 
+import Template01 from "@/components/templates/template-01";
 import TemplateWrapper from "@/components/templates/template-wrapper";
-import Template01 from "@/components/templates/Template01";
+import { TEMPLATES } from "@/configs/template.config";
 import { MOCK_RESUME } from "@/constants/resume.constant";
 import { templateFormatSelector } from "@/stores/features/template.slice";
 import { useAppSelector } from "@/stores/store";
@@ -82,7 +83,7 @@ const Templates = () => {
       </div>
 
       <div className="grid grid-cols-4 gap-6">
-        {Array.from({ length: 10 }).map((_, i) => (
+        {Object.values(TEMPLATES).map((template, i) => (
           <div
             key={i}
             className={`

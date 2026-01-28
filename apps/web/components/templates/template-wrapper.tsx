@@ -59,7 +59,7 @@ const TemplateWrapper = ({
       ref={ref}
       className={`
         scrollbar-none border/10 bg-background relative z-10 w-full
-        overflow-hidden rounded-xl border shadow-xl
+        overflow-hidden rounded-lg border shadow-xl
         ${scrollable ? "overflow-y-auto" : ""}
         ${!selectable ? "select-none" : ""}
       `}

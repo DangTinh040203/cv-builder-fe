@@ -8,7 +8,6 @@ import { v4 as uuid } from "uuid";
 
 import HtmlToPdf from "@/components/templates/html-to-pdf";
 import { type TemplateProp } from "@/components/templates/template-wrapper";
-import { templateGlobalStyles } from "@/configs/template.config";
 import { useTemplateStyle } from "@/hooks/use-template-style";
 
 Font.registerHyphenationCallback((word) => [word]);

@@ -29,7 +29,6 @@ import {
   LogOut,
   Menu,
   MessageSquare,
-  Sparkles,
   User,
   X,
 } from "lucide-react";
@@ -39,10 +38,11 @@ import { useEffect, useState } from "react";
 
 import { useService } from "@/hooks/use-http";
 import { ResumeService } from "@/services/resume.service";
+import { setResume } from "@/stores/features/resume.slice";
+import { useAppDispatch } from "@/stores/store";
 
 const navLinks = [
   { href: "/templates", label: "Templates", icon: FileText },
-  { href: "/builder", label: "CV Builder", icon: Sparkles },
   { href: "/interview", label: "Mock Interview", icon: MessageSquare },
 ];
 
@@ -110,6 +110,7 @@ const Header = () => {
   const resumeService = useService(ResumeService);
 
   const pathname = usePathname();
+  const dispatch = useAppDispatch();
   const { scrollY } = useScroll();
   const headerShadow = useTransform(
     scrollY,
@@ -126,12 +127,14 @@ const Header = () => {
   useEffect(() => {
     const fetchResume = async () => {
       if (user) {
-        const res = await resumeService.getResume();
-        console.log("🚀 ~ fetchResume ~ res:", res);
+        const resume = await resumeService.getResume();
+        if (resume) {
+          dispatch(setResume(resume));
+        }
       }
     };
     fetchResume();
-  }, [resumeService, user]);
+  }, [dispatch, resumeService, user]);
 
   const isActive = (path: string) => pathname === path;
 

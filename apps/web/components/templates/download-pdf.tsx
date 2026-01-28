@@ -11,7 +11,7 @@ import slugify from "slugify";
 import { toast } from "sonner";
 
 import DocumentPDF from "@/components/templates/document-pdf";
-import Template01 from "@/components/templates/Template01";
+import Template01 from "@/components/templates/template-01";
 import { templateFormatSelector } from "@/stores/features/template.slice";
 import { useAppSelector } from "@/stores/store";
 import { type Resume } from "@/types/resume.type";
