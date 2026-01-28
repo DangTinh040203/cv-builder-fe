@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth } from "@clerk/nextjs";
+import { useSession } from "@clerk/nextjs";
 import { useMemo } from "react";
 
 import { HttpService, type HttpServiceOptions } from "@/services/http.service";
@@ -19,13 +19,19 @@ type HttpServiceConstructor<T extends HttpService> = new (
 export function useService<T extends HttpService>(
   ServiceClass: HttpServiceConstructor<T>,
 ): T {
-  const { getToken } = useAuth();
+  const { session } = useSession();
 
   const service = useMemo(() => {
     return new ServiceClass({
-      getToken: () => getToken(),
+      getToken: async () => {
+        if (!session) {
+          return null;
+        }
+
+        return await session.getToken();
+      },
     });
-  }, [ServiceClass, getToken]);
+  }, [ServiceClass, session]);
 
   return service;
 }
