@@ -1,7 +1,8 @@
+"use client";
 import React from "react";
 
-const page = () => {
-  return <div>page</div>;
+const BuilderScreens = () => {
+  return <div>BuilderScreens</div>;
 };
 
-export default page;
+export default BuilderScreens;

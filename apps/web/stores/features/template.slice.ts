@@ -54,7 +54,7 @@ const templateSlice = createSlice({
         ...action.payload,
       };
     },
-    updateTemplateSelected: (state, action: PayloadAction<string | null>) => {
+    setTemplateSelected: (state, action: PayloadAction<string | null>) => {
       state.templateSelected = action.payload;
     },
   },
@@ -65,7 +65,7 @@ export const templateFormatSelector = (state: RootState) =>
 export const templateSelectedSelector = (state: RootState) =>
   state.template.templateSelected;
 
-export const { updateTemplateConfigFormat, updateTemplateSelected } =
+export const { updateTemplateConfigFormat, setTemplateSelected } =
   templateSlice.actions;
 
 export const templateReducer = templateSlice.reducer;

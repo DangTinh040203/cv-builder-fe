@@ -2,15 +2,19 @@
 import { Button } from "@shared/ui/components/button";
 import { Input } from "@shared/ui/components/input";
 import { cn } from "@shared/ui/lib/utils";
+import { motion } from "framer-motion";
 import { Check, Search } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-import Template01 from "@/components/templates/template-01";
 import TemplateWrapper from "@/components/templates/template-wrapper";
 import { TEMPLATES } from "@/configs/template.config";
 import { MOCK_RESUME } from "@/constants/resume.constant";
-import { templateFormatSelector } from "@/stores/features/template.slice";
-import { useAppSelector } from "@/stores/store";
+import {
+  setTemplateSelected,
+  templateFormatSelector,
+} from "@/stores/features/template.slice";
+import { useAppDispatch, useAppSelector } from "@/stores/store";
 
 const categories = [
   { id: "all", label: "All" },
@@ -23,7 +27,15 @@ const categories = [
 const Templates = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
+
+  const router = useRouter();
   const templateFormat = useAppSelector(templateFormatSelector);
+  const dispatch = useAppDispatch();
+
+  const handleSelectTemplate = (template: string) => {
+    dispatch(setTemplateSelected(template));
+    router.push("/builder");
+  };
 
   return (
     <div className="container min-h-screen">
@@ -83,7 +95,7 @@ const Templates = () => {
       </div>
 
       <div className="grid grid-cols-4 gap-6">
-        {Object.values(TEMPLATES).map((template, i) => (
+        {Object.entries(TEMPLATES).map(([templateId, Template], i) => (
           <div
             key={i}
             className={`
@@ -93,20 +105,27 @@ const Templates = () => {
           >
             <div
               className={`
-                transition-all
-                group-hover:blur-xs
+                group-hover:border-primary/50 group-hover:shadow-xl
+                overflow-hidden rounded-xl border shadow-sm transition-all
               `}
             >
-              <TemplateWrapper
-                scrollable={false}
-                selectable={false}
-                document={
-                  <Template01
-                    resume={MOCK_RESUME}
-                    templateFormat={templateFormat}
-                  />
-                }
-              />
+              <div
+                className={`
+                  transition-all duration-300
+                  group-hover:scale-[102%] group-hover:blur-[2px]
+                `}
+              >
+                <TemplateWrapper
+                  scrollable={false}
+                  selectable={false}
+                  document={
+                    <Template
+                      resume={MOCK_RESUME}
+                      templateFormat={templateFormat}
+                    />
+                  }
+                />
+              </div>
             </div>
 
             <div
@@ -118,6 +137,7 @@ const Templates = () => {
               `}
             >
               <Button
+                onClick={() => handleSelectTemplate(templateId)}
                 className={`
                   mb-10 w-full rounded-full opacity-0 transition-opacity
                   group-hover:opacity-100

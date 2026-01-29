@@ -141,15 +141,18 @@ const Header = () => {
   return (
     <motion.nav
       className={cn(
-        "fixed top-0 right-0 left-0 z-50 transition-all duration-300",
-        isScrolled && "glass border-border/50 border-b shadow-md",
+        "z-50 transition-all duration-300",
+        pathname === "/"
+          ? "fixed top-0 right-0 left-0"
+          : "bg-background border-b",
+        pathname === "/" &&
+          isScrolled &&
+          "glass border-border/50 border-b shadow-md",
       )}
       variants={headerVariants}
       initial="hidden"
       animate="visible"
-      style={{
-        boxShadow: headerShadow,
-      }}
+      style={pathname === "/" ? { boxShadow: headerShadow } : undefined}
     >
       <div className="container mx-auto overflow-x-hidden px-4">
         <div className="flex h-16 items-center justify-between">
