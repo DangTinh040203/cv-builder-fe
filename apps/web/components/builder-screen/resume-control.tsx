@@ -63,10 +63,6 @@ const ResumeControl = () => {
           <Sparkles className="h-4 w-4" />
           AI Assistant
         </Button>
-        <Button variant="outline" className={cn("shrink-0 gap-2")}>
-          <Eye className="h-4 w-4" />
-          Preview
-        </Button>
 
         {resume && <DownloadPdf resume={resume} />}
       </div>
