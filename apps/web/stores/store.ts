@@ -45,7 +45,7 @@ const persistedReducer = persistReducer<ReturnType<typeof appReducer>>(
   {
     key: "root",
     storage,
-    whitelist: [],
+    whitelist: [StorageSliceName.Template],
     transforms: [],
   },
   appReducer,

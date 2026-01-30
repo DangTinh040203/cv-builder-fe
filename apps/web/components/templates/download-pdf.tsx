@@ -3,7 +3,6 @@
 import { usePDFComponentsAreHTML } from "@rawwee/react-pdf-html";
 import { pdf } from "@react-pdf/renderer";
 import { Button } from "@shared/ui/components/button";
-import { Spinner } from "@shared/ui/components/spinner";
 import dayjs from "dayjs";
 import { Download } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -88,11 +87,11 @@ const DownloadPdf: React.FC<DownloadPdfProps> = ({ resume }) => {
     <Button
       disabled={isProcessing}
       onClick={handleDownload}
-      className="rounded-full shadow-xl"
-      size="lg"
+      variant="gradient"
+      className="shrink-0 gap-2 shadow-xl"
     >
-      {isProcessing ? <Spinner /> : <Download />}
-      Download
+      <Download className="h-4 w-4" />
+      Export PDF
     </Button>
   );
 };

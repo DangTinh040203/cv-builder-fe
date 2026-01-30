@@ -1,10 +1,12 @@
 "use client";
+import { useUser } from "@clerk/nextjs";
 import { Button } from "@shared/ui/components/button";
 import { Input } from "@shared/ui/components/input";
 import { cn } from "@shared/ui/lib/utils";
 import { Check, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { toast } from "sonner";
 
 import TemplateWrapper from "@/components/templates/template-wrapper";
 import { TEMPLATES } from "@/configs/template.config";
@@ -27,13 +29,18 @@ const Templates = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
+  const { user } = useUser();
   const router = useRouter();
   const templateFormat = useAppSelector(templateFormatSelector);
   const dispatch = useAppDispatch();
 
   const handleSelectTemplate = (template: string) => {
-    dispatch(setTemplateSelected(template));
-    router.push("/builder");
+    if (!user) {
+      toast.error("Please login to use this feature");
+    } else {
+      dispatch(setTemplateSelected(template));
+      router.push("/builder");
+    }
   };
 
   return (
