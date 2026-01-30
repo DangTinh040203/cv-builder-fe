@@ -66,6 +66,7 @@ export const config = [
       "import/newline-after-import": "error",
       "import/no-duplicates": "error",
       "import/extensions": 0,
+      "import/no-relative-parent-imports": "error",
 
       // General rules
       semi: "warn",

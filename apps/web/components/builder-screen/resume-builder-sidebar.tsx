@@ -34,9 +34,15 @@ const sectionConfig = [
   { id: Section.Projects, label: "Projects", icon: FolderGit2 },
 ];
 
-const ResumeBuilderSidebar = () => {
-  const [activeSection, setActiveSection] = useState<Section>(Section.Personal);
+interface ResumeBuilderSidebarProps {
+  activeSection: Section;
+  onSectionChange: (section: Section) => void;
+}
 
+const ResumeBuilderSidebar = ({
+  activeSection,
+  onSectionChange,
+}: ResumeBuilderSidebarProps) => {
   return (
     <motion.div
       initial={{ opacity: 0, x: -20 }}
@@ -61,7 +67,7 @@ const ResumeBuilderSidebar = () => {
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.05 }}
-                onClick={() => setActiveSection(section.id)}
+                onClick={() => onSectionChange(section.id)}
                 className={cn(
                   `
                     flex h-10 w-full cursor-pointer items-center justify-between
