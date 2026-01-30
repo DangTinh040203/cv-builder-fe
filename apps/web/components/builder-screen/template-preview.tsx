@@ -36,7 +36,7 @@ const TemplatePreview = () => {
         <Button
           variant="gradient"
           size={"lg"}
-          className="min-w-40 shrink-0 gap-2 rounded-full shadow-xl"
+          className="min-w-40 shrink-0 gap-2 rounded-full shadow-2xl"
         >
           <Eye className="h-4 w-4" />
           Preview

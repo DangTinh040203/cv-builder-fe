@@ -1,6 +1,7 @@
 "use client";
 
 import { useUser } from "@clerk/nextjs";
+import { Card, CardContent } from "@shared/ui/components/card";
 import React, { type PropsWithChildren, useEffect } from "react";
 
 import ResumeBuilderSidebar from "@/components/builder-screen/resume-builder-sidebar";
@@ -42,14 +43,18 @@ const BuilderLayout: React.FC<PropsWithChildren> = ({ children }) => {
   }
 
   return (
-    <div className="container">
+    <div className="container mb-10">
       <ResumeControl />
 
       <div className="grid grid-cols-12 gap-6">
         <div className="col-span-2">
           <ResumeBuilderSidebar />
         </div>
-        <div className="col-span-7">{children}</div>
+        <div className="col-span-7">
+          <Card className={`bg-card/80 border-border/50 py-0 backdrop-blur-sm`}>
+            <CardContent className="p-6">{children}</CardContent>
+          </Card>
+        </div>
         <div className="col-span-3">
           <TemplatePreview />
         </div>
