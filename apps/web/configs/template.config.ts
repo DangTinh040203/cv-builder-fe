@@ -5,9 +5,6 @@ export const TemplateKey = {
   template01: "template-01",
 } as const;
 
-export const TEMPLATES: Record<
-  (typeof TemplateKey)[keyof typeof TemplateKey],
-  React.FC<TemplateProp>
-> = {
+export const TEMPLATES: Record<string, React.FC<TemplateProp>> = {
   [TemplateKey.template01]: Template01,
 };

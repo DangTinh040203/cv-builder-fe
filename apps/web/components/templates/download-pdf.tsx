@@ -11,8 +11,11 @@ import slugify from "slugify";
 import { toast } from "sonner";
 
 import DocumentPDF from "@/components/templates/document-pdf";
-import Template01 from "@/components/templates/template-01";
-import { templateFormatSelector } from "@/stores/features/template.slice";
+import { TEMPLATES } from "@/configs/template.config";
+import {
+  templateFormatSelector,
+  templateSelectedSelector,
+} from "@/stores/features/template.slice";
 import { useAppSelector } from "@/stores/store";
 import { type Resume } from "@/types/resume.type";
 
@@ -25,9 +28,15 @@ const DownloadPdf: React.FC<DownloadPdfProps> = ({ resume }) => {
   const [shouldRender, setShouldRender] = useState(false);
   const { isHTML, setHtml } = usePDFComponentsAreHTML();
 
+  const templateSelected = useAppSelector(templateSelectedSelector);
   const templateFormat = useAppSelector(templateFormatSelector);
 
   const handleDownload = async () => {
+    if (!templateSelected) {
+      toast.error("Please select a template");
+      return;
+    }
+
     setHtml(false);
     setIsProcessing(true);
 
@@ -39,14 +48,17 @@ const DownloadPdf: React.FC<DownloadPdfProps> = ({ resume }) => {
   };
 
   useEffect(() => {
-    if (!shouldRender || !resume) return;
+    if (!shouldRender || !resume || !templateSelected) return;
 
     const generate = async () => {
       try {
+        const Template = TEMPLATES[templateSelected];
+        if (!Template) return;
+
         const doc = (
           <DocumentPDF
             document={
-              <Template01 templateFormat={templateFormat} resume={resume} />
+              <Template templateFormat={templateFormat} resume={resume} />
             }
           />
         );
@@ -70,7 +82,7 @@ const DownloadPdf: React.FC<DownloadPdfProps> = ({ resume }) => {
     };
 
     void generate();
-  }, [shouldRender, templateFormat, setHtml, resume]);
+  }, [shouldRender, templateFormat, setHtml, resume, templateSelected]);
 
   return (
     <Button
