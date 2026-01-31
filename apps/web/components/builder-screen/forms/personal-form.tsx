@@ -20,7 +20,7 @@ import { Input } from "@shared/ui/components/input";
 import { Label } from "@shared/ui/components/label";
 import { AnimatePresence, motion } from "framer-motion";
 import { Plus, Trash2, User } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -54,10 +54,19 @@ const PersonalForm = ({ onNext, onBack }: PersonalFormProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: resume?.title || "",
-      subTitle: resume?.subTitle || "",
+      title: resume?.title ?? "",
+      subTitle: resume?.subTitle ?? "",
     },
   });
+
+  useEffect(() => {
+    if (resume) {
+      form.reset({
+        title: resume.title,
+        subTitle: resume.subTitle,
+      });
+    }
+  }, [form, resume]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     if (!resume) return;
@@ -160,6 +169,7 @@ const PersonalForm = ({ onNext, onBack }: PersonalFormProps) => {
                             placeholder="e.g. Senior Software Engineer"
                             className="bg-background/50 rounded-xl"
                             {...field}
+                            value={field.value}
                             onChange={(e) => {
                               field.onChange(e);
                               handleFieldChange("title", e.target.value);
@@ -188,6 +198,7 @@ const PersonalForm = ({ onNext, onBack }: PersonalFormProps) => {
                             placeholder="e.g. Building scalable web applications"
                             className="bg-background/50 rounded-xl"
                             {...field}
+                            value={field.value}
                             onChange={(e) => {
                               field.onChange(e);
                               handleFieldChange("subTitle", e.target.value);
