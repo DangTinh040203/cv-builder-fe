@@ -36,9 +36,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { useService } from "@/hooks/use-http";
-import { ResumeService } from "@/services/resume.service";
-import { setResume } from "@/stores/features/resume.slice";
 import { useAppDispatch } from "@/stores/store";
 
 const navLinks = [
@@ -107,7 +104,6 @@ const Header = () => {
   const { user, isLoaded } = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const resumeService = useService(ResumeService);
 
   const pathname = usePathname();
   const dispatch = useAppDispatch();
@@ -123,18 +119,6 @@ const Header = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  useEffect(() => {
-    const fetchResume = async () => {
-      if (user) {
-        const resume = await resumeService.getResume();
-        if (resume) {
-          dispatch(setResume(resume));
-        }
-      }
-    };
-    fetchResume();
-  }, [dispatch, resumeService, user]);
 
   const isActive = (path: string) => pathname === path;
 

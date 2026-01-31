@@ -32,18 +32,13 @@ const Templates = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const { user } = useUser();
   const router = useRouter();
   const templateFormat = useAppSelector(templateFormatSelector);
   const dispatch = useAppDispatch();
 
   const handleSelectTemplate = (template: string) => {
-    if (!user) {
-      toast.error("Please login to use this feature");
-    } else {
-      dispatch(setTemplateSelected(template));
-      router.push("/builder");
-    }
+    dispatch(setTemplateSelected(template));
+    router.push("/builder");
   };
 
   return (

@@ -18,7 +18,7 @@ const HtmlToPdf = ({ content = "", style = {} }: HtmlToPdfProps) => {
     return (
       <div
         style={style}
-        className="prose m-0 p-0"
+        className="prose m-0 max-w-full p-0"
         dangerouslySetInnerHTML={{ __html: content }}
       />
     );

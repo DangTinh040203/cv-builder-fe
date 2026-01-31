@@ -14,6 +14,7 @@ import { Input } from "@shared/ui/components/input";
 import { motion } from "framer-motion";
 import { ArrowRight, Eye, EyeOff, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -44,6 +45,7 @@ const SignIn = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -67,7 +69,9 @@ const SignIn = () => {
       if (result.status === "complete") {
         await setActive({ session: result.createdSessionId });
         toast.success("Welcome back!");
-        router.push("/");
+
+        const callbackUrl = searchParams.get("callbackUrl");
+        router.push(callbackUrl || "/");
       }
     } catch (error) {
       handleClerkError(error, {
