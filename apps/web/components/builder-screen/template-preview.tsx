@@ -1,7 +1,5 @@
 "use client";
 
-import { Button } from "@shared/ui/components/button";
-import { Eye } from "lucide-react";
 import React, { useMemo } from "react";
 
 import TemplateWrapper from "@/components/templates/template-wrapper";
@@ -32,15 +30,6 @@ const TemplatePreview = () => {
             <Template resume={resume} templateFormat={templateFormat} />
           }
         />
-
-        <Button
-          variant="gradient"
-          size={"lg"}
-          className="min-w-40 shrink-0 gap-2 rounded-full shadow-2xl"
-        >
-          <Eye className="h-4 w-4" />
-          Preview
-        </Button>
       </div>
     )
   );

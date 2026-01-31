@@ -14,17 +14,20 @@ const HtmlToPdf = ({ content = "", style = {} }: HtmlToPdfProps) => {
 
   if (!content.trim()) return null;
 
+  // Replace &nbsp; with regular space to allow text wrapping
+  const normalizedContent = content.replace(/&nbsp;/g, " ");
+
   if (isHTML) {
     return (
       <div
         style={style}
         className="prose m-0 max-w-full p-0"
-        dangerouslySetInnerHTML={{ __html: content }}
+        dangerouslySetInnerHTML={{ __html: normalizedContent }}
       />
     );
   }
 
-  return <Html style={style}>{content}</Html>;
+  return <Html style={style}>{normalizedContent}</Html>;
 };
 
 export default HtmlToPdf;

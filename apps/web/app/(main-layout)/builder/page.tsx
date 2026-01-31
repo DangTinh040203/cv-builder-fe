@@ -1,6 +1,8 @@
 "use client";
 
 import { useUser } from "@clerk/nextjs";
+import { cn } from "@shared/ui/lib/utils";
+import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect } from "react";
 
 import PersonalForm from "@/components/builder-screen/forms/personal-form";
@@ -13,6 +15,7 @@ import TemplatePreview from "@/components/builder-screen/template-preview";
 import { useService } from "@/hooks/use-http";
 import { ResumeService } from "@/services/resume.service";
 import { resumeSelector, setResume } from "@/stores/features/resume.slice";
+import { templateConfigSelector } from "@/stores/features/template.slice";
 import { useAppDispatch, useAppSelector } from "@/stores/store";
 
 const BuilderScreen = () => {
@@ -20,6 +23,7 @@ const BuilderScreen = () => {
     Section.Personal,
   );
   const { resume } = useAppSelector(resumeSelector);
+  const { previewMode } = useAppSelector(templateConfigSelector);
 
   const { user } = useUser();
   const resumeService = useService(ResumeService);
@@ -73,17 +77,41 @@ const BuilderScreen = () => {
             onSectionChange={setActiveSection}
           />
         </div>
-        <div className="col-span-7">
-          {activeSection === Section.Personal && (
-            <PersonalForm onNext={handleNext} />
+
+        <AnimatePresence mode="popLayout">
+          {!previewMode && (
+            <motion.div
+              key="form-section"
+              className="col-span-7"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+            >
+              {activeSection === Section.Personal && (
+                <PersonalForm onNext={handleNext} />
+              )}
+              {activeSection === Section.Summary && (
+                <SummaryForm onNext={handleNext} onBack={handleBack} />
+              )}
+            </motion.div>
           )}
-          {activeSection === Section.Summary && (
-            <SummaryForm onNext={handleNext} onBack={handleBack} />
-          )}
-        </div>
-        <div className="col-span-3">
-          <TemplatePreview />
-        </div>
+        </AnimatePresence>
+
+        <motion.div
+          layout
+          className={cn("col-span-3", previewMode && "col-span-10")}
+          transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+        >
+          <motion.div
+            layout
+            initial={false}
+            animate={{ scale: previewMode ? 1 : 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            <TemplatePreview />
+          </motion.div>
+        </motion.div>
       </div>
     </div>
   );

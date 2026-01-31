@@ -16,6 +16,7 @@ export interface Format {
 
 export interface TemplateConfig {
   format: Format;
+  previewMode: boolean;
 }
 
 export interface TemplateState {
@@ -37,6 +38,7 @@ export const defaultFormat: Format = {
 const initialState: TemplateState = {
   templateConfig: {
     format: defaultFormat,
+    previewMode: false,
   },
   templateSelected: null,
 };
@@ -45,6 +47,9 @@ const templateSlice = createSlice({
   name: StorageSliceName.Template,
   initialState,
   reducers: {
+    updatePreviewMode: (state, action: PayloadAction<boolean>) => {
+      state.templateConfig.previewMode = action.payload;
+    },
     updateTemplateConfigFormat: (
       state,
       action: PayloadAction<Partial<Format>>,
@@ -60,12 +65,17 @@ const templateSlice = createSlice({
   },
 });
 
+export const templateConfigSelector = (state: RootState) =>
+  state.template.templateConfig;
 export const templateFormatSelector = (state: RootState) =>
   state.template.templateConfig.format;
 export const templateSelectedSelector = (state: RootState) =>
   state.template.templateSelected;
 
-export const { updateTemplateConfigFormat, setTemplateSelected } =
-  templateSlice.actions;
+export const {
+  updateTemplateConfigFormat,
+  setTemplateSelected,
+  updatePreviewMode,
+} = templateSlice.actions;
 
 export const templateReducer = templateSlice.reducer;

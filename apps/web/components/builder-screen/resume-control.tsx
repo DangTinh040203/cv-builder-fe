@@ -1,14 +1,25 @@
 import { Button } from "@shared/ui/components/button";
 import { cn } from "@shared/ui/lib/utils";
-import { Eye, FileText, Settings2, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { Eye, EyeOff, FileText, Settings2, Sparkles } from "lucide-react";
 import React from "react";
 
 import DownloadPdf from "@/components/templates/download-pdf";
 import { resumeSelector } from "@/stores/features/resume.slice";
-import { useAppSelector } from "@/stores/store";
+import {
+  templateConfigSelector,
+  updatePreviewMode,
+} from "@/stores/features/template.slice";
+import { useAppDispatch, useAppSelector } from "@/stores/store";
 
 const ResumeControl = () => {
   const { resume } = useAppSelector(resumeSelector);
+  const { previewMode } = useAppSelector(templateConfigSelector);
+  const dispatch = useAppDispatch();
+
+  const handleTogglePreviewMode = () => {
+    dispatch(updatePreviewMode(!previewMode));
+  };
 
   return (
     <div className="mb-4">
@@ -63,6 +74,30 @@ const ResumeControl = () => {
           <Sparkles className="h-4 w-4" />
           AI Assistant
         </Button>
+
+        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+          <Button
+            variant="outline"
+            className={cn(
+              "shrink-0 gap-2 transition-colors duration-200",
+              previewMode && "bg-primary text-primary-foreground hover:bg-primary/90"
+            )}
+            onClick={handleTogglePreviewMode}
+          >
+            <motion.div
+              initial={false}
+              animate={{ rotate: previewMode ? 180 : 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              {previewMode ? (
+                <EyeOff className="h-4 w-4" />
+              ) : (
+                <Eye className="h-4 w-4" />
+              )}
+            </motion.div>
+            {previewMode ? "Edit" : "Preview"}
+          </Button>
+        </motion.div>
 
         {resume && <DownloadPdf resume={resume} />}
       </div>
