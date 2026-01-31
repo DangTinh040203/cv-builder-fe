@@ -83,6 +83,11 @@ export const config = [
               message:
                 "Cannot import from apps into shared packages. Only import from shared into apps.",
             },
+            {
+              group: ["../*", "../**/*", "./*", "./**/*"],
+              message:
+                "Relative imports are not allowed. Please use path aliases instead.",
+            },
           ],
         },
       ],
@@ -113,6 +118,14 @@ export const config = [
           callees,
         },
       ],
+    },
+  },
+  // Allow relative imports in eslint-config files (no path aliases available)
+  {
+    files: ["**/eslint-config/**/*.js", "**/eslint-config/*.js"],
+    rules: {
+      "no-restricted-imports": "off",
+      "import/no-relative-parent-imports": "off",
     },
   },
 ];

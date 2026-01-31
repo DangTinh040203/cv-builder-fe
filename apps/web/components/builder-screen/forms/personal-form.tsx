@@ -23,10 +23,9 @@ import { Plus, Trash2, User } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import BuilderNavigation from "@/components/builder-screen/builder-navigation";
 import { resumeSelector, updateResume } from "@/stores/features/resume.slice";
 import { useAppDispatch, useAppSelector } from "@/stores/store";
-
-import BuilderNavigation from "../builder-navigation";
 
 interface PersonalFormProps {
   onNext?: () => void;

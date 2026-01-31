@@ -10,11 +10,10 @@ import { Label } from "@shared/ui/components/label";
 import { FileText } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import BuilderNavigation from "@/components/builder-screen/builder-navigation";
+import Editor from "@/components/builder-screen/editor";
 import { resumeSelector, updateResume } from "@/stores/features/resume.slice";
 import { useAppDispatch, useAppSelector } from "@/stores/store";
-
-import BuilderNavigation from "../builder-navigation";
-import Editor from "../editor";
 
 interface SummaryFormProps {
   onNext?: () => void;
