@@ -58,3 +58,15 @@ export interface Resume {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface UpdateResumeDto {
+  title?: string;
+  subTitle?: string;
+  overview?: string;
+  avatar?: string | null;
+  information?: Array<Omit<ResumeInformation, "id" | "resumeId">>;
+  educations?: Array<Omit<Education, "id" | "resumeId">>;
+  skills?: Array<Omit<Skill, "id" | "resumeId">>;
+  workExperiences?: Array<Omit<WorkExperience, "id" | "resumeId">>;
+  projects?: Array<Omit<Project, "id" | "resumeId">>;
+}

@@ -38,7 +38,7 @@ const BuilderNavigation = ({
 
       <Button
         onClick={onNext}
-        disabled={disableNext || loading || !onNext}
+        disabled={disableNext || loading}
         className="min-w-32 gap-2"
         type="submit" // Default to submit for forms
       >

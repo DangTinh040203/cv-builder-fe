@@ -1,7 +1,6 @@
 "use client";
 
 import { useUser } from "@clerk/nextjs";
-import { Card, CardContent } from "@shared/ui/components/card";
 import React, { useEffect } from "react";
 
 import PersonalForm from "@/components/builder-screen/forms/personal-form";
@@ -11,19 +10,15 @@ import ResumeBuilderSidebar, {
 } from "@/components/builder-screen/resume-builder-sidebar";
 import ResumeControl from "@/components/builder-screen/resume-control";
 import TemplatePreview from "@/components/builder-screen/template-preview";
-import NotFound from "@/components/common/not-found";
 import { useService } from "@/hooks/use-http";
 import { ResumeService } from "@/services/resume.service";
 import { resumeSelector, setResume } from "@/stores/features/resume.slice";
-import { templateSelectedSelector } from "@/stores/features/template.slice";
 import { useAppDispatch, useAppSelector } from "@/stores/store";
 
 const BuilderScreen = () => {
   const [activeSection, setActiveSection] = React.useState<Section>(
     Section.Personal,
   );
-  const [isFetchingResume, setIsFetchingResume] = React.useState(true);
-  const templateSelected = useAppSelector(templateSelectedSelector);
   const { resume } = useAppSelector(resumeSelector);
 
   const { user } = useUser();
@@ -32,15 +27,12 @@ const BuilderScreen = () => {
 
   useEffect(() => {
     const fetchResume = async () => {
-      setIsFetchingResume(true);
       if (user && !resume) {
         const resumeRes = await resumeService.getResume();
         if (resumeRes) {
           dispatch(setResume(resumeRes));
         }
       }
-
-      setIsFetchingResume(false);
     };
     fetchResume();
   }, [dispatch, resume, resumeService, user]);
@@ -69,10 +61,6 @@ const BuilderScreen = () => {
       setActiveSection(prevSection);
     }
   };
-
-  if (!templateSelected || (!isFetchingResume && !resume)) {
-    return <NotFound />;
-  }
 
   return (
     <div className="container mb-10">

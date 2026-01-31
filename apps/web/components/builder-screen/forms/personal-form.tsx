@@ -20,11 +20,19 @@ import { Input } from "@shared/ui/components/input";
 import { Label } from "@shared/ui/components/label";
 import { AnimatePresence, motion } from "framer-motion";
 import { Plus, Trash2, User } from "lucide-react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 import BuilderNavigation from "@/components/builder-screen/builder-navigation";
-import { resumeSelector, updateResume } from "@/stores/features/resume.slice";
+import { useService } from "@/hooks/use-http";
+import { ResumeService } from "@/services/resume.service";
+import {
+  resumeSelector,
+  setResume,
+  updateResume,
+} from "@/stores/features/resume.slice";
 import { useAppDispatch, useAppSelector } from "@/stores/store";
 
 interface PersonalFormProps {
@@ -35,6 +43,8 @@ interface PersonalFormProps {
 const PersonalForm = ({ onNext, onBack }: PersonalFormProps) => {
   const dispatch = useAppDispatch();
   const { resume } = useAppSelector(resumeSelector);
+  const resumeService = useService(ResumeService);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const formSchema = z.object({
     title: z.string().optional(),
@@ -49,9 +59,26 @@ const PersonalForm = ({ onNext, onBack }: PersonalFormProps) => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    dispatch(updateResume({ ...values }));
-    onNext?.();
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    if (!resume) return;
+
+    setIsSubmitting(true);
+    try {
+      const updatedResume = await resumeService.updateResume(resume.id, {
+        title: values.title,
+        subTitle: values.subTitle,
+        information: resume.information.map(({ label, value }) => ({
+          label,
+          value,
+        })),
+      });
+      dispatch(setResume(updatedResume));
+      onNext?.();
+    } catch {
+      toast.error("Failed to update personal information. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleFieldChange = (field: "title" | "subTitle", value: string) => {
@@ -265,7 +292,11 @@ const PersonalForm = ({ onNext, onBack }: PersonalFormProps) => {
                   </div>
                 )}
               </div>
-              <BuilderNavigation onBack={onBack} disableBack={!onBack} />
+              <BuilderNavigation
+                onBack={onBack}
+                disableBack={!onBack}
+                loading={isSubmitting}
+              />
             </form>
           </Form>
         </CardContent>
