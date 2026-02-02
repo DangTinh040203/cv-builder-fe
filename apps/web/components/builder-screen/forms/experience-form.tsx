@@ -80,12 +80,6 @@ function SortableExperienceItem({
     transition,
   };
 
-  const formatDateForInput = (date: string | null | undefined): string => {
-    if (!date) return "";
-    const d = new Date(date);
-    return d.toISOString().split("T")[0] ?? "";
-  };
-
   return (
     <div
       ref={setNodeRef}
