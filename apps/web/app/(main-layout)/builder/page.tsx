@@ -46,25 +46,8 @@ const BuilderScreen = () => {
   const templateSelected = useAppSelector(templateSelectedSelector);
 
   const { user } = useUser();
-  const { getToken } = useAuth();
   const resumeService = useService(ResumeService);
   const dispatch = useAppDispatch();
-
-  // Keep Clerk session alive by refreshing token periodically
-  useEffect(() => {
-    const refreshInterval = setInterval(
-      async () => {
-        try {
-          await getToken();
-        } catch (error) {
-          console.error("Failed to refresh token:", error);
-        }
-      },
-      50 * 1000, // Refresh every 50 seconds (before 60s expiry)
-    );
-
-    return () => clearInterval(refreshInterval);
-  }, [getToken]);
 
   useEffect(() => {
     if (!templateSelected) {

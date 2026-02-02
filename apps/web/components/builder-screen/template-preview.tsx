@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@shared/ui/components/button";
 import React, { useMemo } from "react";
 
 import TemplateWrapper from "@/components/templates/template-wrapper";
@@ -8,13 +9,15 @@ import { resumeSelector } from "@/stores/features/resume.slice";
 import {
   templateFormatSelector,
   templateSelectedSelector,
+  updatePreviewMode,
 } from "@/stores/features/template.slice";
-import { useAppSelector } from "@/stores/store";
+import { useAppDispatch, useAppSelector } from "@/stores/store";
 
 const TemplatePreview = () => {
   const templateSelected = useAppSelector(templateSelectedSelector);
   const templateFormat = useAppSelector(templateFormatSelector);
   const { resume } = useAppSelector(resumeSelector);
+  const dispatch = useAppDispatch();
 
   const Template = useMemo(() => {
     return TEMPLATES[templateSelected!];
@@ -30,6 +33,13 @@ const TemplatePreview = () => {
             <Template resume={resume} templateFormat={templateFormat} />
           }
         />
+
+        <Button
+          className="rounded-full px-6"
+          onClick={() => dispatch(updatePreviewMode(true))}
+        >
+          Preview
+        </Button>
       </div>
     )
   );
