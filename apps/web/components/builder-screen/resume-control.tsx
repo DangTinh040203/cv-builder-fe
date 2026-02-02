@@ -80,7 +80,8 @@ const ResumeControl = () => {
             variant="outline"
             className={cn(
               "shrink-0 gap-2 transition-colors duration-200",
-              previewMode && "bg-primary text-primary-foreground hover:bg-primary/90"
+              previewMode &&
+                "bg-primary text-primary-foreground hover:bg-primary/90",
             )}
             onClick={handleTogglePreviewMode}
           >

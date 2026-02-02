@@ -17,10 +17,9 @@ import React from "react";
 export enum Section {
   Personal = "personal",
   Summary = "summary",
-  Experience = "experience",
-  Education = "education",
   Skills = "skills",
-  Certifications = "certifications",
+  Education = "education",
+  Experience = "experience",
   Projects = "projects",
 }
 
@@ -30,7 +29,6 @@ const sectionConfig = [
   { id: Section.Experience, label: "Experience", icon: Briefcase },
   { id: Section.Education, label: "Education", icon: GraduationCap },
   { id: Section.Skills, label: "Skills", icon: Code },
-  { id: Section.Certifications, label: "Certifications", icon: Award },
   { id: Section.Projects, label: "Projects", icon: FolderGit2 },
 ];
 
