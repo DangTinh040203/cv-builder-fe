@@ -101,7 +101,7 @@ function SortableSkillItem({
         placeholder="Skill name (e.g. React)"
         className={cn(
           `
-            h-9 w-40 shrink-0 rounded-md border-0 bg-slate-50 text-sm
+            h-9 w-52 shrink-0 rounded-md border-0 bg-slate-50 text-sm
             font-medium
           `,
           "focus:bg-white focus:ring-2 focus:ring-emerald-500/20",

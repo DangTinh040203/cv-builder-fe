@@ -18,12 +18,8 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Button } from "@shared/ui/components/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@shared/ui/components/card";
+import { Card, CardContent, CardTitle } from "@shared/ui/components/card";
+import { DatePicker } from "@shared/ui/components/date-picker";
 import { Input } from "@shared/ui/components/input";
 import { Label } from "@shared/ui/components/label";
 import { cn } from "@shared/ui/lib/utils";

@@ -3,7 +3,7 @@
 import { useUser } from "@clerk/nextjs";
 import { cn } from "@shared/ui/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
 import { toast } from "sonner";
 
@@ -29,13 +29,19 @@ import {
 import { useAppDispatch, useAppSelector } from "@/stores/store";
 
 const BuilderScreen = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const currentStep = searchParams.get("step") as Section;
+
   const [activeSection, setActiveSection] = React.useState<Section>(
-    Section.Personal,
+    Object.values(Section).includes(currentStep)
+      ? currentStep
+      : Section.Personal,
   );
+
   const { resume } = useAppSelector(resumeSelector);
   const { previewMode } = useAppSelector(templateConfigSelector);
   const templateSelected = useAppSelector(templateSelectedSelector);
-  const router = useRouter();
 
   const { user } = useUser();
   const resumeService = useService(ResumeService);
@@ -60,6 +66,22 @@ const BuilderScreen = () => {
     fetchResume();
   }, [dispatch, resume, resumeService, user]);
 
+  useEffect(() => {
+    const step = searchParams.get("step") as Section;
+    const targetSection =
+      step && Object.values(Section).includes(step) ? step : Section.Personal;
+
+    if (targetSection !== activeSection) {
+      setActiveSection(targetSection);
+    }
+  }, [searchParams, activeSection]);
+
+  const handleSectionChange = (section: Section) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("step", section);
+    router.push(`/builder?${params.toString()}`, { scroll: false });
+  };
+
   const sectionOrder = [
     Section.Personal,
     Section.Summary,
@@ -73,7 +95,7 @@ const BuilderScreen = () => {
     const currentIndex = sectionOrder.indexOf(activeSection);
     const nextSection = sectionOrder[currentIndex + 1];
     if (currentIndex < sectionOrder.length - 1 && nextSection) {
-      setActiveSection(nextSection);
+      handleSectionChange(nextSection);
     }
   };
 
@@ -81,7 +103,7 @@ const BuilderScreen = () => {
     const currentIndex = sectionOrder.indexOf(activeSection);
     const prevSection = sectionOrder[currentIndex - 1];
     if (currentIndex > 0 && prevSection) {
-      setActiveSection(prevSection);
+      handleSectionChange(prevSection);
     }
   };
 
@@ -97,7 +119,7 @@ const BuilderScreen = () => {
         <div className="col-span-2">
           <ResumeBuilderSidebar
             activeSection={activeSection}
-            onSectionChange={setActiveSection}
+            onSectionChange={handleSectionChange}
           />
         </div>
 
