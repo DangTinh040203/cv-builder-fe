@@ -1,10 +1,14 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
+import {
+  type NextFetchEvent,
+  type NextRequest,
+  NextResponse,
+} from "next/server";
 
 const isAuthRoute = createRouteMatcher(["/auth(.*)"]);
 const isProtectedRoute = createRouteMatcher(["/builder(.*)"]);
 
-export default clerkMiddleware(async (auth, req) => {
+const handler = clerkMiddleware(async (auth, req) => {
   const { isAuthenticated } = await auth();
 
   if (isAuthenticated && isAuthRoute(req)) {
@@ -19,6 +23,10 @@ export default clerkMiddleware(async (auth, req) => {
 
   return NextResponse.next();
 });
+
+export function proxy(req: NextRequest, event: NextFetchEvent) {
+  return handler(req, event);
+}
 
 export const config = {
   matcher: [

@@ -3,15 +3,44 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { StorageSliceName } from "@/constants";
 import { type RootState } from "@/stores/store";
 
+export type FontWeight = "normal" | "medium" | "semibold" | "bold";
+export type ColumnLayout = "single" | "double";
+export type HeaderStyle = "left" | "center";
+export type Theme = "light" | "dark" | "auto";
+export type BorderStyle = "none" | "simple" | "double" | "accent";
+export type SectionType =
+  | "personal"
+  | "summary"
+  | "skills"
+  | "education"
+  | "experience"
+  | "projects";
+
 export interface Format {
+  // Typography
   fontSize: number;
   titleSize: number;
-  sectionSpacing: number;
   lineHeight: number;
-  color: string;
+  fontWeight: FontWeight;
+  letterSpacing: number;
+
+  // Layout
+  sectionSpacing: number;
   margin: number;
   pageFormat: "A4";
+  columnLayout: ColumnLayout;
+  sectionOrder: SectionType[];
+  headerStyle: HeaderStyle;
+
+  // Appearance
+  color: string;
+  theme: Theme;
+  borderStyle: BorderStyle;
+  showIcons: boolean;
   dateFormat: string;
+
+  // Content visibility
+  hiddenSections: SectionType[];
 }
 
 export interface TemplateConfig {
@@ -24,15 +53,40 @@ export interface TemplateState {
   templateSelected: string | null;
 }
 
+export const defaultSectionOrder: SectionType[] = [
+  "personal",
+  "summary",
+  "skills",
+  "education",
+  "experience",
+  "projects",
+];
+
 export const defaultFormat: Format = {
+  // Typography
   fontSize: 12,
   titleSize: 35,
-  sectionSpacing: 10,
   lineHeight: 1.5,
-  color: "blue",
+  fontWeight: "normal",
+  letterSpacing: 0,
+
+  // Layout
+  sectionSpacing: 10,
   margin: 20,
   pageFormat: "A4",
+  columnLayout: "single",
+  sectionOrder: defaultSectionOrder,
+  headerStyle: "left",
+
+  // Appearance
+  color: "blue",
+  theme: "light",
+  borderStyle: "none",
+  showIcons: true,
   dateFormat: "MM/YYYY",
+
+  // Content visibility
+  hiddenSections: [],
 };
 
 const initialState: TemplateState = {

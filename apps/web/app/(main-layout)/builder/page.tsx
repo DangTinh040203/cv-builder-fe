@@ -1,6 +1,6 @@
 "use client";
 
-import { useUser } from "@clerk/nextjs";
+import { useAuth, useUser } from "@clerk/nextjs";
 import { cn } from "@shared/ui/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -17,6 +17,7 @@ import ResumeBuilderSidebar, {
   Section,
 } from "@/components/builder-screen/resume-builder-sidebar";
 import ResumeControl from "@/components/builder-screen/resume-control";
+import TemplateFormat from "@/components/builder-screen/template-format";
 import TemplatePreview from "@/components/builder-screen/template-preview";
 import NotFound from "@/components/common/not-found";
 import { useService } from "@/hooks/use-http";
@@ -44,8 +45,25 @@ const BuilderScreen = () => {
   const templateSelected = useAppSelector(templateSelectedSelector);
 
   const { user } = useUser();
+  const { getToken } = useAuth();
   const resumeService = useService(ResumeService);
   const dispatch = useAppDispatch();
+
+  // Keep Clerk session alive by refreshing token periodically
+  useEffect(() => {
+    const refreshInterval = setInterval(
+      async () => {
+        try {
+          await getToken();
+        } catch (error) {
+          console.error("Failed to refresh token:", error);
+        }
+      },
+      50 * 1000, // Refresh every 50 seconds (before 60s expiry)
+    );
+
+    return () => clearInterval(refreshInterval);
+  }, [getToken]);
 
   useEffect(() => {
     if (!templateSelected) {
@@ -124,39 +142,43 @@ const BuilderScreen = () => {
         </div>
 
         <AnimatePresence mode="popLayout">
-          {!previewMode && (
-            <motion.div
-              key="form-section"
-              className="col-span-7"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-            >
-              {activeSection === Section.Personal && (
-                <PersonalForm onNext={handleNext} />
-              )}
-              {activeSection === Section.Summary && (
-                <SummaryForm onNext={handleNext} onBack={handleBack} />
-              )}
-              {activeSection === Section.Skills && (
-                <SkillsForm onNext={handleNext} onBack={handleBack} />
-              )}
-              {activeSection === Section.Education && (
-                <EducationForm onNext={handleNext} onBack={handleBack} />
-              )}
-              {activeSection === Section.Experience && (
-                <ExperienceForm onNext={handleNext} onBack={handleBack} />
-              )}
-              {activeSection === Section.Projects && (
-                <ProjectsForm onNext={handleNext} onBack={handleBack} />
-              )}
-            </motion.div>
-          )}
+          <motion.div
+            key="form-section"
+            className="col-span-7"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+          >
+            {!previewMode ? (
+              <div>
+                {activeSection === Section.Personal && (
+                  <PersonalForm onNext={handleNext} />
+                )}
+                {activeSection === Section.Summary && (
+                  <SummaryForm onNext={handleNext} onBack={handleBack} />
+                )}
+                {activeSection === Section.Skills && (
+                  <SkillsForm onNext={handleNext} onBack={handleBack} />
+                )}
+                {activeSection === Section.Education && (
+                  <EducationForm onNext={handleNext} onBack={handleBack} />
+                )}
+                {activeSection === Section.Experience && (
+                  <ExperienceForm onNext={handleNext} onBack={handleBack} />
+                )}
+                {activeSection === Section.Projects && (
+                  <ProjectsForm onNext={handleNext} onBack={handleBack} />
+                )}
+              </div>
+            ) : (
+              <TemplatePreview />
+            )}
+          </motion.div>
         </AnimatePresence>
 
-        <div className={cn("col-span-3", previewMode && "col-span-10")}>
-          <TemplatePreview />
+        <div className={cn("col-span-3")}>
+          {!previewMode ? <TemplatePreview /> : <TemplateFormat />}
         </div>
       </div>
     </div>

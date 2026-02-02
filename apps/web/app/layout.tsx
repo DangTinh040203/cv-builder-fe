@@ -31,7 +31,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      signInFallbackRedirectUrl="/builder"
+      afterSignOutUrl="/auth/sign-in"
+    >
       <html lang="en" suppressHydrationWarning>
         <body
           className={`

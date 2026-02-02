@@ -3,7 +3,7 @@
 import { Page, Text, View } from "@rawwee/react-pdf-html";
 import { Font } from "@react-pdf/renderer";
 import dayjs from "dayjs";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { v4 as uuid } from "uuid";
 
 import HtmlToPdf from "@/components/templates/html-to-pdf";
@@ -25,6 +25,15 @@ const Template01: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
   } = resume;
 
   const { styles } = useTemplateStyle(templateFormat);
+
+  // Helper function to format dates consistently using config
+  const formatDate = useCallback(
+    (date: Date | string | null | undefined) => {
+      if (!date) return "Present";
+      return dayjs(date).format(templateFormat.dateFormat);
+    },
+    [templateFormat.dateFormat],
+  );
 
   const informationGroup = useMemo(() => {
     return {
@@ -90,14 +99,11 @@ const Template01: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
               <View key={uuid()} style={{ ...styles.row, marginBottom: 4 }}>
                 <View style={{ minWidth: 120 }}>
                   <Text>
-                    {dayjs(edu.startDate).format("MM/YYYY")} -{" "}
-                    {edu.endDate
-                      ? dayjs(edu.endDate).format("MM/YYYY")
-                      : "Present"}
+                    {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
                   </Text>
                 </View>
                 <View style={styles.col}>
-                  <Text style={{ fontWeight: 700 }}>{edu.school}</Text>
+                  <Text style={styles.label}>{edu.school}</Text>
                   <Text>
                     {edu.major} - {edu.degree}
                   </Text>
@@ -125,14 +131,11 @@ const Template01: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
               >
                 <View style={{ minWidth: 120 }}>
                   <Text>
-                    {dayjs(exp.startDate).format("MM/YYYY")} -{" "}
-                    {exp.endDate
-                      ? dayjs(exp.endDate).format("MM/YYYY")
-                      : "Present"}
+                    {formatDate(exp.startDate)} - {formatDate(exp.endDate)}
                   </Text>
                 </View>
                 <View style={[styles.col, { flex: 1 }]}>
-                  <Text style={{ fontWeight: 700 }}>{exp.company}</Text>
+                  <Text style={styles.label}>{exp.company}</Text>
                   <HtmlToPdf
                     style={{ ...styles.text, margin: 0 }}
                     content={exp.description}
@@ -153,7 +156,7 @@ const Template01: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
             {projects.map((project) => (
               <View key={uuid()} style={styles.projectContainer} wrap={false}>
                 <View style={styles.projectHeader}>
-                  <Text style={{ fontWeight: 600 }}>{project.title}</Text>
+                  <Text style={styles.label}>{project.title}</Text>
                 </View>
 
                 <HtmlToPdf style={styles.text} content={project.details} />
