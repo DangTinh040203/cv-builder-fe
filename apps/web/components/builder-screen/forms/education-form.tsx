@@ -49,11 +49,7 @@ function SortableEducationItem({
   onRemove,
 }: {
   item: Education;
-  onUpdate: (
-    id: string,
-    field: keyof Education,
-    value: string | Date | null,
-  ) => void;
+  onUpdate: (id: string, field: keyof Education, value: string | null) => void;
   onRemove: (id: string) => void;
 }) {
   const {
@@ -70,7 +66,7 @@ function SortableEducationItem({
     transition,
   };
 
-  const formatDateForInput = (date: Date | null | undefined): string => {
+  const formatDateForInput = (date: string | null | undefined): string => {
     if (!date) return "";
     const d = new Date(date);
     return d.toISOString().split("T")[0] ?? "";
@@ -178,7 +174,9 @@ function SortableEducationItem({
                 onUpdate(
                   item.id,
                   "startDate",
-                  e.target.value ? new Date(e.target.value) : new Date(),
+                  e.target.value
+                    ? new Date(e.target.value).toISOString()
+                    : new Date().toISOString(),
                 )
               }
               className={cn(
@@ -199,7 +197,9 @@ function SortableEducationItem({
                 onUpdate(
                   item.id,
                   "endDate",
-                  e.target.value ? new Date(e.target.value) : null,
+                  e.target.value
+                    ? new Date(e.target.value).toISOString()
+                    : null,
                 )
               }
               className={cn(
@@ -244,7 +244,7 @@ const EducationForm = ({ onNext, onBack }: EducationFormProps) => {
   const updateEducationItem = (
     id: string,
     field: keyof Education,
-    value: string | Date | null,
+    value: string | null,
   ) => {
     const newItems = educationItems.map((item) =>
       item.id === id ? { ...item, [field]: value } : item,
@@ -258,7 +258,7 @@ const EducationForm = ({ onNext, onBack }: EducationFormProps) => {
       school: "",
       degree: "",
       major: "",
-      startDate: new Date(),
+      startDate: new Date().toISOString(),
       endDate: null,
       resumeId: resume?.id || "",
     };

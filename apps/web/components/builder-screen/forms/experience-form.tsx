@@ -53,7 +53,7 @@ function SortableExperienceItem({
   onUpdate: (
     id: string,
     field: keyof WorkExperience,
-    value: string | Date | null,
+    value: string | null,
   ) => void;
   onRemove: (id: string) => void;
 }) {
@@ -71,7 +71,7 @@ function SortableExperienceItem({
     transition,
   };
 
-  const formatDateForInput = (date: Date | null | undefined): string => {
+  const formatDateForInput = (date: string | null | undefined): string => {
     if (!date) return "";
     const d = new Date(date);
     return d.toISOString().split("T")[0] ?? "";
@@ -169,7 +169,9 @@ function SortableExperienceItem({
                 onUpdate(
                   item.id,
                   "startDate",
-                  e.target.value ? new Date(e.target.value) : new Date(),
+                  e.target.value
+                    ? new Date(e.target.value).toISOString()
+                    : new Date().toISOString(),
                 )
               }
               className={cn(
@@ -190,7 +192,9 @@ function SortableExperienceItem({
                 onUpdate(
                   item.id,
                   "endDate",
-                  e.target.value ? new Date(e.target.value) : null,
+                  e.target.value
+                    ? new Date(e.target.value).toISOString()
+                    : null,
                 )
               }
               className={cn(
@@ -251,7 +255,7 @@ const ExperienceForm = ({ onNext, onBack }: ExperienceFormProps) => {
   const updateExperienceItem = (
     id: string,
     field: keyof WorkExperience,
-    value: string | Date | null,
+    value: string | null,
   ) => {
     const newItems = experienceItems.map((item) =>
       item.id === id ? { ...item, [field]: value } : item,
@@ -265,7 +269,7 @@ const ExperienceForm = ({ onNext, onBack }: ExperienceFormProps) => {
       company: "",
       position: "",
       description: "",
-      startDate: new Date(),
+      startDate: new Date().toISOString(),
       endDate: null,
       resumeId: resume?.id || "",
     };

@@ -3,7 +3,9 @@
 import { useUser } from "@clerk/nextjs";
 import { cn } from "@shared/ui/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
+import { toast } from "sonner";
 
 import EducationForm from "@/components/builder-screen/forms/education-form";
 import ExperienceForm from "@/components/builder-screen/forms/experience-form";
@@ -16,10 +18,14 @@ import ResumeBuilderSidebar, {
 } from "@/components/builder-screen/resume-builder-sidebar";
 import ResumeControl from "@/components/builder-screen/resume-control";
 import TemplatePreview from "@/components/builder-screen/template-preview";
+import NotFound from "@/components/common/not-found";
 import { useService } from "@/hooks/use-http";
 import { ResumeService } from "@/services/resume.service";
 import { resumeSelector, setResume } from "@/stores/features/resume.slice";
-import { templateConfigSelector } from "@/stores/features/template.slice";
+import {
+  templateConfigSelector,
+  templateSelectedSelector,
+} from "@/stores/features/template.slice";
 import { useAppDispatch, useAppSelector } from "@/stores/store";
 
 const BuilderScreen = () => {
@@ -28,10 +34,19 @@ const BuilderScreen = () => {
   );
   const { resume } = useAppSelector(resumeSelector);
   const { previewMode } = useAppSelector(templateConfigSelector);
+  const templateSelected = useAppSelector(templateSelectedSelector);
+  const router = useRouter();
 
   const { user } = useUser();
   const resumeService = useService(ResumeService);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (!templateSelected) {
+      toast.error("Please select a template to continue");
+      router.push("/templates");
+    }
+  }, [templateSelected, router]);
 
   useEffect(() => {
     const fetchResume = async () => {
@@ -69,6 +84,10 @@ const BuilderScreen = () => {
       setActiveSection(prevSection);
     }
   };
+
+  if (!templateSelected) {
+    return <NotFound />;
+  }
 
   return (
     <div className="container mb-10">

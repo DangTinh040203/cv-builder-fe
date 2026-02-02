@@ -10,8 +10,8 @@ export interface Education {
   school: string;
   degree: string;
   major: string;
-  startDate: Date;
-  endDate: Date | null;
+  startDate: string;
+  endDate: string | null;
   resumeId: string;
 }
 
@@ -27,8 +27,8 @@ export interface WorkExperience {
   company: string;
   position: string;
   description: string;
-  startDate: Date;
-  endDate: Date | null;
+  startDate: string;
+  endDate: string | null;
   resumeId: string;
 }
 
@@ -55,8 +55,8 @@ export interface Resume {
   workExperiences: Array<WorkExperience>;
   projects: Array<Project>;
 
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface UpdateResumeDto {
