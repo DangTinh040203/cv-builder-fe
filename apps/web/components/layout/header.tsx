@@ -36,8 +36,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { useAppDispatch } from "@/stores/store";
-
 const navLinks = [
   { href: "/templates", label: "Templates", icon: FileText },
   { href: "/interview", label: "Mock Interview", icon: MessageSquare },
@@ -106,7 +104,6 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   const pathname = usePathname();
-  const dispatch = useAppDispatch();
   const { scrollY } = useScroll();
   const headerShadow = useTransform(
     scrollY,

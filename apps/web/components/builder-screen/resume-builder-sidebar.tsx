@@ -3,7 +3,6 @@ import { Card, CardContent } from "@shared/ui/components/card";
 import { cn } from "@shared/ui/lib/utils";
 import { motion } from "framer-motion";
 import {
-  Award,
   Briefcase,
   ChevronRight,
   Code,
