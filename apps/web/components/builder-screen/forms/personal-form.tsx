@@ -86,7 +86,7 @@ function SortableContactItem({
         "ring-1 ring-slate-200",
         "hover:ring-slate-300",
         "dark:bg-slate-800 dark:ring-slate-700",
-        isDragging && "z-50 shadow-lg ring-blue-500",
+        isDragging && "relative z-50 shadow-lg ring-blue-500",
       )}
     >
       {/* Drag Handle */}
