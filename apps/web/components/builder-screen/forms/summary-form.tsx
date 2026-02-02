@@ -58,13 +58,13 @@ const SummaryForm = ({ onNext, onBack }: SummaryFormProps) => {
       className={cn(
         "relative overflow-hidden border-0 shadow-xl",
         `
-                    bg-white
-                    dark:bg-slate-900
-                  `,
+          bg-white
+          dark:bg-slate-900
+        `,
         `
-                    ring-1 ring-slate-200/50
-                    dark:ring-slate-700/50
-                  `,
+          ring-1 ring-slate-200/50
+          dark:ring-slate-700/50
+        `,
         isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0",
       )}
     >

@@ -111,7 +111,10 @@ function SortableContactItem({
         onChange={(e) => onUpdate(item.id, "label", e.target.value)}
         placeholder="Label (e.g. Email)"
         className={cn(
-          "h-9 w-32 shrink-0 rounded-md border-0 bg-slate-50 text-sm font-medium",
+          `
+            h-9 w-32 shrink-0 rounded-md border-0 bg-slate-50 text-sm
+            font-medium
+          `,
           "focus:bg-white focus:ring-2 focus:ring-blue-500/20",
           "dark:bg-slate-700",
         )}
@@ -301,8 +304,8 @@ const PersonalForm = ({ onNext, onBack }: PersonalFormProps) => {
                     <div className="h-1 w-1 rounded-full bg-blue-500" />
                     <span
                       className={`
-                        text-xs font-semibold uppercase tracking-wider
-                        text-slate-500
+                        text-xs font-semibold tracking-wider text-slate-500
+                        uppercase
                       `}
                     >
                       Basic Details
@@ -405,8 +408,8 @@ const PersonalForm = ({ onNext, onBack }: PersonalFormProps) => {
                       <div className="h-1 w-1 rounded-full bg-emerald-500" />
                       <Label
                         className={`
-                          text-xs font-semibold uppercase tracking-wider
-                          text-slate-500
+                          text-xs font-semibold tracking-wider text-slate-500
+                          uppercase
                         `}
                       >
                         Contact Information

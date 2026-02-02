@@ -17,32 +17,36 @@ export function resumeToUpdateDto(resume: Resume): UpdateResumeDto {
         label,
         value,
       })),
-    educations: resume.educations.map(
-      ({ school, degree, major, startDate, endDate }) => ({
+    educations: resume.educations
+      .filter((edu) => edu.school.trim() || edu.degree.trim())
+      .map(({ school, degree, major, startDate, endDate }) => ({
         school,
         degree,
         major,
         startDate,
         endDate,
-      }),
-    ),
-    skills: resume.skills.map(({ label, value }) => ({
-      label,
-      value,
-    })),
-    workExperiences: resume.workExperiences.map(
-      ({ company, position, description, startDate, endDate }) => ({
+      })),
+    skills: resume.skills
+      .filter((skill) => skill.label.trim() || skill.value.trim())
+      .map(({ label, value }) => ({
+        label,
+        value,
+      })),
+    workExperiences: resume.workExperiences
+      .filter((exp) => exp.company.trim() || exp.position.trim())
+      .map(({ company, position, description, startDate, endDate }) => ({
         company,
         position,
         description,
         startDate,
         endDate,
-      }),
-    ),
-    projects: resume.projects.map(({ title, subTitle, details }) => ({
-      title,
-      subTitle,
-      details,
-    })),
+      })),
+    projects: resume.projects
+      .filter((proj) => proj.title.trim() || proj.details.trim())
+      .map(({ title, subTitle, details }) => ({
+        title,
+        subTitle,
+        details,
+      })),
   };
 }

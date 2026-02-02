@@ -26,9 +26,9 @@ export enum Section {
 const sectionConfig = [
   { id: Section.Personal, label: "Personal", icon: User },
   { id: Section.Summary, label: "Summary", icon: FileText },
-  { id: Section.Experience, label: "Experience", icon: Briefcase },
-  { id: Section.Education, label: "Education", icon: GraduationCap },
   { id: Section.Skills, label: "Skills", icon: Code },
+  { id: Section.Education, label: "Education", icon: GraduationCap },
+  { id: Section.Experience, label: "Experience", icon: Briefcase },
   { id: Section.Projects, label: "Projects", icon: FolderGit2 },
 ];
 

@@ -5,7 +5,11 @@ import { cn } from "@shared/ui/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect } from "react";
 
+import EducationForm from "@/components/builder-screen/forms/education-form";
+import ExperienceForm from "@/components/builder-screen/forms/experience-form";
 import PersonalForm from "@/components/builder-screen/forms/personal-form";
+import ProjectsForm from "@/components/builder-screen/forms/projects-form";
+import SkillsForm from "@/components/builder-screen/forms/skills-form";
 import SummaryForm from "@/components/builder-screen/forms/summary-form";
 import ResumeBuilderSidebar, {
   Section,
@@ -44,9 +48,9 @@ const BuilderScreen = () => {
   const sectionOrder = [
     Section.Personal,
     Section.Summary,
-    Section.Experience,
-    Section.Education,
     Section.Skills,
+    Section.Education,
+    Section.Experience,
     Section.Projects,
   ];
 
@@ -94,24 +98,25 @@ const BuilderScreen = () => {
               {activeSection === Section.Summary && (
                 <SummaryForm onNext={handleNext} onBack={handleBack} />
               )}
+              {activeSection === Section.Skills && (
+                <SkillsForm onNext={handleNext} onBack={handleBack} />
+              )}
+              {activeSection === Section.Education && (
+                <EducationForm onNext={handleNext} onBack={handleBack} />
+              )}
+              {activeSection === Section.Experience && (
+                <ExperienceForm onNext={handleNext} onBack={handleBack} />
+              )}
+              {activeSection === Section.Projects && (
+                <ProjectsForm onNext={handleNext} onBack={handleBack} />
+              )}
             </motion.div>
           )}
         </AnimatePresence>
 
-        <motion.div
-          layout
-          className={cn("col-span-3", previewMode && "col-span-10")}
-          transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-        >
-          <motion.div
-            layout
-            initial={false}
-            animate={{ scale: previewMode ? 1 : 1 }}
-            transition={{ duration: 0.3 }}
-          >
-            <TemplatePreview />
-          </motion.div>
-        </motion.div>
+        <div className={cn("col-span-3", previewMode && "col-span-10")}>
+          <TemplatePreview />
+        </div>
       </div>
     </div>
   );
