@@ -20,6 +20,7 @@ export interface Format {
   // Typography
   fontSize: number;
   titleSize: number;
+  subTitleSize: number;
   lineHeight: number;
   fontWeight: FontWeight;
   letterSpacing: number;
@@ -36,7 +37,6 @@ export interface Format {
   color: string;
   theme: Theme;
   borderStyle: BorderStyle;
-  showIcons: boolean;
   dateFormat: string;
 
   // Content visibility
@@ -65,8 +65,9 @@ export const defaultSectionOrder: SectionType[] = [
 export const defaultFormat: Format = {
   // Typography
   fontSize: 12,
-  titleSize: 35,
-  lineHeight: 1.5,
+  titleSize: 36,
+  subTitleSize: 14,
+  lineHeight: 1.8,
   fontWeight: "normal",
   letterSpacing: 0,
 
@@ -82,7 +83,6 @@ export const defaultFormat: Format = {
   color: "blue",
   theme: "light",
   borderStyle: "none",
-  showIcons: true,
   dateFormat: "MM/YYYY",
 
   // Content visibility

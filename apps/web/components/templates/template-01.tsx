@@ -74,7 +74,7 @@ const Template01: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
       </View>
 
       {/* SKILLS */}
-      {skills && (
+      {skills && skills.length > 0 && (
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Skills</Text>
           <View style={styles.separator} />
@@ -90,7 +90,7 @@ const Template01: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
       )}
 
       {/* EDUCATION */}
-      {educations && (
+      {educations && educations.length > 0 && (
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Education</Text>
           <View style={styles.separator} />
@@ -115,7 +115,7 @@ const Template01: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
       )}
 
       {/* EXPERIENCE */}
-      {workExperiences && (
+      {workExperiences && workExperiences.length > 0 && (
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Experience</Text>
           <View style={styles.separator} />
@@ -148,7 +148,7 @@ const Template01: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
       )}
 
       {/* PROJECTS */}
-      {projects && (
+      {projects && projects.length > 0 && (
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Projects</Text>
           <View style={styles.separator} />

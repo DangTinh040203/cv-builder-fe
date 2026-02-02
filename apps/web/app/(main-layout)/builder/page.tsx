@@ -26,6 +26,7 @@ import { resumeSelector, setResume } from "@/stores/features/resume.slice";
 import {
   templateConfigSelector,
   templateSelectedSelector,
+  updatePreviewMode,
 } from "@/stores/features/template.slice";
 import { useAppDispatch, useAppSelector } from "@/stores/store";
 
@@ -95,6 +96,9 @@ const BuilderScreen = () => {
   }, [searchParams, activeSection]);
 
   const handleSectionChange = (section: Section) => {
+    if (previewMode) {
+      dispatch(updatePreviewMode(false));
+    }
     const params = new URLSearchParams(searchParams.toString());
     params.set("step", section);
     router.push(`/builder?${params.toString()}`, { scroll: false });
@@ -141,17 +145,16 @@ const BuilderScreen = () => {
           />
         </div>
 
-        <AnimatePresence mode="popLayout">
-          <motion.div
-            key="form-section"
-            className="col-span-7"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-          >
+        <div className="col-span-7">
+          <AnimatePresence mode="wait">
             {!previewMode ? (
-              <div>
+              <motion.div
+                key="forms"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.3 }}
+              >
                 {activeSection === Section.Personal && (
                   <PersonalForm onNext={handleNext} />
                 )}
@@ -170,15 +173,41 @@ const BuilderScreen = () => {
                 {activeSection === Section.Projects && (
                   <ProjectsForm onNext={handleNext} onBack={handleBack} />
                 )}
-              </div>
+              </motion.div>
             ) : (
-              <TemplatePreview />
+              <motion.div
+                key="preview-main"
+                layoutId="template-preview-container"
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              >
+                <TemplatePreview />
+              </motion.div>
             )}
-          </motion.div>
-        </AnimatePresence>
+          </AnimatePresence>
+        </div>
 
         <div className={cn("col-span-3")}>
-          {!previewMode ? <TemplatePreview /> : <TemplateFormat />}
+          <AnimatePresence mode="wait">
+            {!previewMode ? (
+              <motion.div
+                key="preview-sidebar"
+                layoutId="template-preview-container"
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              >
+                <TemplatePreview />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="template-format"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <TemplateFormat />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </div>

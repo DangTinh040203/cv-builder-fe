@@ -66,10 +66,6 @@ const ResumeControl = () => {
           md:flex
         `}
       >
-        <Button variant="outline" className="shrink-0 gap-2">
-          <Settings2 className="h-4 w-4" />
-          <span>Customize</span>
-        </Button>
         <Button variant="outline" className={cn("shrink-0 gap-2")}>
           <Sparkles className="h-4 w-4" />
           AI Assistant
@@ -78,11 +74,7 @@ const ResumeControl = () => {
         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
           <Button
             variant="outline"
-            className={cn(
-              "shrink-0 gap-2 transition-colors duration-200",
-              previewMode &&
-                "bg-primary text-primary-foreground hover:bg-primary/90",
-            )}
+            className={cn("shrink-0 gap-2 transition-colors duration-200")}
             onClick={handleTogglePreviewMode}
           >
             <motion.div
@@ -96,7 +88,7 @@ const ResumeControl = () => {
                 <Eye className="h-4 w-4" />
               )}
             </motion.div>
-            {previewMode ? "Edit" : "Preview"}
+            {previewMode ? "Edit" : "Customize"}
           </Button>
         </motion.div>
 

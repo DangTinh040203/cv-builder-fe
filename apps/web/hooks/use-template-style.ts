@@ -10,11 +10,23 @@ export const useTemplateStyle = (templateFormat: Format) => {
       color: templateFormat.color,
       fontSize: templateFormat.fontSize,
       titleSize: templateFormat.titleSize,
+      subTitleSize: templateFormat.subTitleSize,
       lineHeight: templateFormat.lineHeight,
+      letterSpacing: templateFormat.letterSpacing,
+      fontWeight: templateFormat.fontWeight,
       sectionSpacing: templateFormat.sectionSpacing,
       margin: templateFormat.margin,
       pageFormat: templateFormat.pageFormat,
     };
+
+    // Map fontWeight string to numeric value for react-pdf
+    const fontWeightMap: Record<string, number> = {
+      normal: 400,
+      medium: 500,
+      semibold: 600,
+      bold: 700,
+    };
+    const fontWeightValue = fontWeightMap[theme.fontWeight] || 400;
 
     return StyleSheet.create({
       page: {
@@ -24,6 +36,8 @@ export const useTemplateStyle = (templateFormat: Format) => {
         rowGap: theme.sectionSpacing,
         fontSize: theme.fontSize,
         lineHeight: theme.lineHeight,
+        letterSpacing: theme.letterSpacing,
+        fontWeight: fontWeightValue,
       },
 
       section: {
@@ -39,7 +53,7 @@ export const useTemplateStyle = (templateFormat: Format) => {
       },
 
       separator: {
-        height: 1,
+        height: 0.5,
         width: "100%",
         backgroundColor: "gray",
       },
@@ -47,6 +61,7 @@ export const useTemplateStyle = (templateFormat: Format) => {
       text: {
         fontSize: theme.fontSize,
         lineHeight: theme.lineHeight,
+        letterSpacing: theme.letterSpacing,
       },
 
       title: {
@@ -58,6 +73,7 @@ export const useTemplateStyle = (templateFormat: Format) => {
 
       subTitle: {
         ...templateGlobalStyles.heading2,
+        fontSize: theme.subTitleSize,
         ...templateGlobalStyles.fontWeight600,
         lineHeight: 1.2,
       },

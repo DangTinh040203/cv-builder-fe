@@ -20,14 +20,14 @@ const HtmlToPdf = ({ content = "", style = {} }: HtmlToPdfProps) => {
   if (isHTML) {
     return (
       <div
-        style={style}
-        className="prose m-0 max-w-full p-0"
+        style={{ ...style }}
+        className="m-0 max-w-full p-0"
         dangerouslySetInnerHTML={{ __html: normalizedContent }}
       />
     );
   }
 
-  return <Html style={style}>{normalizedContent}</Html>;
+  return <Html style={{ ...style }}>{normalizedContent}</Html>;
 };
 
 export default HtmlToPdf;
