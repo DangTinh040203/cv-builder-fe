@@ -10,10 +10,13 @@ export function resumeToUpdateDto(resume: Resume): UpdateResumeDto {
     subTitle: resume.subTitle,
     overview: resume.overview,
     avatar: resume.avatar,
-    information: resume.information.map(({ label, value }) => ({
-      label,
-      value,
-    })),
+    // Filter out empty information items
+    information: resume.information
+      .filter((item) => item.label.trim() && item.value.trim())
+      .map(({ label, value }) => ({
+        label,
+        value,
+      })),
     educations: resume.educations.map(
       ({ school, degree, major, startDate, endDate }) => ({
         school,

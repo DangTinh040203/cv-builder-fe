@@ -1,5 +1,22 @@
 "use client";
 
+import {
+  closestCenter,
+  DndContext,
+  type DragEndEvent,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@shared/ui/components/button";
 import {
@@ -20,7 +37,7 @@ import { Input } from "@shared/ui/components/input";
 import { Label } from "@shared/ui/components/label";
 import { cn } from "@shared/ui/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import { Plus, Trash2, User } from "lucide-react";
+import { GripVertical, Plus, Trash2, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -29,16 +46,120 @@ import BuilderNavigation from "@/components/builder-screen/builder-navigation";
 import { useSyncResume } from "@/hooks/use-sync-resume";
 import { updateResume } from "@/stores/features/resume.slice";
 import { useAppDispatch } from "@/stores/store";
+import type { ResumeInformation } from "@/types/resume.type";
 
 interface PersonalFormProps {
   onNext?: () => void;
   onBack?: () => void;
 }
 
+// Sortable item component
+function SortableContactItem({
+  item,
+  onUpdate,
+  onRemove,
+}: {
+  item: ResumeInformation;
+  onUpdate: (id: string, field: "label" | "value", value: string) => void;
+  onRemove: (id: string) => void;
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: item.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={cn(
+        "group flex items-center gap-2 rounded-lg bg-white p-2",
+        "ring-1 ring-slate-200",
+        "hover:ring-slate-300",
+        "dark:bg-slate-800 dark:ring-slate-700",
+        isDragging && "z-50 shadow-lg ring-blue-500",
+      )}
+    >
+      {/* Drag Handle */}
+      <button
+        type="button"
+        className={cn(
+          "cursor-grab touch-none rounded p-1",
+          "text-slate-400 transition-colors",
+          "hover:bg-slate-100 hover:text-slate-600",
+          "dark:hover:bg-slate-700",
+          isDragging && "cursor-grabbing",
+        )}
+        {...attributes}
+        {...listeners}
+      >
+        <GripVertical className="h-4 w-4" />
+      </button>
+
+      {/* Label Input */}
+      <Input
+        value={item.label}
+        onChange={(e) => onUpdate(item.id, "label", e.target.value)}
+        placeholder="Label (e.g. Email)"
+        className={cn(
+          "h-9 w-32 shrink-0 rounded-md border-0 bg-slate-50 text-sm font-medium",
+          "focus:bg-white focus:ring-2 focus:ring-blue-500/20",
+          "dark:bg-slate-700",
+        )}
+      />
+
+      {/* Value Input */}
+      <Input
+        value={item.value}
+        onChange={(e) => onUpdate(item.id, "value", e.target.value)}
+        placeholder="Value"
+        className={cn(
+          "h-9 flex-1 rounded-md border-0 bg-slate-50 text-sm",
+          "focus:bg-white focus:ring-2 focus:ring-blue-500/20",
+          "dark:bg-slate-700",
+        )}
+      />
+
+      {/* Delete Button */}
+      <Button
+        variant="ghost"
+        size="icon"
+        className={cn(
+          "h-8 w-8 shrink-0 rounded-md",
+          "text-slate-400 opacity-0 transition-opacity",
+          "group-hover:opacity-100",
+          "hover:bg-rose-50 hover:text-rose-500",
+          "dark:hover:bg-rose-500/10",
+        )}
+        onClick={() => onRemove(item.id)}
+        type="button"
+      >
+        <Trash2 className="h-4 w-4" />
+      </Button>
+    </div>
+  );
+}
+
 const PersonalForm = ({ onNext, onBack }: PersonalFormProps) => {
   const dispatch = useAppDispatch();
   const { sync, isSyncing, resume } = useSyncResume();
   const [isVisible, setIsVisible] = useState(false);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+  );
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 50);
@@ -67,7 +188,6 @@ const PersonalForm = ({ onNext, onBack }: PersonalFormProps) => {
     }
   }, [form, resume]);
 
-  // Simple submit: sync Redux state to backend
   const onSubmit = async () => {
     const success = await sync();
     if (success) {
@@ -105,6 +225,17 @@ const PersonalForm = ({ onNext, onBack }: PersonalFormProps) => {
   const removeContactItem = (id: string) => {
     const newItems = contactItems.filter((item) => item.id !== id);
     dispatch(updateResume({ information: newItems }));
+  };
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (over && active.id !== over.id) {
+      const oldIndex = contactItems.findIndex((item) => item.id === active.id);
+      const newIndex = contactItems.findIndex((item) => item.id === over.id);
+      const newItems = arrayMove(contactItems, oldIndex, newIndex);
+      dispatch(updateResume({ information: newItems }));
+    }
   };
 
   if (!resume) return null;
@@ -170,8 +301,8 @@ const PersonalForm = ({ onNext, onBack }: PersonalFormProps) => {
                     <div className="h-1 w-1 rounded-full bg-blue-500" />
                     <span
                       className={`
-                        text-xs font-semibold tracking-wider text-slate-500
-                        uppercase
+                        text-xs font-semibold uppercase tracking-wider
+                        text-slate-500
                       `}
                     >
                       Basic Details
@@ -274,8 +405,8 @@ const PersonalForm = ({ onNext, onBack }: PersonalFormProps) => {
                       <div className="h-1 w-1 rounded-full bg-emerald-500" />
                       <Label
                         className={`
-                          text-xs font-semibold tracking-wider text-slate-500
-                          uppercase
+                          text-xs font-semibold uppercase tracking-wider
+                          text-slate-500
                         `}
                       >
                         Contact Information
@@ -333,97 +464,29 @@ const PersonalForm = ({ onNext, onBack }: PersonalFormProps) => {
                         </p>
                       </div>
                     ) : (
-                      <AnimatePresence mode="popLayout">
-                        <div className="space-y-2">
-                          {contactItems.map((item, index) => (
-                            <motion.div
-                              key={item.id}
-                              layout
-                              initial={{ opacity: 0, y: -10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, scale: 0.95 }}
-                              transition={{
-                                duration: 0.15,
-                                delay: index * 0.03,
-                              }}
-                              className={cn(
-                                `
-                                  group flex items-center gap-2 rounded-lg
-                                  bg-white p-2
-                                `,
-                                "ring-1 ring-slate-200",
-                                "hover:ring-slate-300",
-                                "dark:bg-slate-800 dark:ring-slate-700",
-                              )}
-                            >
-                              {/* Label Input */}
-                              <Input
-                                value={item.label}
-                                onChange={(e) =>
-                                  updateContactItem(
-                                    item.id,
-                                    "label",
-                                    e.target.value,
-                                  )
-                                }
-                                placeholder="Label (e.g. Email)"
-                                className={cn(
-                                  `
-                                    h-9 w-32 shrink-0 rounded-md border-0
-                                    bg-slate-50 text-sm font-medium
-                                  `,
-                                  `
-                                    focus:bg-white focus:ring-2
-                                    focus:ring-blue-500/20
-                                  `,
-                                  "dark:bg-slate-700",
-                                )}
-                              />
-
-                              {/* Value Input */}
-                              <Input
-                                value={item.value}
-                                onChange={(e) =>
-                                  updateContactItem(
-                                    item.id,
-                                    "value",
-                                    e.target.value,
-                                  )
-                                }
-                                placeholder="Value"
-                                className={cn(
-                                  `
-                                    h-9 flex-1 rounded-md border-0 bg-slate-50
-                                    text-sm
-                                  `,
-                                  `
-                                    focus:bg-white focus:ring-2
-                                    focus:ring-blue-500/20
-                                  `,
-                                  "dark:bg-slate-700",
-                                )}
-                              />
-
-                              {/* Delete Button */}
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                className={cn(
-                                  "h-8 w-8 shrink-0 rounded-md",
-                                  "text-slate-400 opacity-0 transition-opacity",
-                                  "group-hover:opacity-100",
-                                  "hover:bg-rose-50 hover:text-rose-500",
-                                  "dark:hover:bg-rose-500/10",
-                                )}
-                                onClick={() => removeContactItem(item.id)}
-                                type="button"
-                              >
-                                <Trash2 className="h-4 w-4" />
-                              </Button>
-                            </motion.div>
-                          ))}
-                        </div>
-                      </AnimatePresence>
+                      <DndContext
+                        sensors={sensors}
+                        collisionDetection={closestCenter}
+                        onDragEnd={handleDragEnd}
+                      >
+                        <SortableContext
+                          items={contactItems.map((item) => item.id)}
+                          strategy={verticalListSortingStrategy}
+                        >
+                          <AnimatePresence mode="popLayout">
+                            <div className="space-y-2">
+                              {contactItems.map((item) => (
+                                <SortableContactItem
+                                  key={item.id}
+                                  item={item}
+                                  onUpdate={updateContactItem}
+                                  onRemove={removeContactItem}
+                                />
+                              ))}
+                            </div>
+                          </AnimatePresence>
+                        </SortableContext>
+                      </DndContext>
                     )}
                   </div>
                 </motion.div>
