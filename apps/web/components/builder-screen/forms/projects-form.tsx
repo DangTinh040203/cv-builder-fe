@@ -28,8 +28,14 @@ import { Input } from "@shared/ui/components/input";
 import { Label } from "@shared/ui/components/label";
 import { cn } from "@shared/ui/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import { FolderGit2, GripVertical, Plus, Trash2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import {
+  AlertCircle,
+  FolderGit2,
+  GripVertical,
+  Plus,
+  Trash2,
+} from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 
 import BuilderNavigation from "@/components/builder-screen/builder-navigation";
 import Editor from "@/components/builder-screen/editor";
@@ -48,10 +54,12 @@ function SortableProjectItem({
   item,
   onUpdate,
   onRemove,
+  errors,
 }: {
   item: Project;
   onUpdate: (id: string, field: keyof Project, value: string) => void;
   onRemove: (id: string) => void;
+  errors?: { title?: string };
 }) {
   const {
     attributes,
@@ -121,16 +129,25 @@ function SortableProjectItem({
             sm:grid-cols-2
           `}
         >
-          <Input
-            value={item.title}
-            onChange={(e) => onUpdate(item.id, "title", e.target.value)}
-            placeholder="Project Name"
-            className={cn(
-              "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
-              "focus:bg-white focus:ring-2 focus:ring-cyan-500/20",
-              "dark:border-slate-700 dark:bg-slate-700",
+          <div className="space-y-1">
+            <Input
+              value={item.title}
+              onChange={(e) => onUpdate(item.id, "title", e.target.value)}
+              placeholder="Project Name"
+              className={cn(
+                "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
+                "focus:bg-white focus:ring-2 focus:ring-cyan-500/20",
+                "dark:border-slate-700 dark:bg-slate-700",
+                errors?.title && "border-red-400 focus:ring-red-500/20",
+              )}
+            />
+            {errors?.title && (
+              <p className="flex items-center gap-1 text-xs text-red-500">
+                <AlertCircle className="h-3 w-3" />
+                {errors.title}
+              </p>
             )}
-          />
+          </div>
           <Input
             value={item.subTitle}
             onChange={(e) => onUpdate(item.id, "subTitle", e.target.value)}
@@ -161,6 +178,9 @@ const ProjectsForm = ({ onNext, onBack }: ProjectsFormProps) => {
   const dispatch = useAppDispatch();
   const { sync, isSyncing, resume } = useSyncResume();
   const [isVisible, setIsVisible] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<
+    Record<string, { title?: string }>
+  >({});
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -174,14 +194,33 @@ const ProjectsForm = ({ onNext, onBack }: ProjectsFormProps) => {
     return () => clearTimeout(timer);
   }, []);
 
+  const projectItems = resume?.projects || [];
+
+  const validateItems = useCallback(() => {
+    const errors: Record<string, { title?: string }> = {};
+    let isValid = true;
+
+    projectItems.forEach((item) => {
+      if (!item.title.trim()) {
+        errors[item.id] = { title: "Project name is required" };
+        isValid = false;
+      }
+    });
+
+    setValidationErrors(errors);
+    return isValid;
+  }, [projectItems]);
+
   const onSubmit = async () => {
+    if (!validateItems()) {
+      return;
+    }
+    setValidationErrors({});
     const success = await sync();
     if (success) {
       onNext?.();
     }
   };
-
-  const projectItems = resume?.projects || [];
 
   const updateProjectItem = (
     id: string,
@@ -357,6 +396,7 @@ const ProjectsForm = ({ onNext, onBack }: ProjectsFormProps) => {
                               item={item}
                               onUpdate={updateProjectItem}
                               onRemove={removeProjectItem}
+                              errors={validationErrors[item.id]}
                             />
                           ))}
                         </div>

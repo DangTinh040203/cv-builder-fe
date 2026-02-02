@@ -29,8 +29,14 @@ import { Input } from "@shared/ui/components/input";
 import { Label } from "@shared/ui/components/label";
 import { cn } from "@shared/ui/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import { GraduationCap, GripVertical, Plus, Trash2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import {
+  AlertCircle,
+  GraduationCap,
+  GripVertical,
+  Plus,
+  Trash2,
+} from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 
 import BuilderNavigation from "@/components/builder-screen/builder-navigation";
 import { useSyncResume } from "@/hooks/use-sync-resume";
@@ -48,10 +54,12 @@ function SortableEducationItem({
   item,
   onUpdate,
   onRemove,
+  errors,
 }: {
   item: Education;
   onUpdate: (id: string, field: keyof Education, value: string | null) => void;
   onRemove: (id: string) => void;
+  errors?: { school?: string; degree?: string };
 }) {
   const {
     attributes,
@@ -127,26 +135,44 @@ function SortableEducationItem({
             sm:grid-cols-2
           `}
         >
-          <Input
-            value={item.school}
-            onChange={(e) => onUpdate(item.id, "school", e.target.value)}
-            placeholder="School / University"
-            className={cn(
-              "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
-              "focus:bg-white focus:ring-2 focus:ring-violet-500/20",
-              "dark:border-slate-700 dark:bg-slate-700",
+          <div className="space-y-1">
+            <Input
+              value={item.school}
+              onChange={(e) => onUpdate(item.id, "school", e.target.value)}
+              placeholder="School / University"
+              className={cn(
+                "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
+                "focus:bg-white focus:ring-2 focus:ring-violet-500/20",
+                "dark:border-slate-700 dark:bg-slate-700",
+                errors?.school && "border-red-400 focus:ring-red-500/20",
+              )}
+            />
+            {errors?.school && (
+              <p className="flex items-center gap-1 text-xs text-red-500">
+                <AlertCircle className="h-3 w-3" />
+                {errors.school}
+              </p>
             )}
-          />
-          <Input
-            value={item.degree}
-            onChange={(e) => onUpdate(item.id, "degree", e.target.value)}
-            placeholder="Degree (e.g. Bachelor's)"
-            className={cn(
-              "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
-              "focus:bg-white focus:ring-2 focus:ring-violet-500/20",
-              "dark:border-slate-700 dark:bg-slate-700",
+          </div>
+          <div className="space-y-1">
+            <Input
+              value={item.degree}
+              onChange={(e) => onUpdate(item.id, "degree", e.target.value)}
+              placeholder="Degree (e.g. Bachelor's)"
+              className={cn(
+                "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
+                "focus:bg-white focus:ring-2 focus:ring-violet-500/20",
+                "dark:border-slate-700 dark:bg-slate-700",
+                errors?.degree && "border-red-400 focus:ring-red-500/20",
+              )}
+            />
+            {errors?.degree && (
+              <p className="flex items-center gap-1 text-xs text-red-500">
+                <AlertCircle className="h-3 w-3" />
+                {errors.degree}
+              </p>
             )}
-          />
+          </div>
         </div>
         <Input
           value={item.major}
@@ -201,6 +227,9 @@ const EducationForm = ({ onNext, onBack }: EducationFormProps) => {
   const dispatch = useAppDispatch();
   const { sync, isSyncing, resume } = useSyncResume();
   const [isVisible, setIsVisible] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<
+    Record<string, { school?: string; degree?: string }>
+  >({});
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -214,14 +243,41 @@ const EducationForm = ({ onNext, onBack }: EducationFormProps) => {
     return () => clearTimeout(timer);
   }, []);
 
+  const educationItems = resume?.educations || [];
+
+  const validateItems = useCallback(() => {
+    const errors: Record<string, { school?: string; degree?: string }> = {};
+    let isValid = true;
+
+    educationItems.forEach((item) => {
+      const itemErrors: { school?: string; degree?: string } = {};
+      if (!item.school.trim()) {
+        itemErrors.school = "School name is required";
+        isValid = false;
+      }
+      if (!item.degree.trim()) {
+        itemErrors.degree = "Degree is required";
+        isValid = false;
+      }
+      if (Object.keys(itemErrors).length > 0) {
+        errors[item.id] = itemErrors;
+      }
+    });
+
+    setValidationErrors(errors);
+    return isValid;
+  }, [educationItems]);
+
   const onSubmit = async () => {
+    if (!validateItems()) {
+      return;
+    }
+    setValidationErrors({});
     const success = await sync();
     if (success) {
       onNext?.();
     }
   };
-
-  const educationItems = resume?.educations || [];
 
   const updateEducationItem = (
     id: string,
@@ -404,6 +460,7 @@ const EducationForm = ({ onNext, onBack }: EducationFormProps) => {
                               item={item}
                               onUpdate={updateEducationItem}
                               onRemove={removeEducationItem}
+                              errors={validationErrors[item.id]}
                             />
                           ))}
                         </div>

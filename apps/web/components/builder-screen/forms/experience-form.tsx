@@ -29,8 +29,14 @@ import { Input } from "@shared/ui/components/input";
 import { Label } from "@shared/ui/components/label";
 import { cn } from "@shared/ui/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import { Briefcase, GripVertical, Plus, Trash2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import {
+  AlertCircle,
+  Briefcase,
+  GripVertical,
+  Plus,
+  Trash2,
+} from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 
 import BuilderNavigation from "@/components/builder-screen/builder-navigation";
 import Editor from "@/components/builder-screen/editor";
@@ -49,6 +55,7 @@ function SortableExperienceItem({
   item,
   onUpdate,
   onRemove,
+  errors,
 }: {
   item: WorkExperience;
   onUpdate: (
@@ -57,6 +64,7 @@ function SortableExperienceItem({
     value: string | null,
   ) => void;
   onRemove: (id: string) => void;
+  errors?: { company?: string; position?: string };
 }) {
   const {
     attributes,
@@ -132,26 +140,44 @@ function SortableExperienceItem({
             sm:grid-cols-2
           `}
         >
-          <Input
-            value={item.company}
-            onChange={(e) => onUpdate(item.id, "company", e.target.value)}
-            placeholder="Company Name"
-            className={cn(
-              "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
-              "focus:bg-white focus:ring-2 focus:ring-orange-500/20",
-              "dark:border-slate-700 dark:bg-slate-700",
+          <div className="space-y-1">
+            <Input
+              value={item.company}
+              onChange={(e) => onUpdate(item.id, "company", e.target.value)}
+              placeholder="Company Name"
+              className={cn(
+                "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
+                "focus:bg-white focus:ring-2 focus:ring-orange-500/20",
+                "dark:border-slate-700 dark:bg-slate-700",
+                errors?.company && "border-red-400 focus:ring-red-500/20",
+              )}
+            />
+            {errors?.company && (
+              <p className="flex items-center gap-1 text-xs text-red-500">
+                <AlertCircle className="h-3 w-3" />
+                {errors.company}
+              </p>
             )}
-          />
-          <Input
-            value={item.position}
-            onChange={(e) => onUpdate(item.id, "position", e.target.value)}
-            placeholder="Job Title / Position"
-            className={cn(
-              "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
-              "focus:bg-white focus:ring-2 focus:ring-orange-500/20",
-              "dark:border-slate-700 dark:bg-slate-700",
+          </div>
+          <div className="space-y-1">
+            <Input
+              value={item.position}
+              onChange={(e) => onUpdate(item.id, "position", e.target.value)}
+              placeholder="Job Title / Position"
+              className={cn(
+                "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
+                "focus:bg-white focus:ring-2 focus:ring-orange-500/20",
+                "dark:border-slate-700 dark:bg-slate-700",
+                errors?.position && "border-red-400 focus:ring-red-500/20",
+              )}
+            />
+            {errors?.position && (
+              <p className="flex items-center gap-1 text-xs text-red-500">
+                <AlertCircle className="h-3 w-3" />
+                {errors.position}
+              </p>
             )}
-          />
+          </div>
         </div>
         <div
           className={`
@@ -206,6 +232,9 @@ const ExperienceForm = ({ onNext, onBack }: ExperienceFormProps) => {
   const dispatch = useAppDispatch();
   const { sync, isSyncing, resume } = useSyncResume();
   const [isVisible, setIsVisible] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<
+    Record<string, { company?: string; position?: string }>
+  >({});
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -219,14 +248,41 @@ const ExperienceForm = ({ onNext, onBack }: ExperienceFormProps) => {
     return () => clearTimeout(timer);
   }, []);
 
+  const experienceItems = resume?.workExperiences || [];
+
+  const validateItems = useCallback(() => {
+    const errors: Record<string, { company?: string; position?: string }> = {};
+    let isValid = true;
+
+    experienceItems.forEach((item) => {
+      const itemErrors: { company?: string; position?: string } = {};
+      if (!item.company.trim()) {
+        itemErrors.company = "Company name is required";
+        isValid = false;
+      }
+      if (!item.position.trim()) {
+        itemErrors.position = "Job title is required";
+        isValid = false;
+      }
+      if (Object.keys(itemErrors).length > 0) {
+        errors[item.id] = itemErrors;
+      }
+    });
+
+    setValidationErrors(errors);
+    return isValid;
+  }, [experienceItems]);
+
   const onSubmit = async () => {
+    if (!validateItems()) {
+      return;
+    }
+    setValidationErrors({});
     const success = await sync();
     if (success) {
       onNext?.();
     }
   };
-
-  const experienceItems = resume?.workExperiences || [];
 
   const updateExperienceItem = (
     id: string,
@@ -409,6 +465,7 @@ const ExperienceForm = ({ onNext, onBack }: ExperienceFormProps) => {
                               item={item}
                               onUpdate={updateExperienceItem}
                               onRemove={removeExperienceItem}
+                              errors={validationErrors[item.id]}
                             />
                           ))}
                         </div>
