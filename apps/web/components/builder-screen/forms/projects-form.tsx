@@ -26,13 +26,13 @@ import {
 } from "@shared/ui/components/card";
 import { Input } from "@shared/ui/components/input";
 import { Label } from "@shared/ui/components/label";
-import { Textarea } from "@shared/ui/components/textarea";
 import { cn } from "@shared/ui/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { FolderGit2, GripVertical, Plus, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import BuilderNavigation from "@/components/builder-screen/builder-navigation";
+import Editor from "@/components/builder-screen/editor";
 import { useSyncResume } from "@/hooks/use-sync-resume";
 import { updateResume } from "@/stores/features/resume.slice";
 import { useAppDispatch } from "@/stores/store";
@@ -146,16 +146,10 @@ function SortableProjectItem({
           <Label className="mb-1.5 block text-xs text-slate-500">
             Project Details
           </Label>
-          <Textarea
+          <Editor
+            className="[&_.ql-editor]:min-h-[100px]"
             value={item.details}
-            onChange={(e) => onUpdate(item.id, "details", e.target.value)}
-            placeholder="Describe the project, your contributions, and impact..."
-            rows={3}
-            className={cn(
-              "rounded-lg border-slate-200 bg-slate-50 text-sm",
-              "focus:bg-white focus:ring-2 focus:ring-cyan-500/20",
-              "dark:border-slate-700 dark:bg-slate-700",
-            )}
+            onChange={(val) => onUpdate(item.id, "details", val)}
           />
         </div>
       </div>
@@ -236,10 +230,14 @@ const ProjectsForm = ({ onNext, onBack }: ProjectsFormProps) => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
       >
-        <Card className={cn("relative overflow-hidden border-0 shadow-xl")}>
+        <Card
+          className={cn(
+            "relative gap-0 overflow-hidden border-0 py-0 shadow-xl",
+          )}
+        >
           <CardHeader
             className={`
-              border-b border-slate-100 pb-5
+              border-b border-slate-100 pt-6 pb-5
               dark:border-slate-800
             `}
           >

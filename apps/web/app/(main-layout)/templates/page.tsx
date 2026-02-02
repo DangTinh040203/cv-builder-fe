@@ -1,5 +1,4 @@
 "use client";
-import { useUser } from "@clerk/nextjs";
 import { Button } from "@shared/ui/components/button";
 import { Input } from "@shared/ui/components/input";
 import { cn } from "@shared/ui/lib/utils";
@@ -7,7 +6,6 @@ import { motion } from "framer-motion";
 import { Check, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { toast } from "sonner";
 
 import FloatingParticles from "@/components/common/floating-particles";
 import TemplateWrapper from "@/components/templates/template-wrapper";

@@ -24,15 +24,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@shared/ui/components/card";
+import { DatePicker } from "@shared/ui/components/date-picker";
 import { Input } from "@shared/ui/components/input";
 import { Label } from "@shared/ui/components/label";
-import { Textarea } from "@shared/ui/components/textarea";
 import { cn } from "@shared/ui/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { Briefcase, GripVertical, Plus, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import BuilderNavigation from "@/components/builder-screen/builder-navigation";
+import Editor from "@/components/builder-screen/editor";
 import { useSyncResume } from "@/hooks/use-sync-resume";
 import { updateResume } from "@/stores/features/resume.slice";
 import { useAppDispatch } from "@/stores/store";
@@ -162,46 +163,27 @@ function SortableExperienceItem({
             <Label className="mb-1.5 block text-xs text-slate-500">
               Start Date
             </Label>
-            <Input
-              type="date"
-              value={formatDateForInput(item.startDate)}
-              onChange={(e) =>
+            <DatePicker
+              date={item.startDate ? new Date(item.startDate) : null}
+              setDate={(date) =>
                 onUpdate(
                   item.id,
                   "startDate",
-                  e.target.value
-                    ? new Date(e.target.value).toISOString()
-                    : new Date().toISOString(),
+                  date ? date.toISOString() : new Date().toISOString(),
                 )
               }
-              className={cn(
-                "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
-                "focus:bg-white focus:ring-2 focus:ring-orange-500/20",
-                "dark:border-slate-700 dark:bg-slate-700",
-              )}
             />
           </div>
           <div>
             <Label className="mb-1.5 block text-xs text-slate-500">
               End Date (leave empty if current)
             </Label>
-            <Input
-              type="date"
-              value={formatDateForInput(item.endDate)}
-              onChange={(e) =>
-                onUpdate(
-                  item.id,
-                  "endDate",
-                  e.target.value
-                    ? new Date(e.target.value).toISOString()
-                    : null,
-                )
+            <DatePicker
+              date={item.endDate ? new Date(item.endDate) : null}
+              setDate={(date) =>
+                onUpdate(item.id, "endDate", date ? date.toISOString() : null)
               }
-              className={cn(
-                "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
-                "focus:bg-white focus:ring-2 focus:ring-orange-500/20",
-                "dark:border-slate-700 dark:bg-slate-700",
-              )}
+              placeholder="Present"
             />
           </div>
         </div>
@@ -209,16 +191,10 @@ function SortableExperienceItem({
           <Label className="mb-1.5 block text-xs text-slate-500">
             Description & Achievements
           </Label>
-          <Textarea
+          <Editor
+            className="[&_.ql-editor]:min-h-[100px]"
             value={item.description}
-            onChange={(e) => onUpdate(item.id, "description", e.target.value)}
-            placeholder="Describe your responsibilities and key achievements..."
-            rows={3}
-            className={cn(
-              "rounded-lg border-slate-200 bg-slate-50 text-sm",
-              "focus:bg-white focus:ring-2 focus:ring-orange-500/20",
-              "dark:border-slate-700 dark:bg-slate-700",
-            )}
+            onChange={(val) => onUpdate(item.id, "description", val)}
           />
         </div>
       </div>
@@ -303,10 +279,14 @@ const ExperienceForm = ({ onNext, onBack }: ExperienceFormProps) => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
       >
-        <Card className={cn("relative overflow-hidden border-0 shadow-xl")}>
+        <Card
+          className={cn(
+            "relative gap-0 overflow-hidden border-0 py-0 shadow-xl",
+          )}
+        >
           <CardHeader
             className={`
-              border-b border-slate-100 pb-5
+              border-b border-slate-100 pt-6 pb-5
               dark:border-slate-800
             `}
           >

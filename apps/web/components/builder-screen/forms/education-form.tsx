@@ -24,6 +24,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@shared/ui/components/card";
+import { DatePicker } from "@shared/ui/components/date-picker";
 import { Input } from "@shared/ui/components/input";
 import { Label } from "@shared/ui/components/label";
 import { cn } from "@shared/ui/lib/utils";
@@ -167,46 +168,27 @@ function SortableEducationItem({
             <Label className="mb-1.5 block text-xs text-slate-500">
               Start Date
             </Label>
-            <Input
-              type="date"
-              value={formatDateForInput(item.startDate)}
-              onChange={(e) =>
+            <DatePicker
+              date={item.startDate ? new Date(item.startDate) : null}
+              setDate={(date) =>
                 onUpdate(
                   item.id,
                   "startDate",
-                  e.target.value
-                    ? new Date(e.target.value).toISOString()
-                    : new Date().toISOString(),
+                  date ? date.toISOString() : new Date().toISOString(),
                 )
               }
-              className={cn(
-                "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
-                "focus:bg-white focus:ring-2 focus:ring-violet-500/20",
-                "dark:border-slate-700 dark:bg-slate-700",
-              )}
             />
           </div>
           <div>
             <Label className="mb-1.5 block text-xs text-slate-500">
               End Date (or expected)
             </Label>
-            <Input
-              type="date"
-              value={formatDateForInput(item.endDate)}
-              onChange={(e) =>
-                onUpdate(
-                  item.id,
-                  "endDate",
-                  e.target.value
-                    ? new Date(e.target.value).toISOString()
-                    : null,
-                )
+            <DatePicker
+              date={item.endDate ? new Date(item.endDate) : null}
+              setDate={(date) =>
+                onUpdate(item.id, "endDate", date ? date.toISOString() : null)
               }
-              className={cn(
-                "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
-                "focus:bg-white focus:ring-2 focus:ring-violet-500/20",
-                "dark:border-slate-700 dark:bg-slate-700",
-              )}
+              placeholder="Present"
             />
           </div>
         </div>
@@ -292,10 +274,14 @@ const EducationForm = ({ onNext, onBack }: EducationFormProps) => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
       >
-        <Card className={cn("relative overflow-hidden border-0 shadow-xl")}>
+        <Card
+          className={cn(
+            "relative gap-0 overflow-hidden border-0 py-0 shadow-xl",
+          )}
+        >
           <CardHeader
             className={`
-              border-b border-slate-100 pb-5
+              border-b border-slate-100 pt-6 pb-5
               dark:border-slate-800
             `}
           >

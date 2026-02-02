@@ -72,13 +72,13 @@ const SummaryForm = ({ onNext, onBack }: SummaryFormProps) => {
       <div
         className={`
           pointer-events-none absolute -top-20 -right-20 h-40 w-40 rounded-full
-          bg-gradient-to-br from-purple-400/20 to-pink-400/20 blur-3xl
+          bg-linear-to-br from-purple-400/20 to-pink-400/20 blur-3xl
         `}
       />
       <div
         className={`
           pointer-events-none absolute -bottom-10 -left-10 h-32 w-32
-          rounded-full bg-gradient-to-tr from-blue-400/10 to-purple-400/10
+          rounded-full bg-linear-to-tr from-blue-400/10 to-purple-400/10
           blur-2xl
         `}
       />
@@ -189,23 +189,11 @@ const SummaryForm = ({ onNext, onBack }: SummaryFormProps) => {
                 isFocused && "opacity-100",
               )}
             />
-            <div
-              className={`
-                relative
-                [&_.ql-container]:rounded-b-xl
-                [&_.ql-container]:border-gray-200/80
-                [&_.ql-container]:bg-white/80 [&_.ql-container]:backdrop-blur-sm
-                dark:[&_.ql-container]:border-gray-700/50
-                dark:[&_.ql-container]:bg-gray-800/50
-                dark:[&_.ql-toolbar]:border-gray-700/50
-                dark:[&_.ql-toolbar]:bg-gray-800/50
-                [&_.ql-editor]:min-h-[140px]
-                [&_.ql-toolbar]:rounded-t-xl [&_.ql-toolbar]:border-gray-200/80
-                [&_.ql-toolbar]:bg-gray-50/80 [&_.ql-toolbar]:backdrop-blur-sm
-              `}
-            >
-              <Editor value={value} onChange={handleChange} />
-            </div>
+            <Editor
+              value={value}
+              onChange={handleChange}
+              placeholder="Write a brief summary about yourself..."
+            />
           </div>
 
           <div
