@@ -70,7 +70,9 @@ const Template01: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Overview</Text>
         <View style={styles.separator} />
-        <HtmlToPdf style={styles.text} content={overview} />
+        <View style={styles.sectionContent}>
+          <HtmlToPdf style={styles.text} content={overview} />
+        </View>
       </View>
 
       {/* SKILLS */}
