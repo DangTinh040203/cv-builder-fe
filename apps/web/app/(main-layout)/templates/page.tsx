@@ -1,4 +1,5 @@
 "use client";
+
 import { Button } from "@shared/ui/components/button";
 import { Input } from "@shared/ui/components/input";
 import { cn } from "@shared/ui/lib/utils";
@@ -8,6 +9,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 import FloatingParticles from "@/components/common/floating-particles";
+import { TemplateSelectionDialog } from "@/components/templates/template-selection-dialog";
 import TemplateWrapper from "@/components/templates/template-wrapper";
 import { TEMPLATES } from "@/configs/template.config";
 import { MOCK_RESUME } from "@/constants/resume.constant";
@@ -29,14 +31,31 @@ const categories = [
 const Templates = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [isSelectionOpen, setIsSelectionOpen] = useState(false);
+  const [selectedTemplateForBuilder, setSelectedTemplateForBuilder] = useState<
+    string | null
+  >(null);
 
   const router = useRouter();
   const templateFormat = useAppSelector(templateFormatSelector);
   const dispatch = useAppDispatch();
 
   const handleSelectTemplate = (template: string) => {
-    dispatch(setTemplateSelected(template));
-    router.push("/builder");
+    setSelectedTemplateForBuilder(template);
+    setIsSelectionOpen(true);
+  };
+
+  const handleSelectionConfirm = (type: "upload" | "scratch", file?: File) => {
+    if (!selectedTemplateForBuilder) return;
+
+    if (type === "scratch") {
+      dispatch(setTemplateSelected(selectedTemplateForBuilder));
+      router.push("/builder");
+    } else if (type === "upload" && file) {
+      dispatch(setTemplateSelected(selectedTemplateForBuilder));
+      // TODO: Handle file upload and parsing here
+      router.push("/builder");
+    }
   };
 
   return (
@@ -217,6 +236,11 @@ const Templates = () => {
           ))}
         </motion.div>
       </div>
+      <TemplateSelectionDialog
+        isOpen={isSelectionOpen}
+        onOpenChange={setIsSelectionOpen}
+        onSelect={handleSelectionConfirm}
+      />
     </div>
   );
 };
