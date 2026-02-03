@@ -39,9 +39,6 @@ export interface Format {
   theme: Theme;
   borderStyle: BorderStyle;
   dateFormat: string;
-
-  // Content visibility
-  hiddenSections: SectionType[];
 }
 
 export interface TemplateConfig {
@@ -65,9 +62,9 @@ export const defaultSectionOrder: SectionType[] = [
 
 export const defaultFormat: Format = {
   // Typography
-  fontSize: 12,
-  titleSize: 36,
-  sectionTitleSize: 15,
+  fontSize: 11,
+  titleSize: 30,
+  sectionTitleSize: 14,
   subTitleSize: 14,
   lineHeight: 1.8,
   fontWeight: "normal",
@@ -86,9 +83,6 @@ export const defaultFormat: Format = {
   theme: "light",
   borderStyle: "none",
   dateFormat: "MM/YYYY",
-
-  // Content visibility
-  hiddenSections: [],
 };
 
 const initialState: TemplateState = {

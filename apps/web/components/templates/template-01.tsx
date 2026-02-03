@@ -83,8 +83,8 @@ const Template01: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
           <View style={{ ...styles.sectionContent, gap: 2 }}>
             {skills.map((skill) => (
               <View key={uuid()} style={styles.row}>
-                <Text style={styles.label}>{skill.label}</Text>
-                <Text style={styles.text}>{skill.value}</Text>
+                <Text>{skill.label}</Text>
+                <Text>{skill.value}</Text>
               </View>
             ))}
           </View>
