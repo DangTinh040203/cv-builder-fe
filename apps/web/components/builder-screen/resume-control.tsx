@@ -62,7 +62,7 @@ const ResumeControl = () => {
 
       <div
         className={`
-          hidden flex-wrap gap-4
+          flex flex-wrap gap-4
           md:flex
         `}
       >

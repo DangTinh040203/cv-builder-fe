@@ -120,15 +120,30 @@ const BuilderScreen = () => {
     <div className="container mb-10">
       <ResumeControl />
 
-      <div className="grid grid-cols-12 gap-6">
-        <div className="col-span-2">
+      <div
+        className={`
+          grid grid-cols-1 gap-6
+          lg:grid-cols-12
+        `}
+      >
+        <div
+          className={`
+            col-span-1
+            lg:col-span-2
+          `}
+        >
           <ResumeBuilderSidebar
             activeSection={activeSection}
             onSectionChange={handleSectionChange}
           />
         </div>
 
-        <div className="col-span-7">
+        <div
+          className={`
+            col-span-1
+            lg:col-span-7
+          `}
+        >
           <AnimatePresence mode="wait">
             {!previewMode ? (
               <motion.div
@@ -169,7 +184,12 @@ const BuilderScreen = () => {
           </AnimatePresence>
         </div>
 
-        <div className={cn("col-span-3")}>
+        <div
+          className={cn(`
+            col-span-1
+            lg:col-span-3
+          `)}
+        >
           <AnimatePresence mode="wait">
             {!previewMode ? (
               <motion.div
