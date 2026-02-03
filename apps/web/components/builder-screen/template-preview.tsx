@@ -7,6 +7,7 @@ import TemplateWrapper from "@/components/templates/template-wrapper";
 import { TEMPLATES } from "@/configs/template.config";
 import { resumeSelector } from "@/stores/features/resume.slice";
 import {
+  templateConfigSelector,
   templateFormatSelector,
   templateSelectedSelector,
   updatePreviewMode,
@@ -17,6 +18,7 @@ const TemplatePreview = () => {
   const templateSelected = useAppSelector(templateSelectedSelector);
   const templateFormat = useAppSelector(templateFormatSelector);
   const { resume } = useAppSelector(resumeSelector);
+  const { previewMode } = useAppSelector(templateConfigSelector);
   const dispatch = useAppDispatch();
 
   const Template = useMemo(() => {
@@ -36,9 +38,9 @@ const TemplatePreview = () => {
 
         <Button
           className="rounded-full px-6"
-          onClick={() => dispatch(updatePreviewMode(true))}
+          onClick={() => dispatch(updatePreviewMode(!previewMode))}
         >
-          Preview
+          {!previewMode ? "Preview" : "Back to Edit"}
         </Button>
       </div>
     )

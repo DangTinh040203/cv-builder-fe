@@ -27,7 +27,27 @@ const HtmlToPdf = ({ content = "", style = {} }: HtmlToPdfProps) => {
     );
   }
 
-  return <Html style={{ ...style }}>{normalizedContent}</Html>;
+  // Reset default browser styles that react-pdf-html might apply
+  const resetStylesheet = {
+    p: { margin: 0, padding: 0 },
+    h1: { margin: 0, padding: 0 },
+    h2: { margin: 0, padding: 0 },
+    h3: { margin: 0, padding: 0 },
+    h4: { margin: 0, padding: 0 },
+    h5: { margin: 0, padding: 0 },
+    h6: { margin: 0, padding: 0 },
+    ul: { margin: 0, padding: 0 },
+    ol: { margin: 0, padding: 0 },
+    li: { margin: 0, padding: 0 },
+    div: { margin: 0, padding: 0 },
+    body: { margin: 0, padding: 0 },
+  };
+
+  return (
+    <Html stylesheet={resetStylesheet} style={{ ...style }}>
+      {normalizedContent}
+    </Html>
+  );
 };
 
 export default HtmlToPdf;

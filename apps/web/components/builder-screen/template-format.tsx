@@ -26,7 +26,6 @@ import { cn } from "@shared/ui/lib/utils";
 import {
   ALargeSmall,
   Bold,
-  Calendar,
   Heading1,
   Heading2,
   LetterText,
@@ -55,13 +54,6 @@ const COLOR_OPTIONS = [
   { value: "teal", label: "Teal", color: "#14b8a6" },
   { value: "slate", label: "Slate", color: "#64748b" },
   { value: "black", label: "Black", color: "#1f2937" },
-];
-
-const DATE_FORMAT_OPTIONS = [
-  { value: "MM/YYYY", label: "MM/YYYY" },
-  { value: "MMM YYYY", label: "Jan 2024" },
-  { value: "MMMM YYYY", label: "January 2024" },
-  { value: "YYYY", label: "2024" },
 ];
 
 const FONT_WEIGHT_OPTIONS: { value: FontWeight; label: string }[] = [
@@ -231,6 +223,17 @@ const TemplateFormat = () => {
 
               <FormatSlider
                 icon={<Heading2 className="h-4 w-4" />}
+                label="Section Title Size"
+                value={format.sectionTitleSize}
+                min={10}
+                max={40}
+                step={0.5}
+                unit="px"
+                onChange={(value) => updateFormat({ sectionTitleSize: value })}
+              />
+
+              <FormatSlider
+                icon={<Heading2 className="h-4 w-4" />}
                 label="Subtitle Size"
                 value={format.subTitleSize}
                 min={10}
@@ -354,13 +357,13 @@ const TemplateFormat = () => {
                       onClick={() => updateFormat({ color: option.value })}
                       className={cn(
                         `
-                          group relative flex h-9 w-9 items-center
-                          justify-center rounded-lg border-2 transition-all
-                          duration-200
+                          group relative flex h-10 w-full cursor-pointer
+                          items-center justify-center rounded-lg border-2
+                          transition-all duration-200
                         `,
                         format.color === option.value
-                          ? "border-primary ring-primary/20 scale-110 ring-2"
-                          : "border-transparent hover:scale-105",
+                          ? "border-primary"
+                          : "border-transparent",
                       )}
                       title={option.label}
                     >
@@ -372,27 +375,6 @@ const TemplateFormat = () => {
                   ))}
                 </div>
               </div>
-
-              <FormatSelectRow
-                icon={<Calendar className="h-4 w-4" />}
-                label="Date Format"
-              >
-                <Select
-                  value={format.dateFormat}
-                  onValueChange={(value) => updateFormat({ dateFormat: value })}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select date format" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {DATE_FORMAT_OPTIONS.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormatSelectRow>
             </AccordionContent>
           </AccordionItem>
         </Accordion>

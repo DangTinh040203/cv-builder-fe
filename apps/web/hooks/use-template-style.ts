@@ -10,6 +10,7 @@ export const useTemplateStyle = (templateFormat: Format) => {
       color: templateFormat.color,
       fontSize: templateFormat.fontSize,
       titleSize: templateFormat.titleSize,
+      sectionTitleSize: templateFormat.sectionTitleSize,
       subTitleSize: templateFormat.subTitleSize,
       lineHeight: templateFormat.lineHeight,
       letterSpacing: templateFormat.letterSpacing,
@@ -80,6 +81,7 @@ export const useTemplateStyle = (templateFormat: Format) => {
 
       sectionTitle: {
         ...templateGlobalStyles.heading3,
+        fontSize: theme.sectionTitleSize,
         ...templateGlobalStyles.fontWeight600,
         color: theme.color,
       },
@@ -87,6 +89,12 @@ export const useTemplateStyle = (templateFormat: Format) => {
       label: {
         ...templateGlobalStyles.fontWeight600,
         minWidth: 70,
+      },
+
+      itemTitle: {
+        ...templateGlobalStyles.fontWeight600,
+        minWidth: 70,
+        fontSize: theme.fontSize + 0.5,
       },
 
       informationGroup: {

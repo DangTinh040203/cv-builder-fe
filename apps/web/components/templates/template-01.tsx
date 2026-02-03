@@ -103,7 +103,7 @@ const Template01: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
                   </Text>
                 </View>
                 <View style={styles.col}>
-                  <Text style={styles.label}>{edu.school}</Text>
+                  <Text style={styles.itemTitle}>{edu.school}</Text>
                   <Text>
                     {edu.major} - {edu.degree}
                   </Text>
@@ -135,7 +135,9 @@ const Template01: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
                   </Text>
                 </View>
                 <View style={[styles.col, { flex: 1 }]}>
-                  <Text style={styles.label}>{exp.company}</Text>
+                  <Text style={styles.itemTitle}>
+                    {exp.company} - {exp.position}
+                  </Text>
                   <HtmlToPdf
                     style={{ ...styles.text, margin: 0 }}
                     content={exp.description}
@@ -156,7 +158,7 @@ const Template01: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
             {projects.map((project) => (
               <View key={uuid()} style={styles.projectContainer} wrap={false}>
                 <View style={styles.projectHeader}>
-                  <Text style={styles.label}>{project.title}</Text>
+                  <Text style={styles.itemTitle}>{project.title}</Text>
                 </View>
 
                 <HtmlToPdf style={styles.text} content={project.details} />

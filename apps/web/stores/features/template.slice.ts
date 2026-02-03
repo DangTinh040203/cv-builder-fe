@@ -20,6 +20,7 @@ export interface Format {
   // Typography
   fontSize: number;
   titleSize: number;
+  sectionTitleSize: number;
   subTitleSize: number;
   lineHeight: number;
   fontWeight: FontWeight;
@@ -66,6 +67,7 @@ export const defaultFormat: Format = {
   // Typography
   fontSize: 12,
   titleSize: 36,
+  sectionTitleSize: 15,
   subTitleSize: 14,
   lineHeight: 1.8,
   fontWeight: "normal",
