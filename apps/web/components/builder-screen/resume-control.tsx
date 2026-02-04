@@ -1,7 +1,7 @@
 import { Button } from "@shared/ui/components/button";
 import { cn } from "@shared/ui/lib/utils";
 import { motion } from "framer-motion";
-import { Eye, EyeOff, FileText, Settings2, Sparkles } from "lucide-react";
+import { Eye, EyeOff, FileText, Sparkles } from "lucide-react";
 import React from "react";
 
 import DownloadPdf from "@/components/templates/download-pdf";
