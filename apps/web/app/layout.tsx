@@ -35,12 +35,13 @@ export default function RootLayout({
       signInFallbackRedirectUrl="/builder"
       afterSignOutUrl="/auth/sign-in"
     >
-      <html lang="en" suppressHydrationWarning>
+      <html lang="en" suppressHydrationWarning className="overflow-x-hidden">
         <body
           className={`
             ${fontSans.variable}
             ${fontMono.variable}
-            scrollbar-thin max-w-screen overflow-x-hidden font-sans antialiased
+            scrollbar-thin w-full max-w-screen overflow-x-hidden font-sans
+            antialiased
           `}
         >
           <StoreProvider>

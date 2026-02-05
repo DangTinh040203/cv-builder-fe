@@ -16,6 +16,7 @@ import {
   DialogTitle,
 } from "@shared/ui/components/dialog";
 import { cn } from "@shared/ui/lib/utils";
+import { motion } from "framer-motion";
 import { PenLine, Upload } from "lucide-react";
 import React, { useRef, useState } from "react";
 
@@ -53,15 +54,26 @@ export const TemplateSelectionDialog = ({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onOpenChange}>
-        <DialogContent className="sm:max-w-4xl">
-          <DialogHeader className="text-center">
-            <DialogTitle className="text-2xl font-bold">
-              Are you uploading an existing resume?
-            </DialogTitle>
-            <DialogDescription className="text-lg">
-              Just review, edit, and update it with new information
-            </DialogDescription>
-          </DialogHeader>
+        <DialogContent
+          className={`
+            w-[90vw] rounded-xl
+            sm:max-w-4xl
+          `}
+        >
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <DialogHeader className="text-center">
+              <DialogTitle className="text-2xl font-bold">
+                Are you uploading an existing resume?
+              </DialogTitle>
+              <DialogDescription className="text-lg">
+                Just review, edit, and update it with new information
+              </DialogDescription>
+            </DialogHeader>
+          </motion.div>
 
           <div
             className={`
@@ -69,75 +81,87 @@ export const TemplateSelectionDialog = ({
               md:grid-cols-2
             `}
           >
-            <Card
-              className={cn(
-                `
-                  hover:border-primary hover:bg-muted/50
-                  cursor-pointer transition-all
-                `,
-                selectionType === "upload" &&
-                  "bg-primary/5 border-primary ring-1 ring-primary",
-              )}
-              onClick={() => setSelectionType("upload")}
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
             >
-              <CardContent
-                className={`
-                  flex flex-col items-center justify-center gap-4 p-8
-                  text-center
-                `}
+              <Card
+                className={cn(
+                  `
+                    hover:border-primary hover:bg-muted/50
+                    cursor-pointer transition-all
+                  `,
+                  selectionType === "upload" &&
+                    "bg-primary/5 border-primary ring-1 ring-primary",
+                )}
+                onClick={() => setSelectionType("upload")}
               >
-                <div
+                <CardContent
                   className={`
-                    bg-primary/10 flex h-16 w-16 items-center justify-center
-                    rounded-full
+                    flex flex-col items-center justify-center gap-4 p-8
+                    text-center
                   `}
                 >
-                  <Upload className="text-primary h-8 w-8" />
-                </div>
-                <div className="space-y-2">
-                  <CardTitle>Yes, upload from my resume</CardTitle>
-                  <CardDescription>
-                    We&apos;ll give you expert guidance to fill out your info
-                    and enhance your resume, from start to finish
-                  </CardDescription>
-                </div>
-              </CardContent>
-            </Card>
+                  <div
+                    className={`
+                      bg-primary/10 flex h-16 w-16 items-center justify-center
+                      rounded-full
+                    `}
+                  >
+                    <Upload className="text-primary h-8 w-8" />
+                  </div>
+                  <div className="space-y-2">
+                    <CardTitle>Yes, upload from my resume</CardTitle>
+                    <CardDescription>
+                      We&apos;ll give you expert guidance to fill out your info
+                      and enhance your resume, from start to finish
+                    </CardDescription>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
 
-            <Card
-              className={cn(
-                `
-                  hover:border-primary hover:bg-muted/50
-                  cursor-pointer transition-all
-                `,
-                selectionType === "scratch" &&
-                  "bg-primary/5 border-primary ring-1 ring-primary",
-              )}
-              onClick={() => setSelectionType("scratch")}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
             >
-              <CardContent
-                className={`
-                  flex flex-col items-center justify-center gap-4 p-8
-                  text-center
-                `}
+              <Card
+                className={cn(
+                  `
+                    hover:border-primary hover:bg-muted/50
+                    cursor-pointer transition-all
+                  `,
+                  selectionType === "scratch" &&
+                    "bg-primary/5 border-primary ring-1 ring-primary",
+                )}
+                onClick={() => setSelectionType("scratch")}
               >
-                <div
+                <CardContent
                   className={`
-                    bg-primary/10 flex h-16 w-16 items-center justify-center
-                    rounded-full
+                    flex flex-col items-center justify-center gap-4 p-8
+                    text-center
                   `}
                 >
-                  <PenLine className="text-primary h-8 w-8" />
-                </div>
-                <div className="space-y-2">
-                  <CardTitle>No, start from scratch</CardTitle>
-                  <CardDescription>
-                    We&apos;ll guide you through the whole process so your
-                    skills can shine
-                  </CardDescription>
-                </div>
-              </CardContent>
-            </Card>
+                  <div
+                    className={`
+                      bg-primary/10 flex h-16 w-16 items-center justify-center
+                      rounded-full
+                    `}
+                  >
+                    <PenLine className="text-primary h-8 w-8" />
+                  </div>
+                  <div className="space-y-2">
+                    <CardTitle>No, start from scratch</CardTitle>
+                    <CardDescription>
+                      We&apos;ll guide you through the whole process so your
+                      skills can shine
+                    </CardDescription>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
           </div>
 
           <DialogFooter className="flex items-center justify-end gap-2">
