@@ -21,13 +21,19 @@ interface EditorProps {
 
 const Editor = ({ value, onChange, placeholder, className }: EditorProps) => {
   const modules: QuillOptionsStatic["modules"] = {
-    toolbar: [["bold", "italic", "underline"], ["link"], [{ color: [] }]],
+    toolbar: [
+      ["bold", "italic", "underline"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      ["link"],
+      [{ color: [] }],
+    ],
   };
 
   const formats: QuillOptionsStatic["formats"] = [
     "bold",
     "italic",
     "underline",
+    "list",
     "link",
     "color",
   ];

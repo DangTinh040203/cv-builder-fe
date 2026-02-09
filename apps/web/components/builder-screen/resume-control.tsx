@@ -66,11 +66,6 @@ const ResumeControl = () => {
           md:flex
         `}
       >
-        <Button variant="outline" className={cn("shrink-0 gap-2")}>
-          <Sparkles className="h-4 w-4" />
-          AI Assistant
-        </Button>
-
         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
           <Button
             variant="outline"

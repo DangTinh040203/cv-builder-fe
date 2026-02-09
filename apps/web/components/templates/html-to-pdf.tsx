@@ -14,14 +14,35 @@ const HtmlToPdf = ({ content = "", style = {} }: HtmlToPdfProps) => {
 
   if (!content.trim()) return null;
 
-  // Replace &nbsp; with regular space to allow text wrapping
-  const normalizedContent = content.replace(/&nbsp;/g, " ");
+  // Replace &nbsp; with regular space to allow text wrapping,
+  // but keep &nbsp; that is at a tag boundary (after > or before <) to prevent react-pdf from collapsing spaces
+
+  let normalizedContent = content;
+
+  // 1. Convert spaces around inline tags to &nbsp;
+  const inlineTags = "strong|b|i|em|u|span|a|code|s|strike";
+
+  // Replace space AFTER tag: </strong> space -> </strong>&nbsp;
+  normalizedContent = normalizedContent.replace(
+    new RegExp(`((?:<\\/?(?:${inlineTags})[^>]*>)) `, "gi"),
+    "$1&nbsp;",
+  );
+
+  // Replace space BEFORE tag: space <strong> -> &nbsp;<strong>
+  normalizedContent = normalizedContent.replace(
+    new RegExp(` ((?:<\\/?(?:${inlineTags})[^>]*>))`, "gi"),
+    "&nbsp;$1",
+  );
+
+  // 2. Replace &nbsp; with regular space ONLY if it's surrounded by non-tag chars
+  // (i.e. not >&nbsp; and not &nbsp;<)
+  normalizedContent = normalizedContent.replace(/([^>])&nbsp;([^<])/g, "$1 $2");
 
   if (isHTML) {
     return (
       <div
         style={{ ...style }}
-        className="m-0 max-w-full p-0"
+        className="prose m-0 max-w-full p-0"
         dangerouslySetInnerHTML={{ __html: normalizedContent }}
       />
     );
