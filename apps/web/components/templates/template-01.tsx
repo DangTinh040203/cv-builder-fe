@@ -155,10 +155,22 @@ const Template01: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
           <View style={styles.separator} />
           <View style={styles.sectionContent}>
             {projects.map((project) => (
-              <View key={uuid()} style={styles.projectContainer} wrap={false}>
-                <View style={styles.projectHeader}>
+              <View key={uuid()} style={styles.col} wrap={false}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignContent: "center",
+                  }}
+                >
                   <Text style={styles.itemTitle}>{project.title}</Text>
                 </View>
+
+                {project.subTitle && (
+                  <Text style={{ opacity: 0.8, fontStyle: "italic" }}>
+                    {project.subTitle}
+                  </Text>
+                )}
 
                 <HtmlToPdf style={styles.text} content={project.details} />
               </View>
