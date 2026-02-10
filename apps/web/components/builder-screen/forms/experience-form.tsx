@@ -4,6 +4,7 @@ import {
   closestCenter,
   DndContext,
   type DragEndEvent,
+  DragOverlay,
   KeyboardSensor,
   PointerSensor,
   useSensor,
@@ -76,7 +77,7 @@ function SortableExperienceItem({
   } = useSortable({ id: item.id });
 
   const style = {
-    transform: CSS.Transform.toString(transform),
+    transform: CSS.Translate.toString(transform),
     transition,
   };
 
@@ -89,7 +90,7 @@ function SortableExperienceItem({
         "ring-1 ring-slate-200",
         "hover:ring-slate-300",
         "dark:bg-slate-800 dark:ring-slate-700",
-        isDragging && "relative z-50 shadow-lg ring-orange-500",
+        isDragging && "relative z-50 opacity-50",
       )}
     >
       <div className="mb-3 flex items-center justify-between">
@@ -225,6 +226,7 @@ function SortableExperienceItem({
 const ExperienceForm = ({ onNext, onBack }: ExperienceFormProps) => {
   const dispatch = useAppDispatch();
   const { sync, isSyncing, resume } = useSyncResume();
+  const [activeId, setActiveId] = useState<string | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [validationErrors, setValidationErrors] = useState<
     Record<string, { company?: string; position?: string }>
@@ -307,6 +309,10 @@ const ExperienceForm = ({ onNext, onBack }: ExperienceFormProps) => {
     dispatch(updateResume({ workExperiences: newItems }));
   };
 
+  const handleDragStart = (event: DragEndEvent) => {
+    setActiveId(event.active.id as string);
+  };
+
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
@@ -318,7 +324,10 @@ const ExperienceForm = ({ onNext, onBack }: ExperienceFormProps) => {
       const newItems = arrayMove(experienceItems, oldIndex, newIndex);
       dispatch(updateResume({ workExperiences: newItems }));
     }
+    setActiveId(null);
   };
+
+  const activeItem = experienceItems.find((item) => item.id === activeId);
 
   if (!resume) return null;
 
@@ -329,11 +338,7 @@ const ExperienceForm = ({ onNext, onBack }: ExperienceFormProps) => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
       >
-        <Card
-          className={cn(
-            "relative gap-0 overflow-hidden border-0 py-0 shadow-xl",
-          )}
-        >
+        <Card className={cn("relative gap-0 border-0 py-0 shadow-xl")}>
           <CardHeader
             className={`
               border-b border-slate-100 pt-6 pb-5
@@ -427,26 +432,35 @@ const ExperienceForm = ({ onNext, onBack }: ExperienceFormProps) => {
                   <DndContext
                     sensors={sensors}
                     collisionDetection={closestCenter}
+                    onDragStart={handleDragStart}
                     onDragEnd={handleDragEnd}
                   >
                     <SortableContext
                       items={experienceItems.map((item) => item.id)}
                       strategy={verticalListSortingStrategy}
                     >
-                      <AnimatePresence mode="popLayout">
-                        <div className="space-y-3">
-                          {experienceItems.map((item) => (
-                            <SortableExperienceItem
-                              key={item.id}
-                              item={item}
-                              onUpdate={updateExperienceItem}
-                              onRemove={removeExperienceItem}
-                              errors={validationErrors[item.id]}
-                            />
-                          ))}
-                        </div>
-                      </AnimatePresence>
+                      <div className="space-y-3">
+                        {experienceItems.map((item) => (
+                          <SortableExperienceItem
+                            key={item.id}
+                            item={item}
+                            onUpdate={updateExperienceItem}
+                            onRemove={removeExperienceItem}
+                            errors={validationErrors[item.id]}
+                          />
+                        ))}
+                      </div>
                     </SortableContext>
+                    <DragOverlay>
+                      {activeId && activeItem ? (
+                        <SortableExperienceItem
+                          item={activeItem}
+                          onUpdate={updateExperienceItem}
+                          onRemove={removeExperienceItem}
+                          errors={validationErrors[activeId]}
+                        />
+                      ) : null}
+                    </DragOverlay>
                   </DndContext>
                 )}
               </div>

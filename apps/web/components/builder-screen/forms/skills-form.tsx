@@ -4,6 +4,7 @@ import {
   closestCenter,
   DndContext,
   type DragEndEvent,
+  DragOverlay,
   KeyboardSensor,
   PointerSensor,
   useSensor,
@@ -27,8 +28,8 @@ import {
 import { Input } from "@shared/ui/components/input";
 import { Label } from "@shared/ui/components/label";
 import { cn } from "@shared/ui/lib/utils";
-import { AnimatePresence, motion } from "framer-motion";
-import { Code, GripVertical, Plus, Trash2 } from "lucide-react";
+import { motion } from "framer-motion";
+import { Cpu, GripVertical, Plus, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import BuilderNavigation from "@/components/builder-screen/builder-navigation";
@@ -62,7 +63,7 @@ function SortableSkillItem({
   } = useSortable({ id: item.id });
 
   const style = {
-    transform: CSS.Transform.toString(transform),
+    transform: CSS.Translate.toString(transform),
     transition,
   };
 
@@ -75,7 +76,7 @@ function SortableSkillItem({
         "ring-1 ring-slate-200",
         "hover:ring-slate-300",
         "dark:bg-slate-800 dark:ring-slate-700",
-        isDragging && "relative z-50 shadow-lg ring-emerald-500",
+        isDragging && "relative z-50 opacity-50",
       )}
     >
       {/* Drag Handle */}
@@ -145,6 +146,7 @@ const SkillsForm = ({ onNext, onBack }: SkillsFormProps) => {
   const dispatch = useAppDispatch();
   const { sync, isSyncing, resume } = useSyncResume();
   const [isVisible, setIsVisible] = useState(false);
+  const [activeId, setActiveId] = useState<string | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -158,19 +160,12 @@ const SkillsForm = ({ onNext, onBack }: SkillsFormProps) => {
     return () => clearTimeout(timer);
   }, []);
 
-  const onSubmit = async () => {
-    const success = await sync();
-    if (success) {
-      onNext?.();
-    }
-  };
-
   const skillItems = resume?.skills || [];
 
   const updateSkillItem = (
     id: string,
-    field: "label" | "value",
-    value: string,
+    field: keyof Skill,
+    value: string | number,
   ) => {
     const newItems = skillItems.map((item) =>
       item.id === id ? { ...item, [field]: value } : item,
@@ -179,7 +174,7 @@ const SkillsForm = ({ onNext, onBack }: SkillsFormProps) => {
   };
 
   const addSkillItem = () => {
-    const newItem = {
+    const newItem: Skill = {
       id: crypto.randomUUID(),
       label: "",
       value: "",
@@ -193,6 +188,10 @@ const SkillsForm = ({ onNext, onBack }: SkillsFormProps) => {
     dispatch(updateResume({ skills: newItems }));
   };
 
+  const handleDragStart = (event: DragEndEvent) => {
+    setActiveId(event.active.id as string);
+  };
+
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
@@ -202,7 +201,10 @@ const SkillsForm = ({ onNext, onBack }: SkillsFormProps) => {
       const newItems = arrayMove(skillItems, oldIndex, newIndex);
       dispatch(updateResume({ skills: newItems }));
     }
+    setActiveId(null);
   };
+
+  const activeItem = skillItems.find((item) => item.id === activeId);
 
   if (!resume) return null;
 
@@ -213,10 +215,10 @@ const SkillsForm = ({ onNext, onBack }: SkillsFormProps) => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
       >
-        <Card className={cn("relative overflow-hidden border-0 shadow-xl")}>
+        <Card className={cn("relative gap-0 border-0 py-0 shadow-xl")}>
           <CardHeader
             className={`
-              border-b border-slate-100 pb-5
+              border-b border-slate-100 pt-6 pb-5
               dark:border-slate-800
             `}
           >
@@ -228,7 +230,7 @@ const SkillsForm = ({ onNext, onBack }: SkillsFormProps) => {
                   "shadow-md shadow-violet-500/25",
                 )}
               >
-                <Code className="h-5 w-5 text-white" />
+                <Cpu className="h-5 w-5 text-white" />
               </div>
               <div className="flex flex-col">
                 <span
@@ -237,7 +239,7 @@ const SkillsForm = ({ onNext, onBack }: SkillsFormProps) => {
                     dark:text-white
                   `}
                 >
-                  Skills & Technologies
+                  Skills
                 </span>
                 <span
                   className={`
@@ -245,7 +247,7 @@ const SkillsForm = ({ onNext, onBack }: SkillsFormProps) => {
                     dark:text-slate-400
                   `}
                 >
-                  Highlight your technical expertise
+                  Your technical expertise
                 </span>
               </div>
             </CardTitle>
@@ -267,7 +269,7 @@ const SkillsForm = ({ onNext, onBack }: SkillsFormProps) => {
                       uppercase
                     `}
                   >
-                    Your Skills
+                    Skills List
                   </Label>
                   {skillItems.length > 0 && (
                     <span
@@ -295,37 +297,45 @@ const SkillsForm = ({ onNext, onBack }: SkillsFormProps) => {
                       flex flex-col items-center justify-center py-8 text-center
                     `}
                   >
-                    <Code className="mb-2 h-8 w-8 text-slate-300" />
+                    <Cpu className="mb-2 h-8 w-8 text-slate-300" />
                     <p className="text-sm font-medium text-slate-500">
                       No skills added yet
                     </p>
                     <p className="mt-1 text-xs text-slate-400">
-                      Add programming languages, frameworks, tools, etc.
+                      Add your languages, frameworks, and tools
                     </p>
                   </div>
                 ) : (
                   <DndContext
                     sensors={sensors}
                     collisionDetection={closestCenter}
+                    onDragStart={handleDragStart}
                     onDragEnd={handleDragEnd}
                   >
                     <SortableContext
                       items={skillItems.map((item) => item.id)}
                       strategy={verticalListSortingStrategy}
                     >
-                      <AnimatePresence mode="popLayout">
-                        <div className="space-y-2">
-                          {skillItems.map((item) => (
-                            <SortableSkillItem
-                              key={item.id}
-                              item={item}
-                              onUpdate={updateSkillItem}
-                              onRemove={removeSkillItem}
-                            />
-                          ))}
-                        </div>
-                      </AnimatePresence>
+                      <div className={`grid grid-cols-1 gap-3`}>
+                        {skillItems.map((item) => (
+                          <SortableSkillItem
+                            key={item.id}
+                            item={item}
+                            onUpdate={updateSkillItem}
+                            onRemove={removeSkillItem}
+                          />
+                        ))}
+                      </div>
                     </SortableContext>
+                    <DragOverlay>
+                      {activeId && activeItem ? (
+                        <SortableSkillItem
+                          item={activeItem}
+                          onUpdate={updateSkillItem}
+                          onRemove={removeSkillItem}
+                        />
+                      ) : null}
+                    </DragOverlay>
                   </DndContext>
                 )}
               </div>
@@ -358,7 +368,11 @@ const SkillsForm = ({ onNext, onBack }: SkillsFormProps) => {
             >
               <BuilderNavigation
                 onBack={onBack}
-                onNext={onSubmit}
+                onNext={() => {
+                  sync().then((success) => {
+                    if (success) onNext?.();
+                  });
+                }}
                 disableBack={!onBack}
                 loading={isSyncing}
               />
