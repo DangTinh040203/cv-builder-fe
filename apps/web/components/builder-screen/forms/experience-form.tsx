@@ -401,24 +401,6 @@ const ExperienceForm = ({ onNext, onBack }: ExperienceFormProps) => {
                     </span>
                   )}
                 </div>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={addExperienceItem}
-                  className={cn(
-                    "h-8 gap-1.5 rounded-lg border-dashed",
-                    "border-slate-300 text-slate-600",
-                    `
-                      hover:border-orange-500 hover:bg-orange-50
-                      hover:text-orange-600
-                    `,
-                    "dark:border-slate-600 dark:text-slate-400",
-                  )}
-                  type="button"
-                >
-                  <Plus className="h-3.5 w-3.5" />
-                  Add Experience
-                </Button>
               </div>
 
               <div
@@ -468,6 +450,25 @@ const ExperienceForm = ({ onNext, onBack }: ExperienceFormProps) => {
                   </DndContext>
                 )}
               </div>
+
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={addExperienceItem}
+                className={cn(
+                  "h-9 w-full gap-1.5 rounded-lg border-dashed",
+                  "border-slate-300 text-slate-600",
+                  `
+                    hover:border-orange-500 hover:bg-orange-50
+                    hover:text-orange-600
+                  `,
+                  "dark:border-slate-600 dark:text-slate-400",
+                )}
+                type="button"
+              >
+                <Plus className="h-3.5 w-3.5" />
+                Add Experience
+              </Button>
             </motion.div>
 
             {/* Navigation */}

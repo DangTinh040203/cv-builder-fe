@@ -1,10 +1,11 @@
 import { Button } from "@shared/ui/components/button";
 import { cn } from "@shared/ui/lib/utils";
 import { motion } from "framer-motion";
-import { Eye, EyeOff, FileText, Sparkles } from "lucide-react";
+import { Eye, EyeOff, FileText, Loader2, Save } from "lucide-react";
 import React from "react";
 
 import DownloadPdf from "@/components/templates/download-pdf";
+import { useSyncResume } from "@/hooks/use-sync-resume";
 import { resumeSelector } from "@/stores/features/resume.slice";
 import {
   templateConfigSelector,
@@ -16,6 +17,7 @@ const ResumeControl = () => {
   const { resume } = useAppSelector(resumeSelector);
   const { previewMode } = useAppSelector(templateConfigSelector);
   const dispatch = useAppDispatch();
+  const { sync, isSyncing } = useSyncResume();
 
   const handleTogglePreviewMode = () => {
     dispatch(updatePreviewMode(!previewMode));
@@ -66,6 +68,22 @@ const ResumeControl = () => {
           md:flex
         `}
       >
+        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+          <Button
+            variant="outline"
+            className={cn("shrink-0 gap-2 transition-colors duration-200")}
+            onClick={sync}
+            disabled={isSyncing}
+          >
+            {isSyncing ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Save className="h-4 w-4" />
+            )}
+            Save
+          </Button>
+        </motion.div>
+
         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
           <Button
             variant="outline"

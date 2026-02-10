@@ -281,24 +281,6 @@ const SkillsForm = ({ onNext, onBack }: SkillsFormProps) => {
                     </span>
                   )}
                 </div>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={addSkillItem}
-                  className={cn(
-                    "h-8 gap-1.5 rounded-lg border-dashed",
-                    "border-slate-300 text-slate-600",
-                    `
-                      hover:border-emerald-500 hover:bg-emerald-50
-                      hover:text-emerald-600
-                    `,
-                    "dark:border-slate-600 dark:text-slate-400",
-                  )}
-                  type="button"
-                >
-                  <Plus className="h-3.5 w-3.5" />
-                  Add Skill
-                </Button>
               </div>
 
               <div
@@ -347,6 +329,25 @@ const SkillsForm = ({ onNext, onBack }: SkillsFormProps) => {
                   </DndContext>
                 )}
               </div>
+
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={addSkillItem}
+                className={cn(
+                  "h-9 w-full gap-1.5 rounded-lg border-dashed",
+                  "border-slate-300 text-slate-600",
+                  `
+                    hover:border-emerald-500 hover:bg-emerald-50
+                    hover:text-emerald-600
+                  `,
+                  "dark:border-slate-600 dark:text-slate-400",
+                )}
+                type="button"
+              >
+                <Plus className="h-3.5 w-3.5" />
+                Add Skill
+              </Button>
             </motion.div>
 
             {/* Navigation */}

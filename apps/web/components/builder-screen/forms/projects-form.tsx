@@ -341,21 +341,6 @@ const ProjectsForm = ({ onNext, onBack }: ProjectsFormProps) => {
                     </span>
                   )}
                 </div>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={addProjectItem}
-                  className={cn(
-                    "h-8 gap-1.5 rounded-lg border-dashed",
-                    "border-slate-300 text-slate-600",
-                    `hover:border-cyan-500 hover:bg-cyan-50 hover:text-cyan-600`,
-                    "dark:border-slate-600 dark:text-slate-400",
-                  )}
-                  type="button"
-                >
-                  <Plus className="h-3.5 w-3.5" />
-                  Add Project
-                </Button>
               </div>
 
               <div
@@ -405,6 +390,22 @@ const ProjectsForm = ({ onNext, onBack }: ProjectsFormProps) => {
                   </DndContext>
                 )}
               </div>
+
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={addProjectItem}
+                className={cn(
+                  "h-9 w-full gap-1.5 rounded-lg border-dashed",
+                  "border-slate-300 text-slate-600",
+                  `hover:border-cyan-500 hover:bg-cyan-50 hover:text-cyan-600`,
+                  "dark:border-slate-600 dark:text-slate-400",
+                )}
+                type="button"
+              >
+                <Plus className="h-3.5 w-3.5" />
+                Add Project
+              </Button>
             </motion.div>
 
             {/* Navigation */}

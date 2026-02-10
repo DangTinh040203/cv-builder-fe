@@ -49,7 +49,7 @@ export const useTemplateStyle = (templateFormat: Format) => {
 
       sectionContent: {
         flexDirection: "column",
-        gap: 6,
+        gap: 10,
         marginTop: 6,
       },
 
@@ -61,6 +61,18 @@ export const useTemplateStyle = (templateFormat: Format) => {
 
       text: {
         fontSize: theme.fontSize,
+        lineHeight: theme.lineHeight,
+        letterSpacing: theme.letterSpacing,
+      },
+
+      textSm: {
+        fontSize: theme.fontSize - 2,
+        lineHeight: theme.lineHeight,
+        letterSpacing: theme.letterSpacing,
+      },
+
+      textXs: {
+        fontSize: theme.fontSize - 4,
         lineHeight: theme.lineHeight,
         letterSpacing: theme.letterSpacing,
       },

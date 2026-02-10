@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { useService } from "@/hooks/use-http";
@@ -30,6 +30,7 @@ export function useSyncResume() {
         resumeToUpdateDto(resume),
       );
       dispatch(setResume(updatedResume));
+      toast.success("Resume saved successfully");
       return true;
     } catch {
       toast.error("Failed to save. Please try again.");
@@ -38,6 +39,18 @@ export function useSyncResume() {
       setIsSyncing(false);
     }
   }, [dispatch, resume, resumeService]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "s") {
+        e.preventDefault();
+        sync();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [sync]);
 
   return { sync, isSyncing, resume };
 }

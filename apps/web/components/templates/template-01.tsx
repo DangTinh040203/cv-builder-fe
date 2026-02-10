@@ -123,27 +123,24 @@ const Template01: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
           <View style={styles.separator} />
           <View style={styles.sectionContent}>
             {workExperiences.map((exp) => (
-              <View
-                key={uuid()}
-                style={[
-                  styles.row,
-                  { alignItems: "flex-start", marginBottom: 4 },
-                ]}
-                wrap={false}
-              >
-                <View style={{ minWidth: 120 }}>
-                  <Text>
+              <View key={exp.id} style={styles.col} wrap={false}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignContent: "center",
+                  }}
+                >
+                  <Text style={styles.itemTitle}>{exp.company}</Text>
+                  <Text style={{ ...styles.textSm, fontWeight: "semibold" }}>
                     {formatDate(exp.startDate)} - {formatDate(exp.endDate)}
                   </Text>
                 </View>
-                <View style={[styles.col, { flex: 1 }]}>
-                  <Text style={styles.itemTitle}>
-                    {exp.company} - {exp.position}
-                  </Text>
-                  <HtmlToPdf
-                    style={{ ...styles.text, margin: 0 }}
-                    content={exp.description}
-                  />
+                <Text style={{ opacity: 0.8, fontStyle: "italic" }}>
+                  {exp.position}
+                </Text>
+                <View>
+                  <HtmlToPdf style={styles.text} content={exp.description} />
                 </View>
               </View>
             ))}

@@ -396,24 +396,6 @@ const EducationForm = ({ onNext, onBack }: EducationFormProps) => {
                     </span>
                   )}
                 </div>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={addEducationItem}
-                  className={cn(
-                    "h-8 gap-1.5 rounded-lg border-dashed",
-                    "border-slate-300 text-slate-600",
-                    `
-                      hover:border-violet-500 hover:bg-violet-50
-                      hover:text-violet-600
-                    `,
-                    "dark:border-slate-600 dark:text-slate-400",
-                  )}
-                  type="button"
-                >
-                  <Plus className="h-3.5 w-3.5" />
-                  Add Education
-                </Button>
               </div>
 
               <div
@@ -463,6 +445,25 @@ const EducationForm = ({ onNext, onBack }: EducationFormProps) => {
                   </DndContext>
                 )}
               </div>
+
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={addEducationItem}
+                className={cn(
+                  "h-9 w-full gap-1.5 rounded-lg border-dashed",
+                  "border-slate-300 text-slate-600",
+                  `
+                    hover:border-violet-500 hover:bg-violet-50
+                    hover:text-violet-600
+                  `,
+                  "dark:border-slate-600 dark:text-slate-400",
+                )}
+                type="button"
+              >
+                <Plus className="h-3.5 w-3.5" />
+                Add Education
+              </Button>
             </motion.div>
 
             {/* Navigation */}
