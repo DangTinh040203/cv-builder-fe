@@ -139,28 +139,6 @@ export const useTemplateStyle = (templateFormat: Format) => {
       col: {
         flexDirection: "column",
       },
-
-      projectContainer: {
-        flexDirection: "column",
-        paddingBottom: 10,
-      },
-
-      projectHeader: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        paddingVertical: 2,
-      },
-
-      projectInfoRow: {
-        flexDirection: "row",
-        alignItems: "flex-start",
-        gap: 10,
-        borderBottom: "1px solid #ccc",
-      },
-
-      projectInfoRowFirst: {
-        borderTop: "1px solid #ccc",
-      },
     });
   }, [templateFormat]);
 

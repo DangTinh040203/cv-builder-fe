@@ -189,68 +189,234 @@ const Template01: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Projects</Text>
           <View style={styles.separator} />
-          <View style={styles.sectionContent}>
+          <View style={{ ...styles.sectionContent, gap: 25 }}>
             {projects.map((project) => (
-              <View key={uuid()} style={styles.col} wrap={false}>
+              <View key={uuid()} style={styles.col}>
                 <View
                   style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignContent: "center",
+                    flexDirection: "column",
                   }}
                 >
                   <Text style={styles.itemTitle}>{project.title}</Text>
-                </View>
-
-                {(project.position || project.domain) && (
                   <Text style={{ opacity: 0.8, fontStyle: "italic" }}>
-                    {project.position}
-                    {project.position && project.domain && " - "}
-                    {project.domain}
+                    {project.subTitle}
                   </Text>
-                )}
-
-                <Text style={{ opacity: 0.8, fontSize: 9 }}>
-                  {project.subTitle}
-                </Text>
-
-                {project.technologies && (
-                  <Text style={{ opacity: 0.8, fontSize: 9 }}>
-                    <Text style={{ fontWeight: "bold" }}>Technologies: </Text>
-                    {project.technologies}
-                  </Text>
-                )}
-
-                <View style={{ marginTop: 4 }}>
-                  <HtmlToPdf style={styles.text} content={project.details} />
                 </View>
 
-                {project.responsibilities && (
-                  <View style={{ marginTop: 4 }}>
-                    <Text
+                <View
+                  style={{
+                    border: "0.5px solid #ccc",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 0,
+                  }}
+                >
+                  {/* Row */}
+                  <View style={{ display: "flex", flexDirection: "row" }}>
+                    <View
                       style={{
-                        fontWeight: "bold",
-                        fontSize: 9,
-                        marginBottom: 2,
+                        borderRight: "0.5px solid #ccc",
+                        paddingHorizontal: 8,
+                        paddingVertical: 4,
+                        margin: 0,
+                        width: 120,
                       }}
                     >
-                      Responsibilities:
-                    </Text>
-                    <HtmlToPdf
-                      style={styles.text}
-                      content={project.responsibilities}
-                    />
+                      <Text>Descriptions</Text>
+                    </View>
+                    <View
+                      style={{
+                        flex: 1,
+                        paddingHorizontal: 8,
+                        paddingVertical: 4,
+                        margin: 0,
+                      }}
+                    >
+                      <HtmlToPdf
+                        style={styles.text}
+                        content={project.details}
+                      />
+                    </View>
                   </View>
-                )}
 
-                {project.demo && (
-                  <View style={{ marginTop: 2 }}>
-                    <Text style={{ fontSize: 9 }}>
-                      <Text style={{ fontWeight: "bold" }}>Demo: </Text>
-                      {project.demo}
-                    </Text>
+                  {/* Row */}
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      borderTop: "0.5px solid #ccc",
+                    }}
+                  >
+                    <View
+                      style={{
+                        borderRight: "0.5px solid #ccc",
+                        paddingHorizontal: 8,
+                        paddingVertical: 4,
+                        margin: 0,
+                        width: 120,
+                      }}
+                    >
+                      <Text>Responsibilities</Text>
+                    </View>
+                    <View
+                      style={{
+                        flex: 1,
+                        paddingHorizontal: 8,
+                        paddingVertical: 4,
+                        margin: 0,
+                      }}
+                    >
+                      <HtmlToPdf
+                        style={styles.text}
+                        content={project.details}
+                      />
+                    </View>
                   </View>
-                )}
+
+                  {/* Row */}
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      borderTop: "0.5px solid #ccc",
+                      padding: 0,
+                      margin: 0,
+                    }}
+                  >
+                    <View
+                      style={{
+                        borderRight: "0.5px solid #ccc",
+                        paddingHorizontal: 8,
+                        paddingVertical: 4,
+                        margin: 0,
+                        width: 120,
+                      }}
+                    >
+                      <Text>Technologies</Text>
+                    </View>
+
+                    <View
+                      style={{
+                        flex: 1,
+                        paddingHorizontal: 8,
+                        paddingVertical: 4,
+                        margin: 0,
+                      }}
+                    >
+                      <Text>{project.technologies}</Text>
+                    </View>
+                  </View>
+
+                  {/* Row */}
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      borderTop: "0.5px solid #ccc",
+                    }}
+                  >
+                    <View
+                      style={{
+                        borderRight: "0.5px solid #ccc",
+                        paddingHorizontal: 8,
+                        paddingVertical: 4,
+                        margin: 0,
+                        width: 120,
+                      }}
+                    >
+                      <Text>Position</Text>
+                    </View>
+                    <View
+                      style={{
+                        flex: 1,
+                        paddingHorizontal: 8,
+                        paddingVertical: 4,
+                        margin: 0,
+                      }}
+                    >
+                      <Text>{project.position}</Text>
+                    </View>
+                  </View>
+
+                  {/* Row */}
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      borderTop: "0.5px solid #ccc",
+                    }}
+                  >
+                    <View
+                      style={{
+                        borderRight: "0.5px solid #ccc",
+                        paddingHorizontal: 8,
+                        paddingVertical: 4,
+                        margin: 0,
+
+                        width: 120,
+                      }}
+                    >
+                      <Text>Domain</Text>
+                    </View>
+                    <View
+                      style={{
+                        flex: 1,
+                        paddingHorizontal: 8,
+                        paddingVertical: 4,
+                        margin: 0,
+                      }}
+                    >
+                      <Text>{project.domain}</Text>
+                    </View>
+                  </View>
+
+                  {/* Row */}
+                  {project.demo && (
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        borderTop: "0.5px solid #ccc",
+                      }}
+                    >
+                      <View
+                        style={{
+                          borderRight: "0.5px solid #ccc",
+                          paddingHorizontal: 8,
+                          paddingVertical: 4,
+                          margin: 0,
+                          width: 120,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            lineHeight: 1,
+                            margin: 0,
+                          }}
+                        >
+                          Demo
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          flex: 1,
+                          paddingHorizontal: 8,
+                          paddingVertical: 4,
+                          margin: 0,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            lineHeight: 1,
+                            margin: 0,
+                          }}
+                        >
+                          {project.demo}
+                        </Text>
+                      </View>
+                    </View>
+                  )}
+                </View>
               </View>
             ))}
           </View>
