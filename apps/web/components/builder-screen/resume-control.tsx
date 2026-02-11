@@ -1,4 +1,11 @@
+"use client";
 import { Button } from "@shared/ui/components/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@shared/ui/components/tooltip";
 import { cn } from "@shared/ui/lib/utils";
 import { motion } from "framer-motion";
 import { Eye, EyeOff, FileText, Loader2, Save } from "lucide-react";
@@ -68,20 +75,31 @@ const ResumeControl = () => {
           md:flex
         `}
       >
-        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-          <Button
-            variant="outline"
-            className={cn("shrink-0 gap-2 transition-colors duration-200")}
-            onClick={sync}
-            disabled={isSyncing}
-          >
-            {isSyncing ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <Save className="h-4 w-4" />
-            )}
-            Save
-          </Button>
+        <motion.div>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="outline"
+                  className={cn(
+                    "shrink-0 gap-2 transition-colors duration-200",
+                  )}
+                  onClick={sync}
+                  disabled={isSyncing}
+                >
+                  {isSyncing ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Save className="h-4 w-4" />
+                  )}
+                  Save
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Save changes (Ctrl + S)</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </motion.div>
 
         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>

@@ -43,10 +43,26 @@ export function resumeToUpdateDto(resume: Resume): UpdateResumeDto {
       })),
     projects: resume.projects
       .filter((proj) => proj.title.trim() || proj.details.trim())
-      .map(({ title, subTitle, details }) => ({
-        title,
-        subTitle,
-        details,
-      })),
+      .map(
+        ({
+          title,
+          subTitle,
+          details,
+          technologies,
+          position,
+          responsibilities,
+          domain,
+          demo,
+        }) => ({
+          title,
+          subTitle,
+          details,
+          technologies,
+          position,
+          responsibilities,
+          domain,
+          demo,
+        }),
+      ),
   };
 }

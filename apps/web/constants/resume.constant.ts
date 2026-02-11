@@ -109,6 +109,12 @@ export const MOCK_RESUME: Resume = {
       subTitle: "Open Source Contribution",
       details:
         "Contributed to a major open source React UI library. Added 5 new components and fixed critical accessibility bugs.",
+      technologies: "React, TypeScript, Jest",
+      position: "Contributor",
+      responsibilities:
+        "- Implemented new accessible components\n- Wrote unit tests for all new features",
+      domain: "Open Source / UI Library",
+      demo: "https://github.com/shadcn/ui",
       resumeId: "resume-1",
     },
     {
@@ -117,6 +123,12 @@ export const MOCK_RESUME: Resume = {
       subTitle: "Personal Project",
       details:
         "A productivity application built with Flutter and Firebase. Features include task organization, time tracking, and team collaboration.",
+      technologies: "Flutter, Firebase, Dart",
+      position: "Solo Developer",
+      responsibilities:
+        "- Designed and implemented the entire application\n- Integrated Firebase Auth and Firestore",
+      domain: "Productivity",
+      demo: "https://taskmaster.app",
       resumeId: "resume-1",
     },
   ],

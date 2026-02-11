@@ -166,13 +166,13 @@ const Template01: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
                   <Text style={styles.itemTitle}>{project.title}</Text>
                 </View>
 
-                {project.subTitle && (
-                  <Text style={{ opacity: 0.8, fontStyle: "italic" }}>
-                    {project.subTitle}
-                  </Text>
-                )}
+                <Text style={{ opacity: 0.8, fontStyle: "italic" }}>
+                  {project.subTitle}
+                </Text>
 
-                <HtmlToPdf style={styles.text} content={project.details} />
+                <View style={{ marginTop: 4 }}>
+                  <HtmlToPdf style={styles.text} content={project.details} />
+                </View>
               </View>
             ))}
           </View>
