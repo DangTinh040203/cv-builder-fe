@@ -182,11 +182,7 @@ const TemplateFormat = () => {
       </CardHeader>
 
       <CardContent className="px-4 pb-4">
-        <Accordion
-          type="multiple"
-          defaultValue={["typography"]}
-          className="w-full"
-        >
+        <Accordion type="multiple" className="w-full">
           {/* Typography Section */}
           <AccordionItem value="typography" className="border-b-0">
             <AccordionTrigger

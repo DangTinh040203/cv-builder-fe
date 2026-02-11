@@ -28,6 +28,13 @@ import {
 import { DatePicker } from "@shared/ui/components/date-picker";
 import { Input } from "@shared/ui/components/input";
 import { Label } from "@shared/ui/components/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@shared/ui/components/select";
 import { cn } from "@shared/ui/lib/utils";
 import { motion } from "framer-motion";
 import {
@@ -36,6 +43,7 @@ import {
   GripVertical,
   Plus,
   Trash2,
+  X,
 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 
@@ -49,6 +57,24 @@ interface EducationFormProps {
   onNext?: () => void;
   onBack?: () => void;
 }
+
+const DEGREES = [
+  "High School Diploma",
+  "GED",
+  "Associate of Arts",
+  "Associate of Science",
+  "Associate of Applied Science",
+  "Bachelor of Arts",
+  "Bachelor of Science",
+  "BBA",
+  "Master of Arts",
+  "Master of Science",
+  "MBA",
+  "J.D.",
+  "M.D.",
+  "Ph.D",
+  "No Degree",
+];
 
 // Sortable education item component
 function SortableEducationItem({
@@ -70,6 +96,10 @@ function SortableEducationItem({
     transition,
     isDragging,
   } = useSortable({ id: item.id });
+
+  const [isCustomDegree, setIsCustomDegree] = useState(
+    !!item.degree && !DEGREES.includes(item.degree),
+  );
 
   const style = {
     transform: CSS.Translate.toString(transform),
@@ -150,17 +180,72 @@ function SortableEducationItem({
             )}
           </div>
           <div className="space-y-1">
-            <Input
-              value={item.degree}
-              onChange={(e) => onUpdate(item.id, "degree", e.target.value)}
-              placeholder="Degree (e.g. Bachelor's)"
-              className={cn(
-                "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
-                "focus:bg-white focus:ring-2 focus:ring-violet-500/20",
-                "dark:border-slate-700 dark:bg-slate-700",
-                errors?.degree && "border-red-400 focus:ring-red-500/20",
-              )}
-            />
+            {isCustomDegree ? (
+              <div className="relative">
+                <Input
+                  value={item.degree}
+                  onChange={(e) => onUpdate(item.id, "degree", e.target.value)}
+                  placeholder="Degree (e.g. Bachelor's)"
+                  className={cn(
+                    "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
+                    "focus:bg-white focus:ring-2 focus:ring-violet-500/20",
+                    "dark:border-slate-700 dark:bg-slate-700",
+                    errors?.degree && "border-red-400 focus:ring-red-500/20",
+                  )}
+                />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={`
+                    absolute top-1 right-1 h-8 w-8 text-slate-400
+                    hover:text-slate-600
+                    dark:hover:text-slate-300
+                  `}
+                  onClick={() => {
+                    setIsCustomDegree(false);
+                    onUpdate(item.id, "degree", "");
+                  }}
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+            ) : (
+              <Select
+                value={DEGREES.includes(item.degree) ? item.degree : ""}
+                onValueChange={(value) => {
+                  if (value === "custom_degree_option") {
+                    setIsCustomDegree(true);
+                    onUpdate(item.id, "degree", "");
+                  } else {
+                    onUpdate(item.id, "degree", value);
+                  }
+                }}
+              >
+                <SelectTrigger
+                  className={cn(
+                    `
+                      h-10 w-full rounded-lg border-slate-200 bg-slate-50
+                      text-sm
+                    `,
+                    "focus:bg-white focus:ring-2 focus:ring-violet-500/20",
+                    "dark:border-slate-700 dark:bg-slate-700",
+                    errors?.degree && "border-red-400 focus:ring-red-500/20",
+                  )}
+                >
+                  <SelectValue placeholder="Degree (e.g. Bachelor's)" />
+                </SelectTrigger>
+                <SelectContent>
+                  {DEGREES.map((degree) => (
+                    <SelectItem key={degree} value={degree}>
+                      {degree}
+                    </SelectItem>
+                  ))}
+                  <SelectItem value="custom_degree_option">
+                    Enter a different degree
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            )}
             {errors?.degree && (
               <p className="flex items-center gap-1 text-xs text-red-500">
                 <AlertCircle className="h-3 w-3" />
