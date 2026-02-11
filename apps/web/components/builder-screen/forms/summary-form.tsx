@@ -60,35 +60,7 @@ const SummaryForm = ({ onNext, onBack }: SummaryFormProps) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
-      <Card
-        className={cn(
-          "relative overflow-hidden border-0 shadow-xl",
-          `
-            bg-white
-            dark:bg-slate-900
-          `,
-          `
-            ring-1 ring-slate-200/50
-            dark:ring-slate-700/50
-          `,
-        )}
-      >
-        {/* Decorative gradient orb */}
-        <div
-          className={`
-            pointer-events-none absolute -top-20 -right-20 h-40 w-40
-            rounded-full bg-linear-to-br from-purple-400/20 to-pink-400/20
-            blur-3xl
-          `}
-        />
-        <div
-          className={`
-            pointer-events-none absolute -bottom-10 -left-10 h-32 w-32
-            rounded-full bg-linear-to-tr from-blue-400/10 to-purple-400/10
-            blur-2xl
-          `}
-        />
-
+      <Card className={cn("relative overflow-hidden shadow-xl")}>
         <CardHeader className="relative pb-6">
           <CardTitle className="flex items-center gap-3 text-xl font-semibold">
             <div

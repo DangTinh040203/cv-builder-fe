@@ -160,14 +160,71 @@ function SortableProjectItem({
             )}
           />
         </div>
+
+        <div className="grid gap-3 sm:grid-cols-2">
+          <Input
+            value={item.position}
+            onChange={(e) => onUpdate(item.id, "position", e.target.value)}
+            placeholder="Position (e.g. Frontend Developer)"
+            className={cn(
+              "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
+              "focus:bg-white focus:ring-2 focus:ring-cyan-500/20",
+              "dark:border-slate-700 dark:bg-slate-700",
+            )}
+          />
+          <Input
+            value={item.domain}
+            onChange={(e) => onUpdate(item.id, "domain", e.target.value)}
+            placeholder="Domain (e.g. E-commerce)"
+            className={cn(
+              "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
+              "focus:bg-white focus:ring-2 focus:ring-cyan-500/20",
+              "dark:border-slate-700 dark:bg-slate-700",
+            )}
+          />
+        </div>
+
+        <Input
+          value={item.technologies}
+          onChange={(e) => onUpdate(item.id, "technologies", e.target.value)}
+          placeholder="Technologies (e.g. React, Node.js, AWS)"
+          className={cn(
+            "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
+            "focus:bg-white focus:ring-2 focus:ring-cyan-500/20",
+            "dark:border-slate-700 dark:bg-slate-700",
+          )}
+        />
+
+        <Input
+          value={item.demo || ""}
+          onChange={(e) => onUpdate(item.id, "demo", e.target.value)}
+          placeholder="Demo URL (Optional)"
+          className={cn(
+            "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
+            "focus:bg-white focus:ring-2 focus:ring-cyan-500/20",
+            "dark:border-slate-700 dark:bg-slate-700",
+          )}
+        />
+
         <div>
           <Label className="mb-1.5 block text-xs text-slate-500">
-            Project Details
+            Description
           </Label>
           <Editor
             className="[&_.ql-editor]:min-h-[100px]"
             value={item.details}
             onChange={(val) => onUpdate(item.id, "details", val)}
+          />
+        </div>
+
+        <div>
+          <Label className="mb-1.5 block text-xs text-slate-500">
+            Responsibilities
+          </Label>
+          <Editor
+            className="[&_.ql-editor]:min-h-[100px]"
+            value={item.responsibilities}
+            onChange={(val) => onUpdate(item.id, "responsibilities", val)}
           />
         </div>
       </div>
@@ -283,7 +340,7 @@ const ProjectsForm = ({ onNext, onBack }: ProjectsFormProps) => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
       >
-        <Card className={cn("relative gap-0 border-0 py-0 shadow-xl")}>
+        <Card className={cn("relative gap-0 py-0 shadow-xl")}>
           <CardHeader
             className={`
               border-b border-slate-100 pt-6 pb-5

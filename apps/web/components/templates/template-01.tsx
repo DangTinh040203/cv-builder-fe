@@ -202,13 +202,55 @@ const Template01: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
                   <Text style={styles.itemTitle}>{project.title}</Text>
                 </View>
 
-                <Text style={{ opacity: 0.8, fontStyle: "italic" }}>
+                {(project.position || project.domain) && (
+                  <Text style={{ opacity: 0.8, fontStyle: "italic" }}>
+                    {project.position}
+                    {project.position && project.domain && " - "}
+                    {project.domain}
+                  </Text>
+                )}
+
+                <Text style={{ opacity: 0.8, fontSize: 9 }}>
                   {project.subTitle}
                 </Text>
+
+                {project.technologies && (
+                  <Text style={{ opacity: 0.8, fontSize: 9 }}>
+                    <Text style={{ fontWeight: "bold" }}>Technologies: </Text>
+                    {project.technologies}
+                  </Text>
+                )}
 
                 <View style={{ marginTop: 4 }}>
                   <HtmlToPdf style={styles.text} content={project.details} />
                 </View>
+
+                {project.responsibilities && (
+                  <View style={{ marginTop: 4 }}>
+                    <Text
+                      style={{
+                        fontWeight: "bold",
+                        fontSize: 9,
+                        marginBottom: 2,
+                      }}
+                    >
+                      Responsibilities:
+                    </Text>
+                    <HtmlToPdf
+                      style={styles.text}
+                      content={project.responsibilities}
+                    />
+                  </View>
+                )}
+
+                {project.demo && (
+                  <View style={{ marginTop: 2 }}>
+                    <Text style={{ fontSize: 9 }}>
+                      <Text style={{ fontWeight: "bold" }}>Demo: </Text>
+                      {project.demo}
+                    </Text>
+                  </View>
+                )}
               </View>
             ))}
           </View>

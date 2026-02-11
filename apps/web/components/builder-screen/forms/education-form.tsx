@@ -418,7 +418,7 @@ const EducationForm = ({ onNext, onBack }: EducationFormProps) => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
       >
-        <Card className={cn("relative gap-0 border-0 py-0 shadow-xl")}>
+        <Card className={cn("relative gap-0 py-0 shadow-xl")}>
           <CardHeader
             className={`
               border-b border-slate-100 pt-6 pb-5
