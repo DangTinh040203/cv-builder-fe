@@ -9,6 +9,7 @@ import { toast } from "sonner";
 
 import EducationForm from "@/components/builder-screen/forms/education-form";
 import ExperienceForm from "@/components/builder-screen/forms/experience-form";
+import ExtraForm from "@/components/builder-screen/forms/extra-form";
 import PersonalForm from "@/components/builder-screen/forms/personal-form";
 import ProjectsForm from "@/components/builder-screen/forms/projects-form";
 import SkillsForm from "@/components/builder-screen/forms/skills-form";
@@ -94,6 +95,7 @@ const BuilderScreen = () => {
     Section.Education,
     Section.Experience,
     Section.Projects,
+    Section.Extra,
   ];
 
   const handleNext = () => {
@@ -170,6 +172,9 @@ const BuilderScreen = () => {
                 )}
                 {activeSection === Section.Projects && (
                   <ProjectsForm onNext={handleNext} onBack={handleBack} />
+                )}
+                {activeSection === Section.Extra && (
+                  <ExtraForm onBack={handleBack} />
                 )}
               </motion.div>
             ) : (

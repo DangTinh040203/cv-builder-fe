@@ -1,0 +1,59 @@
+"use client";
+
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@shared/ui/components/card";
+import { cn } from "@shared/ui/lib/utils";
+import { motion } from "framer-motion";
+import { Layers, Plus } from "lucide-react";
+import React, { useState } from "react";
+
+import BuilderNavigation from "@/components/builder-screen/builder-navigation";
+import CertificationForm from "@/components/builder-screen/forms/certification-form";
+import LanguageForm from "@/components/builder-screen/forms/language-form";
+import { useSyncResume } from "@/hooks/use-sync-resume";
+import { updatePreviewMode } from "@/stores/features/template.slice";
+import { useAppDispatch } from "@/stores/store";
+
+interface ExtraFormProps {
+  onBack?: () => void;
+}
+
+const ExtraForm = ({ onBack }: ExtraFormProps) => {
+  const { sync, isSyncing } = useSyncResume();
+  const dispatch = useAppDispatch();
+
+  const onSubmit = async () => {
+    const success = await sync();
+    if (success) {
+      dispatch(updatePreviewMode(true));
+    }
+  };
+
+  return (
+    <div className="space-y-8">
+      <CertificationForm hideNavigation />
+      <LanguageForm hideNavigation />
+
+      {/* Main Navigation for the Extra Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+      >
+        <BuilderNavigation
+          onBack={onBack}
+          onNext={onSubmit}
+          disableBack={!onBack}
+          loading={isSyncing}
+          nextLabel="Finished"
+        />
+      </motion.div>
+    </div>
+  );
+};
+
+export default ExtraForm;

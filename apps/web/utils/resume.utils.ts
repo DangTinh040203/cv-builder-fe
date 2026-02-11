@@ -61,8 +61,20 @@ export function resumeToUpdateDto(resume: Resume): UpdateResumeDto {
           position,
           responsibilities,
           domain,
-          demo,
         }),
       ),
+    certifications: resume.certifications
+      .filter((cert) => cert.name.trim() || cert.issuer.trim())
+      .map(({ name, issuer, date }) => ({
+        name,
+        issuer,
+        date: date ? new Date(date).toISOString() : new Date().toISOString(),
+      })),
+    languages: resume.languages
+      .filter((lang) => lang.name.trim() || lang.description.trim())
+      .map(({ name, description }) => ({
+        name,
+        description,
+      })),
   };
 }

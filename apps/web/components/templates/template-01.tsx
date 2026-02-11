@@ -22,6 +22,8 @@ const Template01: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
     projects,
     workExperiences,
     educations,
+    certifications,
+    languages,
   } = resume;
 
   const { styles } = useTemplateStyle(templateFormat);
@@ -110,6 +112,40 @@ const Template01: React.FC<TemplateProp> = ({ templateFormat, resume }) => {
                     {edu.major} - {edu.degree}
                   </Text>
                 </View>
+              </View>
+            ))}
+          </View>
+        </View>
+      )}
+
+      {/* CERTIFICATIONS */}
+      {certifications && certifications.length > 0 && (
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Certifications</Text>
+          <View style={styles.separator} />
+          <View style={{ ...styles.sectionContent, gap: 2 }}>
+            {certifications.map((cert) => (
+              <View key={cert.id} style={styles.row}>
+                <Text style={{ fontWeight: "bold" }}>{cert.name}</Text>
+                <Text>
+                  {cert.issuer} - {formatDate(cert.date)}
+                </Text>
+              </View>
+            ))}
+          </View>
+        </View>
+      )}
+
+      {/* LANGUAGES */}
+      {languages && languages.length > 0 && (
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Languages</Text>
+          <View style={styles.separator} />
+          <View style={{ ...styles.sectionContent, gap: 2 }}>
+            {languages.map((lang) => (
+              <View key={lang.id} style={styles.row}>
+                <Text style={{ fontWeight: "bold" }}>{lang.name}</Text>
+                <Text>{lang.description}</Text>
               </View>
             ))}
           </View>

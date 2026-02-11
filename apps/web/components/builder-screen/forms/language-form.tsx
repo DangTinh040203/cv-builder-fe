@@ -27,40 +27,55 @@ import {
 } from "@shared/ui/components/card";
 import { Input } from "@shared/ui/components/input";
 import { Label } from "@shared/ui/components/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@shared/ui/components/select";
 import { cn } from "@shared/ui/lib/utils";
 import { motion } from "framer-motion";
 import {
   AlertCircle,
-  FolderGit2,
   GripVertical,
+  Languages,
   Plus,
   Trash2,
 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 
 import BuilderNavigation from "@/components/builder-screen/builder-navigation";
-import Editor from "@/components/builder-screen/editor";
 import { useSyncResume } from "@/hooks/use-sync-resume";
 import { updateResume } from "@/stores/features/resume.slice";
 import { useAppDispatch } from "@/stores/store";
-import type { Project } from "@/types/resume.type";
+import type { Language } from "@/types/resume.type";
 
-interface ProjectsFormProps {
+interface LanguageFormProps {
   onNext?: () => void;
   onBack?: () => void;
+  hideNavigation?: boolean;
 }
 
-// Sortable project item component
-function SortableProjectItem({
+const LANGUAGE_LEVELS = [
+  "Elementary",
+  "Limited Working Proficiency",
+  "Professional Working Proficiency",
+  "Full Professional Proficiency",
+  "Native or Bilingual Proficiency",
+];
+
+// Sortable language item component
+function SortableLanguageItem({
   item,
   onUpdate,
   onRemove,
   errors,
 }: {
-  item: Project;
-  onUpdate: (id: string, field: keyof Project, value: string) => void;
+  item: Language;
+  onUpdate: (id: string, field: keyof Language, value: string | null) => void;
   onRemove: (id: string) => void;
-  errors?: { title?: string };
+  errors?: { name?: string; description?: string };
 }) {
   const {
     attributes,
@@ -123,65 +138,77 @@ function SortableProjectItem({
         </Button>
       </div>
 
-      <div className="grid gap-3">
-        <div
-          className={`
-            grid gap-3
-            sm:grid-cols-2
-          `}
-        >
-          <div className="space-y-1">
-            <Input
-              value={item.title}
-              onChange={(e) => onUpdate(item.id, "title", e.target.value)}
-              placeholder="Project Name"
-              className={cn(
-                "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
-                "focus:bg-white focus:ring-2 focus:ring-cyan-500/20",
-                "dark:border-slate-700 dark:bg-slate-700",
-                errors?.title && "border-red-400 focus:ring-red-500/20",
-              )}
-            />
-            {errors?.title && (
-              <p className="flex items-center gap-1 text-xs text-red-500">
-                <AlertCircle className="h-3 w-3" />
-                {errors.title}
-              </p>
-            )}
-          </div>
+      <div
+        className={`
+          grid gap-3
+          sm:grid-cols-2
+        `}
+      >
+        <div className="space-y-1">
           <Input
-            value={item.subTitle}
-            onChange={(e) => onUpdate(item.id, "subTitle", e.target.value)}
-            placeholder="Tech Stack / Role"
+            value={item.name}
+            onChange={(e) => onUpdate(item.id, "name", e.target.value)}
+            placeholder="Language (e.g. English)"
             className={cn(
               "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
-              "focus:bg-white focus:ring-2 focus:ring-cyan-500/20",
+              "focus:bg-white focus:ring-2 focus:ring-violet-500/20",
               "dark:border-slate-700 dark:bg-slate-700",
+              errors?.name && "border-red-400 focus:ring-red-500/20",
             )}
           />
+          {errors?.name && (
+            <p className="flex items-center gap-1 text-xs text-red-500">
+              <AlertCircle className="h-3 w-3" />
+              {errors.name}
+            </p>
+          )}
         </div>
-        <div>
-          <Label className="mb-1.5 block text-xs text-slate-500">
-            Project Details
-          </Label>
-          <Editor
-            className="[&_.ql-editor]:min-h-[100px]"
-            value={item.details}
-            onChange={(val) => onUpdate(item.id, "details", val)}
-          />
+        <div className="space-y-1">
+          <Select
+            value={item.description}
+            onValueChange={(value) => onUpdate(item.id, "description", value)}
+          >
+            <SelectTrigger
+              className={cn(
+                "h-10 w-full rounded-lg border-slate-200 bg-slate-50 text-sm",
+                "focus:bg-white focus:ring-2 focus:ring-violet-500/20",
+                "dark:border-slate-700 dark:bg-slate-700",
+                errors?.description && "border-red-400 focus:ring-red-500/20",
+              )}
+            >
+              <SelectValue placeholder="Proficiency Level" />
+            </SelectTrigger>
+            <SelectContent>
+              {LANGUAGE_LEVELS.map((level) => (
+                <SelectItem key={level} value={level}>
+                  {level}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {errors?.description && (
+            <p className="flex items-center gap-1 text-xs text-red-500">
+              <AlertCircle className="h-3 w-3" />
+              {errors.description}
+            </p>
+          )}
         </div>
       </div>
     </div>
   );
 }
 
-const ProjectsForm = ({ onNext, onBack }: ProjectsFormProps) => {
+const LanguageForm = ({
+  onNext,
+  onBack,
+  hideNavigation,
+}: LanguageFormProps) => {
   const dispatch = useAppDispatch();
   const { sync, isSyncing, resume } = useSyncResume();
   const [activeId, setActiveId] = useState<string | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [validationErrors, setValidationErrors] = useState<
-    Record<string, { title?: string }>
+    Record<string, { name?: string; description?: string }>
   >({});
 
   const sensors = useSensors(
@@ -196,22 +223,30 @@ const ProjectsForm = ({ onNext, onBack }: ProjectsFormProps) => {
     return () => clearTimeout(timer);
   }, []);
 
-  const projectItems = resume?.projects || [];
+  const languageItems = resume?.languages || [];
 
   const validateItems = useCallback(() => {
-    const errors: Record<string, { title?: string }> = {};
+    const errors: Record<string, { name?: string; description?: string }> = {};
     let isValid = true;
 
-    projectItems.forEach((item) => {
-      if (!item.title.trim()) {
-        errors[item.id] = { title: "Project name is required" };
+    languageItems.forEach((item) => {
+      const itemErrors: { name?: string; description?: string } = {};
+      if (!item.name.trim()) {
+        itemErrors.name = "Language name is required";
         isValid = false;
+      }
+      if (!item.description.trim()) {
+        itemErrors.description = "Proficiency level is required";
+        isValid = false;
+      }
+      if (Object.keys(itemErrors).length > 0) {
+        errors[item.id] = itemErrors;
       }
     });
 
     setValidationErrors(errors);
     return isValid;
-  }, [projectItems]);
+  }, [languageItems]);
 
   const onSubmit = async () => {
     if (!validateItems()) {
@@ -224,36 +259,30 @@ const ProjectsForm = ({ onNext, onBack }: ProjectsFormProps) => {
     }
   };
 
-  const updateProjectItem = (
+  const updateLanguageItem = (
     id: string,
-    field: keyof Project,
-    value: string,
+    field: keyof Language,
+    value: string | null,
   ) => {
-    const newItems = projectItems.map((item) =>
+    const newItems = languageItems.map((item) =>
       item.id === id ? { ...item, [field]: value } : item,
     );
-    dispatch(updateResume({ projects: newItems }));
+    dispatch(updateResume({ languages: newItems }));
   };
 
-  const addProjectItem = () => {
-    const newItem: Project = {
+  const addLanguageItem = () => {
+    const newItem: Language = {
       id: crypto.randomUUID(),
-      title: "",
-      subTitle: "",
-      details: "",
-      technologies: "",
-      position: "",
-      responsibilities: "",
-      domain: "",
-      demo: "",
+      name: "",
+      description: "",
       resumeId: resume?.id || "",
     };
-    dispatch(updateResume({ projects: [...projectItems, newItem] }));
+    dispatch(updateResume({ languages: [...languageItems, newItem] }));
   };
 
-  const removeProjectItem = (id: string) => {
-    const newItems = projectItems.filter((item) => item.id !== id);
-    dispatch(updateResume({ projects: newItems }));
+  const removeLanguageItem = (id: string) => {
+    const newItems = languageItems.filter((item) => item.id !== id);
+    dispatch(updateResume({ languages: newItems }));
   };
 
   const handleDragStart = (event: DragEndEvent) => {
@@ -264,15 +293,15 @@ const ProjectsForm = ({ onNext, onBack }: ProjectsFormProps) => {
     const { active, over } = event;
 
     if (over && active.id !== over.id) {
-      const oldIndex = projectItems.findIndex((item) => item.id === active.id);
-      const newIndex = projectItems.findIndex((item) => item.id === over.id);
-      const newItems = arrayMove(projectItems, oldIndex, newIndex);
-      dispatch(updateResume({ projects: newItems }));
+      const oldIndex = languageItems.findIndex((item) => item.id === active.id);
+      const newIndex = languageItems.findIndex((item) => item.id === over.id);
+      const newItems = arrayMove(languageItems, oldIndex, newIndex);
+      dispatch(updateResume({ languages: newItems }));
     }
     setActiveId(null);
   };
 
-  const activeItem = projectItems.find((item) => item.id === activeId);
+  const activeItem = languageItems.find((item) => item.id === activeId);
 
   if (!resume) return null;
 
@@ -294,11 +323,11 @@ const ProjectsForm = ({ onNext, onBack }: ProjectsFormProps) => {
               <div
                 className={cn(
                   "flex h-10 w-10 items-center justify-center rounded-xl",
-                  "bg-linear-to-br from-violet-500 to-purple-600",
-                  "shadow-md shadow-violet-500/25",
+                  "bg-linear-to-br from-green-500 to-emerald-600",
+                  "shadow-md shadow-green-500/25",
                 )}
               >
-                <FolderGit2 className="h-5 w-5 text-white" />
+                <Languages className="h-5 w-5 text-white" />
               </div>
               <div className="flex flex-col">
                 <span
@@ -307,7 +336,7 @@ const ProjectsForm = ({ onNext, onBack }: ProjectsFormProps) => {
                     dark:text-white
                   `}
                 >
-                  Projects
+                  Languages
                 </span>
                 <span
                   className={`
@@ -315,7 +344,7 @@ const ProjectsForm = ({ onNext, onBack }: ProjectsFormProps) => {
                     dark:text-slate-400
                   `}
                 >
-                  Showcase your best work
+                  Languages you speak
                 </span>
               </div>
             </CardTitle>
@@ -330,24 +359,24 @@ const ProjectsForm = ({ onNext, onBack }: ProjectsFormProps) => {
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="h-1 w-1 rounded-full bg-cyan-500" />
+                  <div className="h-1 w-1 rounded-full bg-green-500" />
                   <Label
                     className={`
                       text-xs font-semibold tracking-wider text-slate-500
                       uppercase
                     `}
                   >
-                    Your Projects
+                    Languages List
                   </Label>
-                  {projectItems.length > 0 && (
+                  {languageItems.length > 0 && (
                     <span
                       className={`
-                        rounded-full bg-cyan-100 px-2 py-0.5 text-xs font-medium
-                        text-cyan-600
-                        dark:bg-cyan-900/30 dark:text-cyan-400
+                        rounded-full bg-green-100 px-2 py-0.5 text-xs
+                        font-medium text-green-600
+                        dark:bg-green-900/30 dark:text-green-400
                       `}
                     >
-                      {projectItems.length}
+                      {languageItems.length}
                     </span>
                   )}
                 </div>
@@ -359,18 +388,18 @@ const ProjectsForm = ({ onNext, onBack }: ProjectsFormProps) => {
                   "dark:border-slate-700 dark:bg-slate-800/30",
                 )}
               >
-                {projectItems.length === 0 ? (
+                {languageItems.length === 0 ? (
                   <div
                     className={`
                       flex flex-col items-center justify-center py-8 text-center
                     `}
                   >
-                    <FolderGit2 className="mb-2 h-8 w-8 text-slate-300" />
+                    <Languages className="mb-2 h-8 w-8 text-slate-300" />
                     <p className="text-sm font-medium text-slate-500">
-                      No projects added yet
+                      No languages added yet
                     </p>
                     <p className="mt-1 text-xs text-slate-400">
-                      Add personal projects, open source, or side hustles
+                      Add languages you are proficient in
                     </p>
                   </div>
                 ) : (
@@ -381,16 +410,16 @@ const ProjectsForm = ({ onNext, onBack }: ProjectsFormProps) => {
                     onDragEnd={handleDragEnd}
                   >
                     <SortableContext
-                      items={projectItems.map((item) => item.id)}
+                      items={languageItems.map((item) => item.id)}
                       strategy={verticalListSortingStrategy}
                     >
                       <div className="space-y-3">
-                        {projectItems.map((item) => (
-                          <SortableProjectItem
+                        {languageItems.map((item) => (
+                          <SortableLanguageItem
                             key={item.id}
                             item={item}
-                            onUpdate={updateProjectItem}
-                            onRemove={removeProjectItem}
+                            onUpdate={updateLanguageItem}
+                            onRemove={removeLanguageItem}
                             errors={validationErrors[item.id]}
                           />
                         ))}
@@ -398,10 +427,10 @@ const ProjectsForm = ({ onNext, onBack }: ProjectsFormProps) => {
                     </SortableContext>
                     <DragOverlay>
                       {activeId && activeItem ? (
-                        <SortableProjectItem
+                        <SortableLanguageItem
                           item={activeItem}
-                          onUpdate={updateProjectItem}
-                          onRemove={removeProjectItem}
+                          onUpdate={updateLanguageItem}
+                          onRemove={removeLanguageItem}
                           errors={validationErrors[activeId]}
                         />
                       ) : null}
@@ -413,33 +442,38 @@ const ProjectsForm = ({ onNext, onBack }: ProjectsFormProps) => {
               <Button
                 size="sm"
                 variant="outline"
-                onClick={addProjectItem}
+                onClick={addLanguageItem}
                 className={cn(
                   "h-9 w-full gap-1.5 rounded-lg border-dashed",
                   "border-slate-300 text-slate-600",
-                  `hover:border-cyan-500 hover:bg-cyan-50 hover:text-cyan-600`,
+                  `
+                    hover:border-green-500 hover:bg-green-50
+                    hover:text-green-600
+                  `,
                   "dark:border-slate-600 dark:text-slate-400",
                 )}
                 type="button"
               >
                 <Plus className="h-3.5 w-3.5" />
-                Add Project
+                Add Language
               </Button>
             </motion.div>
 
             {/* Navigation */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={isVisible ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.2 }}
-            >
-              <BuilderNavigation
-                onBack={onBack}
-                onNext={onSubmit}
-                disableBack={!onBack}
-                loading={isSyncing}
-              />
-            </motion.div>
+            {!hideNavigation && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={isVisible ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.2 }}
+              >
+                <BuilderNavigation
+                  onBack={onBack}
+                  onNext={onSubmit}
+                  disableBack={!onBack}
+                  loading={isSyncing}
+                />
+              </motion.div>
+            )}
           </CardContent>
         </Card>
       </motion.div>
@@ -447,4 +481,4 @@ const ProjectsForm = ({ onNext, onBack }: ProjectsFormProps) => {
   );
 };
 
-export default ProjectsForm;
+export default LanguageForm;

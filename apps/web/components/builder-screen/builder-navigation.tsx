@@ -10,6 +10,7 @@ interface BuilderNavigationProps {
   disableBack?: boolean;
   disableNext?: boolean;
   loading?: boolean;
+  nextLabel?: string;
 }
 
 const BuilderNavigation = ({
@@ -18,6 +19,7 @@ const BuilderNavigation = ({
   disableBack,
   disableNext,
   loading,
+  nextLabel = "Next",
 }: BuilderNavigationProps) => {
   return (
     <div
@@ -42,7 +44,7 @@ const BuilderNavigation = ({
         className="min-w-32 gap-2"
         type="submit" // Default to submit for forms
       >
-        {loading ? "Saving..." : "Next"}
+        {loading ? "Saving..." : nextLabel}
         <ChevronRight className="h-4 w-4" />
       </Button>
     </div>

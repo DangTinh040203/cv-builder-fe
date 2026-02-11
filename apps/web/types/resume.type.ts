@@ -45,6 +45,21 @@ export interface Project {
   resumeId: string;
 }
 
+export interface Certification {
+  id: string;
+  name: string;
+  issuer: string;
+  date: string;
+  resumeId: string;
+}
+
+export interface Language {
+  id: string;
+  name: string;
+  description: string;
+  resumeId: string;
+}
+
 export interface Resume {
   id: string;
   userId: string;
@@ -58,7 +73,10 @@ export interface Resume {
   educations: Array<Education>;
   skills: Array<Skill>;
   workExperiences: Array<WorkExperience>;
+
   projects: Array<Project>;
+  certifications: Array<Certification>;
+  languages: Array<Language>;
 
   createdAt: string;
   updatedAt: string;
@@ -74,4 +92,6 @@ export interface UpdateResumeDto {
   skills?: Array<Omit<Skill, "id" | "resumeId">>;
   workExperiences?: Array<Omit<WorkExperience, "id" | "resumeId">>;
   projects?: Array<Omit<Project, "id" | "resumeId">>;
+  certifications?: Array<Omit<Certification, "id" | "resumeId">>;
+  languages?: Array<Omit<Language, "id" | "resumeId">>;
 }

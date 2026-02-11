@@ -132,6 +132,8 @@ export const MOCK_RESUME: Resume = {
       resumeId: "resume-1",
     },
   ],
+  certifications: [],
+  languages: [],
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
 };

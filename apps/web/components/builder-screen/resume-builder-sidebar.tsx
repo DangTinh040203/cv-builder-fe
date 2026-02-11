@@ -9,6 +9,7 @@ import {
   FileText,
   FolderGit2,
   GraduationCap,
+  Plus,
   User,
 } from "lucide-react";
 import React from "react";
@@ -20,6 +21,7 @@ export enum Section {
   Education = "education",
   Experience = "experience",
   Projects = "projects",
+  Extra = "extra",
 }
 
 const sectionConfig = [
@@ -28,7 +30,9 @@ const sectionConfig = [
   { id: Section.Skills, label: "Skills", icon: Code },
   { id: Section.Education, label: "Education", icon: GraduationCap },
   { id: Section.Experience, label: "Experience", icon: Briefcase },
+
   { id: Section.Projects, label: "Projects", icon: FolderGit2 },
+  { id: Section.Extra, label: "Extra", icon: Plus },
 ];
 
 interface ResumeBuilderSidebarProps {
