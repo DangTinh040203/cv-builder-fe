@@ -1,3 +1,4 @@
+import { Text, View } from "@rawwee/react-pdf-html";
 import { StyleSheet } from "@react-pdf/renderer";
 import { useMemo } from "react";
 
@@ -139,8 +140,59 @@ export const useTemplateStyle = (templateFormat: Format) => {
       col: {
         flexDirection: "column",
       },
+
+      // Project table styles
+      projectTable: {
+        border: "0.5px solid #ccc",
+        flexDirection: "column",
+        gap: 0,
+      },
+
+      projectTableRow: {
+        flexDirection: "row",
+        borderTop: "0.5px solid #ccc",
+      },
+
+      projectTableFirstRow: {
+        flexDirection: "row",
+      },
+
+      projectTableLabelCell: {
+        borderRight: "0.5px solid #ccc",
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+        margin: 0,
+        width: 120,
+      },
+
+      projectTableValueCell: {
+        flex: 1,
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+        margin: 0,
+      },
     });
   }, [templateFormat]);
 
-  return { styles };
+  // TableRow component for project details
+  const TableRow = ({
+    label,
+    children,
+    isFirst = false,
+  }: {
+    label: string;
+    children: React.ReactNode;
+    isFirst?: boolean;
+  }) => (
+    <View
+      style={isFirst ? styles.projectTableFirstRow : styles.projectTableRow}
+    >
+      <View style={styles.projectTableLabelCell}>
+        <Text>{label}</Text>
+      </View>
+      <View style={styles.projectTableValueCell}>{children}</View>
+    </View>
+  );
+
+  return { styles, TableRow };
 };

@@ -1,15 +1,7 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@shared/ui/components/card";
-import { cn } from "@shared/ui/lib/utils";
 import { motion } from "framer-motion";
-import { Layers, Plus } from "lucide-react";
-import React, { useState } from "react";
+import React from "react";
 
 import BuilderNavigation from "@/components/builder-screen/builder-navigation";
 import CertificationForm from "@/components/builder-screen/forms/certification-form";

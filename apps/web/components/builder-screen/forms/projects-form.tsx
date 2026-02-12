@@ -161,7 +161,12 @@ function SortableProjectItem({
           />
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div
+          className={`
+            grid gap-3
+            sm:grid-cols-2
+          `}
+        >
           <Input
             value={item.position}
             onChange={(e) => onUpdate(item.id, "position", e.target.value)}
