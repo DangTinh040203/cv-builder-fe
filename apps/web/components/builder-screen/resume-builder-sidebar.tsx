@@ -30,7 +30,6 @@ const sectionConfig = [
   { id: Section.Skills, label: "Skills", icon: Code },
   { id: Section.Education, label: "Education", icon: GraduationCap },
   { id: Section.Experience, label: "Experience", icon: Briefcase },
-
   { id: Section.Projects, label: "Projects", icon: FolderGit2 },
   { id: Section.Extra, label: "Extra", icon: Plus },
 ];
@@ -63,7 +62,7 @@ const ResumeBuilderSidebar = ({
         <CardContent className="p-2">
           <nav
             className={`
-              scrollbar-hide flex space-x-2 overflow-x-auto
+              scrollbar-hide scrollbar-none flex space-x-2 overflow-x-auto
               lg:flex-col lg:space-y-1 lg:space-x-0
             `}
           >
