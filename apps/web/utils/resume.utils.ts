@@ -61,6 +61,7 @@ export function resumeToUpdateDto(resume: Resume): UpdateResumeDto {
           position,
           responsibilities,
           domain,
+          demo,
         }),
       ),
     certifications: resume.certifications
