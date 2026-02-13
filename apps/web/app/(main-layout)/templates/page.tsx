@@ -178,62 +178,65 @@ const Templates = () => {
             xl:grid-cols-4
           `}
         >
-          {Object.entries(TEMPLATES).map(([templateId, Template], i) => (
-            <motion.div
-              variants={fadeInUp}
-              key={i}
-              className={`
+          {Object.entries(TEMPLATES).map(([templateId, profile], i) => {
+            const Template = profile.component;
+            return (
+              <motion.div
+                variants={fadeInUp}
+                key={i}
+                className={`
                 group relative transition-all
                 hover:scale-[102%]
               `}
-            >
-              <div
-                className={`
+              >
+                <div
+                  className={`
                   group-hover:border-primary/50 group-hover:shadow-xl
                   bg-card/50 overflow-hidden rounded-xl border shadow-sm
                   backdrop-blur-sm transition-all
                 `}
-              >
-                <div
-                  className={`
+                >
+                  <div
+                    className={`
                     transition-all duration-300
                     group-hover:scale-[102%] group-hover:blur-[2px]
                   `}
-                >
-                  <TemplateWrapper
-                    scrollable={false}
-                    selectable={false}
-                    document={
-                      <Template
-                        resume={MOCK_RESUME}
-                        templateFormat={templateFormat}
-                      />
-                    }
-                  />
+                  >
+                    <TemplateWrapper
+                      scrollable={false}
+                      selectable={false}
+                      document={
+                        <Template
+                          resume={MOCK_RESUME}
+                          templateFormat={templateFormat}
+                        />
+                      }
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <div
-                className={`
+                <div
+                  className={`
                   group-hover:bg-muted/10 group-hover:border
                   group-hover:shadow-2xl
                   absolute top-0 left-0 z-10 flex size-full items-end
                   justify-center rounded-2xl bg-transparent px-6
                 `}
-              >
-                <Button
-                  onClick={() => handleSelectTemplate(templateId)}
-                  className={`
+                >
+                  <Button
+                    onClick={() => handleSelectTemplate(templateId)}
+                    className={`
                     mb-10 w-full rounded-full opacity-0 transition-opacity
                     group-hover:opacity-100
                   `}
-                  size={"lg"}
-                >
-                  Use Template
-                </Button>
-              </div>
-            </motion.div>
-          ))}
+                    size={"lg"}
+                  >
+                    Use Template
+                  </Button>
+                </div>
+              </motion.div>
+            );
+          })}
         </motion.div>
       </div>
       <TemplateSelectionDialog

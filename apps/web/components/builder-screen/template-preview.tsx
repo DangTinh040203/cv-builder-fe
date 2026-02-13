@@ -22,7 +22,7 @@ const TemplatePreview = () => {
   const dispatch = useAppDispatch();
 
   const Template = useMemo(() => {
-    return TEMPLATES[templateSelected!];
+    return TEMPLATES[templateSelected!]?.component;
   }, [templateSelected]);
 
   return (

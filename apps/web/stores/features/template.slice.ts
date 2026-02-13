@@ -14,7 +14,9 @@ export type SectionType =
   | "skills"
   | "education"
   | "experience"
-  | "projects";
+  | "projects"
+  | "certifications"
+  | "languages";
 
 export interface Format {
   // Typography
@@ -32,6 +34,7 @@ export interface Format {
   pageFormat: "A4";
   columnLayout: ColumnLayout;
   sectionOrder: SectionType[];
+  hiddenSections: SectionType[];
   headerStyle: HeaderStyle;
 
   // Appearance
@@ -56,6 +59,8 @@ export const defaultSectionOrder: SectionType[] = [
   "summary",
   "skills",
   "education",
+  "certifications",
+  "languages",
   "experience",
   "projects",
 ];
@@ -76,6 +81,7 @@ export const defaultFormat: Format = {
   pageFormat: "A4",
   columnLayout: "single",
   sectionOrder: defaultSectionOrder,
+  hiddenSections: [],
   headerStyle: "left",
 
   // Appearance

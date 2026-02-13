@@ -51,8 +51,9 @@ const DownloadPdf: React.FC<DownloadPdfProps> = ({ resume }) => {
 
     const generate = async () => {
       try {
-        const Template = TEMPLATES[templateSelected];
-        if (!Template) return;
+        const templateProfile = TEMPLATES[templateSelected];
+        if (!templateProfile) return;
+        const Template = templateProfile.component;
 
         const doc = (
           <DocumentPDF
