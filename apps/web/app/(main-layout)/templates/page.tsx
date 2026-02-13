@@ -14,10 +14,10 @@ import TemplateWrapper from "@/components/templates/template-wrapper";
 import { TEMPLATES } from "@/configs/template.config";
 import { MOCK_RESUME } from "@/constants/resume.constant";
 import {
+  defaultFormat,
   setTemplateSelected,
-  templateFormatSelector,
 } from "@/stores/features/template.slice";
-import { useAppDispatch, useAppSelector } from "@/stores/store";
+import { useAppDispatch } from "@/stores/store";
 import { fadeInUp, staggerContainer } from "@/styles/animation";
 
 const categories = [
@@ -37,7 +37,6 @@ const Templates = () => {
   >(null);
 
   const router = useRouter();
-  const templateFormat = useAppSelector(templateFormatSelector);
   const dispatch = useAppDispatch();
 
   const handleSelectTemplate = (template: string) => {
@@ -185,22 +184,22 @@ const Templates = () => {
                 variants={fadeInUp}
                 key={i}
                 className={`
-                group relative transition-all
-                hover:scale-[102%]
-              `}
+                  group relative transition-all
+                  hover:scale-[102%]
+                `}
               >
                 <div
                   className={`
-                  group-hover:border-primary/50 group-hover:shadow-xl
-                  bg-card/50 overflow-hidden rounded-xl border shadow-sm
-                  backdrop-blur-sm transition-all
-                `}
+                    group-hover:border-primary/50 group-hover:shadow-xl
+                    bg-card/50 overflow-hidden rounded-xl border shadow-sm
+                    backdrop-blur-sm transition-all
+                  `}
                 >
                   <div
                     className={`
-                    transition-all duration-300
-                    group-hover:scale-[102%] group-hover:blur-[2px]
-                  `}
+                      transition-all duration-300
+                      group-hover:scale-[102%] group-hover:blur-[2px]
+                    `}
                   >
                     <TemplateWrapper
                       scrollable={false}
@@ -208,7 +207,10 @@ const Templates = () => {
                       document={
                         <Template
                           resume={MOCK_RESUME}
-                          templateFormat={templateFormat}
+                          templateFormat={{
+                            ...defaultFormat,
+                            sectionOrder: profile.defaultSectionOrder,
+                          }}
                         />
                       }
                     />
@@ -217,18 +219,18 @@ const Templates = () => {
 
                 <div
                   className={`
-                  group-hover:bg-muted/10 group-hover:border
-                  group-hover:shadow-2xl
-                  absolute top-0 left-0 z-10 flex size-full items-end
-                  justify-center rounded-2xl bg-transparent px-6
-                `}
+                    group-hover:bg-muted/10 group-hover:border
+                    group-hover:shadow-2xl
+                    absolute top-0 left-0 z-10 flex size-full items-end
+                    justify-center rounded-2xl bg-transparent px-6
+                  `}
                 >
                   <Button
                     onClick={() => handleSelectTemplate(templateId)}
                     className={`
-                    mb-10 w-full rounded-full opacity-0 transition-opacity
-                    group-hover:opacity-100
-                  `}
+                      mb-10 w-full rounded-full opacity-0 transition-opacity
+                      group-hover:opacity-100
+                    `}
                     size={"lg"}
                   >
                     Use Template
