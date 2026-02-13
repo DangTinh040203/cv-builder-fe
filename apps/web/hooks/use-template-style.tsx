@@ -161,7 +161,6 @@ export const useTemplateStyle = (templateFormat: Format) => {
         borderRight: "0.5px solid #ccc",
         paddingHorizontal: 8,
         paddingVertical: 4,
-        margin: 0,
         width: 120,
       },
 
@@ -169,7 +168,7 @@ export const useTemplateStyle = (templateFormat: Format) => {
         flex: 1,
         paddingHorizontal: 8,
         paddingVertical: 4,
-        margin: 0,
+        marginBottom: -2,
       },
     });
   }, [templateFormat]);
