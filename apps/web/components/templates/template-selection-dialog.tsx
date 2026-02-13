@@ -56,7 +56,7 @@ export const TemplateSelectionDialog = ({
       <Dialog open={isOpen} onOpenChange={onOpenChange}>
         <DialogContent
           className={`
-            w-[90vw] rounded-xl
+            w-[90vw] overflow-hidden rounded-xl
             sm:max-w-4xl
           `}
         >
