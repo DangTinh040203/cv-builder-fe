@@ -52,7 +52,9 @@ const BuilderScreen = () => {
 
   useEffect(() => {
     if (!templateSelected) {
-      toast.error("Please select a template to continue");
+      toast.warning("Please select a template to continue", {
+        id: "no-template-selected",
+      });
       router.push("/templates");
     }
   }, [templateSelected, router]);

@@ -168,7 +168,6 @@ export const useTemplateStyle = (templateFormat: Format) => {
         flex: 1,
         paddingHorizontal: 8,
         paddingVertical: 4,
-        marginBottom: -2,
       },
     });
   }, [templateFormat]);
