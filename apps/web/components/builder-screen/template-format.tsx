@@ -427,7 +427,7 @@ const TemplateFormat = () => {
             >
               <Type className="h-5 w-5 text-white" />
             </div>
-            Format Settings
+            Settings
           </CardTitle>
           <Button size="sm" onClick={handleReset}>
             <RotateCcw className="h-4 w-4" />
