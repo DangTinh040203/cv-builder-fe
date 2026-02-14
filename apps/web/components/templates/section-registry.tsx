@@ -56,7 +56,8 @@ function renderPersonalSection({
             <View key={i} style={styles.col} wrap={false}>
               {col.map((info) => (
                 <View key={uuid()} style={styles.informationItem}>
-                  <Text style={styles.informationLabel}>{info.label}:</Text>
+                  <Text style={styles.informationLabel}>{info.label}</Text>
+                  <Text> </Text>
                   <Text>{info.value}</Text>
                 </View>
               ))}
