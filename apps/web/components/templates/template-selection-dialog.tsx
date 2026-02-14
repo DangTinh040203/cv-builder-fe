@@ -83,104 +83,142 @@ export const TemplateSelectionDialog = ({
                 flex min-h-[400px] flex-col items-center justify-center py-8
               `}
             >
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="relative mb-8"
-              >
+              <div className="relative mb-8 h-32 w-32">
+                {/* Glowing background effect */}
                 <motion.div
                   className={`
-                    absolute inset-0 rounded-full bg-blue-500/20 blur-xl
+                    absolute inset-0 rounded-full bg-blue-500/20 blur-2xl
                   `}
                   animate={{
                     scale: [1, 1.2, 1],
-                    opacity: [0.5, 0.8, 0.5],
+                    opacity: [0.3, 0.6, 0.3],
                   }}
                   transition={{
-                    duration: 2,
+                    duration: 3,
                     repeat: Infinity,
                     ease: "easeInOut",
                   }}
                 />
-                <motion.div
-                  className={`
-                    absolute inset-0 rounded-full bg-purple-500/20 blur-xl
-                  `}
-                  animate={{
-                    scale: [1.2, 1, 1.2],
-                    opacity: [0.5, 0.8, 0.5],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 0.5,
-                  }}
-                />
+
                 <div
                   className={`
-                    relative flex h-24 w-24 items-center justify-center
-                    rounded-2xl border border-white/10 bg-linear-to-br
-                    from-blue-500/10 to-purple-500/10 shadow-2xl
-                    backdrop-blur-sm
+                    relative flex h-full w-full items-center justify-center
                   `}
                 >
                   <motion.div
-                    animate={{
-                      rotate: 360,
-                    }}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className={`
+                      relative flex h-24 w-20 items-center justify-center
+                      rounded-xl border border-white/10 bg-white/5
+                      backdrop-blur-sm
+                    `}
+                  >
+                    <Upload className="text-primary/50 h-10 w-10" />
+
+                    {/* Scanning Line */}
+                    <motion.div
+                      className={`
+                        absolute right-0 left-0 h-[2px] bg-linear-to-r
+                        from-transparent via-blue-500 to-transparent
+                        shadow-[0_0_15px_rgba(59,130,246,0.5)]
+                      `}
+                      animate={{
+                        top: ["10%", "90%", "10%"],
+                        opacity: [0, 1, 0],
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "linear",
+                      }}
+                    />
+                  </motion.div>
+                </div>
+
+                {/* Orbiting particles */}
+                {[0, 1, 2].map((i) => (
+                  <motion.div
+                    key={i}
+                    className={`
+                      absolute top-1/2 left-1/2 h-[120%] w-[120%]
+                      -translate-x-1/2 -translate-y-1/2 rounded-full border
+                      border-blue-500/10
+                    `}
+                    animate={{ rotate: 360 }}
                     transition={{
-                      duration: 8,
+                      duration: 8 - i * 2,
                       repeat: Infinity,
                       ease: "linear",
+                      delay: i * 0.5,
                     }}
-                    className={`
-                      absolute inset-0 rounded-2xl border-t border-l
-                      border-white/20
-                    `}
-                  />
-                  <Upload className="text-primary h-10 w-10 animate-pulse" />
-                </div>
-              </motion.div>
+                  >
+                    <motion.div
+                      className={`
+                        absolute -top-1 left-1/2 h-2 w-2 -translate-x-1/2
+                        rounded-full bg-blue-400
+                      `}
+                      animate={{
+                        scale: [1, 1.5, 1],
+                        opacity: [0.5, 1, 0.5],
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      }}
+                    />
+                  </motion.div>
+                ))}
+              </div>
 
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="space-y-3 text-center"
+                className="space-y-4 text-center"
               >
-                <h3
-                  className={`
-                    bg-linear-to-r from-blue-400 to-purple-400 bg-clip-text
-                    text-2xl font-bold text-transparent
-                  `}
-                >
-                  Analyzing your resume...
-                </h3>
-                <p className="text-muted-foreground max-w-[300px]">
-                  Our AI is extracting your skills, experience, and achievements
-                  to build your perfect profile.
-                </p>
-              </motion.div>
-
-              <div className="mt-8 flex gap-2">
-                {[0, 1, 2].map((i) => (
+                <div className="relative h-8 overflow-hidden">
                   <motion.div
-                    key={i}
-                    className="bg-primary h-2 w-2 rounded-full"
                     animate={{
-                      y: [-5, 5, -5],
-                      opacity: [0.5, 1, 0.5],
+                      y: [0, 0, -32, -32, -64, -64, -96, -96, -128],
                     }}
                     transition={{
-                      duration: 1,
+                      duration: 8,
                       repeat: Infinity,
-                      delay: i * 0.2,
                       ease: "easeInOut",
+                      times: [0, 0.2, 0.25, 0.45, 0.5, 0.7, 0.75, 0.95, 1],
                     }}
-                  />
-                ))}
-              </div>
+                    className="flex flex-col items-center"
+                  >
+                    {[
+                      "Reading document...",
+                      "Extracting content...",
+                      "Analyzing skills...",
+                      "Structuring content...",
+                      "Reading document...",
+                    ].map((text, i) => (
+                      <h3
+                        key={i}
+                        className={`
+                          h-8 bg-linear-to-r from-blue-400 to-purple-400
+                          bg-clip-text text-xl font-bold text-transparent
+                        `}
+                      >
+                        {text}
+                      </h3>
+                    ))}
+                  </motion.div>
+                </div>
+
+                <p
+                  className={`
+                    text-muted-foreground mx-auto max-w-[300px] text-sm
+                  `}
+                >
+                  Our AI is processing your resume to create a perfect profile
+                  structure.
+                </p>
+              </motion.div>
             </div>
           ) : (
             <div
