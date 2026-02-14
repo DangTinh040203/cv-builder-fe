@@ -39,6 +39,7 @@ const Templates = () => {
   const [selectedTemplateForBuilder, setSelectedTemplateForBuilder] = useState<
     string | null
   >(null);
+  const [isParsing, setIsParsing] = useState(false);
 
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -60,6 +61,7 @@ const Templates = () => {
       router.push("/builder");
     } else if (type === "upload" && file) {
       try {
+        setIsParsing(true);
         dispatch(setTemplateSelected(selectedTemplateForBuilder));
         const parsed = await resumeService.resumeParse(file);
 
@@ -111,6 +113,8 @@ const Templates = () => {
         router.push("/builder");
       } catch (error) {
         toast.error("Failed to upload resume");
+      } finally {
+        setIsParsing(false);
       }
     }
   };
@@ -301,6 +305,7 @@ const Templates = () => {
       </div>
       <TemplateSelectionDialog
         isOpen={isSelectionOpen}
+        isLoading={isParsing}
         onOpenChange={setIsSelectionOpen}
         onSelect={handleSelectionConfirm}
       />
