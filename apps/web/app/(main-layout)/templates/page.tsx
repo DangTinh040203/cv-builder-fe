@@ -7,12 +7,16 @@ import { motion } from "framer-motion";
 import { Check, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { toast } from "sonner";
 
 import FloatingParticles from "@/components/common/floating-particles";
 import { TemplateSelectionDialog } from "@/components/templates/template-selection-dialog";
 import TemplateWrapper from "@/components/templates/template-wrapper";
 import { TEMPLATES } from "@/configs/template.config";
 import { MOCK_RESUME } from "@/constants/resume.constant";
+import { useService } from "@/hooks/use-http";
+import { ResumeService } from "@/services/resume.service";
+import { setResume } from "@/stores/features/resume.slice";
 import {
   defaultFormat,
   setTemplateSelected,
@@ -38,22 +42,76 @@ const Templates = () => {
 
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const resumeService = useService(ResumeService);
 
   const handleSelectTemplate = (template: string) => {
     setSelectedTemplateForBuilder(template);
     setIsSelectionOpen(true);
   };
 
-  const handleSelectionConfirm = (type: "upload" | "scratch", file?: File) => {
+  const handleSelectionConfirm = async (
+    type: "upload" | "scratch",
+    file?: File,
+  ) => {
     if (!selectedTemplateForBuilder) return;
 
     if (type === "scratch") {
       dispatch(setTemplateSelected(selectedTemplateForBuilder));
       router.push("/builder");
     } else if (type === "upload" && file) {
-      dispatch(setTemplateSelected(selectedTemplateForBuilder));
-      // TODO: Handle file upload and parsing here
-      router.push("/builder");
+      try {
+        dispatch(setTemplateSelected(selectedTemplateForBuilder));
+        const parsed = await resumeService.resumeParse(file);
+
+        // Map parsed data to Resume structure
+        const resume = {
+          ...MOCK_RESUME,
+          title: parsed.title,
+          subTitle: parsed.subTitle,
+          overview: parsed.overview,
+          avatar: parsed.avatar,
+          information: parsed.information.map((item) => ({
+            ...item,
+            id: crypto.randomUUID(),
+            resumeId: MOCK_RESUME.id,
+          })),
+          educations: parsed.educations.map((item) => ({
+            ...item,
+            id: crypto.randomUUID(),
+            resumeId: MOCK_RESUME.id,
+          })),
+          skills: parsed.skills.map((item) => ({
+            ...item,
+            id: crypto.randomUUID(),
+            resumeId: MOCK_RESUME.id,
+          })),
+          workExperiences: parsed.workExperiences.map((item) => ({
+            ...item,
+            id: crypto.randomUUID(),
+            resumeId: MOCK_RESUME.id,
+          })),
+          projects: parsed.projects.map((item) => ({
+            ...item,
+            id: crypto.randomUUID(),
+            resumeId: MOCK_RESUME.id,
+          })),
+          certifications: parsed.certifications.map((item) => ({
+            ...item,
+            id: crypto.randomUUID(),
+            resumeId: MOCK_RESUME.id,
+          })),
+          languages: parsed.languages.map((item) => ({
+            ...item,
+            id: crypto.randomUUID(),
+            resumeId: MOCK_RESUME.id,
+          })),
+        };
+
+        dispatch(setResume(resume));
+        router.push("/builder");
+      } catch (error) {
+        toast.error("Failed to upload resume");
+      }
     }
   };
 
