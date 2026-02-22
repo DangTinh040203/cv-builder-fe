@@ -11,6 +11,7 @@ import { motion } from "framer-motion";
 import { Eye, EyeOff, FileText, Loader2, Save } from "lucide-react";
 import React from "react";
 
+import MatchingDialog from "@/components/builder-screen/matching-dialog";
 import DownloadPdf from "@/components/templates/download-pdf";
 import { useSyncResume } from "@/hooks/use-sync-resume";
 import { resumeSelector } from "@/stores/features/resume.slice";
@@ -122,6 +123,8 @@ const ResumeControl = () => {
             {previewMode ? "Edit" : "Customize"}
           </Button>
         </motion.div>
+
+        <MatchingDialog />
 
         {resume && <DownloadPdf resume={resume} />}
       </div>
