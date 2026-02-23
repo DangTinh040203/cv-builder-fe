@@ -20,8 +20,6 @@ import { cn } from "@shared/ui/lib/utils";
 import {
   AnimatePresence,
   motion,
-  useScroll,
-  useTransform,
 } from "framer-motion";
 import {
   CreditCard,
@@ -104,16 +102,10 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   const pathname = usePathname();
-  const { scrollY } = useScroll();
-  const headerShadow = useTransform(
-    scrollY,
-    [0, 100],
-    ["0 0 0 rgba(0,0,0,0)", "0 4px 20px rgba(0,0,0,0.1)"],
-  );
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -133,7 +125,6 @@ const Header = () => {
       variants={headerVariants}
       initial="hidden"
       animate="visible"
-      style={pathname === "/" ? { boxShadow: headerShadow } : undefined}
     >
       <div className="container mx-auto overflow-x-hidden px-4">
         <div className="flex h-16 items-center justify-between">

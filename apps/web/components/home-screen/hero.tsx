@@ -24,7 +24,7 @@ const HeroSection = () => {
         <motion.div
           className={`
             bg-primary/15 absolute top-20 right-[10%] h-96 w-96 rounded-full
-            blur-[120px]
+            blur-[80px]
           `}
           animate={{
             scale: [1, 1.2, 1],
@@ -35,7 +35,7 @@ const HeroSection = () => {
         <motion.div
           className={`
             bg-accent/15 absolute bottom-20 left-[5%] h-80 w-80 rounded-full
-            blur-[100px]
+            blur-[60px]
           `}
           animate={{
             scale: [1, 1.3, 1],
@@ -46,7 +46,7 @@ const HeroSection = () => {
         <motion.div
           className={`
             bg-primary/10 absolute top-1/3 left-[15%] h-64 w-64 rounded-full
-            blur-[80px]
+            blur-[50px]
           `}
           animate={{ y: [0, -30, 0] }}
           transition={{ duration: 6, ease: "easeInOut" }}
@@ -54,7 +54,7 @@ const HeroSection = () => {
         <motion.div
           className={`
             bg-accent/10 absolute right-[15%] bottom-1/3 h-48 w-48 rounded-full
-            blur-[60px]
+            blur-[40px]
           `}
           animate={{ y: [0, 30, 0], rotate: [0, 180, 360] }}
           transition={{ duration: 8, ease: "easeInOut" }}

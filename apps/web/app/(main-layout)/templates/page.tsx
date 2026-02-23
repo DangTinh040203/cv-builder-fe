@@ -139,7 +139,7 @@ const Templates = () => {
             scale: [1, 1.2, 1],
             opacity: [0.15, 0.25, 0.15],
           }}
-          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 4, ease: "easeInOut" }}
         />
         <motion.div
           className={`
@@ -150,7 +150,7 @@ const Templates = () => {
             scale: [1, 1.3, 1],
             x: [0, 20, 0],
           }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 5, ease: "easeInOut" }}
         />
       </div>
 
@@ -254,7 +254,7 @@ const Templates = () => {
                   className={`
                     group-hover:border-primary/50 group-hover:shadow-xl
                     bg-card/50 overflow-hidden rounded-xl border shadow-sm
-                    backdrop-blur-sm transition-all
+                    transition-all
                   `}
                 >
                   <div
