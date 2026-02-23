@@ -1,6 +1,7 @@
 "use client";
 
 import { useUser } from "@clerk/nextjs";
+import { Spinner } from "@shared/ui/components/spinner";
 import { cn } from "@shared/ui/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -36,6 +37,7 @@ const BuilderScreen = () => {
   const searchParams = useSearchParams();
   const currentStep = searchParams.get("step") as Section;
 
+  const [loading, setLoading] = React.useState(true);
   const [activeSection, setActiveSection] = React.useState<Section>(
     Object.values(Section).includes(currentStep)
       ? currentStep
@@ -62,10 +64,12 @@ const BuilderScreen = () => {
   useEffect(() => {
     const fetchResume = async () => {
       if (user && !resume) {
+        setLoading(true);
         const resumeRes = await resumeService.getResume();
         if (resumeRes) {
           dispatch(setResume(resumeRes));
         }
+        setLoading(false);
       }
     };
     fetchResume();
@@ -124,102 +128,108 @@ const BuilderScreen = () => {
     <div className="container mb-10">
       <ResumeControl />
 
-      <div
-        className={`
-          grid grid-cols-1 gap-6
-          lg:grid-cols-12
-        `}
-      >
+      {loading || !resume ? (
+        <div className="flex min-h-[70vh] w-full items-center justify-center">
+          <Spinner />
+        </div>
+      ) : (
         <div
           className={`
-            col-span-1
-            lg:col-span-2
+            grid grid-cols-1 gap-6
+            lg:grid-cols-12
           `}
         >
-          <ResumeBuilderSidebar
-            activeSection={activeSection}
-            onSectionChange={handleSectionChange}
-          />
-        </div>
+          <div
+            className={`
+              col-span-1
+              lg:col-span-2
+            `}
+          >
+            <ResumeBuilderSidebar
+              activeSection={activeSection}
+              onSectionChange={handleSectionChange}
+            />
+          </div>
 
-        <div
-          className={`
-            col-span-1
-            lg:col-span-7
-          `}
-        >
-          <AnimatePresence mode="wait">
-            {!previewMode ? (
-              <motion.div
-                key="forms"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3 }}
-              >
-                {activeSection === Section.Personal && (
-                  <PersonalForm onNext={handleNext} />
-                )}
-                {activeSection === Section.Summary && (
-                  <SummaryForm onNext={handleNext} onBack={handleBack} />
-                )}
-                {activeSection === Section.Skills && (
-                  <SkillsForm onNext={handleNext} onBack={handleBack} />
-                )}
-                {activeSection === Section.Education && (
-                  <EducationForm onNext={handleNext} onBack={handleBack} />
-                )}
-                {activeSection === Section.Experience && (
-                  <ExperienceForm onNext={handleNext} onBack={handleBack} />
-                )}
-                {activeSection === Section.Projects && (
-                  <ProjectsForm onNext={handleNext} onBack={handleBack} />
-                )}
-                {activeSection === Section.Extra && (
-                  <ExtraForm onBack={handleBack} />
-                )}
-              </motion.div>
-            ) : (
-              <motion.div
-                key="preview-main"
-                layoutId="template-preview-container"
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              >
-                <TemplatePreview />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+          <div
+            className={`
+              col-span-1
+              lg:col-span-7
+            `}
+          >
+            <AnimatePresence mode="wait">
+              {!previewMode ? (
+                <motion.div
+                  key="forms"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {activeSection === Section.Personal && (
+                    <PersonalForm onNext={handleNext} />
+                  )}
+                  {activeSection === Section.Summary && (
+                    <SummaryForm onNext={handleNext} onBack={handleBack} />
+                  )}
+                  {activeSection === Section.Skills && (
+                    <SkillsForm onNext={handleNext} onBack={handleBack} />
+                  )}
+                  {activeSection === Section.Education && (
+                    <EducationForm onNext={handleNext} onBack={handleBack} />
+                  )}
+                  {activeSection === Section.Experience && (
+                    <ExperienceForm onNext={handleNext} onBack={handleBack} />
+                  )}
+                  {activeSection === Section.Projects && (
+                    <ProjectsForm onNext={handleNext} onBack={handleBack} />
+                  )}
+                  {activeSection === Section.Extra && (
+                    <ExtraForm onBack={handleBack} />
+                  )}
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="preview-main"
+                  layoutId="template-preview-container"
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                >
+                  <TemplatePreview />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
 
-        <div
-          className={cn(`
-            col-span-1
-            lg:col-span-3
-          `)}
-        >
-          <AnimatePresence mode="wait">
-            {!previewMode ? (
-              <motion.div
-                key="preview-sidebar"
-                layoutId="template-preview-container"
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              >
-                <TemplatePreview />
-              </motion.div>
-            ) : (
-              <motion.div
-                key="template-format"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                transition={{ duration: 0.3 }}
-              >
-                <TemplateFormat />
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <div
+            className={cn(`
+              col-span-1
+              lg:col-span-3
+            `)}
+          >
+            <AnimatePresence mode="wait">
+              {!previewMode ? (
+                <motion.div
+                  key="preview-sidebar"
+                  layoutId="template-preview-container"
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                >
+                  <TemplatePreview />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="template-format"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <TemplateFormat />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
