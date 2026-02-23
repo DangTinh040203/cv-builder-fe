@@ -245,10 +245,7 @@ const Templates = () => {
               <motion.div
                 variants={fadeInUp}
                 key={i}
-                className={`
-                  group relative transition-all
-                  hover:scale-[102%]
-                `}
+                className={`group relative transition-all`}
               >
                 <div
                   className={`
