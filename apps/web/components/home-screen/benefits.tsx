@@ -108,7 +108,7 @@ const BenefitsSection = () => {
                       bg-linear-to-br text-xl font-bold
                     `}
                     animate={{ rotate: [0, 5, -5, 0] }}
-                    transition={{ duration: 4, repeat: Infinity }}
+                    transition={{ duration: 4 }}
                   >
                     JA
                   </motion.div>
@@ -145,7 +145,7 @@ const BenefitsSection = () => {
                 rounded-2xl opacity-20 blur-xl
               `}
               animate={{ scale: [1, 1.3, 1] }}
-              transition={{ duration: 6, repeat: Infinity }}
+              transition={{ duration: 6 }}
             />
           </motion.div>
         </div>

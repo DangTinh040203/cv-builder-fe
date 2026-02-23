@@ -116,7 +116,6 @@ const TemplatePreviewSection = () => {
                         animate={{ scale: [1, 1.1, 1] }}
                         transition={{
                           duration: 2,
-                          repeat: Infinity,
                           delay: i * 0.2,
                         }}
                       />
@@ -162,7 +161,7 @@ const TemplatePreviewSection = () => {
                 rounded-2xl opacity-20 blur-xl
               `}
               animate={{ scale: [1, 1.2, 1], rotate: [0, 90, 0] }}
-              transition={{ duration: 8, repeat: Infinity }}
+              transition={{ duration: 8 }}
             />
           </motion.div>
         </div>

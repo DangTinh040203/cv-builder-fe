@@ -87,7 +87,6 @@ const HowItWorksSection = () => {
                 animate={{ y: [0, -5, 0] }}
                 transition={{
                   duration: 3,
-                  repeat: Infinity,
                   delay: index * 0.3,
                 }}
               >

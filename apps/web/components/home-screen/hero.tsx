@@ -1,29 +1,20 @@
 "use client";
 import { Badge } from "@shared/ui/components/badge";
 import { Button } from "@shared/ui/components/button";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowRight, MousePointer2, Sparkles } from "lucide-react";
 import Link from "next/link";
-import React, { useRef } from "react";
+import React from "react";
 
 import FloatingParticles from "@/components/common/floating-particles";
 import { fadeInUp, staggerContainer } from "@/styles/animation";
 
 const HeroSection = () => {
-  const heroRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-
-  const heroY = useTransform(scrollYProgress, [0, 1], [0, 150]);
-
   return (
     <section
-      ref={heroRef}
       className={`
-        from-background via-primary/5 to-accent/10 relative flex min-h-[100vh]
-        items-center overflow-hidden bg-gradient-to-br px-4 pt-32 pb-24
+        from-background via-primary/5 to-accent/10 relative flex min-h-screen
+        items-center overflow-hidden bg-linear-to-br px-4 pt-32 pb-24
       `}
     >
       <FloatingParticles />
@@ -39,7 +30,7 @@ const HeroSection = () => {
             scale: [1, 1.2, 1],
             opacity: [0.15, 0.25, 0.15],
           }}
-          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 4, ease: "easeInOut" }}
         />
         <motion.div
           className={`
@@ -50,7 +41,7 @@ const HeroSection = () => {
             scale: [1, 1.3, 1],
             x: [0, 20, 0],
           }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 5, ease: "easeInOut" }}
         />
         <motion.div
           className={`
@@ -58,7 +49,7 @@ const HeroSection = () => {
             blur-[80px]
           `}
           animate={{ y: [0, -30, 0] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 6, ease: "easeInOut" }}
         />
         <motion.div
           className={`
@@ -66,7 +57,7 @@ const HeroSection = () => {
             blur-[60px]
           `}
           animate={{ y: [0, 30, 0], rotate: [0, 180, 360] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 8, ease: "easeInOut" }}
         />
 
         {/* Geometric shapes */}
@@ -76,7 +67,7 @@ const HeroSection = () => {
             border-2
           `}
           animate={{ rotate: [45, 135, 45], scale: [1, 1.2, 1] }}
-          transition={{ duration: 4, repeat: Infinity }}
+          transition={{ duration: 4 }}
         />
         <motion.div
           className={`
@@ -84,21 +75,18 @@ const HeroSection = () => {
             border-2
           `}
           animate={{ scale: [1, 1.5, 1], opacity: [0.3, 0.6, 0.3] }}
-          transition={{ duration: 3, repeat: Infinity }}
+          transition={{ duration: 3 }}
         />
         <motion.div
           className={`
             bg-primary/30 absolute top-1/2 right-[10%] h-3 w-3 rounded-full
           `}
           animate={{ y: [0, -20, 0], x: [0, 10, 0] }}
-          transition={{ duration: 4, repeat: Infinity }}
+          transition={{ duration: 4 }}
         />
       </div>
 
-      <motion.div
-        className="relative z-10 container mx-auto"
-        style={{ y: heroY }}
-      >
+      <div className="relative z-10 container mx-auto">
         <div className="mx-auto max-w-4xl text-center">
           {/* Badge */}
           <motion.div
@@ -112,7 +100,7 @@ const HeroSection = () => {
           >
             <motion.div
               animate={{ rotate: [0, 360] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+              transition={{ duration: 3, ease: "linear" }}
             >
               <Sparkles className="text-primary h-4 w-4" />
             </motion.div>
@@ -121,7 +109,7 @@ const HeroSection = () => {
             </span>
             <motion.span
               animate={{ scale: [1, 1.1, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
+              transition={{ duration: 2 }}
             >
               <Badge>NEW</Badge>
             </motion.span>
@@ -146,7 +134,7 @@ const HeroSection = () => {
               animate={{
                 backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
               }}
-              transition={{ duration: 5, repeat: Infinity }}
+              transition={{ duration: 5 }}
               style={{ backgroundSize: "200% 200%" }}
             >
               grow.
@@ -197,7 +185,6 @@ const HeroSection = () => {
                     animate={{ x: ["-100%", "100%"] }}
                     transition={{
                       duration: 2,
-                      repeat: Infinity,
                       repeatDelay: 1,
                     }}
                   />
@@ -267,7 +254,6 @@ const HeroSection = () => {
                     animate={{ scale: [1, 1.5, 1] }}
                     transition={{
                       duration: 2,
-                      repeat: Infinity,
                       delay: index * 0.2,
                     }}
                   />
@@ -291,13 +277,13 @@ const HeroSection = () => {
             </span>
             <motion.div
               animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
+              transition={{ duration: 1.5 }}
             >
               <MousePointer2 className="text-primary h-5 w-5" />
             </motion.div>
           </motion.div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 };

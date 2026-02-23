@@ -24,7 +24,7 @@ const CTASection = () => {
               absolute top-0 left-0 h-64 w-64 rounded-full bg-white/10 blur-3xl
             `}
             animate={{ x: [0, 50, 0], y: [0, 30, 0] }}
-            transition={{ duration: 8, repeat: Infinity }}
+            transition={{ duration: 8 }}
           />
           <motion.div
             className={`
@@ -32,7 +32,7 @@ const CTASection = () => {
               blur-3xl
             `}
             animate={{ x: [0, -30, 0], y: [0, -50, 0] }}
-            transition={{ duration: 10, repeat: Infinity }}
+            transition={{ duration: 10 }}
           />
 
           <div className="relative z-10">

@@ -22,7 +22,7 @@ const Marquee = () => {
           <motion.div
             className="flex items-center gap-16"
             animate={{ x: [0, -500] }}
-            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            transition={{ duration: 20, ease: "linear" }}
           >
             {[...companies, ...companies].map((company, i) => (
               <span
