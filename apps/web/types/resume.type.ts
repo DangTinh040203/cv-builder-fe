@@ -113,3 +113,18 @@ export interface ParseResumeResponse {
   certifications: Array<Omit<Certification, "id" | "resumeId">>;
   languages: Array<Omit<Language, "id" | "resumeId">>;
 }
+
+export interface MatchCriterion {
+  name: string;
+  weight: number;
+  score: number;
+  explanation: string;
+}
+
+export interface MatchResult {
+  overallScore: number;
+  summary: string;
+  criteria: MatchCriterion[];
+  missingKeywords: string[];
+  suggestions: string[];
+}

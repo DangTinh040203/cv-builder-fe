@@ -65,9 +65,24 @@ const Templates = () => {
         dispatch(setTemplateSelected(selectedTemplateForBuilder));
         const parsed = await resumeService.resumeParse(file);
 
-        // Map parsed data to Resume structure
+        // Fetch user's actual resume from backend to get the real ID
+        let realResumeId = "";
+        let realUserId = "";
+        try {
+          const existing = await resumeService.getResume();
+          if (existing) {
+            realResumeId = existing.id;
+            realUserId = existing.userId;
+          }
+        } catch {
+          // No existing resume — will be created on first sync
+        }
+
+        // Map parsed data to Resume structure with real IDs
         const resume = {
           ...MOCK_RESUME,
+          id: realResumeId || MOCK_RESUME.id,
+          userId: realUserId || MOCK_RESUME.userId,
           title: parsed.title,
           subTitle: parsed.subTitle,
           overview: parsed.overview,
@@ -75,37 +90,37 @@ const Templates = () => {
           information: parsed.information.map((item) => ({
             ...item,
             id: crypto.randomUUID(),
-            resumeId: MOCK_RESUME.id,
+            resumeId: realResumeId || MOCK_RESUME.id,
           })),
           educations: parsed.educations.map((item) => ({
             ...item,
             id: crypto.randomUUID(),
-            resumeId: MOCK_RESUME.id,
+            resumeId: realResumeId || MOCK_RESUME.id,
           })),
           skills: parsed.skills.map((item) => ({
             ...item,
             id: crypto.randomUUID(),
-            resumeId: MOCK_RESUME.id,
+            resumeId: realResumeId || MOCK_RESUME.id,
           })),
           workExperiences: parsed.workExperiences.map((item) => ({
             ...item,
             id: crypto.randomUUID(),
-            resumeId: MOCK_RESUME.id,
+            resumeId: realResumeId || MOCK_RESUME.id,
           })),
           projects: parsed.projects.map((item) => ({
             ...item,
             id: crypto.randomUUID(),
-            resumeId: MOCK_RESUME.id,
+            resumeId: realResumeId || MOCK_RESUME.id,
           })),
           certifications: parsed.certifications.map((item) => ({
             ...item,
             id: crypto.randomUUID(),
-            resumeId: MOCK_RESUME.id,
+            resumeId: realResumeId || MOCK_RESUME.id,
           })),
           languages: parsed.languages.map((item) => ({
             ...item,
             id: crypto.randomUUID(),
-            resumeId: MOCK_RESUME.id,
+            resumeId: realResumeId || MOCK_RESUME.id,
           })),
         };
 

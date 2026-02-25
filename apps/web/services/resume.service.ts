@@ -1,5 +1,6 @@
 import { HttpService, type HttpServiceOptions } from "@/services/http.service";
 import {
+  type MatchResult,
   type ParseResumeResponse,
   type Resume,
   type UpdateResumeDto,
@@ -28,6 +29,27 @@ export class ResumeService extends HttpService {
     formData.append("file", file);
     const { data } = await this.post<FormData, ParseResumeResponse>(
       "/resumes/parse",
+      formData,
+    );
+    return data;
+  }
+
+  async matchResume(
+    resumeId: string,
+    jobDescription?: string,
+    file?: File,
+  ): Promise<MatchResult> {
+    const formData = new FormData();
+    formData.append("resumeId", resumeId);
+
+    if (file) {
+      formData.append("file", file);
+    } else if (jobDescription) {
+      formData.append("jobDescription", jobDescription);
+    }
+
+    const { data } = await this.post<FormData, MatchResult>(
+      "/resumes/match",
       formData,
     );
     return data;

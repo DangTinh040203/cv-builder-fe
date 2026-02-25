@@ -17,10 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@shared/ui/components/dropdown-menu";
 import { cn } from "@shared/ui/lib/utils";
-import {
-  AnimatePresence,
-  motion,
-} from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   CreditCard,
   FileText,
