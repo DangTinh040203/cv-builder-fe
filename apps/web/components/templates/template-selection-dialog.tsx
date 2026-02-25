@@ -227,11 +227,7 @@ export const TemplateSelectionDialog = ({
                 md:grid-cols-2
               `}
             >
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.2, duration: 0.5 }}
-              >
+              <div>
                 <Card
                   className={cn(
                     `
@@ -266,13 +262,9 @@ export const TemplateSelectionDialog = ({
                     </div>
                   </CardContent>
                 </Card>
-              </motion.div>
+              </div>
 
-              <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.4, duration: 0.5 }}
-              >
+              <div>
                 <Card
                   className={cn(
                     `
@@ -307,7 +299,7 @@ export const TemplateSelectionDialog = ({
                     </div>
                   </CardContent>
                 </Card>
-              </motion.div>
+              </div>
             </div>
           )}
 
