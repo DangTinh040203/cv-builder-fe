@@ -1,4 +1,10 @@
 "use client";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@shared/ui/components/accordion";
 import { Badge } from "@shared/ui/components/badge";
 import { Button } from "@shared/ui/components/button";
 import {
@@ -137,13 +143,14 @@ const MatchingDialog = () => {
           </div>
         ) : matchResult ? (
           <ScrollArea className="max-h-[80vh] pr-4">
-            <div className="space-y-6">
+            <div className="space-y-8 pb-4">
               {/* Overall Score */}
-              <div className="flex flex-col items-center gap-3 pt-2">
+              <div className="flex flex-col items-center gap-4 pt-2">
                 <ScoreGauge score={matchResult.overallScore} />
                 <p
                   className={`
-                    text-muted-foreground max-w-md text-center text-sm
+                    text-muted-foreground max-w-2xl text-center text-sm
+                    leading-relaxed
                   `}
                 >
                   {matchResult.summary}
@@ -152,62 +159,107 @@ const MatchingDialog = () => {
 
               <div
                 className={`
-                  grid grid-cols-1 gap-6
+                  grid grid-cols-1 gap-8
                   md:grid-cols-2
                 `}
               >
-                {/* Left Column: Criteria Breakdown */}
-                <div className="space-y-3">
+                {/* Left Column: Criteria Breakdown (Using Accordion) */}
+                <div className="space-y-4">
                   <h4 className="flex items-center gap-2 text-sm font-semibold">
                     <ScanSearch size={16} /> Scoring Breakdown
                   </h4>
-                  <div className="space-y-3">
-                    {matchResult.criteria.map((criterion) => {
+                  <Accordion
+                    type="single"
+                    collapsible
+                    className="w-full space-y-3"
+                  >
+                    {matchResult.criteria.map((criterion, index) => {
                       const colors = getScoreColor(criterion.score);
                       return (
-                        <div
+                        <AccordionItem
                           key={criterion.name}
-                          className="bg-muted/50 space-y-1.5 rounded-lg p-3"
+                          value={`item-${index}`}
+                          className={`
+                            bg-muted/30 rounded-lg border px-4 py-1 shadow-sm
+                          `}
                         >
-                          <div className="flex items-center justify-between">
-                            <span className="text-sm font-medium">
-                              {criterion.name}
-                            </span>
-                            <div className="flex items-center gap-2">
-                              <span className="text-muted-foreground text-xs">
-                                Weight: {criterion.weight}%
+                          <AccordionTrigger
+                            className={`
+                              py-3
+                              hover:no-underline
+                            `}
+                          >
+                            <div
+                              className={`
+                                flex w-full items-center justify-between pr-4
+                              `}
+                            >
+                              <span className="text-sm font-medium">
+                                {criterion.name}
                               </span>
-                              <span
+                              <div className="flex items-center gap-3">
+                                <span
+                                  className={`
+                                    text-muted-foreground text-xs font-normal
+                                  `}
+                                >
+                                  Weight: {criterion.weight}%
+                                </span>
+                                <span
+                                  className={`
+                                    text-sm font-bold
+                                    ${colors.text}
+                                  `}
+                                >
+                                  {criterion.score}%
+                                </span>
+                              </div>
+                            </div>
+                          </AccordionTrigger>
+                          <AccordionContent className="pt-2 pb-3">
+                            <div className="space-y-3">
+                              <Progress
+                                value={criterion.score}
+                                className="h-1.5"
+                              />
+                              <p
                                 className={`
-                                  text-sm font-bold
-                                  ${colors.text}
+                                  text-muted-foreground text-xs leading-relaxed
                                 `}
                               >
-                                {criterion.score}%
-                              </span>
+                                {criterion.explanation}
+                              </p>
                             </div>
-                          </div>
-                          <Progress value={criterion.score} className="h-2" />
-                          <p className="text-muted-foreground text-xs">
-                            {criterion.explanation}
-                          </p>
-                        </div>
+                          </AccordionContent>
+                        </AccordionItem>
                       );
                     })}
-                  </div>
+                  </Accordion>
                 </div>
 
                 {/* Right Column: Missing Keywords & Suggestions */}
                 <div className="space-y-6">
                   {/* Missing Keywords */}
                   {matchResult.missingKeywords.length > 0 && (
-                    <div className="space-y-2">
-                      <h4 className="text-sm font-semibold">
+                    <div className="space-y-3">
+                      <h4
+                        className={`
+                          flex items-center gap-2 text-sm font-semibold
+                        `}
+                      >
                         🔑 Missing Keywords
                       </h4>
                       <div className="flex flex-wrap gap-2">
                         {matchResult.missingKeywords.map((keyword) => (
-                          <Badge key={keyword} variant="destructive">
+                          <Badge
+                            key={keyword}
+                            variant="secondary"
+                            className={`
+                              bg-red-100 text-red-700
+                              hover:bg-red-200
+                              dark:bg-red-900/30 dark:text-red-400
+                            `}
+                          >
                             {keyword}
                           </Badge>
                         ))}
@@ -217,7 +269,7 @@ const MatchingDialog = () => {
 
                   {/* Suggestions */}
                   {matchResult.suggestions.length > 0 && (
-                    <div className="space-y-2">
+                    <div className="space-y-3">
                       <h4
                         className={`
                           flex items-center gap-2 text-sm font-semibold
@@ -225,26 +277,39 @@ const MatchingDialog = () => {
                       >
                         <Lightbulb size={16} /> Suggestions
                       </h4>
-                      <ul className="space-y-1.5">
-                        {matchResult.suggestions.map((suggestion, i) => (
-                          <li
-                            key={i}
-                            className="text-muted-foreground flex gap-2 text-sm"
-                          >
-                            <span className="text-primary mt-0.5 shrink-0">
-                              •
-                            </span>
-                            {suggestion}
-                          </li>
-                        ))}
-                      </ul>
+                      <div
+                        className={`bg-muted/30 rounded-lg border p-4 shadow-sm`}
+                      >
+                        <ul className="space-y-2.5">
+                          {matchResult.suggestions.map((suggestion, i) => (
+                            <li
+                              key={i}
+                              className={`
+                                text-muted-foreground flex gap-3 text-sm
+                              `}
+                            >
+                              <span
+                                className={`
+                                  text-primary mt-0.5 shrink-0 text-lg
+                                  leading-none
+                                `}
+                              >
+                                •
+                              </span>
+                              <span className="leading-relaxed">
+                                {suggestion}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
                   )}
                 </div>
               </div>
 
               {/* Analyze Again */}
-              <div className="flex justify-center pt-2">
+              <div className="flex justify-center pt-6">
                 <Button
                   variant="outline"
                   className={`
@@ -253,26 +318,29 @@ const MatchingDialog = () => {
                   `}
                   onClick={handleReset}
                 >
-                  <ArrowLeft size={16} /> Analyze Again
+                  <ArrowLeft size={16} className="mr-2" /> Analyze Again
                 </Button>
               </div>
             </div>
           </ScrollArea>
         ) : (
           <>
-            <Tabs defaultValue="text" className="space-y-2">
+            {/* ... Phần Input Files/Text giữ nguyên ... */}
+            <Tabs defaultValue="text" className="space-y-4 pt-4">
               <TabsList
-                className={`mx-auto flex items-center justify-center border`}
+                className={`
+                  mx-auto flex w-fit items-center justify-center border
+                `}
               >
                 <TabsTrigger className="px-10" value="text">
-                  <ClipboardList /> Text JD
+                  <ClipboardList className="mr-2 h-4 w-4" /> Text JD
                 </TabsTrigger>
                 <TabsTrigger className="px-10" value="file">
-                  <Upload /> Upload JD
+                  <Upload className="mr-2 h-4 w-4" /> Upload JD
                 </TabsTrigger>
               </TabsList>
 
-              <TabsContent value="text">
+              <TabsContent value="text" className="mt-4">
                 <Textarea
                   className="scrollbar-thin h-64 resize-none overflow-y-auto"
                   placeholder="Paste your JD here..."
@@ -281,7 +349,7 @@ const MatchingDialog = () => {
                 />
               </TabsContent>
 
-              <TabsContent value="file">
+              <TabsContent value="file" className="mt-4">
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -293,14 +361,14 @@ const MatchingDialog = () => {
                   onClick={() => fileInputRef.current?.click()}
                   className={`
                     border-primary flex h-64 cursor-pointer flex-col
-                    items-center justify-center gap-2 rounded-lg border
-                    border-dashed px-3 py-2 transition-colors
+                    items-center justify-center gap-3 rounded-lg border-2
+                    border-dashed px-3 py-2 transition-all
                     hover:bg-muted/50
                   `}
                 >
                   <div
                     className={`
-                      bg-primary/10 flex h-12 w-12 items-center justify-center
+                      bg-primary/10 flex h-14 w-14 items-center justify-center
                       rounded-full
                     `}
                   >
@@ -309,7 +377,9 @@ const MatchingDialog = () => {
                   <div className="text-center">
                     {jdFile ? (
                       <>
-                        <p className="text-sm font-medium">{jdFile.name}</p>
+                        <p className="text-primary text-sm font-medium">
+                          {jdFile.name}
+                        </p>
                         <p className="text-muted-foreground mt-1 text-xs">
                           Click to change file
                         </p>
@@ -329,9 +399,15 @@ const MatchingDialog = () => {
               </TabsContent>
             </Tabs>
 
-            <Button onClick={handleAnalyze} disabled={!hasInput}>
-              <ScanSearch /> Analyze Matching
-            </Button>
+            <div className="pt-2">
+              <Button
+                onClick={handleAnalyze}
+                disabled={!hasInput}
+                className="w-full"
+              >
+                <ScanSearch className="mr-2" /> Analyze Matching
+              </Button>
+            </div>
           </>
         )}
       </DialogContent>
