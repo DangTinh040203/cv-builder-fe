@@ -83,7 +83,6 @@ function SortableProjectItem({
   );
 
   // Reset when the item is swapped (e.g. drag-and-drop reorder)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     setDetails(item.details);
     setResponsibilities(item.responsibilities);
