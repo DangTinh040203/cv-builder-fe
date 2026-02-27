@@ -53,6 +53,12 @@ import { updateResume } from "@/stores/features/resume.slice";
 import { useAppDispatch } from "@/stores/store";
 import type { Education } from "@/types/resume.type";
 
+const safeDate = (value: string | null | undefined): Date | null => {
+  if (!value) return null;
+  const d = new Date(value);
+  return isNaN(d.getTime()) ? null : d;
+};
+
 interface EducationFormProps {
   onNext?: () => void;
   onBack?: () => void;
@@ -275,7 +281,7 @@ function SortableEducationItem({
               Start Date
             </Label>
             <DatePicker
-              date={item.startDate ? new Date(item.startDate) : null}
+              date={safeDate(item.startDate)}
               setDate={(date) =>
                 onUpdate(
                   item.id,
@@ -290,7 +296,7 @@ function SortableEducationItem({
               End Date (or expected)
             </Label>
             <DatePicker
-              date={item.endDate ? new Date(item.endDate) : null}
+              date={safeDate(item.endDate)}
               setDate={(date) =>
                 onUpdate(item.id, "endDate", date ? date.toISOString() : null)
               }

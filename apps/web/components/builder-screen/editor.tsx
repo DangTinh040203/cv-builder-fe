@@ -4,7 +4,7 @@ import "react-quill-new/dist/quill.snow.css";
 
 import { cn } from "@shared/ui/lib/utils";
 import dynamic from "next/dynamic";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import type { QuillOptionsStatic } from "react-quill-new";
 
 const ReactQuill = dynamic(() => import("react-quill-new"), {
@@ -14,29 +14,35 @@ const ReactQuill = dynamic(() => import("react-quill-new"), {
 interface EditorProps {
   value: string;
   onChange: (val: string) => void;
+  onBlur?: () => void;
   maxLength?: number;
   placeholder?: string;
   className?: string;
 }
 
-const Editor = ({ value, onChange, placeholder, className }: EditorProps) => {
-  const modules: QuillOptionsStatic["modules"] = {
-    toolbar: [
-      ["bold", "italic", "underline"],
-      [{ list: "ordered" }, { list: "bullet" }],
-      ["link"],
-      [{ color: [] }],
-    ],
-  };
+const Editor = ({
+  value,
+  onChange,
+  onBlur,
+  placeholder,
+  className,
+}: EditorProps) => {
+  const modules = useMemo<QuillOptionsStatic["modules"]>(
+    () => ({
+      toolbar: [
+        ["bold", "italic", "underline"],
+        [{ list: "ordered" }, { list: "bullet" }],
+        ["link"],
+        [{ color: [] }],
+      ],
+    }),
+    [],
+  );
 
-  const formats: QuillOptionsStatic["formats"] = [
-    "bold",
-    "italic",
-    "underline",
-    "list",
-    "link",
-    "color",
-  ];
+  const formats = useMemo<string[]>(
+    () => ["bold", "italic", "underline", "list", "link", "color"],
+    [],
+  );
 
   const handleChange = useCallback(
     (content: string) => {
@@ -47,6 +53,7 @@ const Editor = ({ value, onChange, placeholder, className }: EditorProps) => {
 
   return (
     <div
+      onBlur={onBlur}
       className={cn(
         "relative",
         `

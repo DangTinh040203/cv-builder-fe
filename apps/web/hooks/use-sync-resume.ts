@@ -30,7 +30,6 @@ export function useSyncResume() {
         resumeToUpdateDto(resume),
       );
       dispatch(setResume(updatedResume));
-      toast.success("Resume saved successfully");
       return true;
     } catch {
       toast.error("Failed to save. Please try again.");

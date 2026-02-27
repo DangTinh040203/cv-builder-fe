@@ -76,6 +76,19 @@ function SortableProjectItem({
     transition,
   };
 
+  // Local state to avoid Redux dispatch → re-render → quill onChange → dispatch loop
+  const [details, setDetails] = useState(item.details);
+  const [responsibilities, setResponsibilities] = useState(
+    item.responsibilities,
+  );
+
+  // Reset when the item is swapped (e.g. drag-and-drop reorder)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    setDetails(item.details);
+    setResponsibilities(item.responsibilities);
+  }, [item.id]);
+
   return (
     <div
       ref={setNodeRef}
@@ -217,8 +230,9 @@ function SortableProjectItem({
           </Label>
           <Editor
             className="[&_.ql-editor]:min-h-[100px]"
-            value={item.details}
-            onChange={(val) => onUpdate(item.id, "details", val)}
+            value={details}
+            onChange={setDetails}
+            onBlur={() => onUpdate(item.id, "details", details)}
           />
         </div>
 
@@ -228,8 +242,11 @@ function SortableProjectItem({
           </Label>
           <Editor
             className="[&_.ql-editor]:min-h-[100px]"
-            value={item.responsibilities}
-            onChange={(val) => onUpdate(item.id, "responsibilities", val)}
+            value={responsibilities}
+            onChange={setResponsibilities}
+            onBlur={() =>
+              onUpdate(item.id, "responsibilities", responsibilities)
+            }
           />
         </div>
       </div>

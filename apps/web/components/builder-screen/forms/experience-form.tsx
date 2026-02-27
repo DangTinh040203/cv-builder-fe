@@ -37,7 +37,7 @@ import {
   Plus,
   Trash2,
 } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import BuilderNavigation from "@/components/builder-screen/builder-navigation";
 import Editor from "@/components/builder-screen/editor";
@@ -45,6 +45,12 @@ import { useSyncResume } from "@/hooks/use-sync-resume";
 import { updateResume } from "@/stores/features/resume.slice";
 import { useAppDispatch } from "@/stores/store";
 import type { WorkExperience } from "@/types/resume.type";
+
+const safeDate = (value: string | null | undefined): Date | null => {
+  if (!value) return null;
+  const d = new Date(value);
+  return isNaN(d.getTime()) ? null : d;
+};
 
 interface ExperienceFormProps {
   onNext?: () => void;
@@ -80,6 +86,14 @@ function SortableExperienceItem({
     transform: CSS.Translate.toString(transform),
     transition,
   };
+
+  // Local state avoids the Redux dispatch → re-render → quill onChange → dispatch loop
+  const [description, setDescription] = useState(item.description);
+
+  // Keep in sync if item is replaced externally (e.g. drag-and-drop reorder)
+  useEffect(() => {
+    setDescription(item.description);
+  }, [item.id]);
 
   return (
     <div
@@ -185,7 +199,7 @@ function SortableExperienceItem({
               Start Date
             </Label>
             <DatePicker
-              date={item.startDate ? new Date(item.startDate) : null}
+              date={safeDate(item.startDate)}
               setDate={(date) =>
                 onUpdate(
                   item.id,
@@ -200,7 +214,7 @@ function SortableExperienceItem({
               End Date (leave empty if current)
             </Label>
             <DatePicker
-              date={item.endDate ? new Date(item.endDate) : null}
+              date={safeDate(item.endDate)}
               setDate={(date) =>
                 onUpdate(item.id, "endDate", date ? date.toISOString() : null)
               }
@@ -214,8 +228,9 @@ function SortableExperienceItem({
           </Label>
           <Editor
             className="[&_.ql-editor]:min-h-[100px]"
-            value={item.description}
-            onChange={(val) => onUpdate(item.id, "description", val)}
+            value={description}
+            onChange={setDescription}
+            onBlur={() => onUpdate(item.id, "description", description)}
           />
         </div>
       </div>
@@ -246,7 +261,7 @@ const ExperienceForm = ({ onNext, onBack }: ExperienceFormProps) => {
 
   const experienceItems = resume?.workExperiences || [];
 
-  const validateItems = useCallback(() => {
+  const validateItems = () => {
     const errors: Record<string, { company?: string; position?: string }> = {};
     let isValid = true;
 
@@ -267,7 +282,7 @@ const ExperienceForm = ({ onNext, onBack }: ExperienceFormProps) => {
 
     setValidationErrors(errors);
     return isValid;
-  }, [experienceItems]);
+  };
 
   const onSubmit = async () => {
     if (!validateItems()) {
