@@ -4,6 +4,7 @@ import { Button } from "@shared/ui/components/button";
 import { Input } from "@shared/ui/components/input";
 import { toast } from "@shared/ui/components/sonner";
 import { cn } from "@shared/ui/lib/utils";
+import { AxiosError } from "axios";
 import { motion } from "framer-motion";
 import { Check, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -23,6 +24,8 @@ import {
 } from "@/stores/features/template.slice";
 import { useAppDispatch } from "@/stores/store";
 import { fadeInUp, staggerContainer } from "@/styles/animation";
+import { type ErrorResponse } from "@/types/error.response";
+import { toastErrorMessage } from "@/utils/toast-error-message.util";
 
 const categories = [
   { id: "all", label: "All" },
@@ -117,8 +120,15 @@ const Templates = () => {
 
         dispatch(setResume(resume));
         router.push("/builder");
-      } catch (error) {
-        toast.error("Failed to upload resume");
+      } catch (e) {
+        if (e instanceof AxiosError) {
+          const error = e.response?.data as ErrorResponse;
+          toastErrorMessage(error.message);
+        } else {
+          toast.error("Something went wrong, please try again.");
+        }
+
+        return false;
       } finally {
         setIsParsing(false);
       }

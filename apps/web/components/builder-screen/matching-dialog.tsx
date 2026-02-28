@@ -24,6 +24,7 @@ import {
   TabsTrigger,
 } from "@shared/ui/components/tabs";
 import { Textarea } from "@shared/ui/components/textarea";
+import { AxiosError } from "axios";
 import {
   ArrowLeft,
   Brain,
@@ -42,7 +43,9 @@ import {
 import { useService } from "@/hooks/use-http";
 import { useSyncResume } from "@/hooks/use-sync-resume";
 import { ResumeService } from "@/services/resume.service";
+import { type ErrorResponse } from "@/types/error.response";
 import { type MatchResult } from "@/types/resume.type";
+import { toastErrorMessage } from "@/utils/toast-error-message.util";
 
 const MatchingDialog = () => {
   const [showDialog, setShowDialog] = React.useState(false);
@@ -85,8 +88,15 @@ const MatchingDialog = () => {
         jdFile ?? undefined,
       );
       setMatchResult(result);
-    } catch {
-      toast.error("Analysis failed. Please try again.");
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        const error = e.response?.data as ErrorResponse;
+        toastErrorMessage(error.message);
+      } else {
+        toast.error("Something went wrong, please try again.");
+      }
+
+      return false;
     } finally {
       setIsAnalyzing(false);
     }

@@ -11,7 +11,6 @@ import {
 } from "@/stores/features/template.slice";
 import { type Resume } from "@/types/resume.type";
 
-// Shared props for all section renderers
 export interface SectionRendererProps {
   resume: Resume;
   styles: Record<string, any>;
