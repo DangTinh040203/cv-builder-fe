@@ -1,11 +1,14 @@
+import { toast } from "@shared/ui/components/sonner";
+import { AxiosError } from "axios";
 import { useCallback, useEffect, useState } from "react";
-import { toast } from "sonner";
 
 import { useService } from "@/hooks/use-http";
 import { ResumeService } from "@/services/resume.service";
 import { resumeSelector, setResume } from "@/stores/features/resume.slice";
 import { useAppDispatch, useAppSelector } from "@/stores/store";
+import { type ErrorResponse } from "@/types/error.response";
 import { resumeToUpdateDto } from "@/utils/resume.utils";
+import { toastErrorMessage } from "@/utils/toast-error-message.util";
 
 /**
  * Custom hook to sync Redux resume state to backend.
@@ -31,8 +34,14 @@ export function useSyncResume() {
       );
       dispatch(setResume(updatedResume));
       return true;
-    } catch {
-      toast.error("Failed to save. Please try again.");
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        const error = e.response?.data as ErrorResponse;
+        toastErrorMessage(error.message);
+      } else {
+        toast.error("Something went wrong, please try again.");
+      }
+
       return false;
     } finally {
       setIsSyncing(false);

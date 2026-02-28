@@ -11,6 +11,7 @@ import {
   FormMessage,
 } from "@shared/ui/components/form";
 import { Input } from "@shared/ui/components/input";
+import { toast } from "@shared/ui/components/sonner";
 import { motion } from "framer-motion";
 import { ArrowRight, Eye, EyeOff, Loader2 } from "lucide-react";
 import Link from "next/link";
@@ -18,7 +19,6 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { z } from "zod";
 
 import { handleClerkError } from "@/libs/clerk-toast";

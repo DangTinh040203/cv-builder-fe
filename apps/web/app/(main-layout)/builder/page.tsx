@@ -1,11 +1,11 @@
 "use client";
 
 import { useUser } from "@clerk/nextjs";
+import { toast } from "@shared/ui/components/sonner";
 import { cn } from "@shared/ui/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
-import { toast } from "sonner";
 
 import EducationForm from "@/components/builder-screen/forms/education-form";
 import ExperienceForm from "@/components/builder-screen/forms/experience-form";

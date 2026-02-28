@@ -14,12 +14,12 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@shared/ui/components/input-otp";
+import { toast } from "@shared/ui/components/sonner";
 import { motion } from "framer-motion";
 import { ArrowRight, Loader2, Mail, RefreshCw } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { Suspense, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { z } from "zod";
 
 import { getClerkErrorMessage, handleClerkError } from "@/libs/clerk-toast";

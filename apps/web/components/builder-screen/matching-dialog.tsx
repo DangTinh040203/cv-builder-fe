@@ -16,6 +16,7 @@ import {
 } from "@shared/ui/components/dialog";
 import { Progress } from "@shared/ui/components/progress";
 import { ScrollArea } from "@shared/ui/components/scroll-area";
+import { toast } from "@shared/ui/components/sonner";
 import {
   Tabs,
   TabsContent,
@@ -33,7 +34,6 @@ import {
   Upload,
 } from "lucide-react";
 import React from "react";
-import { toast } from "sonner";
 
 import {
   getScoreColor,

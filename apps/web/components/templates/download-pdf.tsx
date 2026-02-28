@@ -3,11 +3,11 @@
 import { usePDFComponentsAreHTML } from "@rawwee/react-pdf-html";
 import { pdf } from "@react-pdf/renderer";
 import { Button } from "@shared/ui/components/button";
+import { toast } from "@shared/ui/components/sonner";
 import dayjs from "dayjs";
 import { Download } from "lucide-react";
 import { useEffect, useState } from "react";
 import slugify from "slugify";
-import { toast } from "sonner";
 
 import DocumentPDF from "@/components/templates/document-pdf";
 import { TEMPLATES } from "@/configs/template.config";
