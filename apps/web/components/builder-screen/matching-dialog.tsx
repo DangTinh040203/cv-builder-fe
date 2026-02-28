@@ -56,7 +56,7 @@ const MatchingDialog = () => {
     null,
   );
 
-  const { resume, sync } = useSyncResume();
+  const { resume } = useSyncResume();
   const resumeService = useService(ResumeService);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
@@ -81,7 +81,6 @@ const MatchingDialog = () => {
     setIsAnalyzing(true);
 
     try {
-      await sync();
       const result = await resumeService.matchResume(
         resume.id,
         jdFile ? undefined : jdText,

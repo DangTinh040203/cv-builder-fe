@@ -22,8 +22,9 @@ import TemplateFormat from "@/components/builder-screen/template-format";
 import TemplatePreview from "@/components/builder-screen/template-preview";
 import NotFound from "@/components/common/not-found";
 import { useService } from "@/hooks/use-http";
+import { useSyncResume } from "@/hooks/use-sync-resume";
 import { ResumeService } from "@/services/resume.service";
-import { resumeSelector, setResume } from "@/stores/features/resume.slice";
+import { setResume } from "@/stores/features/resume.slice";
 import {
   templateConfigSelector,
   templateSelectedSelector,
@@ -42,7 +43,7 @@ const BuilderScreen = () => {
       : Section.Personal,
   );
 
-  const { resume } = useAppSelector(resumeSelector);
+  const { resume } = useSyncResume();
   const { previewMode } = useAppSelector(templateConfigSelector);
   const templateSelected = useAppSelector(templateSelectedSelector);
 

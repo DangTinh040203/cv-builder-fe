@@ -14,7 +14,6 @@ import React from "react";
 import MatchingDialog from "@/components/builder-screen/matching-dialog";
 import DownloadPdf from "@/components/templates/download-pdf";
 import { useSyncResume } from "@/hooks/use-sync-resume";
-import { resumeSelector } from "@/stores/features/resume.slice";
 import {
   templateConfigSelector,
   updatePreviewMode,
@@ -22,7 +21,7 @@ import {
 import { useAppDispatch, useAppSelector } from "@/stores/store";
 
 const ResumeControl = () => {
-  const { resume } = useAppSelector(resumeSelector);
+  const { resume } = useSyncResume();
   const { previewMode } = useAppSelector(templateConfigSelector);
   const dispatch = useAppDispatch();
   const { sync, isSyncing } = useSyncResume();

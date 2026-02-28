@@ -5,7 +5,7 @@ import React, { useMemo } from "react";
 
 import TemplateWrapper from "@/components/templates/template-wrapper";
 import { TEMPLATES } from "@/configs/template.config";
-import { resumeSelector } from "@/stores/features/resume.slice";
+import { useSyncResume } from "@/hooks/use-sync-resume";
 import {
   templateConfigSelector,
   templateFormatSelector,
@@ -17,7 +17,7 @@ import { useAppDispatch, useAppSelector } from "@/stores/store";
 const TemplatePreview = () => {
   const templateSelected = useAppSelector(templateSelectedSelector);
   const templateFormat = useAppSelector(templateFormatSelector);
-  const { resume } = useAppSelector(resumeSelector);
+  const { resume } = useSyncResume();
   const { previewMode } = useAppSelector(templateConfigSelector);
   const dispatch = useAppDispatch();
 
