@@ -29,6 +29,7 @@ import {
   ArrowLeft,
   Brain,
   ClipboardList,
+  Key,
   Lightbulb,
   ScanSearch,
   Sparkles,
@@ -146,42 +147,149 @@ const MatchingDialog = () => {
         </div>
 
         {isAnalyzing ? (
-          <div className="flex flex-col items-center justify-center gap-4 py-12">
-            <Brain className="text-primary h-16 w-16 animate-pulse" />
-            <p className="text-lg font-medium">Analyzing...</p>
+          <div className="flex flex-col items-center justify-center gap-8 py-24">
+            <div className="relative flex h-32 w-32 items-center justify-center">
+              {/* Animated glowing rings */}
+              <div
+                className={`
+                  bg-primary/5 absolute inset-0 animate-ping rounded-full
+                `}
+                style={{ animationDuration: "3s" }}
+              />
+              <div
+                className={`
+                  bg-primary/10 absolute inset-2 animate-ping rounded-full
+                `}
+                style={{ animationDuration: "2.5s", animationDelay: "0.5s" }}
+              />
+              <div
+                className={`
+                  bg-primary/20 absolute inset-4 animate-ping rounded-full
+                `}
+                style={{ animationDuration: "2s", animationDelay: "1s" }}
+              />
+
+              {/* Core Icon wrapper */}
+              <div
+                className={`
+                  border-primary/30 bg-background/90 shadow-primary/20 relative
+                  z-10 flex h-20 w-20 items-center justify-center rounded-full
+                  border-2 shadow-[0_0_40px_hsl(var(--primary)/0.4)]
+                  backdrop-blur-xl
+                `}
+              >
+                <Brain className="text-primary h-10 w-10 animate-pulse" />
+                <Sparkles
+                  className={`
+                    absolute -top-2 -right-2 h-6 w-6 animate-bounce
+                    text-amber-500
+                  `}
+                />
+              </div>
+            </div>
+
+            {/* Text elements */}
+            <div className="flex flex-col items-center gap-3 text-center">
+              <h3
+                className={`
+                  from-primary to-primary/50 bg-linear-to-r bg-clip-text
+                  text-2xl font-bold tracking-tight text-transparent
+                `}
+              >
+                AI Engines Processing
+              </h3>
+              <div className="text-muted-foreground flex items-center gap-2">
+                <ScanSearch
+                  className="text-primary/70 h-5 w-5 animate-spin"
+                  style={{ animationDuration: "4s" }}
+                />
+                <p className="animate-pulse text-sm font-medium">
+                  Deep scanning CV against Job Details...
+                </p>
+              </div>
+              <div className="mt-2 flex items-center gap-1.5">
+                <span
+                  className={`
+                    bg-primary/80 h-1.5 w-1.5 animate-bounce rounded-full
+                  `}
+                  style={{ animationDelay: "0ms" }}
+                />
+                <span
+                  className={`
+                    bg-primary/80 h-1.5 w-1.5 animate-bounce rounded-full
+                  `}
+                  style={{ animationDelay: "150ms" }}
+                />
+                <span
+                  className={`
+                    bg-primary/80 h-1.5 w-1.5 animate-bounce rounded-full
+                  `}
+                  style={{ animationDelay: "300ms" }}
+                />
+              </div>
+            </div>
           </div>
         ) : matchResult ? (
-          <ScrollArea className="max-h-[80vh] pr-4">
+          <ScrollArea className="scrollbar-thin max-h-[80vh] pr-4">
             <div className="space-y-8 pb-4">
               {/* Overall Score */}
-              <div className="flex flex-col items-center gap-4 pt-2">
-                <ScoreGauge score={matchResult.overallScore} />
-                <p
+              <div
+                className={`
+                  bg-muted/30 border-border/50 mt-2 flex flex-col items-center
+                  gap-6 rounded-xl border p-6
+                  md:flex-row md:items-start md:gap-8
+                `}
+              >
+                <div
                   className={`
-                    text-muted-foreground max-w-2xl text-center text-sm
-                    leading-relaxed
+                    flex shrink-0 flex-col items-center justify-center gap-2
                   `}
                 >
-                  {matchResult.summary}
-                </p>
+                  <ScoreGauge score={matchResult.overallScore} />
+                  <span
+                    className={`
+                      text-muted-foreground text-xs font-semibold tracking-wider
+                      uppercase
+                    `}
+                  >
+                    Overall Match
+                  </span>
+                </div>
+                <div
+                  className={`
+                    flex flex-col space-y-3 pt-2 text-center
+                    md:text-left
+                  `}
+                >
+                  <h3 className="text-lg font-semibold tracking-tight">
+                    Analysis Summary
+                  </h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed">
+                    {matchResult.summary}
+                  </p>
+                </div>
               </div>
 
               <div
                 className={`
                   grid grid-cols-1 gap-8
-                  md:grid-cols-2
+                  lg:grid-cols-[1fr_350px]
+                  xl:grid-cols-[1fr_400px]
                 `}
               >
-                {/* Left Column: Criteria Breakdown (Using Accordion) */}
-                <div className="space-y-4">
-                  <h4 className="flex items-center gap-2 text-sm font-semibold">
-                    <ScanSearch size={16} /> Scoring Breakdown
-                  </h4>
-                  <Accordion
-                    type="single"
-                    collapsible
-                    className="w-full space-y-3"
+                {/* Left Column: Criteria Breakdown */}
+                <div className="space-y-6">
+                  <div
+                    className={`
+                      border-border/60 flex items-center gap-2 border-b pb-3
+                    `}
                   >
+                    <ScanSearch size={20} className="text-primary" />
+                    <h4 className="text-base font-semibold tracking-tight">
+                      Scoring Breakdown
+                    </h4>
+                  </div>
+                  <Accordion type="single" collapsible className="w-full">
                     {matchResult.criteria.map((criterion, index) => {
                       const colors = getScoreColor(criterion.score);
                       return (
@@ -189,13 +297,14 @@ const MatchingDialog = () => {
                           key={criterion.name}
                           value={`item-${index}`}
                           className={`
-                            bg-muted/30 rounded-lg border px-4 py-1 shadow-sm
+                            border-border/50 border-b px-2
+                            last:border-0
                           `}
                         >
                           <AccordionTrigger
                             className={`
-                              py-3
-                              hover:no-underline
+                              py-4
+                              hover:no-underline hover:opacity-80
                             `}
                           >
                             <div
@@ -206,10 +315,15 @@ const MatchingDialog = () => {
                               <span className="text-sm font-medium">
                                 {criterion.name}
                               </span>
-                              <div className="flex items-center gap-3">
+                              <div
+                                className={`
+                                  flex flex-col items-end gap-1
+                                  sm:flex-row sm:items-center sm:gap-4
+                                `}
+                              >
                                 <span
                                   className={`
-                                    text-muted-foreground text-xs font-normal
+                                    text-muted-foreground text-xs font-medium
                                   `}
                                 >
                                   Weight: {criterion.weight}%
@@ -225,15 +339,15 @@ const MatchingDialog = () => {
                               </div>
                             </div>
                           </AccordionTrigger>
-                          <AccordionContent className="pt-2 pb-3">
-                            <div className="space-y-3">
+                          <AccordionContent className="pt-1 pb-5">
+                            <div className="space-y-3.5">
                               <Progress
                                 value={criterion.score}
-                                className="h-1.5"
+                                className="h-2"
                               />
                               <p
                                 className={`
-                                  text-muted-foreground text-xs leading-relaxed
+                                  text-muted-foreground text-sm leading-relaxed
                                 `}
                               >
                                 {criterion.explanation}
@@ -247,26 +361,29 @@ const MatchingDialog = () => {
                 </div>
 
                 {/* Right Column: Missing Keywords & Suggestions */}
-                <div className="space-y-6">
+                <div className="space-y-8">
                   {/* Missing Keywords */}
                   {matchResult.missingKeywords.length > 0 && (
-                    <div className="space-y-3">
-                      <h4
+                    <div className="space-y-4">
+                      <div
                         className={`
-                          flex items-center gap-2 text-sm font-semibold
+                          border-border/60 flex items-center gap-2 border-b pb-3
                         `}
                       >
-                        🔑 Missing Keywords
-                      </h4>
+                        <Key size={18} className="text-destructive" />
+                        <h4 className="text-base font-semibold tracking-tight">
+                          Missing Keywords
+                        </h4>
+                      </div>
                       <div className="flex flex-wrap gap-2">
                         {matchResult.missingKeywords.map((keyword) => (
                           <Badge
                             key={keyword}
                             variant="secondary"
                             className={`
-                              bg-red-100 text-red-700
-                              hover:bg-red-200
-                              dark:bg-red-900/30 dark:text-red-400
+                              bg-destructive/10 text-destructive
+                              border-transparent transition-colors
+                              hover:bg-destructive/20
                             `}
                           >
                             {keyword}
@@ -278,40 +395,38 @@ const MatchingDialog = () => {
 
                   {/* Suggestions */}
                   {matchResult.suggestions.length > 0 && (
-                    <div className="space-y-3">
-                      <h4
+                    <div className="space-y-4">
+                      <div
                         className={`
-                          flex items-center gap-2 text-sm font-semibold
+                          border-border/60 flex items-center gap-2 border-b pb-3
                         `}
                       >
-                        <Lightbulb size={16} /> Suggestions
-                      </h4>
-                      <div
-                        className={`bg-muted/30 rounded-lg border p-4 shadow-sm`}
-                      >
-                        <ul className="space-y-2.5">
-                          {matchResult.suggestions.map((suggestion, i) => (
-                            <li
-                              key={i}
-                              className={`
-                                text-muted-foreground flex gap-3 text-sm
-                              `}
-                            >
-                              <span
-                                className={`
-                                  text-primary mt-0.5 shrink-0 text-lg
-                                  leading-none
-                                `}
-                              >
-                                •
-                              </span>
-                              <span className="leading-relaxed">
-                                {suggestion}
-                              </span>
-                            </li>
-                          ))}
-                        </ul>
+                        <Lightbulb size={18} className="text-amber-500" />
+                        <h4 className="text-base font-semibold tracking-tight">
+                          Actionable Suggestions
+                        </h4>
                       </div>
+                      <ul className="space-y-3.5">
+                        {matchResult.suggestions.map((suggestion, i) => (
+                          <li
+                            key={i}
+                            className={`
+                              text-muted-foreground flex items-start gap-3
+                              text-sm
+                            `}
+                          >
+                            <div
+                              className={`
+                                mt-1 flex h-1.5 w-1.5 shrink-0 rounded-full
+                                bg-amber-500/70
+                              `}
+                            />
+                            <span className="leading-relaxed">
+                              {suggestion}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   )}
                 </div>
