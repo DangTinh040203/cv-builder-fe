@@ -71,17 +71,27 @@ const ResumeControl = () => {
 
       <div
         className={`
-          flex flex-wrap gap-4
-          md:flex
+          grid grid-cols-2 gap-2
+          sm:flex sm:flex-wrap sm:gap-4
         `}
       >
-        <motion.div>
+        <motion.div
+          className={`
+            w-full
+            sm:w-auto
+          `}
+        >
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
                   variant="gradient"
-                  className={cn("shrink-0 gap-2 transition-all duration-200")}
+                  className={cn(
+                    `
+                      w-full shrink-0 gap-2 transition-all duration-200
+                      sm:w-auto
+                    `,
+                  )}
                   onClick={sync}
                   disabled={isSyncing}
                 >
@@ -100,10 +110,22 @@ const ResumeControl = () => {
           </TooltipProvider>
         </motion.div>
 
-        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+        <motion.div
+          className={`
+            w-full
+            sm:w-auto
+          `}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+        >
           <Button
             variant="outline"
-            className={cn("shrink-0 gap-2 transition-colors duration-200")}
+            className={cn(
+              `
+                w-full shrink-0 gap-2 transition-colors duration-200
+                sm:w-auto
+              `,
+            )}
             onClick={handleTogglePreviewMode}
           >
             <motion.div
@@ -121,9 +143,25 @@ const ResumeControl = () => {
           </Button>
         </motion.div>
 
-        <MatchingDialog />
+        <div
+          className={`
+            w-full
+            sm:w-auto
+          `}
+        >
+          <MatchingDialog />
+        </div>
 
-        {resume && <DownloadPdf resume={resume} />}
+        {resume && (
+          <div
+            className={`
+              w-full
+              sm:w-auto
+            `}
+          >
+            <DownloadPdf resume={resume} />
+          </div>
+        )}
       </div>
     </div>
   );

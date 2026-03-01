@@ -89,7 +89,10 @@ const DownloadPdf: React.FC<DownloadPdfProps> = ({ resume }) => {
       disabled={isProcessing}
       onClick={handleDownload}
       variant="outline"
-      className="shrink-0 gap-2 shadow-2xl"
+      className={`
+        w-full shrink-0 gap-2 shadow-2xl
+        sm:w-auto
+      `}
     >
       <Download className="h-4 w-4" />
       Export PDF

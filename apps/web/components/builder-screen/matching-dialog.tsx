@@ -87,9 +87,12 @@ const MatchingDialog = () => {
       <DialogTrigger asChild>
         <Button
           variant={"secondary"}
-          className="border-primary border shadow-xl"
+          className={`
+            border-primary w-full border shadow-xl
+            sm:w-auto
+          `}
         >
-          <Brain /> JD Matching
+          <Brain className="mr-2 h-4 w-4" /> JD Matching
         </Button>
       </DialogTrigger>
 
