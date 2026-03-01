@@ -88,8 +88,8 @@ const DownloadPdf: React.FC<DownloadPdfProps> = ({ resume }) => {
     <Button
       disabled={isProcessing}
       onClick={handleDownload}
-      variant="gradient"
-      className="shrink-0 gap-2 shadow-xl"
+      variant="outline"
+      className="shrink-0 gap-2 shadow-2xl"
     >
       <Download className="h-4 w-4" />
       Export PDF

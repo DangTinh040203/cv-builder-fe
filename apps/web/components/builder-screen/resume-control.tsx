@@ -80,10 +80,8 @@ const ResumeControl = () => {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
-                  variant="outline"
-                  className={cn(
-                    "shrink-0 gap-2 transition-colors duration-200",
-                  )}
+                  variant="gradient"
+                  className={cn("shrink-0 gap-2 transition-all duration-200")}
                   onClick={sync}
                   disabled={isSyncing}
                 >

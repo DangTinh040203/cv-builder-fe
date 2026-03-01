@@ -1,12 +1,9 @@
 "use client";
 
 import { Button } from "@shared/ui/components/button";
-import { Input } from "@shared/ui/components/input";
 import { toast } from "@shared/ui/components/sonner";
-import { cn } from "@shared/ui/lib/utils";
 import { AxiosError } from "axios";
 import { motion } from "framer-motion";
-import { Check, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
@@ -27,17 +24,7 @@ import { fadeInUp, staggerContainer } from "@/styles/animation";
 import { type ErrorResponse } from "@/types/error.response";
 import { toastErrorMessage } from "@/utils/toast-error-message.util";
 
-const categories = [
-  { id: "all", label: "All" },
-  { id: "professional", label: "Professional" },
-  { id: "modern", label: "Modern" },
-  { id: "creative", label: "Creative" },
-  { id: "minimal", label: "Minimal" },
-];
-
 const Templates = () => {
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [searchQuery, setSearchQuery] = useState<string>("");
   const [isSelectionOpen, setIsSelectionOpen] = useState(false);
   const [selectedTemplateForBuilder, setSelectedTemplateForBuilder] = useState<
     string | null
@@ -193,55 +180,6 @@ const Templates = () => {
             Browse our collection of professionally designed CV templates. Each
             template is ATS-friendly and fully customizable.
           </motion.p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className={`
-            mb-8 flex flex-col items-center justify-between gap-4
-            md:flex-row
-          `}
-        >
-          <div className="relative max-w-md flex-1">
-            <Search
-              className={`
-                text-muted-foreground absolute top-1/2 left-3 h-5 w-5
-                -translate-y-1/2
-              `}
-            />
-            <Input
-              placeholder="Search templates..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="bg-background/50 pl-10 backdrop-blur-sm"
-            />
-          </div>
-
-          <div className="flex flex-wrap gap-2">
-            {categories.map((category) => (
-              <Button
-                key={category.id}
-                variant={
-                  selectedCategory === category.id ? "default" : "outline"
-                }
-                onClick={() => setSelectedCategory(category.id)}
-                className={cn(
-                  selectedCategory === category.id && "gradient-bg border-0",
-                  `
-                    bg-background/50 backdrop-blur-sm transition-all
-                    hover:scale-105
-                  `,
-                )}
-              >
-                {selectedCategory === category.id && (
-                  <Check className="mr-1 h-4 w-4" />
-                )}
-                {category.label}
-              </Button>
-            ))}
-          </div>
         </motion.div>
 
         <motion.div
