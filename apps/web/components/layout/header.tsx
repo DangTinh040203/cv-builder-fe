@@ -21,9 +21,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
   CreditCard,
   FileText,
+  Home,
   LogOut,
   Menu,
-  MessageSquare,
   User,
   X,
 } from "lucide-react";
@@ -32,8 +32,8 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const navLinks = [
+  { href: "/", label: "Home", icon: Home },
   { href: "/templates", label: "Templates", icon: FileText },
-  { href: "/interview", label: "Mock Interview", icon: MessageSquare },
 ];
 
 // Animation variants
