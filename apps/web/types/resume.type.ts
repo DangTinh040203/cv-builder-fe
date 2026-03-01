@@ -126,5 +126,6 @@ export interface MatchResult {
   summary: string;
   criteria: MatchCriterion[];
   missingKeywords: string[];
+  strengths: string[];
   suggestions: string[];
 }
