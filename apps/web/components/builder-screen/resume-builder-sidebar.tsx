@@ -87,20 +87,7 @@ const ResumeBuilderSidebar = ({
               >
                 <span className="flex items-center gap-2">
                   <section.icon className="h-4 w-4" />
-                  <span
-                    className={`
-                      hidden
-                      sm:inline
-                    `}
-                  >
-                    {section.label}
-                  </span>
-                  <span className="sm:hidden">{section.label.slice(0, 3)}</span>
-                  {/* Keep full label on larger mobile, maybe truncate or icon only on very small? 
-                      Actually, let's keep full label but allow scrolling. 
-                      Reverting the span change to just use section.label for simplicity first. 
-                   */}
-                  {/* Let's stick to the original label but ensure it doesn't wrap awkwardly. whitespace-nowrap */}
+                  <span className="whitespace-nowrap">{section.label}</span>
                 </span>
                 {activeSection === section.id && (
                   <ChevronRight
