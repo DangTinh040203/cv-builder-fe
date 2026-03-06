@@ -163,7 +163,7 @@ export const InterviewSetupForm = ({
           <SelectTrigger>
             <SelectValue placeholder="Select type" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent align="start" side="bottom">
             {INTERVIEW_TYPE_OPTIONS.map((option) => (
               <SelectItem key={option.value} value={option.value}>
                 {option.label}
