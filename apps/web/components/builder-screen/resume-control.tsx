@@ -121,7 +121,7 @@ const ResumeControl = () => {
           whileTap={{ scale: 0.98 }}
         >
           <Button
-            variant="outline"
+            variant="secondary"
             className={cn(
               `
                 w-full shrink-0 gap-2 transition-colors duration-200
@@ -144,6 +144,17 @@ const ResumeControl = () => {
             {previewMode ? "Edit" : "Customize"}
           </Button>
         </motion.div>
+
+        {resume && (
+          <div
+            className={`
+              w-full
+              sm:w-auto
+            `}
+          >
+            <DownloadPdf resume={resume} />
+          </div>
+        )}
 
         <div
           className={`
@@ -175,17 +186,6 @@ const ResumeControl = () => {
             onOpenChange={setShowInterview}
           />
         </div>
-
-        {resume && (
-          <div
-            className={`
-              w-full
-              sm:w-auto
-            `}
-          >
-            <DownloadPdf resume={resume} />
-          </div>
-        )}
       </div>
     </div>
   );
