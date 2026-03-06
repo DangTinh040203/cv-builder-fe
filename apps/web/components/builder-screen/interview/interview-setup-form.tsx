@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@shared/ui/components/button";
+import { Label } from "@shared/ui/components/label";
 import {
   Select,
   SelectContent,
@@ -8,14 +9,32 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@shared/ui/components/select";
+import { Separator } from "@shared/ui/components/separator";
 import { Slider } from "@shared/ui/components/slider";
 import { Textarea } from "@shared/ui/components/textarea";
-import { AlertCircle, Loader2, Mic } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@shared/ui/components/tooltip";
+import { cn } from "@shared/ui/lib/utils";
+import {
+  AlertCircle,
+  BrainCircuit,
+  Code,
+  Globe,
+  Info,
+  Loader2,
+  Mic,
+  Shuffle,
+  Users,
+  Volume2,
+} from "lucide-react";
 import React, { useState } from "react";
 
 import {
   INTERVIEW_TYPE_DEFAULT,
-  INTERVIEW_TYPE_OPTIONS,
   LANGUAGE_DEFAULT,
   LANGUAGE_OPTIONS,
   QUESTION_COUNT_DEFAULT,
@@ -29,10 +48,28 @@ import {
   VOICE_OPTIONS,
 } from "@/constants/interview.constant";
 import { useSyncResume } from "@/hooks/use-sync-resume";
-import {
-  type InterviewConfig,
-  type InterviewType,
-} from "@/types/interview.type";
+import { type InterviewConfig, InterviewType } from "@/types/interview.type";
+
+const INTERVIEW_TYPE_CARDS = [
+  {
+    value: InterviewType.ALL,
+    label: "All (Mixed)",
+    icon: Shuffle,
+    description: "Technical & behavioral",
+  },
+  {
+    value: InterviewType.BEHAVIORAL,
+    label: "Behavioral",
+    icon: Users,
+    description: "STAR method questions",
+  },
+  {
+    value: InterviewType.TECHNICAL,
+    label: "Technical",
+    icon: Code,
+    description: "System design & coding",
+  },
+] as const;
 
 interface InterviewSetupFormProps {
   onStart: (config: InterviewConfig) => Promise<void>;
@@ -86,202 +123,260 @@ export const InterviewSetupForm = ({
   const hasInput = jdText.trim().length > 0;
 
   return (
-    <div className="space-y-6 pt-2">
-      {/* Error Banner */}
-      {error && (
-        <div
-          className={`
-            flex items-start gap-3 rounded-lg border border-red-200 bg-red-50
-            p-4
-            dark:border-red-900/50 dark:bg-red-950/20
-          `}
-        >
-          <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-red-500" />
-          <div className="flex-1">
-            <p
-              className={`
-                text-sm font-medium text-red-800
-                dark:text-red-200
-              `}
-            >
-              {error}
-            </p>
-            <Button
-              variant="link"
-              size="sm"
-              className={`
-                mt-1 h-auto p-0 text-red-600
-                dark:text-red-400
-              `}
-              onClick={onRetry}
-            >
-              Try again
-            </Button>
+    <TooltipProvider delayDuration={300}>
+      <div className="space-y-5 pt-2">
+        {/* Error Banner */}
+        {error && (
+          <div
+            className={`
+              flex items-start gap-3 rounded-lg border border-red-200 bg-red-50
+              p-3
+              dark:border-red-900/50 dark:bg-red-950/20
+            `}
+          >
+            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-500" />
+            <div className="flex-1">
+              <p
+                className={`
+                  text-sm font-medium text-red-800
+                  dark:text-red-200
+                `}
+              >
+                {error}
+              </p>
+              <Button
+                variant="link"
+                size="sm"
+                className={`
+                  mt-1 h-auto p-0 text-red-600
+                  dark:text-red-400
+                `}
+                onClick={onRetry}
+              >
+                Try again
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Job Description */}
+        <div className="space-y-1.5">
+          <Label className="text-sm font-medium">Job Description</Label>
+          <Textarea
+            className="scrollbar-thin h-32 resize-none overflow-y-auto text-sm"
+            placeholder="Paste the job description here..."
+            value={jdText}
+            onChange={(e) => setJdText(e.target.value)}
+            disabled={isLoading}
+          />
+          <p className="text-muted-foreground text-xs">
+            The AI will tailor questions based on this JD and your resume.
+          </p>
+        </div>
+
+        <Separator />
+
+        {/* Interview Type — Card Selection */}
+        <div className="space-y-2">
+          <Label className="text-sm font-medium">Interview Type</Label>
+          <div className="grid grid-cols-3 gap-2">
+            {INTERVIEW_TYPE_CARDS.map((card) => {
+              const Icon = card.icon;
+              const isSelected = interviewType === card.value;
+              return (
+                <button
+                  key={card.value}
+                  type="button"
+                  disabled={isLoading}
+                  onClick={() => setInterviewType(card.value)}
+                  className={cn(
+                    `
+                      flex flex-col items-center gap-1.5 rounded-lg border-2
+                      px-3 py-3 transition-all
+                    `,
+                    "hover:border-primary/50 hover:bg-primary/5",
+                    "disabled:pointer-events-none disabled:opacity-50",
+                    isSelected
+                      ? "border-primary bg-primary/10 text-primary shadow-sm"
+                      : "border-muted bg-background text-muted-foreground",
+                  )}
+                >
+                  <Icon
+                    size={20}
+                    className={cn(
+                      isSelected ? "text-primary" : "text-muted-foreground",
+                    )}
+                  />
+                  <span className="text-xs font-semibold">{card.label}</span>
+                  <span
+                    className={cn(
+                      "text-[10px] leading-tight",
+                      isSelected
+                        ? "text-primary/70"
+                        : "text-muted-foreground/70",
+                    )}
+                  >
+                    {card.description}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
-      )}
 
-      {/* Job Description */}
-      <div className="space-y-2">
-        <label className="text-sm font-medium">Job Description</label>
-        <Textarea
-          className="scrollbar-thin h-48 resize-none overflow-y-auto"
-          placeholder="Paste the job description here..."
-          value={jdText}
-          onChange={(e) => setJdText(e.target.value)}
-          disabled={isLoading}
-        />
-        <p className="text-muted-foreground text-xs">
-          The AI interviewer will tailor questions based on this JD and your
-          resume.
-        </p>
-      </div>
+        {/* Questions Count + Speech Speed — Side by side */}
+        <div className="grid grid-cols-2 gap-4">
+          {/* Number of Questions */}
+          <div className="space-y-2.5">
+            <div className="flex items-center justify-between">
+              <Label className="text-sm font-medium">Questions</Label>
+              <span
+                className={`
+                  bg-primary/10 text-primary rounded-full px-2 py-0.5 text-xs
+                  font-bold tabular-nums
+                `}
+              >
+                {questionCount}
+              </span>
+            </div>
+            <Slider
+              value={[questionCount]}
+              onValueChange={(val) =>
+                setQuestionCount(val[0] ?? QUESTION_COUNT_DEFAULT)
+              }
+              min={QUESTION_COUNT_MIN}
+              max={QUESTION_COUNT_MAX}
+              step={1}
+              disabled={isLoading}
+            />
+            <div
+              className={`
+                text-muted-foreground flex justify-between text-[10px]
+              `}
+            >
+              <span>{QUESTION_COUNT_MIN}</span>
+              <span>{QUESTION_COUNT_MAX}</span>
+            </div>
+          </div>
 
-      {/* Question Count */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <label className="text-sm font-medium">Number of Questions</label>
-          <span
-            className={`
-              bg-primary/10 text-primary rounded-md px-2.5 py-0.5 text-sm
-              font-semibold
-            `}
+          {/* Speech Speed */}
+          <div className="space-y-2.5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1">
+                <Label className="text-sm font-medium">Speed</Label>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Info size={12} className="text-muted-foreground" />
+                  </TooltipTrigger>
+                  <TooltipContent side="top" className="max-w-52 text-xs">
+                    Controls how fast the AI interviewer speaks.
+                  </TooltipContent>
+                </Tooltip>
+              </div>
+              <span
+                className={`
+                  bg-primary/10 text-primary rounded-full px-2 py-0.5 text-xs
+                  font-bold tabular-nums
+                `}
+              >
+                {speechRate.toFixed(1)}x
+              </span>
+            </div>
+            <Slider
+              value={[speechRate]}
+              onValueChange={(val) =>
+                setSpeechRate(val[0] ?? SPEECH_RATE_DEFAULT)
+              }
+              min={SPEECH_RATE_MIN}
+              max={SPEECH_RATE_MAX}
+              step={SPEECH_RATE_STEP}
+              disabled={isLoading}
+            />
+            <div
+              className={`
+                text-muted-foreground flex justify-between text-[10px]
+              `}
+            >
+              <span>Slow</span>
+              <span>Fast</span>
+            </div>
+          </div>
+        </div>
+
+        <Separator />
+
+        {/* Language + Voice — Side by side */}
+        <div className="grid grid-cols-2 gap-4">
+          {/* Language */}
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-1.5">
+              <Globe size={14} className="text-muted-foreground" />
+              <Label className="text-sm font-medium">Language</Label>
+            </div>
+            <Select
+              value={language}
+              onValueChange={setLanguage}
+              disabled={isLoading}
+            >
+              <SelectTrigger className="h-9 w-full text-sm">
+                <SelectValue placeholder="Select language" />
+              </SelectTrigger>
+              <SelectContent align="start" side="bottom">
+                {LANGUAGE_OPTIONS.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Voice */}
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-1.5">
+              <Volume2 size={14} className="text-muted-foreground" />
+              <Label className="text-sm font-medium">Voice</Label>
+            </div>
+            <Select
+              value={voiceName}
+              onValueChange={setVoiceName}
+              disabled={isLoading}
+            >
+              <SelectTrigger className="h-9 w-full text-sm">
+                <SelectValue placeholder="Select voice" />
+              </SelectTrigger>
+              <SelectContent align="start" side="bottom" className="max-h-52">
+                {VOICE_OPTIONS.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        {/* Start Button */}
+        <div className="pt-1">
+          <Button
+            onClick={handleStart}
+            disabled={!hasInput || isLoading}
+            className="w-full"
+            variant="gradient"
           >
-            {questionCount}
-          </span>
-        </div>
-        <Slider
-          value={[questionCount]}
-          onValueChange={(val) =>
-            setQuestionCount(val[0] ?? QUESTION_COUNT_DEFAULT)
-          }
-          min={QUESTION_COUNT_MIN}
-          max={QUESTION_COUNT_MAX}
-          step={1}
-          disabled={isLoading}
-        />
-        <div className="text-muted-foreground flex justify-between text-xs">
-          <span>{QUESTION_COUNT_MIN} questions</span>
-          <span>{QUESTION_COUNT_MAX} questions</span>
+            {isLoading ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <Mic className="mr-2 h-4 w-4" />
+            )}
+            {isSyncing
+              ? "Saving Resume..."
+              : isStarting
+                ? "Starting..."
+                : "Start Interview"}
+          </Button>
         </div>
       </div>
-
-      {/* Interview Type */}
-      <div className="space-y-2">
-        <label className="text-sm font-medium">Interview Type</label>
-        <Select
-          value={interviewType}
-          onValueChange={(val) => setInterviewType(val as InterviewType)}
-          disabled={isLoading}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Select type" />
-          </SelectTrigger>
-          <SelectContent align="start" side="bottom">
-            {INTERVIEW_TYPE_OPTIONS.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      {/* Language */}
-      <div className="space-y-2">
-        <label className="text-sm font-medium">Interview Language</label>
-        <Select
-          value={language}
-          onValueChange={setLanguage}
-          disabled={isLoading}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Select language" />
-          </SelectTrigger>
-          <SelectContent align="start" side="bottom">
-            {LANGUAGE_OPTIONS.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <p className="text-muted-foreground text-xs">
-          The AI interviewer will speak in this language throughout the session.
-        </p>
-      </div>
-
-      {/* Voice Selection */}
-      <div className="space-y-2">
-        <label className="text-sm font-medium">Interviewer Voice</label>
-        <Select
-          value={voiceName}
-          onValueChange={setVoiceName}
-          disabled={isLoading}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Select voice" />
-          </SelectTrigger>
-          <SelectContent align="start" side="bottom" className="max-h-60">
-            {VOICE_OPTIONS.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      {/* Speech Speed */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <label className="text-sm font-medium">Speech Speed</label>
-          <span
-            className={`
-              bg-primary/10 text-primary rounded-md px-2.5 py-0.5 text-sm
-              font-semibold
-            `}
-          >
-            {speechRate.toFixed(1)}x
-          </span>
-        </div>
-        <Slider
-          value={[speechRate]}
-          onValueChange={(val) =>
-            setSpeechRate(val[0] ?? SPEECH_RATE_DEFAULT)
-          }
-          min={SPEECH_RATE_MIN}
-          max={SPEECH_RATE_MAX}
-          step={SPEECH_RATE_STEP}
-          disabled={isLoading}
-        />
-        <div className="text-muted-foreground flex justify-between text-xs">
-          <span>0.5x (Slow)</span>
-          <span>1.0x</span>
-          <span>2.0x (Fast)</span>
-        </div>
-      </div>
-
-      {/* Start Button */}
-      <div className="pt-2">
-        <Button
-          onClick={handleStart}
-          disabled={!hasInput || isLoading}
-          className="w-full"
-          variant="gradient"
-        >
-          {isLoading ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            <Mic className="mr-2 h-4 w-4" />
-          )}
-          {isSyncing
-            ? "Saving Resume..."
-            : isStarting
-              ? "Starting..."
-              : "Start Interview"}
-        </Button>
-      </div>
-    </div>
+    </TooltipProvider>
   );
 };

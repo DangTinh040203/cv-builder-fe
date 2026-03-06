@@ -160,7 +160,7 @@ export const InterviewActive = ({
         >
           <canvas
             ref={canvasRef}
-            className="h-32 w-full mx-auto"
+            className="mx-auto h-32 w-full"
             style={{ width: "100%", height: "128px" }}
           />
         </div>
