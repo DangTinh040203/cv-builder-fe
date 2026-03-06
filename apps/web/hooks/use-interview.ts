@@ -71,11 +71,6 @@ export function useInterview(): UseInterviewReturn {
     isMutedRef.current = isMuted;
   }, [isMuted]);
 
-  // Keep AI speaking ref in sync with state
-  useEffect(() => {
-    isAISpeakingRef.current = isAISpeaking;
-  }, [isAISpeaking]);
-
   // ─── Audio Playback (Gapless Scheduled) ───────────────
   const nextPlayTimeRef = useRef(0);
   const activeSourceCountRef = useRef(0);
@@ -112,17 +107,19 @@ export function useInterview(): UseInterviewReturn {
 
     activeSourceCountRef.current++;
     setIsAISpeaking(true);
+    isAISpeakingRef.current = true;
 
     source.onended = () => {
       activeSourceCountRef.current--;
       if (activeSourceCountRef.current <= 0) {
         activeSourceCountRef.current = 0;
-        setIsAISpeaking(false);
-
-        // Notify server that AI audio playback finished — the server
-        // will start the silence timer only AFTER the user has heard
-        // the full question, not when Gemini finishes generating it.
-        serviceRef.current?.sendPlaybackComplete();
+        // Brief cooldown before re-enabling mic to let echo/reverb dissipate
+        // and prevent Gemini's VAD from picking up leftover speaker output.
+        setTimeout(() => {
+          setIsAISpeaking(false);
+          isAISpeakingRef.current = false;
+          serviceRef.current?.sendPlaybackComplete();
+        }, 300);
       }
     };
 
@@ -373,11 +370,12 @@ export function useInterview(): UseInterviewReturn {
             total: data.totalQuestions,
           });
           setIsAISpeaking(false);
+          isAISpeakingRef.current = false;
         });
 
         service.onInterrupted(() => {
           setIsAISpeaking(false);
-          // Reset playback scheduling on interrupt
+          isAISpeakingRef.current = false;
           nextPlayTimeRef.current = 0;
           activeSourceCountRef.current = 0;
         });
@@ -443,6 +441,7 @@ export function useInterview(): UseInterviewReturn {
     setFeedback(null);
     setError(null);
     setIsAISpeaking(false);
+    isAISpeakingRef.current = false;
     setIsMuted(false);
     setElapsedTime(0);
   }, [cleanup]);
