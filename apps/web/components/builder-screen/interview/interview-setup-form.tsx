@@ -318,12 +318,21 @@ export const InterviewSetupForm = ({
               onValueChange={setLanguage}
               disabled={isLoading}
             >
-              <SelectTrigger className="h-9 w-full text-sm">
+              <SelectTrigger
+                className={`
+                  h-9 w-full text-sm
+                  focus:border-primary focus:ring-primary/50
+                `}
+              >
                 <SelectValue placeholder="Select language" />
               </SelectTrigger>
               <SelectContent align="start" side="bottom">
                 {LANGUAGE_OPTIONS.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
+                  <SelectItem
+                    key={option.value}
+                    value={option.value}
+                    className="focus:bg-primary/10 focus:text-primary"
+                  >
                     {option.label}
                   </SelectItem>
                 ))}
@@ -342,12 +351,21 @@ export const InterviewSetupForm = ({
               onValueChange={setVoiceName}
               disabled={isLoading}
             >
-              <SelectTrigger className="h-9 w-full text-sm">
+              <SelectTrigger
+                className={`
+                  h-9 w-full text-sm
+                  focus:border-primary focus:ring-primary/50
+                `}
+              >
                 <SelectValue placeholder="Select voice" />
               </SelectTrigger>
               <SelectContent align="start" side="bottom" className="max-h-52">
                 {VOICE_OPTIONS.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
+                  <SelectItem
+                    key={option.value}
+                    value={option.value}
+                    className="focus:bg-primary/10 focus:text-primary"
+                  >
                     {option.label}
                   </SelectItem>
                 ))}
