@@ -1,23 +1,11 @@
 "use client";
 
 import { Button } from "@shared/ui/components/button";
-import { Progress } from "@shared/ui/components/progress";
 import { ScrollArea } from "@shared/ui/components/scroll-area";
-import {
-  AlertCircle,
-  Check,
-  CheckCircle2,
-  Lightbulb,
-  MessageSquare,
-  RefreshCw,
-  TrendingUp,
-} from "lucide-react";
+import { AlertCircle, Check, CheckCircle2, RefreshCw } from "lucide-react";
 import React from "react";
 
-import {
-  getScoreColor,
-  ScoreGauge,
-} from "@/components/builder-screen/score-gauge";
+import { ScoreGauge } from "@/components/builder-screen/score-gauge";
 import type { InterviewFeedback } from "@/types/interview.type";
 
 interface InterviewResultProps {
@@ -73,71 +61,6 @@ export const InterviewResult = ({
             </p>
           </div>
         </div>
-
-        {/* Score Breakdown — Per-Question */}
-        {feedback.questionFeedbacks.length > 0 && (
-          <div className="border-border/60 bg-background rounded-xl border p-5">
-            <div
-              className={`
-                border-border/40 mb-5 flex items-center gap-2 border-b pb-5
-              `}
-            >
-              <TrendingUp size={20} className="text-purple-500" />
-              <h4 className="text-foreground text-base font-bold tracking-tight">
-                Score Breakdown
-              </h4>
-            </div>
-
-            <div className="space-y-6">
-              {feedback.questionFeedbacks.map((qf) => {
-                const colors = getScoreColor(qf.score);
-                return (
-                  <div key={qf.questionNumber} className="space-y-2.5">
-                    <div className="flex w-full items-center justify-between">
-                      <span className="text-foreground text-sm font-bold">
-                        Q{qf.questionNumber}: {qf.question}
-                      </span>
-                      <span
-                        className={`
-                          shrink-0 text-sm font-bold
-                          ${colors.text}
-                        `}
-                      >
-                        {qf.score}%
-                      </span>
-                    </div>
-                    <Progress value={qf.score} className="h-2" />
-                    <p className="text-muted-foreground text-sm leading-relaxed">
-                      {qf.feedback}
-                    </p>
-                    {qf.suggestions && (
-                      <div
-                        className={`
-                          flex items-start gap-2 rounded-lg border
-                          border-blue-200/60 bg-blue-50/50 px-3 py-2
-                          dark:border-blue-900/50 dark:bg-blue-950/20
-                        `}
-                      >
-                        <Lightbulb
-                          size={14}
-                          className="mt-0.5 shrink-0 text-blue-500"
-                        />
-                        <span
-                          className={`
-                            text-xs leading-relaxed text-blue-900
-                            dark:text-blue-200
-                          `}
-                        >
-                          {qf.suggestions}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
 
         {/* 2-Column Grid: Strengths & Areas for Improvement */}
         <div

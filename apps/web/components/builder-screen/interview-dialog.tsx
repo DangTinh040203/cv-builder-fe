@@ -118,7 +118,7 @@ const InterviewDialog = ({ open, onOpenChange }: InterviewDialogProps) => {
             </DialogDescription>
           </div>
 
-          <div className="min-h-0 flex-1 overflow-y-auto">
+          <div className="scrollbar-thin min-h-0 flex-1 overflow-y-auto">
             <AnimatePresence mode="wait">
               {(currentState === "setup" || currentState === "error") && (
                 <motion.div
