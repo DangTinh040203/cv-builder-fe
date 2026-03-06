@@ -305,6 +305,9 @@ export function useInterview(): UseInterviewReturn {
             jobDescription: config.jobDescription,
             questionCount: config.questionCount,
             interviewType: config.interviewType,
+            voiceName: config.voiceName,
+            language: config.language,
+            speechRate: config.speechRate,
           });
         });
 

@@ -9,7 +9,6 @@ import {
 import { Badge } from "@shared/ui/components/badge";
 import { Button } from "@shared/ui/components/button";
 import { Progress } from "@shared/ui/components/progress";
-import { ScrollArea } from "@shared/ui/components/scroll-area";
 import {
   CheckCircle2,
   Lightbulb,
@@ -49,8 +48,7 @@ export const InterviewResult = ({
   const overallStatus = getScoreLabel(feedback.overallScore);
 
   return (
-    <ScrollArea className="scrollbar-thin max-h-[75vh] pr-4">
-      <div className="space-y-4 pb-4">
+    <div className="space-y-4 pb-4">
         {/* Overall Score */}
         <div
           className={`
@@ -104,15 +102,15 @@ export const InterviewResult = ({
                     <AccordionTrigger className="hover:no-underline">
                       <div
                         className={`
-                          flex w-full items-center justify-between pr-2
+                          flex w-full items-center justify-between gap-3 pr-2
                         `}
                       >
-                        <span className="text-sm font-medium">
+                        <span className="min-w-0 flex-1 truncate text-left text-sm font-medium">
                           Q{qf.questionNumber}: {qf.question}
                         </span>
                         <span
                           className={`
-                            text-sm font-bold
+                            shrink-0 text-sm font-bold
                             ${colors.text}
                           `}
                         >
@@ -272,7 +270,6 @@ export const InterviewResult = ({
             Interview Again
           </Button>
         </div>
-      </div>
-    </ScrollArea>
+    </div>
   );
 };

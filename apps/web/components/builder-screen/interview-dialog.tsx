@@ -89,7 +89,7 @@ const InterviewDialog = ({ open, onOpenChange }: InterviewDialogProps) => {
       <Dialog open={open} onOpenChange={handleOpenChange}>
         <DialogContent
           className={`
-            w-[95vw] space-y-2
+            flex w-[95vw] max-h-[90vh] flex-col overflow-hidden
             sm:max-w-4xl
           `}
           onInteractOutside={(e) => {
@@ -101,7 +101,7 @@ const InterviewDialog = ({ open, onOpenChange }: InterviewDialogProps) => {
             }
           }}
         >
-          <div className="space-y-2">
+          <div className="shrink-0 space-y-2">
             <DialogTitle className="flex items-center gap-2">
               <Mic size={20} className="text-primary" />
               Mock Interview
@@ -112,6 +112,7 @@ const InterviewDialog = ({ open, onOpenChange }: InterviewDialogProps) => {
             </DialogDescription>
           </div>
 
+          <div className="min-h-0 flex-1 overflow-y-auto">
           <AnimatePresence mode="wait">
             {(currentState === "setup" || currentState === "error") && (
               <motion.div
@@ -188,6 +189,7 @@ const InterviewDialog = ({ open, onOpenChange }: InterviewDialogProps) => {
               </motion.div>
             )}
           </AnimatePresence>
+          </div>
         </DialogContent>
       </Dialog>
 

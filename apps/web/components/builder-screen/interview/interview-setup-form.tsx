@@ -16,9 +16,17 @@ import React, { useState } from "react";
 import {
   INTERVIEW_TYPE_DEFAULT,
   INTERVIEW_TYPE_OPTIONS,
+  LANGUAGE_DEFAULT,
+  LANGUAGE_OPTIONS,
   QUESTION_COUNT_DEFAULT,
   QUESTION_COUNT_MAX,
   QUESTION_COUNT_MIN,
+  SPEECH_RATE_DEFAULT,
+  SPEECH_RATE_MAX,
+  SPEECH_RATE_MIN,
+  SPEECH_RATE_STEP,
+  VOICE_DEFAULT,
+  VOICE_OPTIONS,
 } from "@/constants/interview.constant";
 import { useSyncResume } from "@/hooks/use-sync-resume";
 import {
@@ -42,6 +50,9 @@ export const InterviewSetupForm = ({
   const [interviewType, setInterviewType] = useState<InterviewType>(
     INTERVIEW_TYPE_DEFAULT,
   );
+  const [voiceName, setVoiceName] = useState(VOICE_DEFAULT);
+  const [language, setLanguage] = useState(LANGUAGE_DEFAULT);
+  const [speechRate, setSpeechRate] = useState(SPEECH_RATE_DEFAULT);
   const [isStarting, setIsStarting] = useState(false);
 
   const { sync, isSyncing } = useSyncResume();
@@ -62,6 +73,9 @@ export const InterviewSetupForm = ({
         jobDescription: jdText,
         questionCount,
         interviewType,
+        voiceName,
+        language,
+        speechRate,
       });
     } finally {
       setIsStarting(false);
@@ -171,6 +185,81 @@ export const InterviewSetupForm = ({
             ))}
           </SelectContent>
         </Select>
+      </div>
+
+      {/* Language */}
+      <div className="space-y-2">
+        <label className="text-sm font-medium">Interview Language</label>
+        <Select
+          value={language}
+          onValueChange={setLanguage}
+          disabled={isLoading}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Select language" />
+          </SelectTrigger>
+          <SelectContent align="start" side="bottom">
+            {LANGUAGE_OPTIONS.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <p className="text-muted-foreground text-xs">
+          The AI interviewer will speak in this language throughout the session.
+        </p>
+      </div>
+
+      {/* Voice Selection */}
+      <div className="space-y-2">
+        <label className="text-sm font-medium">Interviewer Voice</label>
+        <Select
+          value={voiceName}
+          onValueChange={setVoiceName}
+          disabled={isLoading}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Select voice" />
+          </SelectTrigger>
+          <SelectContent align="start" side="bottom" className="max-h-60">
+            {VOICE_OPTIONS.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      {/* Speech Speed */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <label className="text-sm font-medium">Speech Speed</label>
+          <span
+            className={`
+              bg-primary/10 text-primary rounded-md px-2.5 py-0.5 text-sm
+              font-semibold
+            `}
+          >
+            {speechRate.toFixed(1)}x
+          </span>
+        </div>
+        <Slider
+          value={[speechRate]}
+          onValueChange={(val) =>
+            setSpeechRate(val[0] ?? SPEECH_RATE_DEFAULT)
+          }
+          min={SPEECH_RATE_MIN}
+          max={SPEECH_RATE_MAX}
+          step={SPEECH_RATE_STEP}
+          disabled={isLoading}
+        />
+        <div className="text-muted-foreground flex justify-between text-xs">
+          <span>0.5x (Slow)</span>
+          <span>1.0x</span>
+          <span>2.0x (Fast)</span>
+        </div>
       </div>
 
       {/* Start Button */}

@@ -153,13 +153,14 @@ export const InterviewActive = ({
       <div className="relative w-full">
         <div
           className={`
-            border-border/50 to-muted/30 relative overflow-hidden rounded-2xl
-            border bg-gradient-to-b from-transparent p-6
+            border-border/50 to-muted/30 relative flex items-center
+            justify-center overflow-hidden rounded-2xl border bg-gradient-to-b
+            from-transparent p-6
           `}
         >
           <canvas
             ref={canvasRef}
-            className="h-32 w-full"
+            className="h-32 w-full mx-auto"
             style={{ width: "100%", height: "128px" }}
           />
         </div>

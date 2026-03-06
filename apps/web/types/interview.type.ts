@@ -27,12 +27,18 @@ export interface InterviewConfig {
   jobDescription: string;
   questionCount: number;
   interviewType: InterviewType;
+  voiceName?: string;
+  language?: string;
+  speechRate?: number;
 }
 
 export interface StartInterviewPayload {
   jobDescription: string;
   questionCount: number;
   interviewType: InterviewType;
+  voiceName?: string;
+  language?: string;
+  speechRate?: number;
 }
 
 // ─── Server Events ───────────────────────────────────────
