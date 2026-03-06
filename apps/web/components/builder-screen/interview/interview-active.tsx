@@ -23,6 +23,7 @@ interface InterviewActiveProps {
   questionProgress: { current: number; total: number };
   elapsedTime: number;
   analyserNode: AnalyserNode | null;
+  playbackAnalyserNode: AnalyserNode | null;
   onStop: () => void;
   onToggleMute: () => void;
 }
@@ -39,6 +40,7 @@ export const InterviewActive = ({
   questionProgress,
   elapsedTime,
   analyserNode,
+  playbackAnalyserNode,
   onStop,
   onToggleMute,
 }: InterviewActiveProps) => {
@@ -60,14 +62,19 @@ export const InterviewActive = ({
 
     ctx.clearRect(0, 0, width, height);
 
-    if (!analyserNode) {
+    // Use playback analyser when AI is speaking, mic analyser otherwise
+    const activeAnalyser = isAISpeaking
+      ? playbackAnalyserNode
+      : analyserNode;
+
+    if (!activeAnalyser) {
       animationRef.current = requestAnimationFrame(drawWave);
       return;
     }
 
-    const bufferLength = analyserNode.frequencyBinCount;
+    const bufferLength = activeAnalyser.frequencyBinCount;
     const dataArray = new Uint8Array(bufferLength);
-    analyserNode.getByteFrequencyData(dataArray);
+    activeAnalyser.getByteFrequencyData(dataArray);
 
     const barCount = 48;
     const barWidth = (width / barCount) * 0.6;
@@ -111,7 +118,7 @@ export const InterviewActive = ({
     }
 
     animationRef.current = requestAnimationFrame(drawWave);
-  }, [analyserNode, isAISpeaking, isMuted]);
+  }, [analyserNode, playbackAnalyserNode, isAISpeaking, isMuted]);
 
   useEffect(() => {
     animationRef.current = requestAnimationFrame(drawWave);

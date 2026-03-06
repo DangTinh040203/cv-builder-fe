@@ -32,6 +32,7 @@ export interface UseInterviewReturn {
 
   // Audio
   analyserNode: AnalyserNode | null;
+  playbackAnalyserNode: AnalyserNode | null;
 }
 
 export function useInterview(): UseInterviewReturn {
@@ -50,6 +51,8 @@ export function useInterview(): UseInterviewReturn {
   const [isMuted, setIsMuted] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [analyserNode, setAnalyserNode] = useState<AnalyserNode | null>(null);
+  const [playbackAnalyserNode, setPlaybackAnalyserNode] =
+    useState<AnalyserNode | null>(null);
 
   // ─── Refs ─────────────────────────────────────────────
   const serviceRef = useRef<InterviewService | null>(null);
@@ -58,6 +61,7 @@ export function useInterview(): UseInterviewReturn {
   const mediaStreamRef = useRef<MediaStream | null>(null);
   const processorRef = useRef<ScriptProcessorNode | null>(null);
   const sourceRef = useRef<MediaStreamAudioSourceNode | null>(null);
+  const playbackAnalyserRef = useRef<AnalyserNode | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const isMutedRef = useRef(false);
 
@@ -88,7 +92,13 @@ export function useInterview(): UseInterviewReturn {
 
     const source = ctx.createBufferSource();
     source.buffer = audioBuffer;
-    source.connect(ctx.destination);
+
+    // Route through the playback analyser for waveform visualization
+    if (playbackAnalyserRef.current) {
+      source.connect(playbackAnalyserRef.current);
+    } else {
+      source.connect(ctx.destination);
+    }
 
     // Schedule precisely: each chunk starts exactly where previous ended
     const startTime = Math.max(ctx.currentTime, nextPlayTimeRef.current);
@@ -161,6 +171,13 @@ export function useInterview(): UseInterviewReturn {
       const playbackCtx = new AudioContext();
       playbackCtxRef.current = playbackCtx;
 
+      // Playback analyser for AI speech waveform visualization
+      const playbackAnalyser = playbackCtx.createAnalyser();
+      playbackAnalyser.fftSize = 256;
+      playbackAnalyser.connect(playbackCtx.destination);
+      playbackAnalyserRef.current = playbackAnalyser;
+      setPlaybackAnalyserNode(playbackAnalyser);
+
       const source = audioContext.createMediaStreamSource(stream);
       sourceRef.current = source;
 
@@ -226,6 +243,8 @@ export function useInterview(): UseInterviewReturn {
 
     // Don't close AudioContext here — playback may still need it
     setAnalyserNode(null);
+    setPlaybackAnalyserNode(null);
+    playbackAnalyserRef.current = null;
   }, []);
 
   // ─── Timer ────────────────────────────────────────────
@@ -422,5 +441,6 @@ export function useInterview(): UseInterviewReturn {
     toggleMute,
     reset,
     analyserNode,
+    playbackAnalyserNode,
   };
 }

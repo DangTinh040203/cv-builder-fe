@@ -162,6 +162,7 @@ const InterviewDialog = ({ open, onOpenChange }: InterviewDialogProps) => {
                     questionProgress={interview.questionProgress}
                     elapsedTime={interview.elapsedTime}
                     analyserNode={interview.analyserNode}
+                    playbackAnalyserNode={interview.playbackAnalyserNode}
                     onStop={interview.stopInterview}
                     onToggleMute={interview.toggleMute}
                   />
