@@ -74,6 +74,11 @@ export class InterviewService {
     this.socket?.emit("interview:stop");
   }
 
+  /** Notify server that AI audio playback finished on the client. */
+  sendPlaybackComplete(): void {
+    this.socket?.emit("interview:playback-complete");
+  }
+
   // ─── Listeners (Server → Client) ──────────────────────
 
   onStarted(callback: (data: { sessionId: string }) => void): void {
@@ -102,5 +107,9 @@ export class InterviewService {
 
   onError(callback: (data: { message: string }) => void): void {
     this.socket?.on("interview:error", callback);
+  }
+
+  onSessionLost(callback: (data: { message: string }) => void): void {
+    this.socket?.on("interview:session-lost", callback);
   }
 }

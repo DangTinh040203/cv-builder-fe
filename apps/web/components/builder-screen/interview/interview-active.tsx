@@ -228,6 +228,7 @@ export const InterviewActive = ({
           variant={isMuted ? "default" : "outline"}
           size="lg"
           onClick={onToggleMute}
+          disabled={isAISpeaking}
           className="gap-2"
         >
           {isMuted ? (

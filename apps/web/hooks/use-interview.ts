@@ -64,11 +64,17 @@ export function useInterview(): UseInterviewReturn {
   const playbackAnalyserRef = useRef<AnalyserNode | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const isMutedRef = useRef(false);
+  const isAISpeakingRef = useRef(false);
 
   // Keep mute ref in sync with state
   useEffect(() => {
     isMutedRef.current = isMuted;
   }, [isMuted]);
+
+  // Keep AI speaking ref in sync with state
+  useEffect(() => {
+    isAISpeakingRef.current = isAISpeaking;
+  }, [isAISpeaking]);
 
   // ─── Audio Playback (Gapless Scheduled) ───────────────
   const nextPlayTimeRef = useRef(0);
@@ -112,6 +118,11 @@ export function useInterview(): UseInterviewReturn {
       if (activeSourceCountRef.current <= 0) {
         activeSourceCountRef.current = 0;
         setIsAISpeaking(false);
+
+        // Notify server that AI audio playback finished — the server
+        // will start the silence timer only AFTER the user has heard
+        // the full question, not when Gemini finishes generating it.
+        serviceRef.current?.sendPlaybackComplete();
       }
     };
 
@@ -196,7 +207,9 @@ export function useInterview(): UseInterviewReturn {
       processorRef.current = processor;
 
       processor.onaudioprocess = (event) => {
-        if (isMutedRef.current) return;
+        // Don't send mic audio while AI is speaking — prevents echo,
+        // accidental interruption, and mic noise during AI output.
+        if (isMutedRef.current || isAISpeakingRef.current) return;
 
         const inputData = event.inputBuffer.getChannelData(0);
 
@@ -340,6 +353,11 @@ export function useInterview(): UseInterviewReturn {
           setSessionId(sid);
           setState("active");
           startTimer();
+
+          // AI is about to speak (greeting + first question) — block mic
+          // until it finishes so user audio isn't sent during AI output.
+          setIsAISpeaking(true);
+          isAISpeakingRef.current = true;
         });
 
         service.onAudioResponse(({ audio }) => {
@@ -378,6 +396,15 @@ export function useInterview(): UseInterviewReturn {
 
         service.onError(({ message }) => {
           toast.error(message);
+          setError(message);
+          setState("error");
+          cleanup();
+        });
+
+        service.onSessionLost(({ message }) => {
+          toast.error(
+            message || "Interview session was lost. Please try again.",
+          );
           setError(message);
           setState("error");
           cleanup();
