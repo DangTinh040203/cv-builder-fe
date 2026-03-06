@@ -66,30 +66,19 @@ export function useInterview(): UseInterviewReturn {
     isMutedRef.current = isMuted;
   }, [isMuted]);
 
-  // ─── Audio Playback Queue ─────────────────────────────
-  const playbackQueueRef = useRef<Float32Array[]>([]);
-  const isPlayingRef = useRef(false);
+  // ─── Audio Playback (Gapless Scheduled) ───────────────
+  const nextPlayTimeRef = useRef(0);
+  const activeSourceCountRef = useRef(0);
 
-  const playNextChunk = useCallback(() => {
+  const scheduleAudioChunk = useCallback((pcmData: Float32Array) => {
     const ctx = playbackCtxRef.current;
-    if (!ctx || playbackQueueRef.current.length === 0) {
-      isPlayingRef.current = false;
-      setIsAISpeaking(false);
-      return;
-    }
-
-    isPlayingRef.current = true;
-    setIsAISpeaking(true);
+    if (!ctx || pcmData.length === 0) return;
 
     // Ensure playback context is running (browsers may suspend it)
     if (ctx.state === "suspended") {
       void ctx.resume();
     }
 
-    const pcmData = playbackQueueRef.current.shift()!;
-    console.debug(
-      `[Interview] Playing audio chunk: ${pcmData.length} samples, ctx.state=${ctx.state}, queue=${playbackQueueRef.current.length}`,
-    );
     const audioBuffer = ctx.createBuffer(
       1,
       pcmData.length,
@@ -100,8 +89,23 @@ export function useInterview(): UseInterviewReturn {
     const source = ctx.createBufferSource();
     source.buffer = audioBuffer;
     source.connect(ctx.destination);
-    source.onended = () => playNextChunk();
-    source.start();
+
+    // Schedule precisely: each chunk starts exactly where previous ended
+    const startTime = Math.max(ctx.currentTime, nextPlayTimeRef.current);
+    nextPlayTimeRef.current = startTime + audioBuffer.duration;
+
+    activeSourceCountRef.current++;
+    setIsAISpeaking(true);
+
+    source.onended = () => {
+      activeSourceCountRef.current--;
+      if (activeSourceCountRef.current <= 0) {
+        activeSourceCountRef.current = 0;
+        setIsAISpeaking(false);
+      }
+    };
+
+    source.start(startTime);
   }, []);
 
   const enqueueAudio = useCallback(
@@ -112,20 +116,24 @@ export function useInterview(): UseInterviewReturn {
         bytes[i] = binaryString.charCodeAt(i);
       }
 
+      // Ensure even byte length for Int16Array alignment
+      const evenLength = bytes.length & ~1;
+      if (evenLength === 0) return;
+
       // Convert 16-bit PCM to Float32
-      const int16 = new Int16Array(bytes.buffer);
+      const int16 = new Int16Array(
+        bytes.buffer,
+        bytes.byteOffset,
+        evenLength / 2,
+      );
       const float32 = new Float32Array(int16.length);
       for (let i = 0; i < int16.length; i++) {
         float32[i] = (int16[i] ?? 0) / 32768;
       }
 
-      playbackQueueRef.current.push(float32);
-
-      if (!isPlayingRef.current) {
-        playNextChunk();
-      }
+      scheduleAudioChunk(float32);
     },
-    [playNextChunk],
+    [scheduleAudioChunk],
   );
 
   // ─── Audio Capture ────────────────────────────────────
@@ -240,9 +248,9 @@ export function useInterview(): UseInterviewReturn {
     stopTimer();
     stopAudioCapture();
 
-    // Clear playback queue
-    playbackQueueRef.current = [];
-    isPlayingRef.current = false;
+    // Reset playback scheduling
+    nextPlayTimeRef.current = 0;
+    activeSourceCountRef.current = 0;
 
     // Close both audio contexts
     if (captureCtxRef.current?.state !== "closed") {
@@ -329,8 +337,9 @@ export function useInterview(): UseInterviewReturn {
 
         service.onInterrupted(() => {
           setIsAISpeaking(false);
-          // Clear playback queue on interrupt
-          playbackQueueRef.current = [];
+          // Reset playback scheduling on interrupt
+          nextPlayTimeRef.current = 0;
+          activeSourceCountRef.current = 0;
         });
 
         service.onEvaluating(() => {
