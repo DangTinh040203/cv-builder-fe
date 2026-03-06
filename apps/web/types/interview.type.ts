@@ -58,9 +58,19 @@ export interface QuestionFeedback {
   suggestions: string;
 }
 
+export interface EvaluationCriteria {
+  technicalKnowledge: number;
+  communicationSkills: number;
+  problemSolving: number;
+  relevanceToRole: number;
+  interviewConduct: number;
+}
+
 export interface InterviewFeedback {
   overallScore: number;
+  verdict: "PASS" | "BORDERLINE" | "FAIL";
   summary: string;
+  criteria: EvaluationCriteria;
   questionFeedbacks: QuestionFeedback[];
   strengths: string[];
   improvements: string[];
