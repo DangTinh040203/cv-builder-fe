@@ -6,7 +6,7 @@ export const INTERVIEW_TYPE_OPTIONS = [
   { label: "All (Mixed)", value: InterviewType.ALL },
 ] as const;
 
-export const QUESTION_COUNT_MIN = 5;
+export const QUESTION_COUNT_MIN = 1;
 export const QUESTION_COUNT_MAX = 10;
 export const QUESTION_COUNT_DEFAULT = 5;
 export const INTERVIEW_TYPE_DEFAULT = InterviewType.ALL;

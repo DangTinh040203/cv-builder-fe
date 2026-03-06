@@ -65,6 +65,7 @@ export function useInterview(): UseInterviewReturn {
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const isMutedRef = useRef(false);
   const isAISpeakingRef = useRef(false);
+  const speechRateRef = useRef(1.0);
 
   // Keep mute ref in sync with state
   useEffect(() => {
@@ -94,6 +95,10 @@ export function useInterview(): UseInterviewReturn {
     const source = ctx.createBufferSource();
     source.buffer = audioBuffer;
 
+    // Apply speech rate (playback speed) from user config
+    const rate = speechRateRef.current;
+    source.playbackRate.value = rate;
+
     // Route through the playback analyser for waveform visualization
     if (playbackAnalyserRef.current) {
       source.connect(playbackAnalyserRef.current);
@@ -102,8 +107,9 @@ export function useInterview(): UseInterviewReturn {
     }
 
     // Schedule precisely: each chunk starts exactly where previous ended
+    // Duration is adjusted by playback rate (faster rate = shorter duration)
     const startTime = Math.max(ctx.currentTime, nextPlayTimeRef.current);
-    nextPlayTimeRef.current = startTime + audioBuffer.duration;
+    nextPlayTimeRef.current = startTime + audioBuffer.duration / rate;
 
     activeSourceCountRef.current++;
     setIsAISpeaking(true);
@@ -310,6 +316,9 @@ export function useInterview(): UseInterviewReturn {
       setError(null);
       setFeedback(null);
       setQuestionProgress({ current: 0, total: config.questionCount });
+
+      // Store speech rate for audio playback speed adjustment
+      speechRateRef.current = config.speechRate ?? 1.0;
 
       try {
         // 1. Request microphone access
