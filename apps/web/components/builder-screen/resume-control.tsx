@@ -8,9 +8,10 @@ import {
 } from "@shared/ui/components/tooltip";
 import { cn } from "@shared/ui/lib/utils";
 import { motion } from "framer-motion";
-import { Eye, EyeOff, FileText, Loader2, Save } from "lucide-react";
+import { Eye, EyeOff, FileText, Loader2, Mic, Save } from "lucide-react";
 import React from "react";
 
+import InterviewDialog from "@/components/builder-screen/interview-dialog";
 import MatchingDialog from "@/components/builder-screen/matching-dialog";
 import DownloadPdf from "@/components/templates/download-pdf";
 import { useSyncResume } from "@/hooks/use-sync-resume";
@@ -25,6 +26,7 @@ const ResumeControl = () => {
   const { previewMode } = useAppSelector(templateConfigSelector);
   const dispatch = useAppDispatch();
   const { sync, isSyncing } = useSyncResume();
+  const [showInterview, setShowInterview] = React.useState(false);
 
   const handleTogglePreviewMode = () => {
     dispatch(updatePreviewMode(!previewMode));
@@ -150,6 +152,28 @@ const ResumeControl = () => {
           `}
         >
           <MatchingDialog />
+        </div>
+
+        <div
+          className={`
+            w-full
+            sm:w-auto
+          `}
+        >
+          <Button
+            variant="secondary"
+            className={`
+              border-primary w-full border shadow-xl
+              sm:w-auto
+            `}
+            onClick={() => setShowInterview(true)}
+          >
+            <Mic className="mr-2 h-4 w-4" /> Mock Interview
+          </Button>
+          <InterviewDialog
+            open={showInterview}
+            onOpenChange={setShowInterview}
+          />
         </div>
 
         {resume && (
