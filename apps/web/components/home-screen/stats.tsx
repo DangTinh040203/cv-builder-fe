@@ -69,9 +69,7 @@ const StatsSection = () => {
       <div className="container mx-auto">
         <motion.div
           className={`
-            grid grid-cols-1 gap-12
-            sm:grid-cols-3
-            md:gap-24
+            grid grid-cols-1 gap-12 sm:grid-cols-3 md:gap-24
           `}
           variants={staggerContainer}
           initial="hidden"

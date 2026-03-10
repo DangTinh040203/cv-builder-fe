@@ -8,7 +8,7 @@ const Marquee = () => {
   return (
     <section
       className={`
-        border-border bg-muted/20 relative overflow-hidden border-y py-12
+        border-border bg-background relative z-0 overflow-hidden border-y py-12
       `}
     >
       <div

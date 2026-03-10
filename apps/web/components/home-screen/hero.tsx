@@ -121,7 +121,7 @@ const HeroSection = () => {
                 delay: 0.1,
               }}
             >
-              Discover, connect,
+              Discover, connect,{" "}
               <br />
               <motion.span
                 className="gradient-text inline-block py-2"
@@ -225,10 +225,7 @@ const HeroSection = () => {
 
           {/* Stats Cards */}
           <motion.div
-            className={`
-              mt-20 grid grid-cols-2 gap-4
-              md:grid-cols-4
-            `}
+            className="mt-20 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4"
             variants={staggerContainer}
             initial="hidden"
             animate="visible"

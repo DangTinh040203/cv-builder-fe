@@ -104,7 +104,7 @@ const CTASection = () => {
                 sm:flex-row
               `}
             >
-              <Link href="/builder">
+              <Link href="/templates">
                 <motion.div
                   whileHover={{ scale: 1.05, y: -5 }}
                   whileTap={{ scale: 0.95 }}

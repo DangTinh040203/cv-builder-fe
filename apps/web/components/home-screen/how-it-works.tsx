@@ -56,12 +56,7 @@ const HowItWorksSection = () => {
           >
             Simple 3-Step Process
           </motion.div>
-          <h2
-            className={`
-              font-display mb-6 text-4xl font-extrabold tracking-tight
-              md:text-5xl
-            `}
-          >
+          <h2 className="font-display mb-6 text-3xl font-extrabold tracking-tight md:text-5xl">
             Start Your Journey in <span className="gradient-text">Minutes</span>
           </h2>
           <p
