@@ -404,7 +404,11 @@ const Header = () => {
                             {user?.fullName}
                           </p>
                           <p className="text-muted-foreground text-xs">
-                            {user?.primaryEmailAddress?.emailAddress}
+                            {
+                              user?.primaryEmailAddress?.emailAddress.split(
+                                "@",
+                              )[0]
+                            }
                           </p>
                         </div>
                       </div>

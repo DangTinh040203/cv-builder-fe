@@ -101,7 +101,7 @@ const HeroSection = () => {
               text="AI-Powered CV Builder"
               speed={3}
               className="text-sm font-medium"
-              color="hsl(var(--primary))"
+              color="var(--primary)"
               shineColor="#ffffff"
               spread={120}
             />
@@ -132,11 +132,12 @@ const HeroSection = () => {
               animateBy="letters"
               direction="bottom"
               className={`
-                font-display gradient-text mb-6 justify-center py-2 text-4xl
-                leading-[1.1] font-extrabold tracking-tight
+                font-display mb-6 justify-center py-2 text-4xl leading-[1.1]
+                font-extrabold tracking-tight
                 md:text-6xl
                 lg:text-7xl
               `}
+              spanClassName="gradient-text"
             />
           </div>
 
