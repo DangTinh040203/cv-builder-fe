@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 import React from "react";
 
+import BlurText from "@/components/common/blur-text";
+import ShinyText from "@/components/common/shiny-text";
 import { fadeInUp, staggerContainer } from "@/styles/animation";
 
 const testimonials = [
@@ -53,17 +55,23 @@ const TestimonialsSection = () => {
               py-1.5 text-sm font-semibold tracking-wider uppercase
             `}
           >
-            User Success Stories
+            <ShinyText
+              text="User Success Stories"
+              speed={3}
+              className="text-sm font-semibold tracking-wider uppercase"
+            />
           </motion.div>
-          <h2
+          <BlurText
+            text="Loved by Thousands of Job Seekers"
+            delay={80}
+            animateBy="words"
+            direction="top"
             className={`
-              font-display mb-6 text-4xl font-extrabold tracking-tight
+              font-display mb-6 flex-wrap justify-center text-4xl font-extrabold
+              tracking-tight
               md:text-5xl
             `}
-          >
-            Loved by <span className="gradient-text">Thousands</span> of Job
-            Seekers
-          </h2>
+          />
           <p
             className={`
               text-muted-foreground mx-auto max-w-2xl text-lg leading-relaxed

@@ -1,48 +1,9 @@
 "use client";
-import { motion, useInView } from "framer-motion";
-import React, { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import React from "react";
 
+import CountUp from "@/components/common/count-up";
 import { scaleIn, staggerContainer } from "@/styles/animation";
-
-// Animated counter component
-const AnimatedCounter = ({
-  value,
-  suffix = "",
-}: {
-  value: string;
-  suffix?: string;
-}) => {
-  const [count, setCount] = useState(0);
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
-  const numericValue = parseInt(value.replace(/\D/g, ""));
-
-  useEffect(() => {
-    if (isInView) {
-      const duration = 2000;
-      const steps = 60;
-      const increment = numericValue / steps;
-      let current = 0;
-      const timer = setInterval(() => {
-        current += increment;
-        if (current >= numericValue) {
-          setCount(numericValue);
-          clearInterval(timer);
-        } else {
-          setCount(Math.floor(current));
-        }
-      }, duration / steps);
-      return () => clearInterval(timer);
-    }
-  }, [isInView, numericValue]);
-
-  return (
-    <span ref={ref}>
-      {count}
-      {suffix}
-    </span>
-  );
-};
 
 const stats = [
   { value: "50", suffix: "K+", label: "CVs Created" },
@@ -69,7 +30,9 @@ const StatsSection = () => {
       <div className="container mx-auto">
         <motion.div
           className={`
-            grid grid-cols-1 gap-12 sm:grid-cols-3 md:gap-24
+            grid grid-cols-1 gap-12
+            sm:grid-cols-3
+            md:gap-24
           `}
           variants={staggerContainer}
           initial="hidden"
@@ -90,7 +53,13 @@ const StatsSection = () => {
                 `}
                 whileHover={{ scale: 1.05 }}
               >
-                <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+                <CountUp
+                  from={0}
+                  to={parseInt(stat.value)}
+                  duration={2.5}
+                  separator=","
+                />
+                {stat.suffix}
               </motion.div>
               <div
                 className={`

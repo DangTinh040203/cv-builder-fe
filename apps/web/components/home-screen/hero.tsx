@@ -6,7 +6,10 @@ import { ArrowRight, Sparkles } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
+import BlurText from "@/components/common/blur-text";
 import FloatingParticles from "@/components/common/floating-particles";
+import Magnet from "@/components/common/magnet";
+import ShinyText from "@/components/common/shiny-text";
 import { fadeInUp, staggerContainer } from "@/styles/animation";
 
 const HeroSection = () => {
@@ -94,9 +97,14 @@ const HeroSection = () => {
             >
               <Sparkles className="text-primary h-4 w-4" />
             </motion.div>
-            <span className="text-primary text-sm font-medium">
-              AI-Powered CV Builder
-            </span>
+            <ShinyText
+              text="AI-Powered CV Builder"
+              speed={3}
+              className="text-sm font-medium"
+              color="hsl(var(--primary))"
+              shineColor="#ffffff"
+              spread={120}
+            />
             <Badge
               className={`bg-primary/20 text-primary border-none text-[10px]`}
             >
@@ -106,33 +114,30 @@ const HeroSection = () => {
 
           {/* Main headline */}
           <div className="overflow-hidden">
-            <motion.h1
+            <BlurText
+              text="Discover, connect,"
+              delay={100}
+              animateBy="words"
+              direction="top"
               className={`
-                font-display text-foreground mb-6 text-4xl leading-[1.1]
-                font-extrabold tracking-tight
+                font-display text-foreground mb-2 justify-center text-4xl
+                leading-[1.1] font-extrabold tracking-tight
                 md:text-6xl
                 lg:text-7xl
               `}
-              initial={{ opacity: 0, y: 100 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.8,
-                ease: [0.16, 1, 0.3, 1],
-                delay: 0.1,
-              }}
-            >
-              Discover, connect, <br />
-              <motion.span
-                className="gradient-text inline-block py-2"
-                animate={{
-                  backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-                }}
-                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                style={{ backgroundSize: "200% 200%" }}
-              >
-                grow.
-              </motion.span>
-            </motion.h1>
+            />
+            <BlurText
+              text="grow."
+              delay={100}
+              animateBy="letters"
+              direction="bottom"
+              className={`
+                font-display gradient-text mb-6 justify-center py-2 text-4xl
+                leading-[1.1] font-extrabold tracking-tight
+                md:text-6xl
+                lg:text-7xl
+              `}
+            />
           </div>
 
           <motion.p
@@ -166,65 +171,73 @@ const HeroSection = () => {
             transition={{ duration: 0.6, delay: 0.6 }}
           >
             <Link href="/builder">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <Button
-                  size="xl"
-                  className={`
-                    group shadow-primary/20 relative h-14 w-full overflow-hidden
-                    rounded-full px-8 text-lg shadow-xl
-                    sm:w-auto
-                  `}
+              <Magnet padding={60} magnetStrength={3}>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
                 >
-                  <motion.span
+                  <Button
+                    size="xl"
                     className={`
-                      absolute inset-0 bg-linear-to-r from-transparent
-                      via-white/20 to-transparent
+                      group shadow-primary/20 relative h-14 w-full
+                      overflow-hidden rounded-full px-8 text-lg shadow-xl
+                      sm:w-auto
                     `}
-                    animate={{ x: ["-100%", "200%"] }}
-                    transition={{
-                      duration: 2.5,
-                      repeat: Infinity,
-                      repeatDelay: 2,
-                    }}
-                  />
-                  <span className="relative flex items-center gap-2">
-                    Build your profile
-                    <ArrowRight
+                  >
+                    <motion.span
                       className={`
-                        h-5 w-5 transition-transform duration-300
-                        group-hover:translate-x-1
+                        absolute inset-0 bg-linear-to-r from-transparent
+                        via-white/20 to-transparent
                       `}
+                      animate={{ x: ["-100%", "200%"] }}
+                      transition={{
+                        duration: 2.5,
+                        repeat: Infinity,
+                        repeatDelay: 2,
+                      }}
                     />
-                  </span>
-                </Button>
-              </motion.div>
+                    <span className="relative flex items-center gap-2">
+                      Build your profile
+                      <ArrowRight
+                        className={`
+                          h-5 w-5 transition-transform duration-300
+                          group-hover:translate-x-1
+                        `}
+                      />
+                    </span>
+                  </Button>
+                </motion.div>
+              </Magnet>
             </Link>
             <Link href="/templates">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <Button
-                  variant="outline"
-                  size="xl"
-                  className={`
-                    h-14 w-full rounded-full border-2 px-8 text-lg
-                    backdrop-blur-sm
-                    sm:w-auto
-                  `}
+              <Magnet padding={60} magnetStrength={3}>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
                 >
-                  View Templates
-                </Button>
-              </motion.div>
+                  <Button
+                    variant="outline"
+                    size="xl"
+                    className={`
+                      h-14 w-full rounded-full border-2 px-8 text-lg
+                      backdrop-blur-sm
+                      sm:w-auto
+                    `}
+                  >
+                    View Templates
+                  </Button>
+                </motion.div>
+              </Magnet>
             </Link>
           </motion.div>
 
           {/* Stats Cards */}
           <motion.div
-            className="mt-20 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4"
+            className={`
+              mt-20 grid grid-cols-1 gap-4
+              sm:grid-cols-2
+              md:grid-cols-4
+            `}
             variants={staggerContainer}
             initial="hidden"
             animate="visible"

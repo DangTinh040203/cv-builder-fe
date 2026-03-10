@@ -3,6 +3,9 @@ import { motion } from "framer-motion";
 import { Download, Upload, Wand2 } from "lucide-react";
 import React from "react";
 
+import BlurText from "@/components/common/blur-text";
+import ShinyText from "@/components/common/shiny-text";
+
 const howItWorks = [
   {
     step: "01",
@@ -54,11 +57,23 @@ const HowItWorksSection = () => {
               py-1.5 text-sm font-semibold tracking-wider uppercase
             `}
           >
-            Simple 3-Step Process
+            <ShinyText
+              text="Simple 3-Step Process"
+              speed={3}
+              className="text-sm font-semibold tracking-wider uppercase"
+            />
           </motion.div>
-          <h2 className="font-display mb-6 text-3xl font-extrabold tracking-tight md:text-5xl">
-            Start Your Journey in <span className="gradient-text">Minutes</span>
-          </h2>
+          <BlurText
+            text="Start Your Journey in Minutes"
+            delay={80}
+            animateBy="words"
+            direction="top"
+            className={`
+              font-display mb-6 justify-center text-3xl font-extrabold
+              tracking-tight
+              md:text-5xl
+            `}
+          />
           <p
             className={`
               text-muted-foreground mx-auto max-w-2xl text-lg leading-relaxed

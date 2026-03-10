@@ -1,9 +1,12 @@
 "use client";
-import { Card, CardContent } from "@shared/ui/components/card";
+import { CardContent } from "@shared/ui/components/card";
 import { motion } from "framer-motion";
 import { Award, Clock, Shield, Target, TrendingUp, Zap } from "lucide-react";
 import React from "react";
 
+import BlurText from "@/components/common/blur-text";
+import ShinyText from "@/components/common/shiny-text";
+import SpotlightCard from "@/components/common/spotlight-card";
 import { fadeInUp, staggerContainer } from "@/styles/animation";
 
 const whyChooseUs = [
@@ -76,16 +79,23 @@ const WhyChooseUsSection = () => {
               py-1.5 text-sm font-semibold tracking-wider uppercase
             `}
           >
-            The CVCraft Edge
+            <ShinyText
+              text="The CVCraft Edge"
+              speed={3}
+              className="text-sm font-semibold tracking-wider uppercase"
+            />
           </motion.div>
-          <h2
+          <BlurText
+            text="Why Choose CVCraft?"
+            delay={80}
+            animateBy="words"
+            direction="top"
             className={`
-              font-display mb-6 text-4xl font-extrabold tracking-tight
+              font-display mb-6 flex-wrap justify-center text-4xl font-extrabold
+              tracking-tight
               md:text-5xl
             `}
-          >
-            Why Choose <span className="gradient-text">CVCraft</span>?
-          </h2>
+          />
           <p
             className={`
               text-muted-foreground mx-auto max-w-2xl text-lg leading-relaxed
@@ -109,12 +119,13 @@ const WhyChooseUsSection = () => {
         >
           {whyChooseUs.map((item) => (
             <motion.div key={item.title} variants={fadeInUp}>
-              <Card
+              <SpotlightCard
                 className={`
-                  border-border/50 group bg-card/40 h-full overflow-hidden
-                  rounded-3xl backdrop-blur-sm transition-all duration-500
+                  border-border/50 group bg-card/40 h-full rounded-3xl
+                  backdrop-blur-sm transition-all duration-500
                   hover:border-primary/20 hover:shadow-2xl
                 `}
+                spotlightColor="rgba(var(--primary-rgb, 124 58 237) / 0.12)"
               >
                 <CardContent
                   className={`
@@ -155,7 +166,7 @@ const WhyChooseUsSection = () => {
                     {item.description}
                   </p>
                 </CardContent>
-              </Card>
+              </SpotlightCard>
             </motion.div>
           ))}
         </motion.div>

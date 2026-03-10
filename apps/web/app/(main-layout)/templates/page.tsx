@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
+import BlurText from "@/components/common/blur-text";
 import FloatingParticles from "@/components/common/floating-particles";
 import { TemplateSelectionDialog } from "@/components/templates/template-selection-dialog";
 import TemplateWrapper from "@/components/templates/template-wrapper";
@@ -164,15 +165,16 @@ const Templates = () => {
           variants={staggerContainer}
           className="mb-12 text-center"
         >
-          <motion.h1
-            variants={fadeInUp}
+          <BlurText
+            text="Choose Your Perfect Template"
+            delay={80}
+            animateBy="words"
+            direction="top"
             className={`
-              font-display mb-4 text-4xl font-bold
+              font-display mb-4 justify-center text-4xl font-bold
               md:text-5xl
             `}
-          >
-            Choose Your <span className="gradient-text">Perfect Template</span>
-          </motion.h1>
+          />
           <motion.p
             variants={fadeInUp}
             className="text-muted-foreground mx-auto max-w-2xl text-lg"

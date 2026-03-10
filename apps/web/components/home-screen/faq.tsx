@@ -8,6 +8,9 @@ import {
 import { motion } from "framer-motion";
 import React from "react";
 
+import BlurText from "@/components/common/blur-text";
+import ShinyText from "@/components/common/shiny-text";
+
 const faqs = [
   {
     question: "Is CVCraft really free to use?",
@@ -56,16 +59,23 @@ const FAQSection = () => {
               py-1.5 text-sm font-semibold tracking-wider uppercase
             `}
           >
-            Support Center
+            <ShinyText
+              text="Support Center"
+              speed={3}
+              className="text-sm font-semibold tracking-wider uppercase"
+            />
           </motion.div>
-          <h2
+          <BlurText
+            text="Frequently Asked Questions"
+            delay={80}
+            animateBy="words"
+            direction="top"
             className={`
-              font-display mb-6 text-4xl font-extrabold tracking-tight
+              font-display mb-6 flex-wrap justify-center text-4xl font-extrabold
+              tracking-tight
               md:text-5xl
             `}
-          >
-            Frequently Asked <span className="gradient-text">Questions</span>
-          </h2>
+          />
           <p
             className={`
               text-muted-foreground mx-auto max-w-xl text-lg leading-relaxed

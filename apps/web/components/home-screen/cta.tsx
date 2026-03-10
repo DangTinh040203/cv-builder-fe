@@ -5,6 +5,9 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
+import BlurText from "@/components/common/blur-text";
+import Magnet from "@/components/common/magnet";
+
 const CTASection = () => {
   return (
     <section className="px-4 py-24 pb-32">
@@ -60,27 +63,18 @@ const CTASection = () => {
             >
               Take the next step
             </motion.div>
-            <motion.h2
+            <BlurText
+              text="Ready to Land Your Dream Job?"
+              delay={100}
+              animateBy="words"
+              direction="top"
               className={`
-                font-display text-primary-foreground mb-8 text-4xl font-black
-                tracking-tighter
+                font-display text-primary-foreground mb-8 flex-wrap
+                justify-center text-4xl font-black tracking-tighter
                 md:text-6xl
                 lg:text-7xl
               `}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.4 }}
-            >
-              Ready to Land Your{" "}
-              <br
-                className={`
-                  hidden
-                  md:block
-                `}
-              />
-              <span className="text-white">Dream Job?</span>
-            </motion.h2>
+            />
             <motion.p
               className={`
                 text-primary-foreground/80 mx-auto mb-12 max-w-2xl text-xl
@@ -105,22 +99,24 @@ const CTASection = () => {
               `}
             >
               <Link href="/templates">
-                <motion.div
-                  whileHover={{ scale: 1.05, y: -5 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Button
-                    size="xl"
-                    className={`
-                      text-primary h-16 rounded-full bg-white px-12 text-xl
-                      font-black shadow-2xl transition-all duration-300
-                      hover:bg-white/90
-                    `}
+                <Magnet padding={80} magnetStrength={2}>
+                  <motion.div
+                    whileHover={{ scale: 1.05, y: -5 }}
+                    whileTap={{ scale: 0.95 }}
                   >
-                    Get Started Free
-                    <ArrowRight className="ml-3 h-6 w-6" />
-                  </Button>
-                </motion.div>
+                    <Button
+                      size="xl"
+                      className={`
+                        text-primary h-16 rounded-full bg-white px-12 text-xl
+                        font-black shadow-2xl transition-all duration-300
+                        hover:bg-white/90
+                      `}
+                    >
+                      Get Started Free
+                      <ArrowRight className="ml-3 h-6 w-6" />
+                    </Button>
+                  </motion.div>
+                </Magnet>
               </Link>
             </motion.div>
           </div>

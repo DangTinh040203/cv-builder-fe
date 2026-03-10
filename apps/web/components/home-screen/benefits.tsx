@@ -5,6 +5,8 @@ import { ArrowRight, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
+import BlurText from "@/components/common/blur-text";
+import ShinyText from "@/components/common/shiny-text";
 import { fadeInLeft, staggerContainer } from "@/styles/animation";
 
 const benefits = [
@@ -41,17 +43,23 @@ const BenefitsSection = () => {
                 py-1.5 text-sm font-semibold tracking-wider uppercase
               `}
             >
-              Why Choose CVCraft
+              <ShinyText
+                text="Why Choose CVCraft"
+                speed={3}
+                className="text-sm font-semibold tracking-wider uppercase"
+              />
             </motion.div>
-            <h2
+            <BlurText
+              text="Stand Out from the Massive Competition"
+              delay={80}
+              animateBy="words"
+              direction="top"
               className={`
-                font-display mb-8 text-4xl font-extrabold tracking-tight
+                font-display mb-8 flex-wrap text-4xl font-extrabold
+                tracking-tight
                 md:text-5xl
               `}
-            >
-              Stand Out from the{" "}
-              <span className="gradient-text">Massive Competition</span>
-            </h2>
+            />
             <p className="text-muted-foreground mb-10 text-xl leading-relaxed">
               Our CV builder is designed by industry experts to ensure your
               profile gets the attention it deserves from modern hiring systems.
