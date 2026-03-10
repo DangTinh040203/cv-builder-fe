@@ -6,7 +6,6 @@ import Link from "next/link";
 import React from "react";
 
 import BlurText from "@/components/common/blur-text";
-import Magnet from "@/components/common/magnet";
 
 const CTASection = () => {
   return (
@@ -99,24 +98,22 @@ const CTASection = () => {
               `}
             >
               <Link href="/templates">
-                <Magnet padding={80} magnetStrength={2}>
-                  <motion.div
-                    whileHover={{ scale: 1.05, y: -5 }}
-                    whileTap={{ scale: 0.95 }}
+                <motion.div
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Button
+                    size="xl"
+                    className={`
+                      text-primary h-16 rounded-full bg-white px-12 text-xl
+                      font-black shadow-2xl transition-all duration-300
+                      hover:bg-white/90
+                    `}
                   >
-                    <Button
-                      size="xl"
-                      className={`
-                        text-primary h-16 rounded-full bg-white px-12 text-xl
-                        font-black shadow-2xl transition-all duration-300
-                        hover:bg-white/90
-                      `}
-                    >
-                      Get Started Free
-                      <ArrowRight className="ml-3 h-6 w-6" />
-                    </Button>
-                  </motion.div>
-                </Magnet>
+                    Get Started Free
+                    <ArrowRight className="ml-3 h-6 w-6" />
+                  </Button>
+                </motion.div>
               </Link>
             </motion.div>
           </div>

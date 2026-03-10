@@ -8,7 +8,6 @@ import React from "react";
 
 import BlurText from "@/components/common/blur-text";
 import FloatingParticles from "@/components/common/floating-particles";
-import Magnet from "@/components/common/magnet";
 import ShinyText from "@/components/common/shiny-text";
 import { fadeInUp, staggerContainer } from "@/styles/animation";
 
@@ -172,11 +171,10 @@ const HeroSection = () => {
             transition={{ duration: 0.6, delay: 0.6 }}
           >
             <Link href="/builder">
-              <Magnet padding={60} magnetStrength={3}>
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.98 }}
-                >
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+              >
                   <Button
                     size="xl"
                     className={`
@@ -207,28 +205,25 @@ const HeroSection = () => {
                       />
                     </span>
                   </Button>
-                </motion.div>
-              </Magnet>
+              </motion.div>
             </Link>
             <Link href="/templates">
-              <Magnet padding={60} magnetStrength={3}>
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.98 }}
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Button
+                  variant="outline"
+                  size="xl"
+                  className={`
+                    h-14 w-full rounded-full border-2 px-8 text-lg
+                    backdrop-blur-sm
+                    sm:w-auto
+                  `}
                 >
-                  <Button
-                    variant="outline"
-                    size="xl"
-                    className={`
-                      h-14 w-full rounded-full border-2 px-8 text-lg
-                      backdrop-blur-sm
-                      sm:w-auto
-                    `}
-                  >
-                    View Templates
-                  </Button>
-                </motion.div>
-              </Magnet>
+                  View Templates
+                </Button>
+              </motion.div>
             </Link>
           </motion.div>
 
