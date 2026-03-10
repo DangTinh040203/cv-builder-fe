@@ -28,27 +28,44 @@ const features = [
 
 const FeaturesSection = () => {
   return (
-    <section className="px-4 py-20">
+    <section className="relative overflow-hidden px-4 py-24">
       <div className="container mx-auto">
         <motion.div
-          className="mb-16 text-center"
-          initial={{ opacity: 0, y: 30 }}
+          className="mb-20 text-center"
+          initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
         >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ type: "spring", stiffness: 200, damping: 15 }}
+            className={`
+              text-primary bg-primary/10 mb-6 inline-block rounded-full px-4
+              py-1.5 text-sm font-semibold tracking-wider uppercase
+            `}
+          >
+            Powerful Features
+          </motion.div>
           <h2
             className={`
-              font-display mb-4 text-3xl font-bold
-              md:text-4xl
+              font-display mb-6 text-4xl font-extrabold tracking-tight
+              md:text-5xl
             `}
           >
             Everything You Need to{" "}
-            <span className="gradient-text">Land Your Dream Job</span>
+            <span className="gradient-text">Build a Winning Career</span>
           </h2>
-          <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
-            Our comprehensive toolkit helps you create professional CVs, tailor
-            them to job descriptions, and practice interviews.
+          <p
+            className={`
+              text-muted-foreground mx-auto max-w-2xl text-lg leading-relaxed
+            `}
+          >
+            From professional templates to AI-powered content generation and
+            mock interviews, CVCraft provides the end-to-end toolkit for your
+            job search.
           </p>
         </motion.div>
 
@@ -60,34 +77,62 @@ const FeaturesSection = () => {
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "-50px" }}
         >
           {features.map((feature) => (
             <motion.div
               key={feature.title}
               className={`
-                group bg-card border-border/50 shadow-card rounded-2xl border
-                p-8 transition-all duration-500
-                hover:shadow-xl
+                group bg-card border-border/50 shadow-card relative
+                overflow-hidden rounded-3xl border p-10 transition-all
+                duration-500
+                hover:border-primary/20 hover:shadow-2xl
               `}
               variants={fadeInUp}
-              whileHover={{ y: -10, scale: 1.02 }}
+              whileHover={{
+                y: -12,
+                transition: { duration: 0.4, ease: "easeOut" },
+              }}
             >
+              <div
+                className={`
+                  absolute top-0 right-0 p-8 opacity-[0.03] transition-opacity
+                  group-hover:opacity-[0.08]
+                `}
+              >
+                <feature.icon size={120} />
+              </div>
+
               <motion.div
                 className={`
-                  gradient-bg mb-6 flex h-14 w-14 items-center justify-center
-                  rounded-xl transition-shadow duration-300
-                  group-hover:shadow-glow
+                  gradient-bg mb-8 flex h-16 w-16 items-center justify-center
+                  rounded-2xl transition-all duration-500
+                  group-hover:shadow-glow group-hover:scale-110
+                  group-hover:rotate-6
                 `}
-                whileHover={{ rotate: [0, -10, 10, 0], scale: 1.1 }}
+                whileHover={{ rotate: [0, -10, 10, 0] }}
                 transition={{ duration: 0.5 }}
               >
-                <feature.icon className="text-primary-foreground h-7 w-7" />
+                <feature.icon className="text-primary-foreground h-8 w-8" />
               </motion.div>
-              <h3 className="font-display mb-3 text-xl font-semibold">
+              <h3 className="font-display mb-4 text-2xl font-bold">
                 {feature.title}
               </h3>
-              <p className="text-muted-foreground">{feature.description}</p>
+              <p className="text-muted-foreground text-lg leading-relaxed">
+                {feature.description}
+              </p>
+
+              <motion.div
+                className={`
+                  text-primary mt-8 flex items-center gap-2 font-semibold
+                  opacity-0 transition-opacity
+                  group-hover:opacity-100
+                `}
+                initial={{ x: -10 }}
+                whileHover={{ x: 0 }}
+              >
+                Learn more <Sparkles size={16} />
+              </motion.div>
             </motion.div>
           ))}
         </motion.div>

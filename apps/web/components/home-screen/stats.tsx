@@ -52,15 +52,25 @@ const stats = [
 
 const StatsSection = () => {
   return (
-    <section
-      className={`
-        from-primary/10 via-accent/10 to-primary/10 bg-linear-to-r px-4 py-16
-      `}
-    >
+    <section className="relative overflow-hidden px-4 py-24">
+      <div
+        className={`
+          via-primary/20 absolute top-0 left-0 h-px w-full bg-linear-to-r
+          from-transparent to-transparent
+        `}
+      />
+      <div
+        className={`
+          via-primary/20 absolute bottom-0 left-0 h-px w-full bg-linear-to-r
+          from-transparent to-transparent
+        `}
+      />
+
       <div className="container mx-auto">
         <motion.div
           className={`
-            flex flex-wrap justify-center gap-12
+            grid grid-cols-1 gap-12
+            sm:grid-cols-3
             md:gap-24
           `}
           variants={staggerContainer}
@@ -71,19 +81,28 @@ const StatsSection = () => {
           {stats.map((stat) => (
             <motion.div
               key={stat.label}
-              className="text-center"
+              className="group text-center"
               variants={scaleIn}
             >
               <motion.div
                 className={`
-                  font-display gradient-text text-5xl font-bold
-                  md:text-6xl
+                  font-display gradient-text mb-2 text-6xl font-extrabold
+                  tracking-tighter
+                  md:text-7xl
                 `}
-                whileHover={{ scale: 1.1 }}
+                whileHover={{ scale: 1.05 }}
               >
                 <AnimatedCounter value={stat.value} suffix={stat.suffix} />
               </motion.div>
-              <div className="text-muted-foreground mt-2">{stat.label}</div>
+              <div
+                className={`
+                  text-muted-foreground text-sm font-semibold tracking-widest
+                  uppercase opacity-80 transition-opacity
+                  group-hover:opacity-100
+                `}
+              >
+                {stat.label}
+              </div>
             </motion.div>
           ))}
         </motion.div>

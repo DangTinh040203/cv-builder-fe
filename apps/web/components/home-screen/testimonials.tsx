@@ -35,24 +35,42 @@ const testimonials = [
 
 const TestimonialsSection = () => {
   return (
-    <section className="px-4 py-20">
+    <section className="relative overflow-hidden px-4 py-24">
       <div className="container mx-auto">
         <motion.div
-          className="mb-16 text-center"
-          initial={{ opacity: 0, y: 30 }}
+          className="mb-20 text-center"
+          initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
         >
-          <h2
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
             className={`
-              font-display mb-4 text-3xl font-bold
-              md:text-4xl
+              text-primary bg-primary/10 mb-6 inline-block rounded-full px-4
+              py-1.5 text-sm font-semibold tracking-wider uppercase
             `}
           >
-            Loved by <span className="gradient-text">Thousands</span>
+            User Success Stories
+          </motion.div>
+          <h2
+            className={`
+              font-display mb-6 text-4xl font-extrabold tracking-tight
+              md:text-5xl
+            `}
+          >
+            Loved by <span className="gradient-text">Thousands</span> of Job
+            Seekers
           </h2>
-          <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
-            See what our users have to say about their experience.
+          <p
+            className={`
+              text-muted-foreground mx-auto max-w-2xl text-lg leading-relaxed
+            `}
+          >
+            Discover how professionals from top companies are using CVCraft to
+            accelerate their career growth.
           </p>
         </motion.div>
 
@@ -64,52 +82,68 @@ const TestimonialsSection = () => {
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "-50px" }}
         >
           {testimonials.map((testimonial) => (
             <motion.div
               key={testimonial.name}
               variants={fadeInUp}
-              whileHover={{ y: -10 }}
+              whileHover={{ y: -12 }}
+              transition={{ duration: 0.4 }}
             >
               <Card
                 className={`
-                  border-border/50 h-full transition-all duration-500
-                  hover:shadow-xl
+                  border-border/50 bg-card/60 h-full rounded-3xl
+                  backdrop-blur-sm transition-all duration-500
+                  hover:border-primary/20 hover:shadow-2xl
                 `}
               >
-                <CardContent className="pt-6">
-                  <div className="mb-4 flex gap-1">
+                <CardContent className="p-8">
+                  <div className="mb-6 flex gap-1">
                     {[...Array(testimonial.rating)].map((_, i) => (
                       <motion.div
                         key={i}
                         initial={{ opacity: 0, scale: 0 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
-                        transition={{ delay: i * 0.1 }}
+                        transition={{ delay: 0.3 + i * 0.1, type: "spring" }}
                       >
                         <Star
-                          className={`h-5 w-5 fill-yellow-400 text-yellow-400`}
+                          className={`
+                            h-5 w-5 fill-yellow-400 text-yellow-400 shadow-sm
+                          `}
                         />
                       </motion.div>
                     ))}
                   </div>
-                  <p className="text-muted-foreground mb-6 italic">
+                  <p
+                    className={`
+                      text-foreground mb-8 text-lg leading-relaxed font-medium
+                    `}
+                  >
                     &quot;{testimonial.content}&quot;
                   </p>
-                  <div className="flex items-center gap-3">
+                  <div
+                    className={`
+                      border-border/60 flex items-center gap-4 border-t pt-6
+                    `}
+                  >
                     <motion.div
                       className={`
-                        gradient-bg text-primary-foreground flex h-12 w-12
-                        items-center justify-center rounded-full font-semibold
+                        from-primary to-accent text-primary-foreground
+                        shadow-primary/20 flex h-14 w-14 items-center
+                        justify-center rounded-2xl bg-linear-to-br font-bold
+                        shadow-lg
                       `}
-                      whileHover={{ scale: 1.1 }}
+                      whileHover={{ scale: 1.1, rotate: 5 }}
                     >
                       {testimonial.image}
                     </motion.div>
                     <div>
-                      <div className="font-semibold">{testimonial.name}</div>
-                      <div className="text-muted-foreground text-sm">
+                      <div className="text-lg font-bold">
+                        {testimonial.name}
+                      </div>
+                      <div className="text-primary text-sm font-medium">
                         {testimonial.role}
                       </div>
                     </div>

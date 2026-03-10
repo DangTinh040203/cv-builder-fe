@@ -18,7 +18,7 @@ const benefits = [
 
 const BenefitsSection = () => {
   return (
-    <section className="px-4 py-20">
+    <section className="to-primary/5 bg-linear-to-b from-transparent px-4 py-24">
       <div className="container mx-auto">
         <div
           className={`
@@ -27,27 +27,39 @@ const BenefitsSection = () => {
           `}
         >
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -60 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className={`
+                text-accent bg-accent/10 mb-6 inline-block rounded-full px-4
+                py-1.5 text-sm font-semibold tracking-wider uppercase
+              `}
+            >
+              Why Choose CVCraft
+            </motion.div>
             <h2
               className={`
-                font-display mb-6 text-3xl font-bold
-                md:text-4xl
+                font-display mb-8 text-4xl font-extrabold tracking-tight
+                md:text-5xl
               `}
             >
               Stand Out from the{" "}
-              <span className="gradient-text">Competition</span>
+              <span className="gradient-text">Massive Competition</span>
             </h2>
-            <p className="text-muted-foreground mb-8 text-lg">
-              Our CV builder is designed by hiring managers and career coaches
-              to give you the best chance of getting noticed.
+            <p className="text-muted-foreground mb-10 text-xl leading-relaxed">
+              Our CV builder is designed by industry experts to ensure your
+              profile gets the attention it deserves from modern hiring systems.
             </p>
 
             <motion.div
               className={`
-                grid gap-4
+                grid gap-6
                 sm:grid-cols-2
               `}
               variants={staggerContainer}
@@ -58,30 +70,46 @@ const BenefitsSection = () => {
               {benefits.map((benefit, index) => (
                 <motion.div
                   key={benefit}
-                  className="flex items-center gap-3"
+                  className="group flex items-center gap-4"
                   variants={fadeInLeft}
                 >
                   <motion.div
-                    initial={{ scale: 0 }}
-                    whileInView={{ scale: 1 }}
+                    initial={{ scale: 0, rotate: -45 }}
+                    whileInView={{ scale: 1, rotate: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: index * 0.1, type: "spring" }}
+                    transition={{
+                      delay: index * 0.1,
+                      type: "spring",
+                      stiffness: 200,
+                      damping: 12,
+                    }}
+                    className={`
+                      bg-primary/10 rounded-lg p-2 transition-colors
+                      group-hover:bg-primary/20
+                    `}
                   >
-                    <CheckCircle2 className="text-primary h-5 w-5 shrink-0" />
+                    <CheckCircle2 className="text-primary h-6 w-6 shrink-0" />
                   </motion.div>
-                  <span className="text-foreground">{benefit}</span>
+                  <span className="text-foreground text-lg font-medium">
+                    {benefit}
+                  </span>
                 </motion.div>
               ))}
             </motion.div>
 
-            <Link href="/builder" className="mt-8 inline-block">
+            <Link href="/builder" className="mt-12 inline-block">
               <motion.div
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.05, x: 5 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Button size="lg">
-                  Get Started Now
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                <Button
+                  size="xl"
+                  className={`
+                    shadow-primary/20 h-14 rounded-full px-10 text-lg shadow-lg
+                  `}
+                >
+                  Get Started Now for Free
+                  <ArrowRight className="ml-3 h-5 w-5" />
                 </Button>
               </motion.div>
             </Link>
@@ -89,63 +117,137 @@ const BenefitsSection = () => {
 
           <motion.div
             className="relative"
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            initial={{ opacity: 0, scale: 0.8, rotate: 5 }}
+            whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, type: "spring", stiffness: 100 }}
           >
+            <div
+              className={`
+                from-primary to-accent absolute -inset-4 animate-pulse
+                rounded-[32px] bg-linear-to-r opacity-10 blur-2xl
+              `}
+            />
+
             <motion.div
               className={`
-                bg-card border-border/50 rounded-2xl border p-8 shadow-xl
+                bg-card border-border/50 relative overflow-hidden rounded-[32px]
+                border p-10 shadow-2xl backdrop-blur-sm
               `}
-              whileHover={{ y: -5 }}
+              whileHover={{ y: -10 }}
+              transition={{ duration: 0.4 }}
             >
-              <div className="space-y-4">
-                <div className="flex items-center gap-4">
+              <div
+                className={`
+                  bg-primary/5 absolute top-0 right-0 -mt-16 -mr-16 h-32 w-32
+                  rounded-full blur-3xl
+                `}
+              />
+
+              <div className="space-y-8">
+                <div className="flex items-center gap-6">
                   <motion.div
                     className={`
-                      from-primary to-accent text-primary-foreground flex h-16
-                      w-16 items-center justify-center rounded-full
-                      bg-linear-to-br text-xl font-bold
+                      from-primary to-accent text-primary-foreground
+                      shadow-primary/30 flex h-20 w-20 items-center
+                      justify-center rounded-2xl bg-linear-to-br text-2xl
+                      font-bold shadow-lg
                     `}
-                    animate={{ rotate: [0, 5, -5, 0] }}
-                    transition={{ duration: 4 }}
+                    animate={{
+                      rotate: [0, 5, -5, 0],
+                      scale: [1, 1.05, 1],
+                    }}
+                    transition={{
+                      duration: 6,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
                   >
                     JA
                   </motion.div>
                   <div>
-                    <div className="font-display text-lg font-semibold">
+                    <div className="font-display text-2xl font-bold">
                       John Anderson
                     </div>
-                    <div className="text-muted-foreground">
+                    <div className="text-primary font-medium tracking-wide">
                       Senior Software Engineer
                     </div>
                   </div>
                 </div>
-                <div className="border-border space-y-2 border-t pt-4">
-                  {[100, 80, 90, 70].map((width, i) => (
-                    <motion.div
-                      key={i}
-                      className="bg-muted h-3 overflow-hidden rounded-full"
-                    >
-                      <motion.div
-                        className="bg-primary/30 h-full rounded-full"
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${width}%` }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1, delay: i * 0.2 }}
-                      />
-                    </motion.div>
+
+                <div className="border-border/60 space-y-6 border-t pt-6">
+                  {[100, 85, 95, 75].map((width, i) => (
+                    <div key={i} className="space-y-2">
+                      <div
+                        className={`
+                          text-muted-foreground flex justify-between text-sm
+                          font-medium
+                        `}
+                      >
+                        <span>
+                          {
+                            [
+                              "Technical Skills",
+                              "Experience",
+                              "Education",
+                              "Projects",
+                            ][i]
+                          }
+                        </span>
+                        <span>{width}% Match</span>
+                      </div>
+                      <div className="bg-muted h-3 overflow-hidden rounded-full">
+                        <motion.div
+                          className={`
+                            bg-primary h-full rounded-full
+                            shadow-[0_0_10px_rgba(108,35,215,0.4)]
+                          `}
+                          initial={{ width: 0 }}
+                          whileInView={{ width: `${width}%` }}
+                          viewport={{ once: true }}
+                          transition={{
+                            duration: 1.5,
+                            delay: 0.5 + i * 0.2,
+                            ease: "easeOut",
+                          }}
+                        />
+                      </div>
+                    </div>
                   ))}
+                </div>
+
+                <div className="flex gap-4 pt-4">
+                  <div
+                    className={`
+                      bg-primary/5 border-primary/10 text-primary rounded-full
+                      border px-4 py-2 text-xs font-bold
+                    `}
+                  >
+                    ATS PASSED
+                  </div>
+                  <div
+                    className={`
+                      bg-accent/5 border-accent/10 text-accent rounded-full
+                      border px-4 py-2 text-xs font-bold
+                    `}
+                  >
+                    RECRUITER READY
+                  </div>
                 </div>
               </div>
             </motion.div>
+
+            {/* Background decorative elements */}
             <motion.div
               className={`
-                gradient-bg absolute -bottom-4 -left-4 -z-10 h-40 w-40
-                rounded-2xl opacity-20 blur-xl
+                gradient-bg absolute -bottom-10 -left-10 -z-10 h-48 w-48
+                rounded-full opacity-30 blur-3xl
               `}
-              animate={{ scale: [1, 1.3, 1] }}
-              transition={{ duration: 6 }}
+              animate={{
+                scale: [1, 1.4, 1],
+                opacity: [0.2, 0.4, 0.2],
+              }}
+              transition={{ duration: 8, repeat: Infinity }}
             />
           </motion.div>
         </div>

@@ -45,31 +45,60 @@ const whyChooseUs = [
 
 const WhyChooseUsSection = () => {
   return (
-    <section className="bg-muted/30 px-4 py-20">
+    <section className="relative overflow-hidden px-4 py-24">
+      <div
+        className={`
+          via-primary/20 absolute top-0 left-0 h-px w-full bg-linear-to-r
+          from-transparent to-transparent
+        `}
+      />
+      <div
+        className={`
+          via-primary/20 absolute bottom-0 left-0 h-px w-full bg-linear-to-r
+          from-transparent to-transparent
+        `}
+      />
+
       <div className="container mx-auto">
         <motion.div
-          className="mb-16 text-center"
-          initial={{ opacity: 0, y: 30 }}
+          className="mb-20 text-center"
+          initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
         >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className={`
+              text-primary bg-primary/10 mb-6 inline-block rounded-full px-4
+              py-1.5 text-sm font-semibold tracking-wider uppercase
+            `}
+          >
+            The CVCraft Edge
+          </motion.div>
           <h2
             className={`
-              font-display mb-4 text-3xl font-bold
-              md:text-4xl
+              font-display mb-6 text-4xl font-extrabold tracking-tight
+              md:text-5xl
             `}
           >
             Why Choose <span className="gradient-text">CVCraft</span>?
           </h2>
-          <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
-            We&apos;re not just another CV builder. Here&apos;s what makes us
-            different.
+          <p
+            className={`
+              text-muted-foreground mx-auto max-w-2xl text-lg leading-relaxed
+            `}
+          >
+            We combined recruitment expertise with cutting-edge AI to build the
+            ultimate career growth toolkit.
           </p>
         </motion.div>
 
         <motion.div
           className={`
-            grid gap-6
+            grid gap-8
             sm:grid-cols-2
             lg:grid-cols-3
           `}
@@ -82,12 +111,16 @@ const WhyChooseUsSection = () => {
             <motion.div key={item.title} variants={fadeInUp}>
               <Card
                 className={`
-                  border-border/50 group overflow-hidden transition-all
-                  duration-500
-                  hover:shadow-xl
+                  border-border/50 group bg-card/40 h-full overflow-hidden
+                  rounded-3xl backdrop-blur-sm transition-all duration-500
+                  hover:border-primary/20 hover:shadow-2xl
                 `}
               >
-                <CardContent className="relative pt-6">
+                <CardContent
+                  className={`
+                    relative flex flex-col items-center p-8 text-center
+                  `}
+                >
                   <motion.div
                     className={`
                       from-primary/5 absolute inset-0 bg-linear-to-br
@@ -97,22 +130,28 @@ const WhyChooseUsSection = () => {
                   />
                   <motion.div
                     className={`
-                      bg-primary/10 relative z-10 mb-4 flex h-12 w-12
-                      items-center justify-center rounded-lg
+                      bg-primary/10 text-primary relative z-10 mb-8 flex h-16
+                      w-16 items-center justify-center rounded-2xl shadow-inner
+                      transition-transform duration-500
+                      group-hover:scale-110 group-hover:rotate-3
                     `}
-                    whileHover={{ rotate: 360, scale: 1.1 }}
-                    transition={{ duration: 0.5 }}
+                    whileHover={{ scale: 1.15 }}
                   >
-                    <item.icon className="text-primary h-6 w-6" />
+                    <item.icon className="h-8 w-8" />
                   </motion.div>
                   <h3
                     className={`
-                      font-display relative z-10 mb-2 text-lg font-semibold
+                      font-display relative z-10 mb-4 text-xl font-bold
                     `}
                   >
                     {item.title}
                   </h3>
-                  <p className="text-muted-foreground relative z-10 text-sm">
+                  <p
+                    className={`
+                      text-muted-foreground relative z-10 text-base
+                      leading-relaxed
+                    `}
+                  >
                     {item.description}
                   </p>
                 </CardContent>

@@ -2,7 +2,7 @@
 import { Badge } from "@shared/ui/components/badge";
 import { Button } from "@shared/ui/components/button";
 import { motion } from "framer-motion";
-import { ArrowRight, MousePointer2, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
@@ -23,66 +23,52 @@ const HeroSection = () => {
       <div className="absolute inset-0 overflow-hidden">
         <motion.div
           className={`
-            bg-primary/15 absolute top-20 right-[10%] h-96 w-96 rounded-full
-            blur-[80px]
+            bg-primary/20 absolute top-[-10%] right-[-5%] h-[500px] w-[500px]
+            rounded-full blur-[120px]
           `}
           animate={{
             scale: [1, 1.2, 1],
-            opacity: [0.15, 0.25, 0.15],
+            opacity: [0.1, 0.2, 0.1],
+            x: [0, 50, 0],
+            y: [0, -30, 0],
           }}
-          transition={{ duration: 4, ease: "easeInOut" }}
+          transition={{
+            duration: 15,
+            repeat: Infinity,
+            ease: "linear",
+          }}
         />
         <motion.div
           className={`
-            bg-accent/15 absolute bottom-20 left-[5%] h-80 w-80 rounded-full
-            blur-[60px]
+            bg-accent/20 absolute bottom-[-10%] left-[-5%] h-[400px] w-[400px]
+            rounded-full blur-[100px]
           `}
           animate={{
             scale: [1, 1.3, 1],
-            x: [0, 20, 0],
+            opacity: [0.1, 0.2, 0.1],
+            x: [0, -40, 0],
+            y: [0, 60, 0],
           }}
-          transition={{ duration: 5, ease: "easeInOut" }}
+          transition={{
+            duration: 18,
+            repeat: Infinity,
+            ease: "linear",
+          }}
         />
         <motion.div
           className={`
-            bg-primary/10 absolute top-1/3 left-[15%] h-64 w-64 rounded-full
-            blur-[50px]
+            bg-primary/15 absolute top-1/4 left-1/4 h-32 w-32 rounded-full
+            blur-[60px]
           `}
-          animate={{ y: [0, -30, 0] }}
-          transition={{ duration: 6, ease: "easeInOut" }}
-        />
-        <motion.div
-          className={`
-            bg-accent/10 absolute right-[15%] bottom-1/3 h-48 w-48 rounded-full
-            blur-[40px]
-          `}
-          animate={{ y: [0, 30, 0], rotate: [0, 180, 360] }}
-          transition={{ duration: 8, ease: "easeInOut" }}
-        />
-
-        {/* Geometric shapes */}
-        <motion.div
-          className={`
-            border-primary/30 absolute top-40 left-[20%] h-4 w-4 rotate-45
-            border-2
-          `}
-          animate={{ rotate: [45, 135, 45], scale: [1, 1.2, 1] }}
-          transition={{ duration: 4 }}
-        />
-        <motion.div
-          className={`
-            border-accent/30 absolute right-[25%] bottom-40 h-6 w-6 rounded-full
-            border-2
-          `}
-          animate={{ scale: [1, 1.5, 1], opacity: [0.3, 0.6, 0.3] }}
-          transition={{ duration: 3 }}
-        />
-        <motion.div
-          className={`
-            bg-primary/30 absolute top-1/2 right-[10%] h-3 w-3 rounded-full
-          `}
-          animate={{ y: [0, -20, 0], x: [0, 10, 0] }}
-          transition={{ duration: 4 }}
+          animate={{
+            x: [0, 100, 0],
+            y: [0, 50, 0],
+          }}
+          transition={{
+            duration: 12,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
         />
       </div>
 
@@ -92,58 +78,67 @@ const HeroSection = () => {
           <motion.div
             className={`
               bg-primary/10 border-primary/20 mb-8 inline-flex items-center
-              gap-2 gap-x-4 rounded-full border px-4 py-2
+              gap-2 rounded-full border px-4 py-2 backdrop-blur-sm
             `}
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            initial={{ opacity: 0, y: -20, scale: 0.8 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{
+              type: "spring",
+              stiffness: 260,
+              damping: 20,
+            }}
           >
             <motion.div
               animate={{ rotate: [0, 360] }}
-              transition={{ duration: 3, ease: "linear" }}
+              transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
             >
               <Sparkles className="text-primary h-4 w-4" />
             </motion.div>
             <span className="text-primary text-sm font-medium">
               AI-Powered CV Builder
             </span>
-            <motion.span
-              animate={{ scale: [1, 1.1, 1] }}
-              transition={{ duration: 2 }}
+            <Badge
+              className={`bg-primary/20 text-primary border-none text-[10px]`}
             >
-              <Badge>NEW</Badge>
-            </motion.span>
+              NEW
+            </Badge>
           </motion.div>
 
           {/* Main headline */}
-          <motion.h1
-            className={`
-              font-display text-foreground mb-6 text-4xl leading-[1.1] font-bold
-              tracking-tight
-              md:text-6xl
-              lg:text-7xl
-            `}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            Discover, connect,
-            <br />
-            <motion.span
-              className="gradient-text inline-block pb-2"
-              animate={{
-                backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+          <div className="overflow-hidden">
+            <motion.h1
+              className={`
+                font-display text-foreground mb-6 text-4xl leading-[1.1]
+                font-extrabold tracking-tight
+                md:text-7xl
+                lg:text-8xl
+              `}
+              initial={{ opacity: 0, y: 100 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.8,
+                ease: [0.16, 1, 0.3, 1],
+                delay: 0.1,
               }}
-              transition={{ duration: 5 }}
-              style={{ backgroundSize: "200% 200%" }}
             >
-              grow.
-            </motion.span>
-          </motion.h1>
+              Discover, connect,
+              <br />
+              <motion.span
+                className="gradient-text inline-block py-2"
+                animate={{
+                  backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                }}
+                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                style={{ backgroundSize: "200% 200%" }}
+              >
+                grow.
+              </motion.span>
+            </motion.h1>
+          </div>
 
           <motion.p
             className={`
-              text-muted-foreground mx-auto mb-10 max-w-xl text-lg
+              text-muted-foreground mx-auto mb-10 max-w-2xl text-lg
               leading-relaxed
               md:text-xl
             `}
@@ -152,13 +147,19 @@ const HeroSection = () => {
             transition={{ duration: 0.6, delay: 0.4 }}
           >
             Welcome to CVCraft, the largest professional CV building platform.
-            Create stunning resumes in minutes.
+            <br
+              className={`
+                hidden
+                md:block
+              `}
+            />
+            Craft stunning, ATS-friendly resumes in minutes with AI.
           </motion.p>
 
           {/* CTA Buttons */}
           <motion.div
             className={`
-              flex flex-col justify-center gap-3
+              flex flex-col justify-center gap-4
               sm:flex-row
             `}
             initial={{ opacity: 0, y: 20 }}
@@ -168,12 +169,13 @@ const HeroSection = () => {
             <Link href="/builder">
               <motion.div
                 whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileTap={{ scale: 0.98 }}
               >
                 <Button
-                  size="lg"
+                  size="xl"
                   className={`
-                    group relative w-full overflow-hidden rounded-full px-6
+                    group shadow-primary/20 relative h-14 w-full overflow-hidden
+                    rounded-full px-8 text-lg shadow-xl
                     sm:w-auto
                   `}
                 >
@@ -182,17 +184,18 @@ const HeroSection = () => {
                       absolute inset-0 bg-linear-to-r from-transparent
                       via-white/20 to-transparent
                     `}
-                    animate={{ x: ["-100%", "100%"] }}
+                    animate={{ x: ["-100%", "200%"] }}
                     transition={{
-                      duration: 2,
-                      repeatDelay: 1,
+                      duration: 2.5,
+                      repeat: Infinity,
+                      repeatDelay: 2,
                     }}
                   />
                   <span className="relative flex items-center gap-2">
                     Build your profile
                     <ArrowRight
                       className={`
-                        h-4 w-4 transition-transform
+                        h-5 w-5 transition-transform duration-300
                         group-hover:translate-x-1
                       `}
                     />
@@ -203,17 +206,18 @@ const HeroSection = () => {
             <Link href="/templates">
               <motion.div
                 whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileTap={{ scale: 0.98 }}
               >
                 <Button
                   variant="outline"
-                  size="lg"
+                  size="xl"
                   className={`
-                    w-full rounded-full px-6
+                    h-14 w-full rounded-full border-2 px-8 text-lg
+                    backdrop-blur-sm
                     sm:w-auto
                   `}
                 >
-                  Templates
+                  View Templates
                 </Button>
               </motion.div>
             </Link>
@@ -222,7 +226,7 @@ const HeroSection = () => {
           {/* Stats Cards */}
           <motion.div
             className={`
-              mt-16 grid grid-cols-2 gap-4
+              mt-20 grid grid-cols-2 gap-4
               md:grid-cols-4
             `}
             variants={staggerContainer}
@@ -230,56 +234,117 @@ const HeroSection = () => {
             animate="visible"
           >
             {[
-              { icon: "👤", label: "Professionals", color: "bg-green-500" },
-              { icon: "🔗", label: "Connections", color: "bg-yellow-500" },
-              { icon: "📋", label: "Job listings", color: "bg-blue-500" },
-              { icon: "📄", label: "Applications", color: "bg-purple-500" },
+              {
+                icon: "👤",
+                label: "Professionals",
+                color: "bg-green-500",
+                count: "50k+",
+              },
+              {
+                icon: "🔗",
+                label: "Connections",
+                color: "bg-yellow-500",
+                count: "120k+",
+              },
+              {
+                icon: "📋",
+                label: "Job listings",
+                color: "bg-blue-500",
+                count: "15k+",
+              },
+              {
+                icon: "📄",
+                label: "Applications",
+                color: "bg-purple-500",
+                count: "200k+",
+              },
             ].map((item, index) => (
               <motion.div
                 key={item.label}
                 className={`
-                  bg-card border-border cursor-pointer rounded-xl border p-4
-                  shadow-sm transition-all duration-300
-                  hover:-translate-y-1 hover:shadow-lg
+                  bg-card/50 border-border/50 group relative cursor-pointer
+                  overflow-hidden rounded-2xl border p-4 backdrop-blur-md
+                  transition-all duration-500
+                  hover:border-primary/30 hover:shadow-primary/10
+                  hover:-translate-y-2 hover:shadow-2xl
                 `}
                 variants={fadeInUp}
-                whileHover={{ scale: 1.02, y: -5 }}
+                whileHover={{ scale: 1.02 }}
               >
+                <div
+                  className={`
+                    absolute -top-4 -right-4 text-4xl opacity-5
+                    transition-transform
+                    group-hover:scale-150
+                  `}
+                >
+                  {item.icon}
+                </div>
                 <div className="mb-2 flex items-center gap-2">
                   <motion.div
                     className={`
                       h-2 w-2 rounded-full
                       ${item.color}
                     `}
-                    animate={{ scale: [1, 1.5, 1] }}
+                    animate={{ scale: [1, 1.8, 1], opacity: [1, 0.5, 1] }}
                     transition={{
                       duration: 2,
-                      delay: index * 0.2,
+                      repeat: Infinity,
+                      delay: index * 0.3,
                     }}
                   />
-                  <span className="text-muted-foreground text-sm">
+                  <span
+                    className={`
+                      text-muted-foreground text-xs font-medium tracking-wider
+                      uppercase
+                    `}
+                  >
                     {item.label}
                   </span>
                 </div>
+                <div className="text-2xl font-bold">{item.count}</div>
               </motion.div>
             ))}
           </motion.div>
 
           {/* Scroll indicator */}
           <motion.div
-            className="mt-16 flex flex-col items-center gap-2"
+            className="mt-20 flex flex-col items-center gap-3"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1 }}
+            transition={{ delay: 1.5 }}
           >
-            <span className="text-muted-foreground text-xs">
+            <span
+              className={`
+                text-muted-foreground text-xs font-medium tracking-[0.2em]
+                uppercase
+              `}
+            >
               Scroll to explore
             </span>
             <motion.div
-              animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 1.5 }}
+              animate={{
+                y: [0, 10, 0],
+                opacity: [0.3, 1, 0.3],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
             >
-              <MousePointer2 className="text-primary h-5 w-5" />
+              <div
+                className={`
+                  border-primary/30 flex h-10 w-6 justify-center rounded-full
+                  border-2 p-1
+                `}
+              >
+                <motion.div
+                  className="bg-primary h-2 w-1 rounded-full"
+                  animate={{ y: [0, 16, 0] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                />
+              </div>
             </motion.div>
           </motion.div>
         </div>

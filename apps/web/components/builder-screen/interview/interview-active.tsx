@@ -63,9 +63,7 @@ export const InterviewActive = ({
     ctx.clearRect(0, 0, width, height);
 
     // Use playback analyser when AI is speaking, mic analyser otherwise
-    const activeAnalyser = isAISpeaking
-      ? playbackAnalyserNode
-      : analyserNode;
+    const activeAnalyser = isAISpeaking ? playbackAnalyserNode : analyserNode;
 
     if (!activeAnalyser) {
       animationRef.current = requestAnimationFrame(drawWave);

@@ -16,7 +16,7 @@ const templateCategories = [
 
 const TemplatePreviewSection = () => {
   return (
-    <section className="px-4 py-20">
+    <section className="bg-background relative overflow-hidden px-4 py-24">
       <div className="container mx-auto">
         <div
           className={`
@@ -25,27 +25,39 @@ const TemplatePreviewSection = () => {
           `}
         >
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -60 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className={`
+                text-primary bg-primary/10 mb-6 inline-block rounded-full px-4
+                py-1.5 text-sm font-semibold tracking-wider uppercase
+              `}
+            >
+              Premium Designs
+            </motion.div>
             <h2
               className={`
-                font-display mb-6 text-3xl font-bold
-                md:text-4xl
+                font-display mb-8 text-4xl font-extrabold tracking-tight
+                md:text-5xl
               `}
             >
               Choose from{" "}
-              <span className="gradient-text">10+ Professional Templates</span>
+              <span className="gradient-text">10+ Professional</span> Templates
             </h2>
-            <p className="text-muted-foreground mb-8 text-lg">
-              Our templates are designed by hiring managers and career coaches
-              to help you make the best first impression.
+            <p className="text-muted-foreground mb-10 text-xl leading-relaxed">
+              Our collection of high-performance templates is meticulously
+              crafted to meet the standards of top-tier companies and
+              recruitment agencies.
             </p>
 
             <motion.div
-              className="mb-8 flex flex-wrap gap-3"
+              className="mb-12 flex flex-wrap gap-3"
               variants={staggerContainer}
               initial="hidden"
               whileInView="visible"
@@ -55,28 +67,42 @@ const TemplatePreviewSection = () => {
                 <motion.span
                   key={cat.name}
                   className={`
-                    cursor-pointer rounded-full px-4 py-2 text-sm font-medium
+                    cursor-pointer rounded-xl px-5 py-2.5 text-sm font-bold
+                    tracking-tight shadow-sm transition-all duration-300
+                    hover:shadow-md
                     ${cat.color}
                   `}
                   variants={scaleIn}
-                  whileHover={{ scale: 1.1 }}
+                  whileHover={{
+                    scale: 1.05,
+                    y: -2,
+                  }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  {cat.name} ({cat.count})
+                  {cat.name}
+                  <span className="ml-2 text-xs font-medium opacity-60">
+                    ({cat.count})
+                  </span>
                 </motion.span>
               ))}
             </motion.div>
 
             <Link href="/templates">
               <motion.div
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.05, x: 5 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Button size="lg" className="group">
-                  Browse All Templates
+                <Button
+                  size="xl"
+                  className={`
+                    group shadow-primary/10 h-14 rounded-full px-10 text-lg
+                    shadow-xl
+                  `}
+                >
+                  Explore All Templates
                   <ChevronRight
                     className={`
-                      ml-1 h-4 w-4 transition-transform
+                      ml-2 h-5 w-5 transition-transform duration-300
                       group-hover:translate-x-1
                     `}
                   />
@@ -87,13 +113,20 @@ const TemplatePreviewSection = () => {
 
           <motion.div
             className="relative"
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 60 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
+            <div
+              className={`
+                from-primary/10 to-accent/10 absolute -inset-10 -z-10
+                rounded-full bg-linear-to-tr blur-3xl
+              `}
+            />
+
             <motion.div
-              className="grid grid-cols-2 gap-4"
+              className="grid grid-cols-2 gap-6"
               variants={staggerContainer}
               initial="hidden"
               whileInView="visible"
@@ -103,66 +136,107 @@ const TemplatePreviewSection = () => {
                 <motion.div
                   key={i}
                   className={`
-                    bg-card border-border/50 rounded-xl border p-4 shadow-lg
-                    ${i === 1 ? "col-span-2" : ""}
+                    bg-card border-border/60 group relative aspect-square
+                    overflow-hidden rounded-[24px] border p-5 shadow-xl
+                    transition-all duration-500
+                    hover:border-primary/30 hover:shadow-2xl
                   `}
                   variants={fadeInUp}
-                  whileHover={{ y: -5, scale: 1.02 }}
                 >
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
+                  <div
+                    className={`
+                      from-primary/5 absolute inset-0 bg-linear-to-br
+                      to-transparent opacity-0 transition-opacity
+                      group-hover:opacity-100
+                    `}
+                  />
+
+                  <div
+                    className={`
+                      relative z-10 flex h-full flex-col justify-between
+                      space-y-4
+                    `}
+                  >
+                    <div className="flex items-center gap-4">
                       <motion.div
-                        className="bg-primary/20 h-8 w-8 rounded-full"
-                        animate={{ scale: [1, 1.1, 1] }}
-                        transition={{
-                          duration: 2,
-                          delay: i * 0.2,
+                        className={`
+                          bg-primary/10 text-primary flex h-12 w-12 items-center
+                          justify-center rounded-xl font-bold shadow-inner
+                        `}
+                        animate={{
+                          scale: [1, 1.05, 1],
+                          rotate: [0, 5, -5, 0],
                         }}
-                      />
+                        transition={{
+                          duration: 4 + i,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                        }}
+                      >
+                        {i}
+                      </motion.div>
                       <div className="flex-1">
-                        <div className="bg-foreground/20 h-2 w-3/4 rounded" />
                         <div
                           className={`
-                            bg-muted-foreground/20 mt-1 h-1.5 w-1/2 rounded
+                            bg-foreground/15 h-2.5 w-3/4 rounded-full
+                            transition-colors
+                            group-hover:bg-primary/20
+                          `}
+                        />
+                        <div
+                          className={`
+                            bg-muted-foreground/10 mt-2 h-2 w-1/2 rounded-full
                           `}
                         />
                       </div>
                     </div>
-                    <div className="border-border/50 space-y-1 border-t pt-2">
+
+                    <div className="border-border/60 space-y-3 border-t pt-4">
                       <motion.div
-                        className="bg-muted h-1.5 rounded"
+                        className="bg-muted/60 h-2 rounded-full"
                         initial={{ width: 0 }}
                         whileInView={{ width: "100%" }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.8, delay: i * 0.1 }}
+                        transition={{ duration: 1, delay: i * 0.1 + 0.3 }}
                       />
                       <motion.div
-                        className="bg-muted h-1.5 rounded"
+                        className="bg-muted/60 h-2 rounded-full"
                         initial={{ width: 0 }}
-                        whileInView={{ width: "83%" }}
+                        whileInView={{ width: "85%" }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.8, delay: i * 0.1 + 0.1 }}
+                        transition={{ duration: 1, delay: i * 0.1 + 0.4 }}
                       />
-                      <motion.div
-                        className="bg-muted h-1.5 rounded"
-                        initial={{ width: 0 }}
-                        whileInView={{ width: "66%" }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8, delay: i * 0.1 + 0.2 }}
-                      />
+                      {i === 1 && (
+                        <motion.div
+                          className="bg-muted/60 h-2 rounded-full"
+                          initial={{ width: 0 }}
+                          whileInView={{ width: "92%" }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 1, delay: 0.5 }}
+                        />
+                      )}
+                    </div>
+
+                    <div
+                      className={`
+                        flex translate-y-2 transform justify-end opacity-0
+                        transition-opacity duration-300
+                        group-hover:translate-y-0 group-hover:opacity-100
+                      `}
+                    >
+                      <div
+                        className={`
+                          text-primary text-xs font-black tracking-widest
+                          uppercase
+                        `}
+                      >
+                        Preview Design
+                      </div>
                     </div>
                   </div>
                 </motion.div>
               ))}
             </motion.div>
-            <motion.div
-              className={`
-                gradient-bg absolute -right-4 -bottom-4 -z-10 h-32 w-32
-                rounded-2xl opacity-20 blur-xl
-              `}
-              animate={{ scale: [1, 1.2, 1], rotate: [0, 90, 0] }}
-              transition={{ duration: 8 }}
-            />
           </motion.div>
         </div>
       </div>

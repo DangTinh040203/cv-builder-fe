@@ -22,7 +22,64 @@ const fontSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "CVCraft - AI-powered CV builder",
+  title: {
+    default: "CVCraft - AI-Powered Professional CV Builder",
+    template: "%s | CVCraft",
+  },
+  description:
+    "Build a stunning, professional, and ATS-optimized CV in minutes with CVCraft. AI-powered content generation, professional templates, and mock interview practice.",
+  keywords: [
+    "CV builder",
+    "resume builder",
+    "AI CV",
+    "AI resume",
+    "professional CV",
+    "ATS optimized resume",
+    "career builder",
+    "mock interview",
+    "job search toolkit",
+  ],
+  authors: [{ name: "CVCraft Team" }],
+  creator: "CVCraft",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://cvcraft.site",
+    title: "CVCraft - AI-Powered Professional CV Builder",
+    description:
+      "Craft stunning, ATS-friendly resumes in minutes with AI. Join thousands of professionals landing their dream jobs.",
+    siteName: "CVCraft",
+    images: [
+      {
+        url: "https://cvcraft.site/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "CVCraft - AI-Powered CV Builder",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CVCraft - AI-Powered Professional CV Builder",
+    description:
+      "Craft stunning, ATS-friendly resumes in minutes with AI. Join thousands of professionals landing their dream jobs.",
+    images: ["https://cvcraft.site/og-image.png"],
+    creator: "@cvcraft",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  verification: {
+    google: "your-google-verification-code",
+  },
 };
 
 export default function RootLayout({

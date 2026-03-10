@@ -13,7 +13,7 @@ import { type Resume } from "@/types/resume.type";
 
 export interface SectionRendererProps {
   resume: Resume;
-  styles: Record<string, any>;
+  styles: Record<string, unknown>;
   TableRow: React.FC<{
     label: string;
     children: React.ReactNode;

@@ -367,9 +367,6 @@ export function useInterview(): UseInterviewReturn {
         });
 
         service.onAudioResponse(({ audio }) => {
-          console.debug(
-            `[Interview] Audio received from server: ${audio.length} chars (base64)`,
-          );
           enqueueAudio(audio);
         });
 

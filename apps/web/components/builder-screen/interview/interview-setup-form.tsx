@@ -21,7 +21,6 @@ import {
 import { cn } from "@shared/ui/lib/utils";
 import {
   AlertCircle,
-  BrainCircuit,
   Code,
   Globe,
   Info,
@@ -320,8 +319,8 @@ export const InterviewSetupForm = ({
             >
               <SelectTrigger
                 className={`
-                  h-9 w-full text-sm
                   focus:border-primary focus:ring-primary/50
+                  h-9 w-full text-sm
                 `}
               >
                 <SelectValue placeholder="Select language" />
@@ -353,8 +352,8 @@ export const InterviewSetupForm = ({
             >
               <SelectTrigger
                 className={`
-                  h-9 w-full text-sm
                   focus:border-primary focus:ring-primary/50
+                  h-9 w-full text-sm
                 `}
               >
                 <SelectValue placeholder="Select voice" />
