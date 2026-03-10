@@ -1,7 +1,5 @@
 "use client";
 
-export const dynamic = "force-dynamic";
-
 import { useUser } from "@clerk/nextjs";
 import { toast } from "@shared/ui/components/sonner";
 import { cn } from "@shared/ui/lib/utils";
