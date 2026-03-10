@@ -5,6 +5,8 @@ services:
     container_name: cv-builder-fe
     restart: always
     env_file: .env
+    environment:
+      - NODE_OPTIONS=--dns-result-order=ipv4first
     networks:
       - cv-builder-network
 
