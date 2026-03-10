@@ -15,10 +15,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@shared/ui/components/dialog";
-import { cn } from "@shared/ui/lib/utils";
 import { motion } from "framer-motion";
 import { PenLine, Upload } from "lucide-react";
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 
 interface TemplateSelectionDialogProps {
   isOpen: boolean;
@@ -33,17 +32,14 @@ export const TemplateSelectionDialog = ({
   onOpenChange,
   onSelect,
 }: TemplateSelectionDialogProps) => {
-  const [selectionType, setSelectionType] = useState<
-    "upload" | "scratch" | null
-  >(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleContinue = () => {
-    if (selectionType === "scratch") {
-      onSelect("scratch");
-    } else if (selectionType === "upload") {
-      fileInputRef.current?.click();
-    }
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleScratchClick = () => {
+    onSelect("scratch");
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -229,15 +225,11 @@ export const TemplateSelectionDialog = ({
             >
               <div>
                 <Card
-                  className={cn(
-                    `
-                      hover:border-primary hover:bg-muted/50
-                      cursor-pointer transition-all
-                    `,
-                    selectionType === "upload" &&
-                      "bg-primary/5 border-primary ring-1 ring-primary",
-                  )}
-                  onClick={() => setSelectionType("upload")}
+                  className={`
+                    hover:border-primary hover:bg-muted/50
+                    cursor-pointer transition-all
+                  `}
+                  onClick={handleUploadClick}
                 >
                   <CardContent
                     className={`
@@ -266,15 +258,11 @@ export const TemplateSelectionDialog = ({
 
               <div>
                 <Card
-                  className={cn(
-                    `
-                      hover:border-primary hover:bg-muted/50
-                      cursor-pointer transition-all
-                    `,
-                    selectionType === "scratch" &&
-                      "bg-primary/5 border-primary ring-1 ring-primary",
-                  )}
-                  onClick={() => setSelectionType("scratch")}
+                  className={`
+                    hover:border-primary hover:bg-muted/50
+                    cursor-pointer transition-all
+                  `}
+                  onClick={handleScratchClick}
                 >
                   <CardContent
                     className={`
@@ -310,13 +298,6 @@ export const TemplateSelectionDialog = ({
               disabled={isLoading}
             >
               Cancel
-            </Button>
-            <Button
-              onClick={handleContinue}
-              disabled={!selectionType || isLoading}
-              className="px-8"
-            >
-              {isLoading ? "Processing..." : "Next"}
             </Button>
           </DialogFooter>
         </DialogContent>

@@ -110,8 +110,8 @@ const HeroSection = () => {
               className={`
                 font-display text-foreground mb-6 text-4xl leading-[1.1]
                 font-extrabold tracking-tight
-                md:text-7xl
-                lg:text-8xl
+                md:text-6xl
+                lg:text-7xl
               `}
               initial={{ opacity: 0, y: 100 }}
               animate={{ opacity: 1, y: 0 }}
@@ -121,8 +121,7 @@ const HeroSection = () => {
                 delay: 0.1,
               }}
             >
-              Discover, connect,{" "}
-              <br />
+              Discover, connect, <br />
               <motion.span
                 className="gradient-text inline-block py-2"
                 animate={{
