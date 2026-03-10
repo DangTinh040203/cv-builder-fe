@@ -154,7 +154,7 @@ function SortableContactItem({
 
 const PersonalForm = ({ onNext, onBack }: PersonalFormProps) => {
   const dispatch = useAppDispatch();
-  const { sync, isSyncing, resume } = useSyncResume();
+  const { resume } = useSyncResume();
   const [isVisible, setIsVisible] = useState(false);
 
   const sensors = useSensors(
@@ -191,11 +191,8 @@ const PersonalForm = ({ onNext, onBack }: PersonalFormProps) => {
     }
   }, [form, resume]);
 
-  const onSubmit = async () => {
-    const success = await sync();
-    if (success) {
-      onNext?.();
-    }
+  const onSubmit = () => {
+    onNext?.();
   };
 
   const handleFieldChange = (field: "title" | "subTitle", value: string) => {
@@ -500,11 +497,7 @@ const PersonalForm = ({ onNext, onBack }: PersonalFormProps) => {
                   animate={isVisible ? { opacity: 1, y: 0 } : {}}
                   transition={{ delay: 0.3 }}
                 >
-                  <BuilderNavigation
-                    onBack={onBack}
-                    disableBack={!onBack}
-                    loading={isSyncing}
-                  />
+                  <BuilderNavigation onBack={onBack} disableBack={!onBack} />
                 </motion.div>
               </form>
             </Form>

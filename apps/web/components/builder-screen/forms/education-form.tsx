@@ -311,7 +311,7 @@ function SortableEducationItem({
 
 const EducationForm = ({ onNext, onBack }: EducationFormProps) => {
   const dispatch = useAppDispatch();
-  const { sync, isSyncing, resume } = useSyncResume();
+  const { resume } = useSyncResume();
   const [activeId, setActiveId] = useState<string | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [validationErrors, setValidationErrors] = useState<
@@ -355,15 +355,12 @@ const EducationForm = ({ onNext, onBack }: EducationFormProps) => {
     return isValid;
   }, [educationItems]);
 
-  const onSubmit = async () => {
+  const onSubmit = () => {
     if (!validateItems()) {
       return;
     }
     setValidationErrors({});
-    const success = await sync();
-    if (success) {
-      onNext?.();
-    }
+    onNext?.();
   };
 
   const updateEducationItem = (
@@ -581,7 +578,6 @@ const EducationForm = ({ onNext, onBack }: EducationFormProps) => {
                 onBack={onBack}
                 onNext={onSubmit}
                 disableBack={!onBack}
-                loading={isSyncing}
               />
             </motion.div>
           </CardContent>

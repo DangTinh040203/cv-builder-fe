@@ -255,7 +255,7 @@ function SortableProjectItem({
 
 const ProjectsForm = ({ onNext, onBack }: ProjectsFormProps) => {
   const dispatch = useAppDispatch();
-  const { sync, isSyncing, resume } = useSyncResume();
+  const { resume } = useSyncResume();
   const [activeId, setActiveId] = useState<string | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [validationErrors, setValidationErrors] = useState<
@@ -291,15 +291,12 @@ const ProjectsForm = ({ onNext, onBack }: ProjectsFormProps) => {
     return isValid;
   }, [projectItems]);
 
-  const onSubmit = async () => {
+  const onSubmit = () => {
     if (!validateItems()) {
       return;
     }
     setValidationErrors({});
-    const success = await sync();
-    if (success) {
-      onNext?.();
-    }
+    onNext?.();
   };
 
   const updateProjectItem = (
@@ -515,7 +512,6 @@ const ProjectsForm = ({ onNext, onBack }: ProjectsFormProps) => {
                 onBack={onBack}
                 onNext={onSubmit}
                 disableBack={!onBack}
-                loading={isSyncing}
               />
             </motion.div>
           </CardContent>

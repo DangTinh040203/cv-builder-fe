@@ -240,7 +240,7 @@ function SortableExperienceItem({
 
 const ExperienceForm = ({ onNext, onBack }: ExperienceFormProps) => {
   const dispatch = useAppDispatch();
-  const { sync, isSyncing, resume } = useSyncResume();
+  const { resume } = useSyncResume();
   const [activeId, setActiveId] = useState<string | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [validationErrors, setValidationErrors] = useState<
@@ -284,15 +284,12 @@ const ExperienceForm = ({ onNext, onBack }: ExperienceFormProps) => {
     return isValid;
   };
 
-  const onSubmit = async () => {
+  const onSubmit = () => {
     if (!validateItems()) {
       return;
     }
     setValidationErrors({});
-    const success = await sync();
-    if (success) {
-      onNext?.();
-    }
+    onNext?.();
   };
 
   const updateExperienceItem = (
@@ -510,7 +507,6 @@ const ExperienceForm = ({ onNext, onBack }: ExperienceFormProps) => {
                 onBack={onBack}
                 onNext={onSubmit}
                 disableBack={!onBack}
-                loading={isSyncing}
               />
             </motion.div>
           </CardContent>

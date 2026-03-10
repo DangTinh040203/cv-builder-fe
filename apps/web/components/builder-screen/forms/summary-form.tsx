@@ -25,7 +25,7 @@ interface SummaryFormProps {
 
 const SummaryForm = ({ onNext, onBack }: SummaryFormProps) => {
   const dispatch = useAppDispatch();
-  const { sync, isSyncing, resume } = useSyncResume();
+  const { resume } = useSyncResume();
   const [value, setValue] = useState(resume?.overview || "");
   const [isVisible, setIsVisible] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
@@ -46,12 +46,8 @@ const SummaryForm = ({ onNext, onBack }: SummaryFormProps) => {
     dispatch(updateResume({ overview: content }));
   };
 
-  // Simple submit: sync Redux state to backend
-  const handleNext = async () => {
-    const success = await sync();
-    if (success) {
-      onNext?.();
-    }
+  const handleNext = () => {
+    onNext?.();
   };
 
   return (
@@ -211,9 +207,8 @@ const SummaryForm = ({ onNext, onBack }: SummaryFormProps) => {
             <BuilderNavigation
               onBack={onBack}
               onNext={handleNext}
-              loading={isSyncing}
-              disableBack={!onBack || isSyncing}
-              disableNext={!onNext || isSyncing}
+              disableBack={!onBack}
+              disableNext={!onNext}
             />
           </motion.div>
         </CardContent>

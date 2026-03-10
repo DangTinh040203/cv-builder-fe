@@ -144,7 +144,7 @@ function SortableSkillItem({
 
 const SkillsForm = ({ onNext, onBack }: SkillsFormProps) => {
   const dispatch = useAppDispatch();
-  const { sync, isSyncing, resume } = useSyncResume();
+  const { resume } = useSyncResume();
   const [isVisible, setIsVisible] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
 
@@ -368,13 +368,8 @@ const SkillsForm = ({ onNext, onBack }: SkillsFormProps) => {
             >
               <BuilderNavigation
                 onBack={onBack}
-                onNext={() => {
-                  sync().then((success) => {
-                    if (success) onNext?.();
-                  });
-                }}
+                onNext={() => onNext?.()}
                 disableBack={!onBack}
-                loading={isSyncing}
               />
             </motion.div>
           </CardContent>
