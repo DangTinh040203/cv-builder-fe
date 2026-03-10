@@ -35,6 +35,16 @@ ARG NEXT_PUBLIC_BASE_URL
 ENV NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=$NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
 ENV NEXT_PUBLIC_BASE_URL=$NEXT_PUBLIC_BASE_URL
 
+# Copy dependencies from deps stage
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/apps/web/node_modules ./apps/web/node_modules
+COPY --from=deps /app/shared/ui/node_modules ./shared/ui/node_modules
+
+# Copy source code
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json tsconfig.json ./
+COPY apps/web ./apps/web
+COPY shared ./shared
+
 # Build the Next.js application via turbo
 RUN pnpm run build
 
