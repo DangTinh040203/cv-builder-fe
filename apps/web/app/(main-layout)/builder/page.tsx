@@ -6,6 +6,7 @@ import { cn } from "@shared/ui/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
+import { Loader2 } from "lucide-react";
 
 import EducationForm from "@/components/builder-screen/forms/education-form";
 import ExperienceForm from "@/components/builder-screen/forms/experience-form";
@@ -47,9 +48,11 @@ const BuilderScreen = () => {
   const { previewMode } = useAppSelector(templateConfigSelector);
   const templateSelected = useAppSelector(templateSelectedSelector);
 
-  const { user } = useUser();
+  const { isLoaded, user } = useUser();
   const resumeService = useService(ResumeService);
   const dispatch = useAppDispatch();
+
+  const [isFetching, setIsFetching] = React.useState(true);
 
   useEffect(() => {
     if (!templateSelected) {
@@ -61,16 +64,24 @@ const BuilderScreen = () => {
   }, [templateSelected, router]);
 
   useEffect(() => {
+    if (!isLoaded) return; // Wait until Clerk auth is fully loaded
+
     const fetchResume = async () => {
       if (user && !resume) {
-        const resumeRes = await resumeService.getResume();
-        if (resumeRes) {
-          dispatch(setResume(resumeRes));
+        try {
+          const resumeRes = await resumeService.getResume();
+          if (resumeRes) {
+            dispatch(setResume(resumeRes));
+          }
+        } finally {
+          setIsFetching(false);
         }
+      } else {
+        setIsFetching(false);
       }
     };
     fetchResume();
-  }, [dispatch, resume, resumeService, user]);
+  }, [dispatch, resume, resumeService, user, isLoaded]);
 
   useEffect(() => {
     const step = searchParams.get("step") as Section;
@@ -149,15 +160,20 @@ const BuilderScreen = () => {
             lg:col-span-7
           `}
         >
-          <AnimatePresence mode="wait">
-            {!previewMode ? (
-              <motion.div
-                key="forms"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3 }}
-              >
+          {isFetching ? (
+            <div className="flex h-[400px] w-full items-center justify-center">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+          ) : (
+            <AnimatePresence mode="wait">
+              {!previewMode ? (
+                <motion.div
+                  key="forms"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
                 {activeSection === Section.Personal && (
                   <PersonalForm onNext={handleNext} />
                 )}
@@ -190,6 +206,7 @@ const BuilderScreen = () => {
               </motion.div>
             )}
           </AnimatePresence>
+          )}
         </div>
 
         <div
