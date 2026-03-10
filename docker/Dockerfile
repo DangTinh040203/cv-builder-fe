@@ -48,8 +48,10 @@ COPY apps/web ./apps/web
 COPY shared ./shared
 
 # Build the Next.js application via turbo
-RUN pnpm run build
-
+RUN echo "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=$NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY" >> .env.local && \
+    echo "NEXT_PUBLIC_BASE_URL=$NEXT_PUBLIC_BASE_URL" >> .env.local && \
+    echo "CLERK_SECRET_KEY=$CLERK_SECRET_KEY" >> .env.local && \
+    pnpm run build
 # ================================
 # Stage 3: Production image
 # ================================
