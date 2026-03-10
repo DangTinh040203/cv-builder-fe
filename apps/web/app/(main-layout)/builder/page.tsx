@@ -4,9 +4,9 @@ import { useUser } from "@clerk/nextjs";
 import { toast } from "@shared/ui/components/sonner";
 import { cn } from "@shared/ui/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
+import { Loader2 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
-import { Loader2 } from "lucide-react";
 
 import EducationForm from "@/components/builder-screen/forms/education-form";
 import ExperienceForm from "@/components/builder-screen/forms/experience-form";
@@ -162,7 +162,7 @@ const BuilderScreen = () => {
         >
           {isFetching ? (
             <div className="flex h-[400px] w-full items-center justify-center">
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              <Loader2 className="text-primary h-8 w-8 animate-spin" />
             </div>
           ) : (
             <AnimatePresence mode="wait">
@@ -174,38 +174,38 @@ const BuilderScreen = () => {
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.3 }}
                 >
-                {activeSection === Section.Personal && (
-                  <PersonalForm onNext={handleNext} />
-                )}
-                {activeSection === Section.Summary && (
-                  <SummaryForm onNext={handleNext} onBack={handleBack} />
-                )}
-                {activeSection === Section.Skills && (
-                  <SkillsForm onNext={handleNext} onBack={handleBack} />
-                )}
-                {activeSection === Section.Education && (
-                  <EducationForm onNext={handleNext} onBack={handleBack} />
-                )}
-                {activeSection === Section.Experience && (
-                  <ExperienceForm onNext={handleNext} onBack={handleBack} />
-                )}
-                {activeSection === Section.Projects && (
-                  <ProjectsForm onNext={handleNext} onBack={handleBack} />
-                )}
-                {activeSection === Section.Extra && (
-                  <ExtraForm onBack={handleBack} />
-                )}
-              </motion.div>
-            ) : (
-              <motion.div
-                key="preview-main"
-                layoutId="template-preview-container"
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              >
-                <TemplatePreview />
-              </motion.div>
-            )}
-          </AnimatePresence>
+                  {activeSection === Section.Personal && (
+                    <PersonalForm onNext={handleNext} />
+                  )}
+                  {activeSection === Section.Summary && (
+                    <SummaryForm onNext={handleNext} onBack={handleBack} />
+                  )}
+                  {activeSection === Section.Skills && (
+                    <SkillsForm onNext={handleNext} onBack={handleBack} />
+                  )}
+                  {activeSection === Section.Education && (
+                    <EducationForm onNext={handleNext} onBack={handleBack} />
+                  )}
+                  {activeSection === Section.Experience && (
+                    <ExperienceForm onNext={handleNext} onBack={handleBack} />
+                  )}
+                  {activeSection === Section.Projects && (
+                    <ProjectsForm onNext={handleNext} onBack={handleBack} />
+                  )}
+                  {activeSection === Section.Extra && (
+                    <ExtraForm onBack={handleBack} />
+                  )}
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="preview-main"
+                  layoutId="template-preview-container"
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                >
+                  <TemplatePreview />
+                </motion.div>
+              )}
+            </AnimatePresence>
           )}
         </div>
 
