@@ -1,0 +1,45 @@
+# Dependencies
+node_modules
+
+# Build output
+.next
+out
+build
+dist
+
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Turbo cache
+.turbo
+
+# Vercel
+.vercel
+
+# Documentation
+docs
+README.md
+
+# Tests
+coverage
+
+# Misc
+.prettierrc
+.prettierignore
+.DS_Store
+*.pem
+.agent
+.agents
+.npmrc

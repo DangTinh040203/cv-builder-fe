@@ -1,0 +1,13 @@
+services:
+  # Frontend Next.js
+  web:
+    image: asia-southeast1-docker.pkg.dev/project-bd8e23f4-e7fc-43d5-99e/cv-builder-repo/cv-builder-fe:latest
+    container_name: cv-builder-fe
+    restart: always
+    networks:
+      - cv-builder-network
+
+networks:
+  cv-builder-network:
+    name: cv-builder-network
+    external: true
