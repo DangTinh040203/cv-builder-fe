@@ -2,7 +2,7 @@
 import { type MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://cvcraft.site";
+  const baseUrl = "http://cv-builder.site";
 
   return [
     {

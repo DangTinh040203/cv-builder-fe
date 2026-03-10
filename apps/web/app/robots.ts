@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/builder/", "/api/", "/_next/"],
     },
-    sitemap: "https://cvcraft.site/sitemap.xml",
+    sitemap: "http://cv-builder.site/sitemap.xml",
   };
 }

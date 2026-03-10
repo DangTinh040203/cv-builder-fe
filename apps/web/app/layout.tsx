@@ -44,14 +44,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://cvcraft.site",
+    url: "http://cv-builder.site",
     title: "CVCraft - AI-Powered Professional CV Builder",
     description:
       "Craft stunning, ATS-friendly resumes in minutes with AI. Join thousands of professionals landing their dream jobs.",
     siteName: "CVCraft",
     images: [
       {
-        url: "https://cvcraft.site/og-image.png",
+        url: "http://cv-builder.site/og-image.png",
         width: 1200,
         height: 630,
         alt: "CVCraft - AI-Powered CV Builder",
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
     title: "CVCraft - AI-Powered Professional CV Builder",
     description:
       "Craft stunning, ATS-friendly resumes in minutes with AI. Join thousands of professionals landing their dream jobs.",
-    images: ["https://cvcraft.site/og-image.png"],
+    images: ["http://cv-builder.site/og-image.png"],
     creator: "@cvcraft",
   },
   robots: {
