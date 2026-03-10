@@ -175,36 +175,36 @@ const HeroSection = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
               >
-                  <Button
-                    size="xl"
+                <Button
+                  size="xl"
+                  className={`
+                    group shadow-primary/20 relative h-14 w-full overflow-hidden
+                    rounded-full px-8 text-lg shadow-xl
+                    sm:w-auto
+                  `}
+                >
+                  <motion.span
                     className={`
-                      group shadow-primary/20 relative h-14 w-full
-                      overflow-hidden rounded-full px-8 text-lg shadow-xl
-                      sm:w-auto
+                      absolute inset-0 bg-linear-to-r from-transparent
+                      via-white/20 to-transparent
                     `}
-                  >
-                    <motion.span
+                    animate={{ x: ["-100%", "200%"] }}
+                    transition={{
+                      duration: 2.5,
+                      repeat: Infinity,
+                      repeatDelay: 2,
+                    }}
+                  />
+                  <span className="relative flex items-center gap-2">
+                    Build your profile
+                    <ArrowRight
                       className={`
-                        absolute inset-0 bg-linear-to-r from-transparent
-                        via-white/20 to-transparent
+                        h-5 w-5 transition-transform duration-300
+                        group-hover:translate-x-1
                       `}
-                      animate={{ x: ["-100%", "200%"] }}
-                      transition={{
-                        duration: 2.5,
-                        repeat: Infinity,
-                        repeatDelay: 2,
-                      }}
                     />
-                    <span className="relative flex items-center gap-2">
-                      Build your profile
-                      <ArrowRight
-                        className={`
-                          h-5 w-5 transition-transform duration-300
-                          group-hover:translate-x-1
-                        `}
-                      />
-                    </span>
-                  </Button>
+                  </span>
+                </Button>
               </motion.div>
             </Link>
             <Link href="/templates">

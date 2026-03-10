@@ -100,7 +100,7 @@ export const formContainerVariants = {
       delayChildren: 0.1,
     },
   },
-};
+} as const;
 
 export const formItemVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -113,7 +113,7 @@ export const formItemVariants = {
       damping: 20,
     },
   },
-};
+} as const;
 
 export const buttonScaleVariants = {
   hidden: { opacity: 0, scale: 0.9 },
@@ -126,4 +126,4 @@ export const buttonScaleVariants = {
       damping: 20,
     },
   },
-};
+} as const;
