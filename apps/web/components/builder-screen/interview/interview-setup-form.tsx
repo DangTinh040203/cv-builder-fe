@@ -358,7 +358,7 @@ export const InterviewSetupForm = ({
               >
                 <SelectValue placeholder="Select voice" />
               </SelectTrigger>
-              <SelectContent align="start" side="bottom" className="max-h-52">
+              <SelectContent align="start" className="max-h-40">
                 {VOICE_OPTIONS.map((option) => (
                   <SelectItem
                     key={option.value}

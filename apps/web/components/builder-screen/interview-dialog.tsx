@@ -93,8 +93,8 @@ const InterviewDialog = ({ open, onOpenChange }: InterviewDialogProps) => {
         <DialogContent
           className={cn(
             `
-              flex max-h-[90vh] w-[95vw] flex-col overflow-hidden transition-all
-              duration-300
+              scrollbar-thin flex max-h-[80vh] w-[95vw] flex-col overflow-hidden
+              transition-all duration-300
             `,
             isCompactState ? "sm:max-w-lg" : "sm:max-w-4xl",
           )}
