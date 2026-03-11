@@ -126,11 +126,7 @@ const Header = () => {
       <div className="container mx-auto overflow-x-hidden px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Animated Logo */}
-          <m.div
-            variants={logoVariants}
-            initial="hidden"
-            animate="visible"
-          >
+          <m.div variants={logoVariants} initial="hidden" animate="visible">
             <Link
               href="/"
               className="group flex items-center gap-2 select-none"

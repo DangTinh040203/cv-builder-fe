@@ -158,7 +158,7 @@ const Templates = () => {
         />
       </div>
 
-      <div className="relative z-10 container pt-24 pb-12">
+      <div className={`relative z-10 container pt-24 pb-12`}>
         <motion.div
           initial="hidden"
           animate="visible"
@@ -171,7 +171,7 @@ const Templates = () => {
             animateBy="words"
             direction="top"
             className={`
-              font-display mb-4 justify-center text-4xl font-bold
+              font-display mb-4 justify-center text-3xl font-bold
               md:text-5xl
             `}
           />
@@ -189,8 +189,7 @@ const Templates = () => {
           initial="hidden"
           animate="visible"
           className={`
-            grid grid-cols-1 gap-6
-            sm:grid-cols-2
+            grid grid-cols-2 gap-6
             lg:grid-cols-3
             xl:grid-cols-4
           `}
@@ -232,12 +231,13 @@ const Templates = () => {
                   </div>
                 </div>
 
+                {/* Desktop Button */}
                 <div
                   className={`
-                    group-hover:bg-muted/10 group-hover:border
-                    group-hover:shadow-2xl
-                    absolute top-0 left-0 z-10 flex size-full items-end
+                    group-hover:bg-muted/10 group-hover:shadow-2xl
+                    absolute top-0 left-0 z-10 hidden size-full items-end
                     justify-center rounded-2xl bg-transparent px-6
+                    lg:flex
                   `}
                 >
                   <Button
@@ -247,6 +247,24 @@ const Templates = () => {
                       group-hover:opacity-100
                     `}
                     size={"lg"}
+                  >
+                    Use Template
+                  </Button>
+                </div>
+
+                {/* Mobile button */}
+                <div
+                  className={`
+                    group-hover:bg-muted/10 group-hover:shadow-2xl
+                    absolute top-0 left-0 z-10 flex size-full items-end
+                    justify-center rounded-2xl bg-transparent px-6
+                    lg:hidden
+                  `}
+                >
+                  <Button
+                    onClick={() => handleSelectTemplate(templateId)}
+                    className={`mb-4 w-full rounded-full transition-opacity`}
+                    size={"sm"}
                   >
                     Use Template
                   </Button>
