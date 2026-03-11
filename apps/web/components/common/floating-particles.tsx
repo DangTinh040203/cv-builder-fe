@@ -1,62 +1,47 @@
 "use client";
-import { motion } from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 
 interface Particle {
   id: number;
   left: number;
   top: number;
-  xOffset: number;
   duration: number;
   delay: number;
 }
 
+// Use CSS animations instead of framer-motion to avoid main-thread work
 const FloatingParticles = () => {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   const particles = useMemo<Particle[]>(() => {
-    return [...Array(20)].map((_, i) => ({
+    // Reduced from 20 to 6 particles for performance
+    return [...Array(6)].map((_, i) => ({
       id: i,
-      left: Math.random() * 100,
-      top: Math.random() * 100,
-      xOffset: Math.random() * 20 - 10,
-      duration: 3 + Math.random() * 2,
-      delay: Math.random() * 2,
+      left: 15 + i * 14,
+      top: 10 + ((i * 17) % 80),
+      duration: 4 + (i % 3),
+      delay: i * 0.5,
     }));
   }, []);
-
-  if (!mounted) {
-    return null;
-  }
 
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
       {particles.map((particle) => (
-        <motion.div
+        <div
           key={particle.id}
-          className="bg-primary/20 absolute h-2 w-2 rounded-full"
+          className="bg-primary/15 absolute h-2 w-2 rounded-full"
           style={{
             left: `${particle.left}%`,
             top: `${particle.top}%`,
-          }}
-          animate={{
-            y: [0, -30, 0],
-            x: [0, particle.xOffset, 0],
-            opacity: [0.2, 0.5, 0.2],
-            scale: [1, 1.2, 1],
-          }}
-          transition={{
-            duration: particle.duration,
-            repeat: Infinity,
-            delay: particle.delay,
-            ease: "easeInOut",
+            animation: `float-particle ${particle.duration}s ease-in-out ${particle.delay}s infinite`,
+            willChange: "transform, opacity",
           }}
         />
       ))}
+      <style jsx>{`
+        @keyframes float-particle {
+          0%, 100% { transform: translateY(0); opacity: 0.15; }
+          50% { transform: translateY(-20px); opacity: 0.4; }
+        }
+      `}</style>
     </div>
   );
 };

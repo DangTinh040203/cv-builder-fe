@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@shared/ui/components/button";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import React from "react";
@@ -24,13 +24,13 @@ const TemplatePreviewSection = () => {
             lg:grid-cols-2
           `}
         >
-          <motion.div
+          <m.div
             initial={{ opacity: 0, x: -60 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <motion.div
+            <m.div
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
@@ -40,7 +40,7 @@ const TemplatePreviewSection = () => {
               `}
             >
               Premium Designs
-            </motion.div>
+            </m.div>
             <h2
               className={`
                 font-display mb-8 text-4xl font-extrabold tracking-tight
@@ -56,7 +56,7 @@ const TemplatePreviewSection = () => {
               recruitment agencies.
             </p>
 
-            <motion.div
+            <m.div
               className="mb-12 flex flex-wrap gap-3"
               variants={staggerContainer}
               initial="hidden"
@@ -64,7 +64,7 @@ const TemplatePreviewSection = () => {
               viewport={{ once: true }}
             >
               {templateCategories.map((cat) => (
-                <motion.span
+                <m.span
                   key={cat.name}
                   className={`
                     cursor-pointer rounded-xl px-5 py-2.5 text-sm font-bold
@@ -83,12 +83,12 @@ const TemplatePreviewSection = () => {
                   <span className="ml-2 text-xs font-medium opacity-60">
                     ({cat.count})
                   </span>
-                </motion.span>
+                </m.span>
               ))}
-            </motion.div>
+            </m.div>
 
             <Link href="/templates">
-              <motion.div
+              <m.div
                 whileHover={{ scale: 1.05, x: 5 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -107,11 +107,11 @@ const TemplatePreviewSection = () => {
                     `}
                   />
                 </Button>
-              </motion.div>
+              </m.div>
             </Link>
-          </motion.div>
+          </m.div>
 
-          <motion.div
+          <m.div
             className="relative"
             initial={{ opacity: 0, x: 60 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -125,7 +125,7 @@ const TemplatePreviewSection = () => {
               `}
             />
 
-            <motion.div
+            <m.div
               className={`
                 grid grid-cols-1 gap-6
                 sm:grid-cols-2
@@ -136,7 +136,7 @@ const TemplatePreviewSection = () => {
               viewport={{ once: true }}
             >
               {[1, 2, 3, 4].map((i) => (
-                <motion.div
+                <m.div
                   key={i}
                   className={`
                     bg-card border-border/60 group relative aspect-square
@@ -161,23 +161,14 @@ const TemplatePreviewSection = () => {
                     `}
                   >
                     <div className="flex items-center gap-4">
-                      <motion.div
+                      <div
                         className={`
                           bg-primary/10 text-primary flex h-12 w-12 items-center
                           justify-center rounded-xl font-bold shadow-inner
                         `}
-                        animate={{
-                          scale: [1, 1.05, 1],
-                          rotate: [0, 5, -5, 0],
-                        }}
-                        transition={{
-                          duration: 4 + i,
-                          repeat: Infinity,
-                          ease: "easeInOut",
-                        }}
                       >
                         {i}
-                      </motion.div>
+                      </div>
                       <div className="flex-1">
                         <div
                           className={`
@@ -195,14 +186,14 @@ const TemplatePreviewSection = () => {
                     </div>
 
                     <div className="border-border/60 space-y-3 border-t pt-4">
-                      <motion.div
+                      <m.div
                         className="bg-muted/60 h-2 rounded-full"
                         initial={{ width: 0 }}
                         whileInView={{ width: "100%" }}
                         viewport={{ once: true }}
                         transition={{ duration: 1, delay: i * 0.1 + 0.3 }}
                       />
-                      <motion.div
+                      <m.div
                         className="bg-muted/60 h-2 rounded-full"
                         initial={{ width: 0 }}
                         whileInView={{ width: "85%" }}
@@ -210,7 +201,7 @@ const TemplatePreviewSection = () => {
                         transition={{ duration: 1, delay: i * 0.1 + 0.4 }}
                       />
                       {i === 1 && (
-                        <motion.div
+                        <m.div
                           className="bg-muted/60 h-2 rounded-full"
                           initial={{ width: 0 }}
                           whileInView={{ width: "92%" }}
@@ -237,10 +228,10 @@ const TemplatePreviewSection = () => {
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </m.div>
               ))}
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
         </div>
       </div>
     </section>

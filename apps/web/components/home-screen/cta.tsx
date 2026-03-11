@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@shared/ui/components/button";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import React from "react";
@@ -11,7 +11,7 @@ const CTASection = () => {
   return (
     <section className="px-4 py-24 pb-32">
       <div className="container mx-auto">
-        <motion.div
+        <m.div
           className={`
             from-primary to-primary/50 shadow-primary/20 relative
             overflow-hidden rounded-[48px] bg-linear-to-br p-12 text-center
@@ -24,32 +24,17 @@ const CTASection = () => {
           transition={{ duration: 1, type: "spring", bounce: 0.3 }}
         >
           {/* Animated background elements */}
-          <motion.div
-            className={`
-              absolute top-0 left-0 h-64 w-64 rounded-full bg-white/10 blur-3xl
-            `}
-            animate={{
-              x: [0, 100, 0],
-              y: [0, 50, 0],
-              scale: [1, 1.2, 1],
-            }}
-            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          <div
+            className="absolute top-0 left-0 h-64 w-64 rounded-full bg-white/10 blur-3xl"
+            style={{ animation: "cta-blob-1 10s ease-in-out infinite", willChange: "transform" }}
           />
-          <motion.div
-            className={`
-              absolute right-0 bottom-0 h-96 w-96 rounded-full bg-black/10
-              blur-3xl
-            `}
-            animate={{
-              x: [0, -100, 0],
-              y: [0, -50, 0],
-              scale: [1, 1.5, 1],
-            }}
-            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+          <div
+            className="absolute right-0 bottom-0 h-96 w-96 rounded-full bg-black/10 blur-3xl"
+            style={{ animation: "cta-blob-2 12s ease-in-out infinite", willChange: "transform" }}
           />
 
           <div className="relative z-10">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
@@ -61,7 +46,7 @@ const CTASection = () => {
               `}
             >
               Take the next step
-            </motion.div>
+            </m.div>
             <BlurText
               text="Ready to Land Your Dream Job?"
               delay={100}
@@ -74,7 +59,7 @@ const CTASection = () => {
                 lg:text-7xl
               `}
             />
-            <motion.p
+            <m.p
               className={`
                 text-primary-foreground/80 mx-auto mb-12 max-w-2xl text-xl
                 leading-relaxed font-medium
@@ -86,8 +71,8 @@ const CTASection = () => {
             >
               Join 10,000+ professionals who have already transformed their
               careers with our AI-powered toolkit.
-            </motion.p>
-            <motion.div
+            </m.p>
+            <m.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -98,7 +83,7 @@ const CTASection = () => {
               `}
             >
               <Link href="/templates">
-                <motion.div
+                <m.div
                   whileHover={{ scale: 1.05, y: -5 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -113,12 +98,22 @@ const CTASection = () => {
                     Get Started Free
                     <ArrowRight className="ml-3 h-6 w-6" />
                   </Button>
-                </motion.div>
+                </m.div>
               </Link>
-            </motion.div>
+            </m.div>
           </div>
-        </motion.div>
+        </m.div>
       </div>
+      <style jsx>{`
+        @keyframes cta-blob-1 {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          50% { transform: translate(100px, 50px) scale(1.2); }
+        }
+        @keyframes cta-blob-2 {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          50% { transform: translate(-100px, -50px) scale(1.5); }
+        }
+      `}</style>
     </section>
   );
 };

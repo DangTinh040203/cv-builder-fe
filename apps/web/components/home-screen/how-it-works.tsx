@@ -1,5 +1,5 @@
 "use client";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Download, Upload, Wand2 } from "lucide-react";
 import React from "react";
 
@@ -41,14 +41,14 @@ const HowItWorksSection = () => {
       />
 
       <div className="container mx-auto">
-        <motion.div
+        <m.div
           className="mb-20 text-center"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <motion.div
+          <m.div
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -62,7 +62,7 @@ const HowItWorksSection = () => {
               speed={3}
               className="text-sm font-semibold tracking-wider uppercase"
             />
-          </motion.div>
+          </m.div>
           <BlurText
             text="Start Your Journey in Minutes"
             delay={80}
@@ -82,7 +82,7 @@ const HowItWorksSection = () => {
             We&apos;ve streamlined the CV building process so you can focus on
             what matters: telling your professional story.
           </p>
-        </motion.div>
+        </m.div>
 
         <div
           className={`
@@ -91,7 +91,7 @@ const HowItWorksSection = () => {
           `}
         >
           {/* Connection Line */}
-          <motion.div
+          <m.div
             className={`
               from-primary via-accent to-primary absolute top-10 right-1/4
               left-1/4 hidden h-0.5 bg-linear-to-r opacity-20
@@ -104,7 +104,7 @@ const HowItWorksSection = () => {
           />
 
           {howItWorks.map((item, index) => (
-            <motion.div
+            <m.div
               key={item.step}
               className="group relative text-center"
               initial={{ opacity: 0, y: 40 }}
@@ -114,24 +114,18 @@ const HowItWorksSection = () => {
               whileHover={{ scale: 1.02 }}
             >
               <div className="relative mb-10 inline-block">
-                <motion.div
+                <div
                   className={`
                     from-primary to-accent shadow-primary/30 relative z-10 flex
                     h-20 w-20 items-center justify-center rounded-[24px]
                     bg-linear-to-br shadow-xl transition-all duration-500
                     group-hover:shadow-primary/50 group-hover:rotate-6
                   `}
-                  animate={{ y: [0, -6, 0] }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    delay: index * 0.5,
-                  }}
                 >
                   <item.icon className="text-primary-foreground h-10 w-10" />
-                </motion.div>
+                </div>
 
-                <motion.div
+                <m.div
                   className={`
                     text-primary/10 absolute -top-6 -right-6 text-6xl font-black
                     transition-colors select-none
@@ -143,7 +137,7 @@ const HowItWorksSection = () => {
                   transition={{ delay: index * 0.2 + 0.5 }}
                 >
                   {item.step}
-                </motion.div>
+                </m.div>
               </div>
 
               <h3
@@ -169,7 +163,7 @@ const HowItWorksSection = () => {
                   group-hover:bg-primary/40 group-hover:w-20
                 `}
               />
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </div>

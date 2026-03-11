@@ -1,5 +1,5 @@
 "use client";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { FileText, MessageSquare, Sparkles } from "lucide-react";
 import React from "react";
 
@@ -33,14 +33,14 @@ const FeaturesSection = () => {
   return (
     <section className="relative overflow-hidden px-4 py-24">
       <div className="container mx-auto">
-        <motion.div
+        <m.div
           className="mb-20 text-center"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <motion.div
+          <m.div
             initial={{ opacity: 0, scale: 0.5 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -55,7 +55,7 @@ const FeaturesSection = () => {
               speed={3}
               className="text-sm font-semibold tracking-wider uppercase"
             />
-          </motion.div>
+          </m.div>
           <BlurText
             text="Everything You Need to Build a Winning Career"
             delay={80}
@@ -76,9 +76,9 @@ const FeaturesSection = () => {
             mock interviews, CVCraft provides the end-to-end toolkit for your
             job search.
           </p>
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           className={`
             grid gap-8
             md:grid-cols-3
@@ -89,7 +89,7 @@ const FeaturesSection = () => {
           viewport={{ once: true, margin: "-50px" }}
         >
           {features.map((feature) => (
-            <motion.div
+            <m.div
               key={feature.title}
               variants={fadeInUp}
               whileHover={{
@@ -114,7 +114,7 @@ const FeaturesSection = () => {
                   <feature.icon size={120} />
                 </div>
 
-                <motion.div
+                <m.div
                   className={`
                     gradient-bg mb-8 flex h-16 w-16 items-center justify-center
                     rounded-2xl transition-all duration-500
@@ -125,7 +125,7 @@ const FeaturesSection = () => {
                   transition={{ duration: 0.5 }}
                 >
                   <feature.icon className="text-primary-foreground h-8 w-8" />
-                </motion.div>
+                </m.div>
                 <h3 className="font-display mb-4 text-2xl font-bold">
                   {feature.title}
                 </h3>
@@ -133,7 +133,7 @@ const FeaturesSection = () => {
                   {feature.description}
                 </p>
 
-                <motion.div
+                <m.div
                   className={`
                     text-primary mt-8 flex items-center gap-2 font-semibold
                     opacity-0 transition-opacity
@@ -143,11 +143,11 @@ const FeaturesSection = () => {
                   whileHover={{ x: 0 }}
                 >
                   Learn more <Sparkles size={16} />
-                </motion.div>
+                </m.div>
               </SpotlightCard>
-            </motion.div>
+            </m.div>
           ))}
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

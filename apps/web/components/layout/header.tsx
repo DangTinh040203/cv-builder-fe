@@ -17,7 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@shared/ui/components/dropdown-menu";
 import { cn } from "@shared/ui/lib/utils";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import {
   CreditCard,
   FileText,
@@ -109,7 +109,7 @@ const Header = () => {
   const isActive = (path: string) => pathname === path;
 
   return (
-    <motion.nav
+    <m.nav
       className={cn(
         "z-50 transition-all duration-300",
         pathname === "/"
@@ -126,7 +126,7 @@ const Header = () => {
       <div className="container mx-auto overflow-x-hidden px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Animated Logo */}
-          <motion.div
+          <m.div
             variants={logoVariants}
             initial="hidden"
             animate="visible"
@@ -135,7 +135,7 @@ const Header = () => {
               href="/"
               className="group flex items-center gap-2 select-none"
             >
-              <motion.div
+              <m.div
                 className={`
                   gradient-bg flex h-9 w-9 items-center justify-center
                   rounded-lg shadow-md
@@ -148,18 +148,18 @@ const Header = () => {
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
               >
-                <motion.div>
+                <m.div>
                   <FileText className="text-primary-foreground h-5 w-5" />
-                </motion.div>
-              </motion.div>
-              <motion.span
+                </m.div>
+              </m.div>
+              <m.span
                 className="font-display text-xl font-bold"
                 whileHover={{ scale: 1.05 }}
               >
                 CV<span className="gradient-text">Craft</span>
-              </motion.span>
+              </m.span>
             </Link>
-          </motion.div>
+          </m.div>
 
           {/* Desktop Navigation with staggered animation */}
           <div
@@ -169,7 +169,7 @@ const Header = () => {
             `}
           >
             {navLinks.map((link, i) => (
-              <motion.div
+              <m.div
                 key={link.href}
                 custom={i}
                 variants={navItemVariants}
@@ -177,7 +177,7 @@ const Header = () => {
                 animate="visible"
               >
                 <Link href={link.href}>
-                  <motion.div
+                  <m.div
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     transition={{ type: "spring", stiffness: 400, damping: 17 }}
@@ -186,19 +186,19 @@ const Header = () => {
                       className={cn("relative gap-2 overflow-hidden")}
                       variant={isActive(link.href) ? "default" : "ghost"}
                     >
-                      <motion.span
+                      <m.span
                         animate={
                           isActive(link.href) ? { rotate: [0, -10, 10, 0] } : {}
                         }
                         transition={{ duration: 0.5 }}
                       >
                         <link.icon className="h-4 w-4" />
-                      </motion.span>
+                      </m.span>
                       {link.label}
                     </Button>
-                  </motion.div>
+                  </m.div>
                 </Link>
-              </motion.div>
+              </m.div>
             ))}
           </div>
 
@@ -215,7 +215,7 @@ const Header = () => {
             ) : (
               <>
                 <SignedIn>
-                  <motion.div
+                  <m.div
                     custom={navLinks.length}
                     variants={navItemVariants}
                     initial="hidden"
@@ -272,33 +272,33 @@ const Header = () => {
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
-                  </motion.div>
+                  </m.div>
                 </SignedIn>
 
                 <SignedOut>
-                  <motion.div
+                  <m.div
                     custom={navLinks.length}
                     variants={navItemVariants}
                     initial="hidden"
                     animate="visible"
                   >
                     <Link href="/auth/sign-in">
-                      <motion.div
+                      <m.div
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
                         <Button variant="ghost">Sign In</Button>
-                      </motion.div>
+                      </m.div>
                     </Link>
-                  </motion.div>
-                  <motion.div
+                  </m.div>
+                  <m.div
                     custom={navLinks.length + 1}
                     variants={navItemVariants}
                     initial="hidden"
                     animate="visible"
                   >
                     <Link href="/auth/sign-in">
-                      <motion.div
+                      <m.div
                         whileHover={{
                           scale: 1.05,
                         }}
@@ -310,16 +310,16 @@ const Header = () => {
                         }}
                       >
                         <Button variant="gradient">Get Started</Button>
-                      </motion.div>
+                      </m.div>
                     </Link>
-                  </motion.div>
+                  </m.div>
                 </SignedOut>
               </>
             )}
           </div>
 
           {/* Animated Mobile Menu Button */}
-          <motion.div className="md:hidden" whileTap={{ scale: 0.9 }}>
+          <m.div className="md:hidden" whileTap={{ scale: 0.9 }}>
             <Button
               variant="ghost"
               size="icon"
@@ -327,7 +327,7 @@ const Header = () => {
             >
               <AnimatePresence mode="wait">
                 {isOpen ? (
-                  <motion.div
+                  <m.div
                     key="close"
                     initial={{ rotate: -90, opacity: 0 }}
                     animate={{ rotate: 0, opacity: 1 }}
@@ -335,9 +335,9 @@ const Header = () => {
                     transition={{ duration: 0.2 }}
                   >
                     <X className="h-5 w-5" />
-                  </motion.div>
+                  </m.div>
                 ) : (
-                  <motion.div
+                  <m.div
                     key="menu"
                     initial={{ rotate: 90, opacity: 0 }}
                     animate={{ rotate: 0, opacity: 1 }}
@@ -345,17 +345,17 @@ const Header = () => {
                     transition={{ duration: 0.2 }}
                   >
                     <Menu className="h-5 w-5" />
-                  </motion.div>
+                  </m.div>
                 )}
               </AnimatePresence>
             </Button>
-          </motion.div>
+          </m.div>
         </div>
 
         {/* Animated Mobile Navigation */}
         <AnimatePresence>
           {isOpen && (
-            <motion.div
+            <m.div
               className={`
                 border-border/50 overflow-hidden border-t
                 md:hidden
@@ -367,7 +367,7 @@ const Header = () => {
             >
               <div className="flex flex-col gap-2 py-4">
                 {navLinks.map((link, i) => (
-                  <motion.div
+                  <m.div
                     key={link.href}
                     custom={i}
                     variants={mobileItemVariants}
@@ -376,7 +376,7 @@ const Header = () => {
                     exit="exit"
                   >
                     <Link href={link.href} onClick={() => setIsOpen(false)}>
-                      <motion.div whileTap={{ scale: 0.98, x: 5 }}>
+                      <m.div whileTap={{ scale: 0.98, x: 5 }}>
                         <Button
                           variant={isActive(link.href) ? "secondary" : "ghost"}
                           className="w-full justify-start gap-3"
@@ -384,11 +384,11 @@ const Header = () => {
                           <link.icon className="h-4 w-4" />
                           {link.label}
                         </Button>
-                      </motion.div>
+                      </m.div>
                     </Link>
-                  </motion.div>
+                  </m.div>
                 ))}
-                <motion.div
+                <m.div
                   custom={navLinks.length}
                   variants={mobileItemVariants}
                   initial="hidden"
@@ -448,20 +448,20 @@ const Header = () => {
                   </SignedIn>
                   <SignedOut>
                     <Link href="/auth/sign-in" onClick={() => setIsOpen(false)}>
-                      <motion.div whileTap={{ scale: 0.98 }} whileHover={{}}>
+                      <m.div whileTap={{ scale: 0.98 }} whileHover={{}}>
                         <Button variant="gradient" className="mt-2 w-full">
                           Sign In / Sign Up
                         </Button>
-                      </motion.div>
+                      </m.div>
                     </Link>
                   </SignedOut>
-                </motion.div>
+                </m.div>
               </div>
-            </motion.div>
+            </m.div>
           )}
         </AnimatePresence>
       </div>
-    </motion.nav>
+    </m.nav>
   );
 };
 

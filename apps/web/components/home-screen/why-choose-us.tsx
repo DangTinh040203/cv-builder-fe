@@ -1,6 +1,6 @@
 "use client";
 import { CardContent } from "@shared/ui/components/card";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Award, Clock, Shield, Target, TrendingUp, Zap } from "lucide-react";
 import React from "react";
 
@@ -63,14 +63,14 @@ const WhyChooseUsSection = () => {
       />
 
       <div className="container mx-auto">
-        <motion.div
+        <m.div
           className="mb-20 text-center"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <motion.div
+          <m.div
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -84,7 +84,7 @@ const WhyChooseUsSection = () => {
               speed={3}
               className="text-sm font-semibold tracking-wider uppercase"
             />
-          </motion.div>
+          </m.div>
           <BlurText
             text="Why Choose CVCraft?"
             delay={80}
@@ -104,9 +104,9 @@ const WhyChooseUsSection = () => {
             We combined recruitment expertise with cutting-edge AI to build the
             ultimate career growth toolkit.
           </p>
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           className={`
             grid gap-8
             sm:grid-cols-2
@@ -118,7 +118,7 @@ const WhyChooseUsSection = () => {
           viewport={{ once: true }}
         >
           {whyChooseUs.map((item) => (
-            <motion.div key={item.title} variants={fadeInUp}>
+            <m.div key={item.title} variants={fadeInUp}>
               <SpotlightCard
                 className={`
                   border-border/50 group bg-card/40 h-full rounded-3xl
@@ -132,14 +132,14 @@ const WhyChooseUsSection = () => {
                     relative flex flex-col items-center p-8 text-center
                   `}
                 >
-                  <motion.div
+                  <m.div
                     className={`
                       from-primary/5 absolute inset-0 bg-linear-to-br
                       to-transparent opacity-0 transition-opacity duration-500
                       group-hover:opacity-100
                     `}
                   />
-                  <motion.div
+                  <m.div
                     className={`
                       bg-primary/10 text-primary relative z-10 mb-8 flex h-16
                       w-16 items-center justify-center rounded-2xl shadow-inner
@@ -149,7 +149,7 @@ const WhyChooseUsSection = () => {
                     whileHover={{ scale: 1.15 }}
                   >
                     <item.icon className="h-8 w-8" />
-                  </motion.div>
+                  </m.div>
                   <h3
                     className={`
                       font-display relative z-10 mb-4 text-xl font-bold
@@ -167,9 +167,9 @@ const WhyChooseUsSection = () => {
                   </p>
                 </CardContent>
               </SpotlightCard>
-            </motion.div>
+            </m.div>
           ))}
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

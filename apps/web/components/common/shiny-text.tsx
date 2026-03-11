@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  motion,
+  m,
   useAnimationFrame,
   useMotionValue,
   useTransform,
@@ -117,7 +117,7 @@ const ShinyText = ({
   };
 
   return (
-    <motion.span
+    <m.span
       className={`
         inline-block
         ${className}
@@ -127,7 +127,7 @@ const ShinyText = ({
       onMouseLeave={handleMouseLeave}
     >
       {text}
-    </motion.span>
+    </m.span>
   );
 };
 

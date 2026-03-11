@@ -8,17 +8,21 @@ import { Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 
 import { ScrollToTop } from "@/components/common/scroll-to-top";
+import MotionProvider from "@/components/providers/motion-provider";
 import StoreProvider from "@/components/providers/store-provider";
 
 const fontMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
+  display: "swap",
 });
 
 const fontSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: "--font-sans",
-  weight: ["200", "300", "400", "500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+  preload: true,
 });
 
 export const metadata: Metadata = {
@@ -102,14 +106,16 @@ export default function RootLayout({
           `}
         >
           <StoreProvider>
-            <Toaster richColors />
-            <NextTopLoader
-              color="#6c23d7"
-              showSpinner={false}
-              easing="ease-in-out"
-            />
-            <ScrollToTop />
-            {children}
+            <MotionProvider>
+              <Toaster richColors />
+              <NextTopLoader
+                color="#6c23d7"
+                showSpinner={false}
+                easing="ease-in-out"
+              />
+              <ScrollToTop />
+              {children}
+            </MotionProvider>
           </StoreProvider>
         </body>
       </html>

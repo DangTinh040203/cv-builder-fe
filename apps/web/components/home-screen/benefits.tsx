@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@shared/ui/components/button";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import React from "react";
@@ -28,13 +28,13 @@ const BenefitsSection = () => {
             lg:grid-cols-2
           `}
         >
-          <motion.div
+          <m.div
             initial={{ opacity: 0, x: -60 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <motion.div
+            <m.div
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
@@ -48,7 +48,7 @@ const BenefitsSection = () => {
                 speed={3}
                 className="text-sm font-semibold tracking-wider uppercase"
               />
-            </motion.div>
+            </m.div>
             <BlurText
               text="Stand Out from the Massive Competition"
               delay={80}
@@ -65,7 +65,7 @@ const BenefitsSection = () => {
               profile gets the attention it deserves from modern hiring systems.
             </p>
 
-            <motion.div
+            <m.div
               className={`
                 grid gap-6
                 sm:grid-cols-2
@@ -76,12 +76,12 @@ const BenefitsSection = () => {
               viewport={{ once: true }}
             >
               {benefits.map((benefit, index) => (
-                <motion.div
+                <m.div
                   key={benefit}
                   className="group flex items-center gap-4"
                   variants={fadeInLeft}
                 >
-                  <motion.div
+                  <m.div
                     initial={{ scale: 0, rotate: -45 }}
                     whileInView={{ scale: 1, rotate: 0 }}
                     viewport={{ once: true }}
@@ -97,16 +97,16 @@ const BenefitsSection = () => {
                     `}
                   >
                     <CheckCircle2 className="text-primary h-6 w-6 shrink-0" />
-                  </motion.div>
+                  </m.div>
                   <span className="text-foreground text-lg font-medium">
                     {benefit}
                   </span>
-                </motion.div>
+                </m.div>
               ))}
-            </motion.div>
+            </m.div>
 
             <Link href="/builder" className="mt-12 inline-block">
-              <motion.div
+              <m.div
                 whileHover={{ scale: 1.05, x: 5 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -119,11 +119,11 @@ const BenefitsSection = () => {
                   Get Started Now for Free
                   <ArrowRight className="ml-3 h-5 w-5" />
                 </Button>
-              </motion.div>
+              </m.div>
             </Link>
-          </motion.div>
+          </m.div>
 
-          <motion.div
+          <m.div
             className="relative"
             initial={{ opacity: 0, scale: 0.8, rotate: 5 }}
             whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
@@ -132,12 +132,12 @@ const BenefitsSection = () => {
           >
             <div
               className={`
-                from-primary to-accent absolute -inset-4 animate-pulse
+                from-primary to-accent absolute -inset-4
                 rounded-[32px] bg-linear-to-r opacity-10 blur-2xl
               `}
             />
 
-            <motion.div
+            <m.div
               className={`
                 bg-card border-border/50 relative overflow-hidden rounded-[32px]
                 border p-10 shadow-2xl backdrop-blur-sm
@@ -154,25 +154,16 @@ const BenefitsSection = () => {
 
               <div className="space-y-8">
                 <div className="flex items-center gap-6">
-                  <motion.div
+                  <div
                     className={`
                       from-primary to-accent text-primary-foreground
                       shadow-primary/30 flex h-20 w-20 items-center
                       justify-center rounded-2xl bg-linear-to-br text-2xl
                       font-bold shadow-lg
                     `}
-                    animate={{
-                      rotate: [0, 5, -5, 0],
-                      scale: [1, 1.05, 1],
-                    }}
-                    transition={{
-                      duration: 6,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    }}
                   >
                     JA
-                  </motion.div>
+                  </div>
                   <div>
                     <div className="font-display text-2xl font-bold">
                       John Anderson
@@ -205,7 +196,7 @@ const BenefitsSection = () => {
                         <span>{width}% Match</span>
                       </div>
                       <div className="bg-muted h-3 overflow-hidden rounded-full">
-                        <motion.div
+                        <m.div
                           className={`
                             bg-primary h-full rounded-full
                             shadow-[0_0_10px_rgba(108,35,215,0.4)]
@@ -243,21 +234,16 @@ const BenefitsSection = () => {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
 
             {/* Background decorative elements */}
-            <motion.div
+            <div
               className={`
                 gradient-bg absolute -bottom-10 -left-10 -z-10 h-48 w-48
                 rounded-full opacity-30 blur-3xl
               `}
-              animate={{
-                scale: [1, 1.4, 1],
-                opacity: [0.2, 0.4, 0.2],
-              }}
-              transition={{ duration: 8, repeat: Infinity }}
             />
-          </motion.div>
+          </m.div>
         </div>
       </div>
     </section>

@@ -1,5 +1,5 @@
 "use client";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import React from "react";
 
 import CountUp from "@/components/common/count-up";
@@ -28,7 +28,7 @@ const StatsSection = () => {
       />
 
       <div className="container mx-auto">
-        <motion.div
+        <m.div
           className={`
             grid grid-cols-1 gap-12
             sm:grid-cols-3
@@ -40,12 +40,12 @@ const StatsSection = () => {
           viewport={{ once: true }}
         >
           {stats.map((stat) => (
-            <motion.div
+            <m.div
               key={stat.label}
               className="group text-center"
               variants={scaleIn}
             >
-              <motion.div
+              <m.div
                 className={`
                   font-display gradient-text mb-2 text-6xl font-extrabold
                   tracking-tighter
@@ -60,7 +60,7 @@ const StatsSection = () => {
                   separator=","
                 />
                 {stat.suffix}
-              </motion.div>
+              </m.div>
               <div
                 className={`
                   text-muted-foreground text-sm font-semibold tracking-widest
@@ -70,9 +70,9 @@ const StatsSection = () => {
               >
                 {stat.label}
               </div>
-            </motion.div>
+            </m.div>
           ))}
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

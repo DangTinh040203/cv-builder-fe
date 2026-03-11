@@ -5,7 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@shared/ui/components/accordion";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import React from "react";
 
 import BlurText from "@/components/common/blur-text";
@@ -43,14 +43,14 @@ const FAQSection = () => {
   return (
     <section className="bg-background relative overflow-hidden px-4 py-24">
       <div className="relative z-10 container mx-auto max-w-3xl">
-        <motion.div
+        <m.div
           className="mb-20 text-center"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <motion.div
+          <m.div
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -64,7 +64,7 @@ const FAQSection = () => {
               speed={3}
               className="text-sm font-semibold tracking-wider uppercase"
             />
-          </motion.div>
+          </m.div>
           <BlurText
             text="Frequently Asked Questions"
             delay={80}
@@ -84,16 +84,16 @@ const FAQSection = () => {
             Everything you need to know about CVCraft and how it can help you
             land your dream job.
           </p>
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
         >
           <Accordion type="single" collapsible className="w-full space-y-4">
             {faqs.map((faq, index) => (
-              <motion.div
+              <m.div
                 key={index}
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -124,10 +124,10 @@ const FAQSection = () => {
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>
-              </motion.div>
+              </m.div>
             ))}
           </Accordion>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

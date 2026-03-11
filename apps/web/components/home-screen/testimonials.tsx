@@ -1,6 +1,6 @@
 "use client";
 import { Card, CardContent } from "@shared/ui/components/card";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Star } from "lucide-react";
 import React from "react";
 
@@ -39,14 +39,14 @@ const TestimonialsSection = () => {
   return (
     <section className="relative overflow-hidden px-4 py-24">
       <div className="container mx-auto">
-        <motion.div
+        <m.div
           className="mb-20 text-center"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <motion.div
+          <m.div
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -60,7 +60,7 @@ const TestimonialsSection = () => {
               speed={3}
               className="text-sm font-semibold tracking-wider uppercase"
             />
-          </motion.div>
+          </m.div>
           <BlurText
             text="Loved by Thousands of Job Seekers"
             delay={80}
@@ -80,9 +80,9 @@ const TestimonialsSection = () => {
             Discover how professionals from top companies are using CVCraft to
             accelerate their career growth.
           </p>
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           className={`
             grid gap-8
             md:grid-cols-3
@@ -93,7 +93,7 @@ const TestimonialsSection = () => {
           viewport={{ once: true, margin: "-50px" }}
         >
           {testimonials.map((testimonial) => (
-            <motion.div
+            <m.div
               key={testimonial.name}
               variants={fadeInUp}
               whileHover={{ y: -12 }}
@@ -109,7 +109,7 @@ const TestimonialsSection = () => {
                 <CardContent className="p-8">
                   <div className="mb-6 flex gap-1">
                     {[...Array(testimonial.rating)].map((_, i) => (
-                      <motion.div
+                      <m.div
                         key={i}
                         initial={{ opacity: 0, scale: 0 }}
                         whileInView={{ opacity: 1, scale: 1 }}
@@ -121,7 +121,7 @@ const TestimonialsSection = () => {
                             h-5 w-5 fill-yellow-400 text-yellow-400 shadow-sm
                           `}
                         />
-                      </motion.div>
+                      </m.div>
                     ))}
                   </div>
                   <p
@@ -136,7 +136,7 @@ const TestimonialsSection = () => {
                       border-border/60 flex items-center gap-4 border-t pt-6
                     `}
                   >
-                    <motion.div
+                    <m.div
                       className={`
                         from-primary to-accent text-primary-foreground
                         shadow-primary/20 flex h-14 w-14 items-center
@@ -146,7 +146,7 @@ const TestimonialsSection = () => {
                       whileHover={{ scale: 1.1, rotate: 5 }}
                     >
                       {testimonial.image}
-                    </motion.div>
+                    </m.div>
                     <div>
                       <div className="text-lg font-bold">
                         {testimonial.name}
@@ -158,9 +158,9 @@ const TestimonialsSection = () => {
                   </div>
                 </CardContent>
               </Card>
-            </motion.div>
+            </m.div>
           ))}
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

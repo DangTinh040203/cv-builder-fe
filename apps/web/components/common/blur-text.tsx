@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 interface BlurTextProps {
@@ -113,7 +113,7 @@ const BlurText = ({
         };
 
         return (
-          <motion.span
+          <m.span
             className={`
               inline-block will-change-[transform,filter,opacity]
               ${spanClassName}
@@ -128,7 +128,7 @@ const BlurText = ({
           >
             {segment === " " ? "\u00A0" : segment}
             {animateBy === "words" && index < elements.length - 1 && "\u00A0"}
-          </motion.span>
+          </m.span>
         );
       })}
     </p>

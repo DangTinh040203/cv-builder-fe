@@ -1,5 +1,5 @@
 "use client";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { FileText } from "lucide-react";
 import React from "react";
 
@@ -9,7 +9,7 @@ const Footer = () => {
   return (
     <footer className="border-border bg-muted/30 border-t px-4 py-12">
       <div className="container mx-auto">
-        <motion.div
+        <m.div
           className={`
             grid gap-8
             md:grid-cols-4
@@ -19,9 +19,9 @@ const Footer = () => {
           whileInView="visible"
           viewport={{ once: true }}
         >
-          <motion.div variants={fadeInUp}>
+          <m.div variants={fadeInUp}>
             <div className="mb-4 flex items-center gap-2">
-              <motion.div
+              <m.div
                 className={`
                   gradient-bg flex h-8 w-8 items-center justify-center
                   rounded-lg
@@ -30,13 +30,13 @@ const Footer = () => {
                 transition={{ duration: 0.5 }}
               >
                 <FileText className="text-primary-foreground h-5 w-5" />
-              </motion.div>
+              </m.div>
               <span className="font-display text-xl font-bold">CVCraft</span>
             </div>
             <p className="text-muted-foreground text-sm">
               The AI-powered CV builder that helps you land your dream job.
             </p>
-          </motion.div>
+          </m.div>
 
           {[
             {
@@ -52,12 +52,12 @@ const Footer = () => {
               links: ["Privacy Policy", "Terms of Service", "Cookie Policy"],
             },
           ].map((section) => (
-            <motion.div key={section.title} variants={fadeInUp}>
+            <m.div key={section.title} variants={fadeInUp}>
               <h4 className="mb-4 font-semibold">{section.title}</h4>
               <ul className="space-y-2">
                 {section.links.map((link) => (
                   <li key={link}>
-                    <motion.a
+                    <m.a
                       href="#"
                       className={`
                         text-muted-foreground text-sm transition-colors
@@ -66,15 +66,15 @@ const Footer = () => {
                       whileHover={{ x: 5 }}
                     >
                       {link}
-                    </motion.a>
+                    </m.a>
                   </li>
                 ))}
               </ul>
-            </motion.div>
+            </m.div>
           ))}
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           className={`
             border-border text-muted-foreground mt-12 border-t pt-8 text-center
             text-sm
@@ -84,7 +84,7 @@ const Footer = () => {
           viewport={{ once: true }}
         >
           © 2026 CVCraft - Cao Dang Tinh. All rights reserved.
-        </motion.div>
+        </m.div>
       </div>
     </footer>
   );

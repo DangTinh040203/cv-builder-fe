@@ -1,5 +1,4 @@
 "use client";
-import { motion } from "framer-motion";
 import React from "react";
 
 const companies = ["Google", "Microsoft", "Amazon", "Meta", "Apple", "Netflix"];
@@ -27,26 +26,21 @@ const Marquee = () => {
       />
 
       <div className="container mx-auto">
-        <motion.p
+        <p
           className={`
             text-muted-foreground mb-8 text-center text-xs font-semibold
             tracking-[0.2em] uppercase opacity-70
           `}
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
         >
           Trusted by professionals worldwide
-        </motion.p>
+        </p>
 
         <div className="flex overflow-hidden">
-          <motion.div
+          <div
             className="flex items-center gap-20 pr-20"
-            animate={{ x: ["0%", "-50%"] }}
-            transition={{
-              duration: 30,
-              repeat: Infinity,
-              ease: "linear",
+            style={{
+              animation: "marquee-scroll 30s linear infinite",
+              willChange: "transform",
             }}
           >
             {[...companies, ...companies, ...companies].map((company, i) => (
@@ -62,9 +56,15 @@ const Marquee = () => {
                 {company}
               </span>
             ))}
-          </motion.div>
+          </div>
         </div>
       </div>
+      <style jsx>{`
+        @keyframes marquee-scroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+      `}</style>
     </section>
   );
 };
