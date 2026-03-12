@@ -25,6 +25,8 @@ import {
   formContainerVariants,
   formItemVariants,
 } from "@/styles/animation";
+import SSOButtons from "@/components/auth-screens/sso-buttons";
+import { Separator } from "@shared/ui/components/separator";
 
 const formSchema = z
   .object({
@@ -234,6 +236,14 @@ const SignUp = () => {
               )}
             </Button>
           </motion.div>
+
+          <motion.div variants={formItemVariants} className="flex w-full gap-2 items-center">
+            <Separator className="my-2 flex-1" />
+            <p className="text-center text-xs text-muted-foreground">Or continue with</p>
+            <Separator className="my-2 flex-1" />
+          </motion.div>
+
+          <SSOButtons />
 
           <motion.p
             variants={formItemVariants}
