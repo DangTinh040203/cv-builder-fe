@@ -28,7 +28,11 @@ export const ScrollToTop = () => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed right-8 bottom-8 z-50 animate-in fade-in zoom-in duration-300">
+    <div
+      className={`
+        animate-in fade-in zoom-in fixed right-8 bottom-8 z-50 duration-300
+      `}
+    >
       <button
         onClick={scrollToTop}
         className={`

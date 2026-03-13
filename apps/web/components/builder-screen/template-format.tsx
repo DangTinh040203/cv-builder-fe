@@ -73,7 +73,6 @@ import { useAppDispatch, useAppSelector } from "@/stores/store";
 
 const COLOR_OPTIONS = [
   { value: "blue", label: "Blue", color: "#3b82f6" },
-  { value: "sky", label: "Sky", color: "#0ea5e9" },
   { value: "cyan", label: "Cyan", color: "#06b6d4" },
   { value: "teal", label: "Teal", color: "#14b8a6" },
   { value: "emerald", label: "Emerald", color: "#10b981" },
