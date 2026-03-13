@@ -77,7 +77,7 @@ export const useTemplate05Style = (templateFormat: Format) => {
       sectionContentNoGap: {
         flexDirection: "column",
         gap: 0,
-        marginTop: 4,
+        marginTop: 6,
       },
 
       // Bold colored underline
@@ -186,7 +186,7 @@ export const useTemplate05Style = (templateFormat: Format) => {
       },
 
       timelineGutter: {
-        width: 14,
+        width: 16,
         alignItems: "center",
         flexDirection: "column",
       },
@@ -207,7 +207,7 @@ export const useTemplate05Style = (templateFormat: Format) => {
 
       timelineContent: {
         flex: 1,
-        paddingLeft: 10,
+        paddingLeft: 8,
         paddingBottom: 12,
       },
 

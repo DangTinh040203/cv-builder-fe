@@ -125,25 +125,32 @@ function renderTimelineSection(
               <View style={styles.timelineContent}>
                 <View
                   style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
+                    flexDirection: "column",
+                    gap: 1,
                   }}
                 >
-                  <Text style={styles.itemTitle}>{exp.company}</Text>
-                  <Text style={styles.textSm}>
-                    {formatDate(exp.startDate)} — {formatDate(exp.endDate)}
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignItems: "flex-start",
+                    }}
+                  >
+                    <Text style={styles.itemTitle}>{exp.company}</Text>
+                    <Text style={{ ...styles.textSm, flexShrink: 0 }}>
+                      {formatDate(exp.startDate)} — {formatDate(exp.endDate)}
+                    </Text>
+                  </View>
+                  <Text
+                    style={{
+                      opacity: 0.8,
+                      fontStyle: "italic",
+                      marginBottom: 2,
+                    }}
+                  >
+                    {exp.position}
                   </Text>
                 </View>
-                <Text
-                  style={{
-                    opacity: 0.8,
-                    fontStyle: "italic",
-                    marginBottom: 2,
-                  }}
-                >
-                  {exp.position}
-                </Text>
                 <HtmlToPdf style={styles.text} content={exp.description} />
               </View>
             </View>
