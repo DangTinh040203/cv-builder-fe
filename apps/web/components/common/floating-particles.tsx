@@ -38,8 +38,15 @@ const FloatingParticles = () => {
       ))}
       <style jsx>{`
         @keyframes float-particle {
-          0%, 100% { transform: translateY(0); opacity: 0.15; }
-          50% { transform: translateY(-20px); opacity: 0.4; }
+          0%,
+          100% {
+            transform: translateY(0);
+            opacity: 0.15;
+          }
+          50% {
+            transform: translateY(-20px);
+            opacity: 0.4;
+          }
         }
       `}</style>
     </div>

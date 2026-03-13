@@ -132,8 +132,8 @@ const BenefitsSection = () => {
           >
             <div
               className={`
-                from-primary to-accent absolute -inset-4
-                rounded-[32px] bg-linear-to-r opacity-10 blur-2xl
+                from-primary to-accent absolute -inset-4 rounded-[32px]
+                bg-linear-to-r opacity-10 blur-2xl
               `}
             />
 

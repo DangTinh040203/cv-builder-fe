@@ -22,14 +22,20 @@ const HeroSection = () => {
       {/* Background blobs - CSS animations instead of framer-motion */}
       <div className="absolute inset-0 overflow-hidden">
         <div
-          className="bg-primary/20 absolute top-[-10%] right-[-5%] h-[500px] w-[500px] rounded-full blur-[120px]"
+          className={`
+            bg-primary/20 absolute top-[-10%] right-[-5%] h-[500px] w-[500px]
+            rounded-full blur-[120px]
+          `}
           style={{
             animation: "hero-blob-1 15s linear infinite",
             willChange: "transform, opacity",
           }}
         />
         <div
-          className="bg-accent/20 absolute bottom-[-10%] left-[-5%] h-[400px] w-[400px] rounded-full blur-[100px]"
+          className={`
+            bg-accent/20 absolute bottom-[-10%] left-[-5%] h-[400px] w-[400px]
+            rounded-full blur-[100px]
+          `}
           style={{
             animation: "hero-blob-2 18s linear infinite",
             willChange: "transform, opacity",
@@ -53,7 +59,10 @@ const HeroSection = () => {
               damping: 20,
             }}
           >
-            <Sparkles className="text-primary h-4 w-4 animate-spin" style={{ animationDuration: "4s" }} />
+            <Sparkles
+              className="text-primary h-4 w-4 animate-spin"
+              style={{ animationDuration: "4s" }}
+            />
             <span className="text-sm font-medium">AI-Powered CV Builder</span>
             <Badge
               className={`bg-primary/20 text-primary border-none text-[10px]`}
@@ -103,7 +112,12 @@ const HeroSection = () => {
             transition={{ duration: 0.5, delay: 0.3 }}
           >
             Welcome to CVCraft, the largest professional CV building platform.
-            <br className="hidden md:block" />
+            <br
+              className={`
+                hidden
+                md:block
+              `}
+            />
             Craft stunning, ATS-friendly resumes in minutes with AI.
           </m.p>
 
@@ -128,7 +142,10 @@ const HeroSection = () => {
                 `}
               >
                 <span
-                  className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent"
+                  className={`
+                    absolute inset-0 bg-linear-to-r from-transparent
+                    via-white/20 to-transparent
+                  `}
                   style={{
                     animation: "btn-shine 4s ease-in-out infinite",
                   }}
@@ -136,7 +153,10 @@ const HeroSection = () => {
                 <span className="relative flex items-center gap-2">
                   Build your profile
                   <ArrowRight
-                    className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1"
+                    className={`
+                      h-5 w-5 transition-transform duration-300
+                      group-hover:translate-x-1
+                    `}
                   />
                 </span>
               </Button>
@@ -147,7 +167,8 @@ const HeroSection = () => {
                 size="xl"
                 className={`
                   h-14 w-full rounded-full border-2 px-8 text-lg
-                  backdrop-blur-sm transition-transform hover:scale-105
+                  backdrop-blur-sm transition-transform
+                  hover:scale-105
                   sm:w-auto
                 `}
               >
@@ -186,9 +207,17 @@ const HeroSection = () => {
               >
                 <div className="mb-2 flex items-center gap-2">
                   <div
-                    className={`h-2 w-2 rounded-full animate-pulse ${item.color}`}
+                    className={`
+                      h-2 w-2 animate-pulse rounded-full
+                      ${item.color}
+                    `}
                   />
-                  <span className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
+                  <span
+                    className={`
+                      text-muted-foreground text-xs font-medium tracking-wider
+                      uppercase
+                    `}
+                  >
                     {item.label}
                   </span>
                 </div>
@@ -198,12 +227,23 @@ const HeroSection = () => {
           </m.div>
 
           {/* Scroll indicator - CSS animation */}
-          <div className="mt-20 flex flex-col items-center gap-3 animate-fade-in" style={{ animationDelay: "1.5s" }}>
-            <span className="text-muted-foreground text-xs font-medium tracking-[0.2em] uppercase">
+          <div
+            className="animate-fade-in mt-20 flex flex-col items-center gap-3"
+            style={{ animationDelay: "1.5s" }}
+          >
+            <span
+              className={`
+                text-muted-foreground text-xs font-medium tracking-[0.2em]
+                uppercase
+              `}
+            >
               Scroll to explore
             </span>
             <div
-              className="border-primary/30 flex h-10 w-6 justify-center rounded-full border-2 p-1"
+              className={`
+                border-primary/30 flex h-10 w-6 justify-center rounded-full
+                border-2 p-1
+              `}
               style={{ animation: "scroll-bounce 2s ease-in-out infinite" }}
             >
               <div
@@ -217,29 +257,65 @@ const HeroSection = () => {
 
       <style jsx>{`
         @keyframes hero-blob-1 {
-          0%, 100% { transform: scale(1) translate(0, 0); opacity: 0.1; }
-          50% { transform: scale(1.2) translate(50px, -30px); opacity: 0.2; }
+          0%,
+          100% {
+            transform: scale(1) translate(0, 0);
+            opacity: 0.1;
+          }
+          50% {
+            transform: scale(1.2) translate(50px, -30px);
+            opacity: 0.2;
+          }
         }
         @keyframes hero-blob-2 {
-          0%, 100% { transform: scale(1) translate(0, 0); opacity: 0.1; }
-          50% { transform: scale(1.3) translate(-40px, 60px); opacity: 0.2; }
+          0%,
+          100% {
+            transform: scale(1) translate(0, 0);
+            opacity: 0.1;
+          }
+          50% {
+            transform: scale(1.3) translate(-40px, 60px);
+            opacity: 0.2;
+          }
         }
         @keyframes btn-shine {
-          0% { transform: translateX(-100%); }
-          30% { transform: translateX(200%); }
-          100% { transform: translateX(200%); }
+          0% {
+            transform: translateX(-100%);
+          }
+          30% {
+            transform: translateX(200%);
+          }
+          100% {
+            transform: translateX(200%);
+          }
         }
         @keyframes scroll-bounce {
-          0%, 100% { transform: translateY(0); opacity: 0.3; }
-          50% { transform: translateY(10px); opacity: 1; }
+          0%,
+          100% {
+            transform: translateY(0);
+            opacity: 0.3;
+          }
+          50% {
+            transform: translateY(10px);
+            opacity: 1;
+          }
         }
         @keyframes scroll-dot {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(16px); }
+          0%,
+          100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(16px);
+          }
         }
         @keyframes animate-fade-in {
-          from { opacity: 0; }
-          to { opacity: 1; }
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
         }
       `}</style>
     </section>
