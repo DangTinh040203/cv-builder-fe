@@ -224,7 +224,6 @@ const Templates = () => {
                           templateFormat={{
                             ...defaultFormat,
                             sectionOrder: profile.defaultSectionOrder,
-                            color: "#1e3a8a",
                           }}
                         />
                       }
