@@ -25,12 +25,23 @@ const CTASection = () => {
         >
           {/* Animated background elements */}
           <div
-            className="absolute top-0 left-0 h-64 w-64 rounded-full bg-white/10 blur-3xl"
-            style={{ animation: "cta-blob-1 10s ease-in-out infinite", willChange: "transform" }}
+            className={`
+              absolute top-0 left-0 h-64 w-64 rounded-full bg-white/10 blur-3xl
+            `}
+            style={{
+              animation: "cta-blob-1 10s ease-in-out infinite",
+              willChange: "transform",
+            }}
           />
           <div
-            className="absolute right-0 bottom-0 h-96 w-96 rounded-full bg-black/10 blur-3xl"
-            style={{ animation: "cta-blob-2 12s ease-in-out infinite", willChange: "transform" }}
+            className={`
+              absolute right-0 bottom-0 h-96 w-96 rounded-full bg-black/10
+              blur-3xl
+            `}
+            style={{
+              animation: "cta-blob-2 12s ease-in-out infinite",
+              willChange: "transform",
+            }}
           />
 
           <div className="relative z-10">
@@ -106,12 +117,22 @@ const CTASection = () => {
       </div>
       <style jsx>{`
         @keyframes cta-blob-1 {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          50% { transform: translate(100px, 50px) scale(1.2); }
+          0%,
+          100% {
+            transform: translate(0, 0) scale(1);
+          }
+          50% {
+            transform: translate(100px, 50px) scale(1.2);
+          }
         }
         @keyframes cta-blob-2 {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          50% { transform: translate(-100px, -50px) scale(1.5); }
+          0%,
+          100% {
+            transform: translate(0, 0) scale(1);
+          }
+          50% {
+            transform: translate(-100px, -50px) scale(1.5);
+          }
         }
       `}</style>
     </section>

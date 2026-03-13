@@ -19,9 +19,7 @@ const WhyChooseUsSection = dynamic(
 const BenefitsSection = dynamic(
   () => import("@/components/home-screen/benefits"),
 );
-const StatsSection = dynamic(
-  () => import("@/components/home-screen/stats"),
-);
+const StatsSection = dynamic(() => import("@/components/home-screen/stats"));
 const TestimonialsSection = dynamic(
   () => import("@/components/home-screen/testimonials"),
 );
