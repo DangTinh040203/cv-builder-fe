@@ -115,26 +115,6 @@ const CTASection = () => {
           </div>
         </m.div>
       </div>
-      <style jsx>{`
-        @keyframes cta-blob-1 {
-          0%,
-          100% {
-            transform: translate(0, 0) scale(1);
-          }
-          50% {
-            transform: translate(100px, 50px) scale(1.2);
-          }
-        }
-        @keyframes cta-blob-2 {
-          0%,
-          100% {
-            transform: translate(0, 0) scale(1);
-          }
-          50% {
-            transform: translate(-100px, -50px) scale(1.5);
-          }
-        }
-      `}</style>
     </section>
   );
 };

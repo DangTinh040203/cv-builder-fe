@@ -11,6 +11,7 @@ import {
   FormMessage,
 } from "@shared/ui/components/form";
 import { Input } from "@shared/ui/components/input";
+import { Separator } from "@shared/ui/components/separator";
 import { motion } from "framer-motion";
 import { ArrowRight, Eye, EyeOff, Loader2 } from "lucide-react";
 import Link from "next/link";
@@ -19,6 +20,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import SSOButtons from "@/components/auth-screens/sso-buttons";
 import { handleClerkError } from "@/libs/clerk-toast";
 import {
   buttonScaleVariants,
@@ -234,6 +236,19 @@ const SignUp = () => {
               )}
             </Button>
           </motion.div>
+
+          <motion.div
+            variants={formItemVariants}
+            className="flex w-full items-center gap-2"
+          >
+            <Separator className="my-2 flex-1" />
+            <p className="text-muted-foreground text-center text-xs">
+              Or continue with
+            </p>
+            <Separator className="my-2 flex-1" />
+          </motion.div>
+
+          <SSOButtons />
 
           <motion.p
             variants={formItemVariants}
