@@ -148,6 +148,18 @@
 }
 
 /* Animations */
+@keyframes float-particle {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.15;
+  }
+  50% {
+    transform: translateY(-20px);
+    opacity: 0.4;
+  }
+}
+
 @keyframes float {
   0%,
   100% {
@@ -171,6 +183,102 @@
   }
   75% {
     transform: translateY(-5px) rotate(-2deg);
+  }
+}
+
+@keyframes cta-blob-1 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(100px, 50px) scale(1.2);
+  }
+}
+
+@keyframes cta-blob-2 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-100px, -50px) scale(1.5);
+  }
+}
+
+@keyframes hero-blob-1 {
+  0%,
+  100% {
+    transform: scale(1) translate(0, 0);
+    opacity: 0.1;
+  }
+  50% {
+    transform: scale(1.2) translate(50px, -30px);
+    opacity: 0.2;
+  }
+}
+
+@keyframes hero-blob-2 {
+  0%,
+  100% {
+    transform: scale(1) translate(0, 0);
+    opacity: 0.1;
+  }
+  50% {
+    transform: scale(1.3) translate(-40px, 60px);
+    opacity: 0.2;
+  }
+}
+
+@keyframes btn-shine {
+  0% {
+    transform: translateX(-100%);
+  }
+  30% {
+    transform: translateX(200%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+@keyframes scroll-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(10px);
+    opacity: 1;
+  }
+}
+
+@keyframes scroll-dot {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(16px);
+  }
+}
+
+@keyframes animate-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
   }
 }
 

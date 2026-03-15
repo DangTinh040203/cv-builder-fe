@@ -94,101 +94,101 @@ const SignIn = () => {
         className="space-y-6"
       >
         <motion.div variants={formItemVariants}>
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <motion.div
-                      whileFocus={{ scale: 1.01 }}
-                      transition={{ type: "spring", stiffness: 300 }}
-                    >
-                      <Input
-                        placeholder="Enter your email"
-                        disabled={isLoading}
-                        {...field}
-                      />
-                    </motion.div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <motion.div
+                    whileFocus={{ scale: 1.01 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
+                    <Input
+                      placeholder="Enter your email"
+                      disabled={isLoading}
+                      {...field}
+                    />
+                  </motion.div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </motion.div>
 
         <motion.div variants={formItemVariants}>
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <motion.div
-                      whileFocus={{ scale: 1.01 }}
-                      transition={{ type: "spring", stiffness: 300 }}
-                      className="relative"
-                    >
-                      <Input
-                        {...field}
-                        placeholder="Enter your password"
-                        type={showPassword ? "text" : "password"}
-                        disabled={isLoading}
-                        className="pr-10"
-                      />
-                      <Button
-                        variant="ghost"
-                        size={"icon"}
-                        type="button"
-                        className="absolute top-1/2 right-2 -translate-y-1/2"
-                        onClick={() => setShowPassword(!showPassword)}
-                      >
-                        {showPassword ? <EyeOff /> : <Eye />}
-                      </Button>
-                    </motion.div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </motion.div>
-
-          <motion.div
-            variants={buttonScaleVariants}
-            whileHover={isLoading ? {} : { scale: 1.02 }}
-            whileTap={isLoading ? {} : { scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 400, damping: 17 }}
-          >
-            <Button
-              type="submit"
-              size="lg"
-              className="w-full rounded-full"
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                  Signing in
-                </>
-              ) : (
-                <>
-                  Sign In
-                  <motion.span
-                    initial={{ x: 0 }}
-                    whileHover={{ x: 5 }}
-                    transition={{ type: "spring", stiffness: 400 }}
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <motion.div
+                    whileFocus={{ scale: 1.01 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                    className="relative"
                   >
-                    <ArrowRight className="h-5 w-5" />
-                  </motion.span>
-                </>
-              )}
-            </Button>
-          </motion.div>
+                    <Input
+                      {...field}
+                      placeholder="Enter your password"
+                      type={showPassword ? "text" : "password"}
+                      disabled={isLoading}
+                      className="pr-10"
+                    />
+                    <Button
+                      variant="ghost"
+                      size={"icon"}
+                      type="button"
+                      className="absolute top-1/2 right-2 -translate-y-1/2"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <EyeOff /> : <Eye />}
+                    </Button>
+                  </motion.div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </motion.div>
 
-          <motion.div
-            variants={formItemVariants}
+        <motion.div
+          variants={buttonScaleVariants}
+          whileHover={isLoading ? {} : { scale: 1.02 }}
+          whileTap={isLoading ? {} : { scale: 0.98 }}
+          transition={{ type: "spring", stiffness: 400, damping: 17 }}
+        >
+          <Button
+            type="submit"
+            size="lg"
+            className="w-full rounded-full"
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <>
+                <Loader2 className="h-5 w-5 animate-spin" />
+                Signing in
+              </>
+            ) : (
+              <>
+                Sign In
+                <motion.span
+                  initial={{ x: 0 }}
+                  whileHover={{ x: 5 }}
+                  transition={{ type: "spring", stiffness: 400 }}
+                >
+                  <ArrowRight className="h-5 w-5" />
+                </motion.span>
+              </>
+            )}
+          </Button>
+        </motion.div>
+
+        <motion.div
+          variants={formItemVariants}
           className="flex w-full items-center gap-2"
         >
           <Separator className="my-2 flex-1" />
@@ -201,24 +201,21 @@ const SignIn = () => {
         <SSOButtons />
 
         <motion.p
-            variants={formItemVariants}
-            className="text-muted-foreground text-center text-sm"
+          variants={formItemVariants}
+          className="text-muted-foreground text-center text-sm"
+        >
+          Don&apos;t have an account?{" "}
+          <Link
+            href="/auth/sign-up"
+            className={`
+              text-primary font-medium transition-all
+              hover:underline
+            `}
           >
-            Don&apos;t have an account?{" "}
-            <Link
-              href="/auth/sign-up"
-              className={`
-                text-primary font-medium transition-all
-                hover:underline
-              `}
-            >
-              <motion.span
-                whileHover={{ scale: 1.05 }}
-                className="inline-block"
-              >
-                Sign Up
-              </motion.span>
-            </Link>
+            <motion.span whileHover={{ scale: 1.05 }} className="inline-block">
+              Sign Up
+            </motion.span>
+          </Link>
         </motion.p>
       </motion.form>
     </Form>

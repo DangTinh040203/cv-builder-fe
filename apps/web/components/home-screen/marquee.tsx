@@ -59,16 +59,6 @@ const Marquee = () => {
           </div>
         </div>
       </div>
-      <style jsx>{`
-        @keyframes marquee-scroll {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-      `}</style>
     </section>
   );
 };
