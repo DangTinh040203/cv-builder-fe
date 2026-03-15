@@ -85,7 +85,7 @@ export const defaultFormat: Format = {
   headerStyle: "left",
 
   // Appearance
-  color: "blue",
+  color: "#1e3a8a",
   theme: "light",
   borderStyle: "none",
   dateFormat: "MM/YYYY",
