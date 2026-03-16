@@ -57,7 +57,7 @@ export const useTemplateStyle = (templateFormat: Format) => {
       },
 
       separator: {
-        height: 0.5,
+        height: 1,
         width: "100%",
         backgroundColor: "gray",
       },
