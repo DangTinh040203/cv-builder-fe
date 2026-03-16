@@ -81,7 +81,7 @@ const AuthLayout: React.FC<PropsWithChildren> = ({ children }) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <Link href="/" className="mb-16 flex items-center gap-3">
+            <Link href="/" className="mb-10 flex items-center gap-3">
               <motion.div
                 className={`
                   flex h-12 w-12 items-center justify-center rounded-xl border
