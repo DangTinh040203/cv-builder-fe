@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import slugify from "slugify";
 
 import DocumentPDF from "@/components/templates/document-pdf";
+import { registerFonts } from "@/configs/font.config";
 import { TEMPLATES } from "@/configs/template.config";
 import {
   templateFormatSelector,
@@ -17,6 +18,9 @@ import {
 } from "@/stores/features/template.slice";
 import { useAppSelector } from "@/stores/store";
 import { type Resume } from "@/types/resume.type";
+
+// Ensure fonts are registered for @react-pdf/renderer before PDF generation
+registerFonts();
 
 interface DownloadPdfProps {
   resume: Resume;
@@ -72,7 +76,8 @@ const DownloadPdf: React.FC<DownloadPdfProps> = ({ resume }) => {
         link.click();
 
         URL.revokeObjectURL(blobUrl);
-      } catch {
+      } catch (error) {
+        console.error("PDF generation error:", error);
         toast.error("Failed to download PDF");
       } finally {
         setHtml(true);

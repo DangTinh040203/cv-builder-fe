@@ -41,7 +41,7 @@ const HtmlToPdf = ({ content = "", style = {} }: HtmlToPdfProps) => {
   if (isHTML) {
     return (
       <div
-        style={{ ...style }}
+        style={{ fontFamily: "inherit", ...style }}
         className="prose m-0 max-w-full p-0"
         dangerouslySetInnerHTML={{ __html: normalizedContent }}
       />

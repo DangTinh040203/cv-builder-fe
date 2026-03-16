@@ -5,8 +5,12 @@ import { type ReactElement, useMemo } from "react";
 import { useMeasure } from "react-use";
 
 import DocumentPDF from "@/components/templates/document-pdf";
+import { registerFonts } from "@/configs/font.config";
 import { type Format } from "@/stores/features/template.slice";
 import { type Resume } from "@/types/resume.type";
+
+// Register all fonts for @react-pdf/renderer at module load
+registerFonts();
 
 export interface TemplateProp {
   templateFormat: Format;
@@ -34,12 +38,14 @@ interface TemplateWrapperProps {
   document: ReactElement<DocumentProps>;
   scrollable?: boolean;
   selectable?: boolean;
+  fontFamily?: string;
 }
 
 const TemplateWrapper = ({
   document,
   scrollable = true,
   selectable = true,
+  fontFamily,
 }: TemplateWrapperProps) => {
   const [ref, bounds] = useMeasure<HTMLDivElement>();
 
@@ -76,6 +82,7 @@ const TemplateWrapper = ({
             width: DEFAULT_DOCUMENT_SIZE.width,
             height: DEFAULT_DOCUMENT_SIZE.height,
             transform: `scale(${size.scale})`,
+            fontFamily: fontFamily || undefined,
           }}
         >
           <DocumentPDF document={document} />

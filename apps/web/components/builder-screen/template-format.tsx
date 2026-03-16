@@ -60,6 +60,7 @@ import {
 import { useState } from "react";
 import { createPortal } from "react-dom";
 
+import { FONT_OPTIONS } from "@/configs/font.config";
 import {
   defaultFormat,
   defaultSectionOrder,
@@ -449,6 +450,31 @@ const TemplateFormat = () => {
               Typography
             </AccordionTrigger>
             <AccordionContent className="space-y-4 pb-4">
+              <FormatSelectRow
+                icon={<Type className="h-4 w-4" />}
+                label="Font Family"
+              >
+                <Select
+                  value={format.fontFamily}
+                  onValueChange={(value: string) =>
+                    updateFormat({ fontFamily: value })
+                  }
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select font" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {FONT_OPTIONS.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        <span style={{ fontFamily: option.value }}>
+                          {option.label}
+                        </span>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormatSelectRow>
+
               <FormatSlider
                 icon={<ALargeSmall className="h-4 w-4" />}
                 label="Font Size"

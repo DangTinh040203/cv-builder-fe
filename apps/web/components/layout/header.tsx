@@ -411,14 +411,10 @@ const Header = () => {
                           <UserAvatar />
                           <div className="flex flex-col">
                             <p className="text-sm font-medium">
-                              {user?.fullName}
-                            </p>
-                            <p className="text-muted-foreground text-xs">
-                              {
+                              {user?.fullName ||
                                 user?.primaryEmailAddress?.emailAddress.split(
                                   "@",
-                                )[0]
-                              }
+                                )[0]}
                             </p>
                           </div>
                         </div>

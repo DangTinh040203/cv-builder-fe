@@ -5,6 +5,7 @@ import React, { useMemo } from "react";
 
 import TemplateWrapper from "@/components/templates/template-wrapper";
 import { TEMPLATES } from "@/configs/template.config";
+import { useGoogleFont } from "@/hooks/use-google-font";
 import { useSyncResume } from "@/hooks/use-sync-resume";
 import {
   templateConfigSelector,
@@ -21,6 +22,9 @@ const TemplatePreview = () => {
   const { previewMode } = useAppSelector(templateConfigSelector);
   const dispatch = useAppDispatch();
 
+  // Load Google Font for HTML preview
+  useGoogleFont(templateFormat.fontFamily);
+
   const Template = useMemo(() => {
     return TEMPLATES[templateSelected!]?.component;
   }, [templateSelected]);
@@ -31,6 +35,7 @@ const TemplatePreview = () => {
       <div className="sticky top-4 z-10 flex flex-col items-center gap-4">
         <TemplateWrapper
           selectable={false}
+          fontFamily={templateFormat.fontFamily}
           document={
             <Template resume={resume} templateFormat={templateFormat} />
           }

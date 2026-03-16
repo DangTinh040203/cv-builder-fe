@@ -21,6 +21,7 @@ export type SectionType =
 export interface Format {
   // Typography
   fontSize: number;
+  fontFamily: string;
   titleSize: number;
   sectionTitleSize: number;
   subTitleSize: number;
@@ -68,6 +69,7 @@ export const defaultSectionOrder: SectionType[] = [
 export const defaultFormat: Format = {
   // Typography
   fontSize: 11,
+  fontFamily: "Inter",
   titleSize: 30,
   sectionTitleSize: 14,
   subTitleSize: 14,
