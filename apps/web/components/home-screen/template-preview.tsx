@@ -16,7 +16,12 @@ const templateCategories = [
 
 const TemplatePreviewSection = () => {
   return (
-    <section className="bg-background relative overflow-hidden px-4 py-24">
+    <section
+      className={`
+        bg-background relative overflow-hidden px-2 py-8
+        md:px-4 md:py-24
+      `}
+    >
       <div className="container mx-auto">
         <div
           className={`
@@ -43,14 +48,19 @@ const TemplatePreviewSection = () => {
             </m.div>
             <h2
               className={`
-                font-display mb-8 text-4xl font-extrabold tracking-tight
+                font-display mb-8 text-3xl font-extrabold tracking-tight
                 md:text-5xl
               `}
             >
               Choose from{" "}
               <span className="gradient-text">10+ Professional</span> Templates
             </h2>
-            <p className="text-muted-foreground mb-10 text-xl leading-relaxed">
+            <p
+              className={`
+                text-muted-foreground mb-10 text-base leading-relaxed
+                md:text-xl
+              `}
+            >
               Our collection of high-performance templates is meticulously
               crafted to meet the standards of top-tier companies and
               recruitment agencies.
@@ -95,8 +105,9 @@ const TemplatePreviewSection = () => {
                 <Button
                   size="xl"
                   className={`
-                    group shadow-primary/10 h-14 rounded-full px-10 text-lg
+                    group shadow-primary/10 h-14 rounded-full px-10 text-base
                     shadow-xl
+                    lg:text-lg
                   `}
                 >
                   Explore All Templates

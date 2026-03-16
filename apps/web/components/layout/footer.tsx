@@ -11,7 +11,7 @@ const Footer = () => {
       <div className="container mx-auto">
         <m.div
           className={`
-            grid gap-8
+            grid grid-cols-2 gap-8
             md:grid-cols-4
           `}
           variants={staggerContainer}
@@ -19,7 +19,13 @@ const Footer = () => {
           whileInView="visible"
           viewport={{ once: true }}
         >
-          <m.div variants={fadeInUp}>
+          <m.div
+            variants={fadeInUp}
+            className={`
+              col-span-2
+              md:col-span-1
+            `}
+          >
             <div className="mb-4 flex items-center gap-2">
               <m.div
                 className={`

@@ -47,7 +47,7 @@ const Marquee = () => {
               <span
                 key={i}
                 className={`
-                  font-display text-muted-foreground text-2xl font-bold
+                  font-display text-muted-foreground text-xl font-bold
                   whitespace-nowrap opacity-40 transition-all duration-300
                   hover:text-primary hover:scale-110 hover:opacity-100
                   md:text-3xl

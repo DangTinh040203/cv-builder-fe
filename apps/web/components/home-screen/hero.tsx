@@ -14,7 +14,8 @@ const HeroSection = () => {
     <section
       className={`
         from-background via-primary/5 to-accent/10 relative flex min-h-screen
-        items-center overflow-hidden bg-linear-to-br px-4 pt-32 pb-24
+        items-center overflow-hidden bg-linear-to-br px-2 pt-24 pb-24
+        md:px-4 md:pt-32
       `}
     >
       <FloatingParticles />
@@ -75,10 +76,10 @@ const HeroSection = () => {
           <div className="overflow-hidden">
             <m.h1
               className={`
-                font-display text-foreground mb-2 text-4xl leading-[1.1]
+                font-display text-foreground text-4xl leading-[1.1]
                 font-extrabold tracking-tight
                 md:text-6xl
-                lg:text-7xl
+                lg:mb-2 lg:text-7xl
               `}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -103,7 +104,7 @@ const HeroSection = () => {
 
           <m.p
             className={`
-              text-muted-foreground mx-auto mb-10 max-w-2xl text-lg
+              text-muted-foreground mx-auto mb-10 max-w-2xl text-base
               leading-relaxed
               md:text-xl
             `}
@@ -136,9 +137,10 @@ const HeroSection = () => {
                 size="xl"
                 className={`
                   group shadow-primary/20 relative h-14 w-full overflow-hidden
-                  rounded-full px-8 text-lg shadow-xl transition-transform
+                  rounded-full px-8 text-base shadow-xl transition-transform
                   hover:scale-105
                   sm:w-auto
+                  lg:text-lg
                 `}
               >
                 <span
@@ -166,10 +168,11 @@ const HeroSection = () => {
                 variant="outline"
                 size="xl"
                 className={`
-                  h-14 w-full rounded-full border-2 px-8 text-lg
+                  h-14 w-full rounded-full border-2 px-8 text-base
                   backdrop-blur-sm transition-transform
                   hover:scale-105
                   sm:w-auto
+                  lg:text-lg
                 `}
               >
                 View Templates
@@ -180,8 +183,7 @@ const HeroSection = () => {
           {/* Stats Cards */}
           <m.div
             className={`
-              mt-20 grid grid-cols-1 gap-4
-              sm:grid-cols-2
+              mt-20 grid grid-cols-2 gap-4
               md:grid-cols-4
             `}
             variants={staggerContainer}
