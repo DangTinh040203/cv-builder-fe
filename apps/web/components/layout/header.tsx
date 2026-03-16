@@ -234,13 +234,13 @@ const Header = () => {
                           </div>
                         </DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem asChild>
+                        <DropdownMenuItem asChild disabled>
                           <Link href="/profile" className="cursor-pointer">
                             <User className="mr-2 h-4 w-4" />
                             Profile
                           </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
+                        <DropdownMenuItem asChild disabled>
                           <Link href="/subscription" className="cursor-pointer">
                             <CreditCard className="mr-2 h-4 w-4" />
                             Subscription

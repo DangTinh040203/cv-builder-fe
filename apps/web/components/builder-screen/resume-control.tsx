@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@shared/ui/components/button";
+import { toast } from "@shared/ui/components/sonner";
 import {
   Tooltip,
   TooltipContent,
@@ -7,33 +8,127 @@ import {
   TooltipTrigger,
 } from "@shared/ui/components/tooltip";
 import { cn } from "@shared/ui/lib/utils";
+import { AxiosError } from "axios";
 import { motion } from "framer-motion";
-import { Eye, EyeOff, FileText, Loader2, Mic, Save } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  FileText,
+  Loader2,
+  Mic,
+  Save,
+  Upload,
+} from "lucide-react";
 import React from "react";
 
 import InterviewDialog from "@/components/builder-screen/interview-dialog";
 import MatchingDialog from "@/components/builder-screen/matching-dialog";
 import DownloadPdf from "@/components/templates/download-pdf";
+import { useService } from "@/hooks/use-http";
 import { useSyncResume } from "@/hooks/use-sync-resume";
+import { ResumeService } from "@/services/resume.service";
+import { setResume } from "@/stores/features/resume.slice";
 import {
   templateConfigSelector,
   updatePreviewMode,
 } from "@/stores/features/template.slice";
 import { useAppDispatch, useAppSelector } from "@/stores/store";
+import { type ErrorResponse } from "@/types/error.response";
+import { toastErrorMessage } from "@/utils/toast-error-message.util";
 
 const ResumeControl = () => {
   const { resume } = useSyncResume();
   const { previewMode } = useAppSelector(templateConfigSelector);
   const dispatch = useAppDispatch();
   const { sync, isSyncing } = useSyncResume();
+  const resumeService = useService(ResumeService);
+  const parseFileInputRef = React.useRef<HTMLInputElement>(null);
+  const [isParsing, setIsParsing] = React.useState(false);
   const [showInterview, setShowInterview] = React.useState(false);
 
   const handleTogglePreviewMode = () => {
     dispatch(updatePreviewMode(!previewMode));
   };
 
+  const handleParseResume = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !resume) return;
+
+    // Reset input so the same file can be re-selected
+    e.target.value = "";
+
+    setIsParsing(true);
+    try {
+      const parsed = await resumeService.resumeParse(file);
+
+      const updatedResume = {
+        ...resume,
+        title: parsed.title,
+        subTitle: parsed.subTitle,
+        overview: parsed.overview,
+        avatar: parsed.avatar,
+        information: parsed.information.map((item) => ({
+          ...item,
+          id: crypto.randomUUID(),
+          resumeId: resume.id,
+        })),
+        educations: parsed.educations.map((item) => ({
+          ...item,
+          id: crypto.randomUUID(),
+          resumeId: resume.id,
+        })),
+        skills: parsed.skills.map((item) => ({
+          ...item,
+          id: crypto.randomUUID(),
+          resumeId: resume.id,
+        })),
+        workExperiences: parsed.workExperiences.map((item) => ({
+          ...item,
+          id: crypto.randomUUID(),
+          resumeId: resume.id,
+        })),
+        projects: parsed.projects.map((item) => ({
+          ...item,
+          id: crypto.randomUUID(),
+          resumeId: resume.id,
+        })),
+        certifications: parsed.certifications.map((item) => ({
+          ...item,
+          id: crypto.randomUUID(),
+          resumeId: resume.id,
+        })),
+        languages: parsed.languages.map((item) => ({
+          ...item,
+          id: crypto.randomUUID(),
+          resumeId: resume.id,
+        })),
+      };
+
+      dispatch(setResume(updatedResume));
+      toast.success("Resume parsed successfully!");
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        const error = e.response?.data as ErrorResponse;
+        toastErrorMessage(error.message);
+      } else {
+        toast.error("Failed to parse resume. Please try again.");
+      }
+    } finally {
+      setIsParsing(false);
+    }
+  };
+
   return (
     <div className="mb-4">
+      {/* Hidden file input for Parse Resume */}
+      <input
+        ref={parseFileInputRef}
+        type="file"
+        accept=".pdf"
+        className="hidden"
+        onChange={handleParseResume}
+      />
+
       <div className="my-4 flex items-center gap-4">
         <div
           className={`
@@ -155,6 +250,39 @@ const ResumeControl = () => {
             <DownloadPdf resume={resume} />
           </div>
         )}
+
+        <div
+          className={`
+            w-full
+            sm:w-auto
+          `}
+        >
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="secondary"
+                  className={`
+                    border-primary w-full border shadow-xl
+                    sm:w-auto
+                  `}
+                  onClick={() => parseFileInputRef.current?.click()}
+                  disabled={isParsing || !resume}
+                >
+                  {isParsing ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    <Upload className="mr-2 h-4 w-4" />
+                  )}
+                  {isParsing ? "Parsing..." : "Parse Resume"}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Upload a PDF resume to auto-fill your CV</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
 
         <div
           className={`
