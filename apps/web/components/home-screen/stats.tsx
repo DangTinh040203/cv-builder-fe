@@ -13,7 +13,12 @@ const stats = [
 
 const StatsSection = () => {
   return (
-    <section className="relative overflow-hidden px-4 py-24">
+    <section
+      className={`
+        relative overflow-hidden px-2 py-8
+        md:px-4 md:py-24
+      `}
+    >
       <div
         className={`
           via-primary/20 absolute top-0 left-0 h-px w-full bg-linear-to-r
@@ -47,9 +52,10 @@ const StatsSection = () => {
             >
               <m.div
                 className={`
-                  font-display gradient-text mb-2 text-6xl font-extrabold
+                  font-display gradient-text mb-2 text-4xl font-extrabold
                   tracking-tighter
-                  md:text-7xl
+                  md:text-6xl
+                  lg:text-7xl
                 `}
                 whileHover={{ scale: 1.05 }}
               >
