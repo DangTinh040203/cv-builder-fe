@@ -111,12 +111,12 @@ const Header = () => {
   return (
     <m.nav
       className={cn(
-        "z-50 transition-all duration-300",
+        "relative z-50 transition-all duration-300",
         pathname === "/"
           ? "fixed top-0 right-0 left-0"
           : "bg-background border-b",
         pathname === "/" &&
-          isScrolled &&
+          (isScrolled || isOpen) &&
           "glass border-border/50 border-b shadow-md",
       )}
       variants={headerVariants}
@@ -353,7 +353,8 @@ const Header = () => {
           {isOpen && (
             <m.div
               className={`
-                border-border/50 overflow-hidden border-t
+                fixed top-16 right-0 left-0 overflow-hidden rounded-b-lg
+                bg-white px-2 shadow
                 md:hidden
               `}
               variants={mobileMenuVariants}
@@ -361,7 +362,7 @@ const Header = () => {
               animate="visible"
               exit="exit"
             >
-              <div className="flex flex-col gap-2 py-4">
+              <div className="flex flex-col gap-1 py-4">
                 {navLinks.map((link, i) => (
                   <m.div
                     key={link.href}
@@ -392,32 +393,6 @@ const Header = () => {
                   exit="exit"
                 >
                   <SignedIn>
-                    <div className="border-border/10 mb-2 border-b px-4 py-2">
-                      <div className="flex items-center gap-3">
-                        <UserAvatar />
-                        <div className="flex flex-col">
-                          <p className="text-sm font-medium">
-                            {user?.fullName}
-                          </p>
-                          <p className="text-muted-foreground text-xs">
-                            {
-                              user?.primaryEmailAddress?.emailAddress.split(
-                                "@",
-                              )[0]
-                            }
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <Link href="/profile" onClick={() => setIsOpen(false)}>
-                      <Button
-                        variant="ghost"
-                        className="w-full justify-start gap-3"
-                      >
-                        <User className="h-4 w-4" />
-                        Profile
-                      </Button>
-                    </Link>
                     <Link href="/subscription" onClick={() => setIsOpen(false)}>
                       <Button
                         variant="ghost"
@@ -427,19 +402,48 @@ const Header = () => {
                         Subscription
                       </Button>
                     </Link>
-                    <div className="border-border/10 mt-2 border-t pt-2">
-                      <SignOutButton>
-                        <Button
-                          variant="ghost"
-                          className={`
-                            w-full justify-start gap-3 text-red-500
-                            hover:bg-red-50 hover:text-red-500
-                          `}
-                        >
-                          <LogOut className="h-4 w-4" />
-                          Sign out
-                        </Button>
-                      </SignOutButton>
+                    <Link href="/profile" onClick={() => setIsOpen(false)}>
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-start gap-3"
+                      >
+                        <User className="h-4 w-4" />
+                        Profile
+                      </Button>
+                    </Link>
+
+                    <div className="border-border mt-2 flex border-t pt-2">
+                      <div className="border-border flex-1 border-r px-4 py-2">
+                        <div className="flex items-center gap-3">
+                          <UserAvatar />
+                          <div className="flex flex-col">
+                            <p className="text-sm font-medium">
+                              {user?.fullName}
+                            </p>
+                            <p className="text-muted-foreground text-xs">
+                              {
+                                user?.primaryEmailAddress?.emailAddress.split(
+                                  "@",
+                                )[0]
+                              }
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex-1 px-4 py-2">
+                        <SignOutButton>
+                          <Button
+                            variant="ghost"
+                            className={`
+                              w-full justify-start gap-3 text-red-500
+                              hover:bg-red-50 hover:text-red-500
+                            `}
+                          >
+                            <LogOut className="h-4 w-4" />
+                            Sign out
+                          </Button>
+                        </SignOutButton>
+                      </div>
                     </div>
                   </SignedIn>
                   <SignedOut>

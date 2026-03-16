@@ -20,7 +20,12 @@ const benefits = [
 
 const BenefitsSection = () => {
   return (
-    <section className="to-primary/5 bg-linear-to-b from-transparent px-4 py-24">
+    <section
+      className={`
+        to-primary/5 bg-linear-to-b from-transparent px-2 py-8
+        md:px-4 md:py-24
+      `}
+    >
       <div className="container mx-auto">
         <div
           className={`
@@ -39,12 +44,12 @@ const BenefitsSection = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               className={`
-                text-accent bg-accent/10 mb-6 inline-block rounded-full px-4
+                text-primary bg-primary/10 mb-6 inline-block rounded-full px-4
                 py-1.5 text-sm font-semibold tracking-wider uppercase
               `}
             >
               <ShinyText
-                text="Why Choose CVCraft"
+                text="Built for Success"
                 speed={3}
                 className="text-sm font-semibold tracking-wider uppercase"
               />
@@ -55,12 +60,17 @@ const BenefitsSection = () => {
               animateBy="words"
               direction="top"
               className={`
-                font-display mb-8 flex-wrap text-4xl font-extrabold
+                font-display mb-8 flex-wrap text-3xl font-extrabold
                 tracking-tight
                 md:text-5xl
               `}
             />
-            <p className="text-muted-foreground mb-10 text-xl leading-relaxed">
+            <p
+              className={`
+                text-muted-foreground mb-10 text-base leading-relaxed
+                md:text-xl
+              `}
+            >
               Our CV builder is designed by industry experts to ensure your
               profile gets the attention it deserves from modern hiring systems.
             </p>
@@ -98,7 +108,12 @@ const BenefitsSection = () => {
                   >
                     <CheckCircle2 className="text-primary h-6 w-6 shrink-0" />
                   </m.div>
-                  <span className="text-foreground text-lg font-medium">
+                  <span
+                    className={`
+                      text-foreground text-base font-medium
+                      md:text-lg
+                    `}
+                  >
                     {benefit}
                   </span>
                 </m.div>
@@ -113,7 +128,9 @@ const BenefitsSection = () => {
                 <Button
                   size="xl"
                   className={`
-                    shadow-primary/20 h-14 rounded-full px-10 text-lg shadow-lg
+                    shadow-primary/20 h-14 rounded-full px-10 text-base
+                    shadow-lg
+                    lg:text-lg
                   `}
                 >
                   Get Started Now for Free
@@ -140,7 +157,8 @@ const BenefitsSection = () => {
             <m.div
               className={`
                 bg-card border-border/50 relative overflow-hidden rounded-[32px]
-                border p-10 shadow-2xl backdrop-blur-sm
+                border p-6 shadow-2xl backdrop-blur-sm
+                md:p-10
               `}
               whileHover={{ y: -10 }}
               transition={{ duration: 0.4 }}
@@ -157,15 +175,21 @@ const BenefitsSection = () => {
                   <div
                     className={`
                       from-primary to-accent text-primary-foreground
-                      shadow-primary/30 flex h-20 w-20 items-center
-                      justify-center rounded-2xl bg-linear-to-br text-2xl
+                      shadow-primary/30 flex h-16 w-16 items-center
+                      justify-center rounded-2xl bg-linear-to-br text-xl
                       font-bold shadow-lg
+                      md:h-20 md:w-20 md:text-2xl
                     `}
                   >
                     JA
                   </div>
                   <div>
-                    <div className="font-display text-2xl font-bold">
+                    <div
+                      className={`
+                        font-display text-xl font-bold
+                        md:text-2xl
+                      `}
+                    >
                       John Anderson
                     </div>
                     <div className="text-primary font-medium tracking-wide">
