@@ -306,7 +306,7 @@ export const TemplateSelectionDialog = ({
         type="file"
         ref={fileInputRef}
         className="hidden"
-        accept=".pdf,.doc,.docx"
+        accept=".pdf"
         onChange={handleFileChange}
       />
     </>
