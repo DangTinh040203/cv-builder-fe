@@ -41,7 +41,12 @@ const faqs = [
 
 const FAQSection = () => {
   return (
-    <section className="bg-background relative overflow-hidden px-4 py-24">
+    <section
+      className={`
+        bg-background relative overflow-hidden px-2 py-8
+        md:px-4 md:py-24
+      `}
+    >
       <div className="relative z-10 container mx-auto max-w-3xl">
         <m.div
           className="mb-20 text-center"
@@ -71,14 +76,15 @@ const FAQSection = () => {
             animateBy="words"
             direction="top"
             className={`
-              font-display mb-6 flex-wrap justify-center text-4xl font-extrabold
+              font-display mb-6 flex-wrap justify-center text-3xl font-extrabold
               tracking-tight
               md:text-5xl
             `}
           />
           <p
             className={`
-              text-muted-foreground mx-auto max-w-xl text-lg leading-relaxed
+              text-muted-foreground mx-auto max-w-xl text-base leading-relaxed
+              md:text-lg
             `}
           >
             Everything you need to know about CVCraft and how it can help you
@@ -111,7 +117,8 @@ const FAQSection = () => {
                   <AccordionTrigger
                     className={`
                       hover:text-primary hover:no-underline
-                      py-6 text-left text-lg font-bold transition-colors
+                      py-6 text-left text-base font-bold transition-colors
+                      md:text-lg
                     `}
                   >
                     {faq.question}

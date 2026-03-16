@@ -345,6 +345,96 @@
   }
 }
 
+/* Hero section animations */
+@keyframes hero-blob-1 {
+  0%,
+  100% {
+    transform: scale(1) translate(0, 0);
+    opacity: 0.1;
+  }
+  50% {
+    transform: scale(1.2) translate(50px, -30px);
+    opacity: 0.2;
+  }
+}
+
+@keyframes hero-blob-2 {
+  0%,
+  100% {
+    transform: scale(1) translate(0, 0);
+    opacity: 0.1;
+  }
+  50% {
+    transform: scale(1.3) translate(-40px, 60px);
+    opacity: 0.2;
+  }
+}
+
+@keyframes btn-shine {
+  0% {
+    transform: translateX(-100%);
+  }
+  30% {
+    transform: translateX(200%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+@keyframes scroll-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(10px);
+    opacity: 1;
+  }
+}
+
+@keyframes scroll-dot {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(16px);
+  }
+}
+
+/* CTA section animations */
+@keyframes cta-blob-1 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(100px, 50px) scale(1.2);
+  }
+}
+
+@keyframes cta-blob-2 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-100px, -50px) scale(1.5);
+  }
+}
+
+/* Marquee section animations */
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
 .animate-float {
   animation: float 3s ease-in-out infinite;
 }

@@ -32,7 +32,12 @@ const howItWorks = [
 
 const HowItWorksSection = () => {
   return (
-    <section className="relative overflow-hidden px-4 py-24">
+    <section
+      className={`
+        relative overflow-hidden px-2 py-8
+        md:px-4 md:py-24
+      `}
+    >
       <div
         className={`
           via-primary/20 absolute top-0 left-0 h-px w-full bg-linear-to-r
@@ -69,14 +74,15 @@ const HowItWorksSection = () => {
             animateBy="words"
             direction="top"
             className={`
-              font-display mb-6 justify-center text-3xl font-extrabold
+              font-display mb-6 justify-center text-2xl font-extrabold
               tracking-tight
               md:text-5xl
             `}
           />
           <p
             className={`
-              text-muted-foreground mx-auto max-w-2xl text-lg leading-relaxed
+              text-muted-foreground mx-auto max-w-2xl text-base leading-relaxed
+              md:text-lg
             `}
           >
             We&apos;ve streamlined the CV building process so you can focus on
@@ -127,9 +133,10 @@ const HowItWorksSection = () => {
 
                 <m.div
                   className={`
-                    text-primary/10 absolute -top-6 -right-6 text-6xl font-black
+                    text-primary/10 absolute -top-6 -right-6 text-4xl font-black
                     transition-colors select-none
                     group-hover:text-primary/20
+                    md:text-6xl
                   `}
                   initial={{ opacity: 0, x: 20 }}
                   whileInView={{ opacity: 1, x: 0 }}
@@ -142,15 +149,18 @@ const HowItWorksSection = () => {
 
               <h3
                 className={`
-                  font-display mb-4 text-2xl font-bold transition-colors
+                  font-display mb-4 text-xl font-bold transition-colors
                   group-hover:text-primary
+                  md:text-2xl
                 `}
               >
                 {item.title}
               </h3>
               <p
                 className={`
-                  text-muted-foreground mx-auto max-w-xs text-lg leading-relaxed
+                  text-muted-foreground mx-auto max-w-xs text-base
+                  leading-relaxed
+                  md:text-lg
                 `}
               >
                 {item.description}

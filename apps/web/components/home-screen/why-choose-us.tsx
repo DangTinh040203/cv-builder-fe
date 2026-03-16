@@ -48,7 +48,12 @@ const whyChooseUs = [
 
 const WhyChooseUsSection = () => {
   return (
-    <section className="relative overflow-hidden px-4 py-24">
+    <section
+      className={`
+        relative overflow-hidden px-2 py-8
+        md:px-4 md:py-24
+      `}
+    >
       <div
         className={`
           via-primary/20 absolute top-0 left-0 h-px w-full bg-linear-to-r
@@ -64,7 +69,10 @@ const WhyChooseUsSection = () => {
 
       <div className="container mx-auto">
         <m.div
-          className="mb-20 text-center"
+          className={`
+            mb-10 text-center
+            lg:mb-20
+          `}
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -91,14 +99,15 @@ const WhyChooseUsSection = () => {
             animateBy="words"
             direction="top"
             className={`
-              font-display mb-6 flex-wrap justify-center text-4xl font-extrabold
+              font-display mb-6 flex-wrap justify-center text-3xl font-extrabold
               tracking-tight
               md:text-5xl
             `}
           />
           <p
             className={`
-              text-muted-foreground mx-auto max-w-2xl text-lg leading-relaxed
+              text-muted-foreground mx-auto max-w-2xl text-base leading-relaxed
+              md:text-lg
             `}
           >
             We combined recruitment expertise with cutting-edge AI to build the
@@ -108,9 +117,9 @@ const WhyChooseUsSection = () => {
 
         <m.div
           className={`
-            grid gap-8
+            grid gap-2
             sm:grid-cols-2
-            lg:grid-cols-3
+            lg:grid-cols-3 lg:gap-8
           `}
           variants={staggerContainer}
           initial="hidden"
@@ -152,7 +161,8 @@ const WhyChooseUsSection = () => {
                   </m.div>
                   <h3
                     className={`
-                      font-display relative z-10 mb-4 text-xl font-bold
+                      font-display relative z-10 mb-4 text-lg font-bold
+                      md:text-xl
                     `}
                   >
                     {item.title}

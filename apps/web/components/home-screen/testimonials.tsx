@@ -37,7 +37,12 @@ const testimonials = [
 
 const TestimonialsSection = () => {
   return (
-    <section className="relative overflow-hidden px-4 py-24">
+    <section
+      className={`
+        relative overflow-hidden px-2 py-8
+        md:px-4 md:py-24
+      `}
+    >
       <div className="container mx-auto">
         <m.div
           className="mb-20 text-center"
@@ -67,14 +72,15 @@ const TestimonialsSection = () => {
             animateBy="words"
             direction="top"
             className={`
-              font-display mb-6 flex-wrap justify-center text-4xl font-extrabold
+              font-display mb-6 flex-wrap justify-center text-3xl font-extrabold
               tracking-tight
               md:text-5xl
             `}
           />
           <p
             className={`
-              text-muted-foreground mx-auto max-w-2xl text-lg leading-relaxed
+              text-muted-foreground mx-auto max-w-2xl text-base leading-relaxed
+              md:text-lg
             `}
           >
             Discover how professionals from top companies are using CVCraft to
@@ -117,16 +123,15 @@ const TestimonialsSection = () => {
                         transition={{ delay: 0.3 + i * 0.1, type: "spring" }}
                       >
                         <Star
-                          className={`
-                            h-5 w-5 fill-yellow-400 text-yellow-400 shadow-sm
-                          `}
+                          className={`h-5 w-5 fill-yellow-400 text-yellow-400`}
                         />
                       </m.div>
                     ))}
                   </div>
                   <p
                     className={`
-                      text-foreground mb-8 text-lg leading-relaxed font-medium
+                      text-foreground mb-8 text-base leading-relaxed font-medium
+                      md:text-lg
                     `}
                   >
                     &quot;{testimonial.content}&quot;
@@ -148,7 +153,12 @@ const TestimonialsSection = () => {
                       {testimonial.image}
                     </m.div>
                     <div>
-                      <div className="text-lg font-bold">
+                      <div
+                        className={`
+                          text-base font-bold
+                          md:text-lg
+                        `}
+                      >
                         {testimonial.name}
                       </div>
                       <div className="text-primary text-sm font-medium">

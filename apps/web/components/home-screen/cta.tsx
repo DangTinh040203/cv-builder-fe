@@ -14,9 +14,10 @@ const CTASection = () => {
         <m.div
           className={`
             from-primary to-primary/50 shadow-primary/20 relative
-            overflow-hidden rounded-[48px] bg-linear-to-br p-12 text-center
+            overflow-hidden rounded-[48px] bg-linear-to-br p-8 text-center
             shadow-2xl
-            md:p-24
+            md:p-12
+            lg:p-24
           `}
           initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -65,15 +66,16 @@ const CTASection = () => {
               direction="top"
               className={`
                 font-display text-primary-foreground mb-8 flex-wrap
-                justify-center text-4xl font-black tracking-tighter
+                justify-center text-3xl font-black tracking-tighter
                 md:text-6xl
                 lg:text-7xl
               `}
             />
             <m.p
               className={`
-                text-primary-foreground/80 mx-auto mb-12 max-w-2xl text-xl
+                text-primary-foreground/80 mx-auto mb-12 max-w-2xl text-base
                 leading-relaxed font-medium
+                md:text-xl
               `}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -101,9 +103,10 @@ const CTASection = () => {
                   <Button
                     size="xl"
                     className={`
-                      text-primary h-16 rounded-full bg-white px-12 text-xl
+                      text-primary h-16 rounded-full bg-white px-12 text-base
                       font-black shadow-2xl transition-all duration-300
                       hover:bg-white/90
+                      md:text-xl
                     `}
                   >
                     Get Started Free
@@ -115,26 +118,6 @@ const CTASection = () => {
           </div>
         </m.div>
       </div>
-      <style jsx>{`
-        @keyframes cta-blob-1 {
-          0%,
-          100% {
-            transform: translate(0, 0) scale(1);
-          }
-          50% {
-            transform: translate(100px, 50px) scale(1.2);
-          }
-        }
-        @keyframes cta-blob-2 {
-          0%,
-          100% {
-            transform: translate(0, 0) scale(1);
-          }
-          50% {
-            transform: translate(-100px, -50px) scale(1.5);
-          }
-        }
-      `}</style>
     </section>
   );
 };

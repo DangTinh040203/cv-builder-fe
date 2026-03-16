@@ -31,7 +31,12 @@ const features = [
 
 const FeaturesSection = () => {
   return (
-    <section className="relative overflow-hidden px-4 py-24">
+    <section
+      className={`
+        relative overflow-hidden px-2 py-8
+        md:px-4 md:py-24
+      `}
+    >
       <div className="container mx-auto">
         <m.div
           className="mb-20 text-center"
@@ -62,14 +67,15 @@ const FeaturesSection = () => {
             animateBy="words"
             direction="top"
             className={`
-              font-display mb-6 flex-wrap justify-center text-4xl font-extrabold
+              font-display mb-6 flex-wrap justify-center text-3xl font-extrabold
               tracking-tight
               md:text-5xl
             `}
           />
           <p
             className={`
-              text-muted-foreground mx-auto max-w-2xl text-lg leading-relaxed
+              text-muted-foreground mx-auto max-w-2xl text-base leading-relaxed
+              md:text-lg
             `}
           >
             From professional templates to AI-powered content generation and
@@ -126,10 +132,20 @@ const FeaturesSection = () => {
                 >
                   <feature.icon className="text-primary-foreground h-8 w-8" />
                 </m.div>
-                <h3 className="font-display mb-4 text-2xl font-bold">
+                <h3
+                  className={`
+                    font-display mb-4 text-xl font-bold
+                    md:text-2xl
+                  `}
+                >
                   {feature.title}
                 </h3>
-                <p className="text-muted-foreground text-lg leading-relaxed">
+                <p
+                  className={`
+                    text-muted-foreground text-base leading-relaxed
+                    md:text-lg
+                  `}
+                >
                   {feature.description}
                 </p>
 
