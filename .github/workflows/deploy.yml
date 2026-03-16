@@ -45,6 +45,8 @@ jobs:
           docker build \
             --build-arg NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}" \
             --build-arg NEXT_PUBLIC_BASE_URL="${{ secrets.NEXT_PUBLIC_BASE_URL }}" \
+            --build-arg NEXT_PUBLIC_CLERK_SIGN_IN_URL="${{ secrets.NEXT_PUBLIC_CLERK_SIGN_IN_URL }}" \
+            --build-arg NEXT_PUBLIC_REDIRECT_URL="${{ secrets.NEXT_PUBLIC_REDIRECT_URL }}" \
             -t $DOCKER_TAG \
             -f docker/Dockerfile .
           docker push $DOCKER_TAG
