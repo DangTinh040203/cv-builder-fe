@@ -231,13 +231,6 @@ const Header = () => {
                             <p className="text-sm leading-none font-medium">
                               {user?.fullName}
                             </p>
-                            <p
-                              className={`
-                                text-muted-foreground text-xs leading-none
-                              `}
-                            >
-                              {user?.primaryEmailAddress?.emailAddress}
-                            </p>
                           </div>
                         </DropdownMenuLabel>
                         <DropdownMenuSeparator />
