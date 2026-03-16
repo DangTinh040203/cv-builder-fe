@@ -9,6 +9,7 @@ export const useTemplate05Style = (templateFormat: Format) => {
     const theme = {
       color: templateFormat.color,
       fontSize: templateFormat.fontSize,
+      fontFamily: templateFormat.fontFamily,
       titleSize: templateFormat.titleSize,
       sectionTitleSize: templateFormat.sectionTitleSize,
       subTitleSize: templateFormat.subTitleSize,
@@ -34,6 +35,7 @@ export const useTemplate05Style = (templateFormat: Format) => {
         lineHeight: theme.lineHeight,
         letterSpacing: theme.letterSpacing,
         fontWeight: fontWeightValue,
+        fontFamily: theme.fontFamily,
         backgroundColor: "#ffffff",
       },
 
