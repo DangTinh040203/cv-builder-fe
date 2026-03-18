@@ -128,7 +128,14 @@ function renderSidebarSection(
           <Text style={styles.sidebarSectionTitle}>Skills</Text>
           <View style={styles.sidebarSeparator} />
           {skills.map((skill) => (
-            <View key={uuid()} style={{ marginBottom: 2 }}>
+            <View
+              key={uuid()}
+              style={{
+                marginBottom: 2,
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
               <Text style={styles.sidebarTextBold}>{skill.label}</Text>
               <Text style={styles.sidebarTextLight}>{skill.value}</Text>
             </View>
@@ -147,7 +154,12 @@ function renderSidebarSection(
           {languages.map((lang) => (
             <View
               key={lang.id}
-              style={{ flexDirection: "row", gap: 6, marginBottom: 2 }}
+              style={{
+                gap: 6,
+                marginBottom: 2,
+                display: "flex",
+                flexDirection: "column",
+              }}
             >
               <Text style={styles.sidebarTextBold}>{lang.name}</Text>
               <Text style={styles.sidebarTextLighter}>
@@ -186,7 +198,14 @@ function renderSidebarSection(
           <Text style={styles.sidebarSectionTitle}>Education</Text>
           <View style={styles.sidebarSeparator} />
           {educations.map((edu) => (
-            <View key={uuid()} style={{ marginBottom: 4 }}>
+            <View
+              key={uuid()}
+              style={{
+                marginBottom: 4,
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
               <Text style={styles.sidebarTextBold}>{edu.school}</Text>
               <Text style={styles.sidebarTextLight}>
                 {edu.major} — {edu.degree}

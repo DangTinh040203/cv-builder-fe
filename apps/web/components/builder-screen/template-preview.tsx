@@ -1,11 +1,11 @@
 "use client";
 
 import { Button } from "@shared/ui/components/button";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 
 import TemplateWrapper from "@/components/templates/template-wrapper";
+import { getAllFontsGoogleUrl } from "@/configs/font.config";
 import { TEMPLATES } from "@/configs/template.config";
-import { useGoogleFont } from "@/hooks/use-google-font";
 import { useSyncResume } from "@/hooks/use-sync-resume";
 import {
   templateConfigSelector,
@@ -22,8 +22,16 @@ const TemplatePreview = () => {
   const { previewMode } = useAppSelector(templateConfigSelector);
   const dispatch = useAppDispatch();
 
-  // Load Google Font for HTML preview
-  useGoogleFont(templateFormat.fontFamily);
+  useEffect(() => {
+    const id = "template-preview-fonts";
+    if (document.getElementById(id)) return;
+
+    const link = document.createElement("link");
+    link.id = id;
+    link.rel = "stylesheet";
+    link.href = getAllFontsGoogleUrl();
+    document.head.appendChild(link);
+  }, []);
 
   const Template = useMemo(() => {
     return TEMPLATES[templateSelected!]?.component;

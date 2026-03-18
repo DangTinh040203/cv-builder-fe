@@ -57,10 +57,10 @@ import {
   RotateCcw,
   Type,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
-import { FONT_OPTIONS } from "@/configs/font.config";
+import { FONT_OPTIONS, getAllFontsGoogleUrl } from "@/configs/font.config";
 import {
   defaultFormat,
   defaultSectionOrder,
@@ -397,9 +397,22 @@ const SectionOrderPanel = ({
   );
 };
 
+const FONT_LINK_ID = "template-preview-fonts";
+
 const TemplateFormat = () => {
   const dispatch = useAppDispatch();
   const format = useAppSelector(templateFormatSelector);
+
+  useEffect(() => {
+    const existing = document.getElementById(FONT_LINK_ID);
+    if (existing) return;
+
+    const link = document.createElement("link");
+    link.id = FONT_LINK_ID;
+    link.rel = "stylesheet";
+    link.href = getAllFontsGoogleUrl();
+    document.head.appendChild(link);
+  }, []);
 
   const updateFormat = (updates: Partial<Format>) => {
     dispatch(updateTemplateConfigFormat(updates));
