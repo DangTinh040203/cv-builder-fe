@@ -1,29 +1,21 @@
 "use client";
 import { useEffect } from "react";
 
-import { getGoogleFontUrl } from "@/configs/font.config";
+import { getLocalFontsCSS } from "@/configs/font.config";
 
 /**
- * Dynamically loads a Google Font by injecting a <link> tag into the <head>.
- * Removes the previous font link when the font changes.
+ * Loads local fonts (from /public/fonts) for the given font family.
+ * Injects a <style> tag with @font-face rules. All fonts are loaded at once
+ * to avoid flicker when switching fonts.
  */
 export const useGoogleFont = (fontFamily: string) => {
   useEffect(() => {
-    const url = getGoogleFontUrl(fontFamily);
-    if (!url) return;
-
     const id = "google-font-template";
-    const existing = document.getElementById(id);
-    if (existing) existing.remove();
+    if (document.getElementById(id)) return;
 
-    const link = document.createElement("link");
-    link.id = id;
-    link.rel = "stylesheet";
-    link.href = url;
-    document.head.appendChild(link);
-
-    return () => {
-      link.remove();
-    };
+    const style = document.createElement("style");
+    style.id = id;
+    style.textContent = getLocalFontsCSS();
+    document.head.appendChild(style);
   }, [fontFamily]);
 };

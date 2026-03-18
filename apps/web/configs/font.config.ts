@@ -105,21 +105,16 @@ export function registerFonts() {
 }
 
 /**
- * Build a Google Fonts URL for loading the font in the HTML preview.
+ * Build @font-face CSS for all local fonts (from /public/fonts).
+ * Use this to inject a <style> tag for the HTML preview and font picker.
  */
-export function getGoogleFontUrl(fontFamily: string): string {
-  const font = FONT_OPTIONS.find((f) => f.value === fontFamily);
-  if (!font) return "";
-  const weights = font.weights.join(";");
-  return `https://fonts.googleapis.com/css2?family=${font.googleFontName}:wght@${weights}&display=swap`;
-}
-
-/**
- * Build a single Google Fonts URL for loading all fonts (e.g. for font picker dropdown).
- */
-export function getAllFontsGoogleUrl(): string {
-  const families = FONT_OPTIONS.map(
-    (f) => `family=${f.googleFontName}:wght@${f.weights.join(";")}`,
-  ).join("&");
-  return `https://fonts.googleapis.com/css2?${families}&display=swap`;
+export function getLocalFontsCSS(): string {
+  return Object.entries(FONT_FILES)
+    .flatMap(([family, fonts]) =>
+      fonts.flatMap((f) => [
+        `@font-face{font-family:"${family}";src:url("${f.src}") format("truetype");font-weight:${f.fontWeight};font-style:normal;font-display:block}`,
+        `@font-face{font-family:"${family}";src:url("${f.src}") format("truetype");font-weight:${f.fontWeight};font-style:italic;font-display:block}`,
+      ]),
+    )
+    .join("");
 }
