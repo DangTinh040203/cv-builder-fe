@@ -103,18 +103,3 @@ export function registerFonts() {
     });
   }
 }
-
-/**
- * Build @font-face CSS for all local fonts (from /public/fonts).
- * Use this to inject a <style> tag for the HTML preview and font picker.
- */
-export function getLocalFontsCSS(): string {
-  return Object.entries(FONT_FILES)
-    .flatMap(([family, fonts]) =>
-      fonts.flatMap((f) => [
-        `@font-face{font-family:"${family}";src:url("${f.src}") format("truetype");font-weight:${f.fontWeight};font-style:normal;font-display:block}`,
-        `@font-face{font-family:"${family}";src:url("${f.src}") format("truetype");font-weight:${f.fontWeight};font-style:italic;font-display:block}`,
-      ]),
-    )
-    .join("");
-}

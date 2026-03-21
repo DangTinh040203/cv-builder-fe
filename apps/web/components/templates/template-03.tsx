@@ -128,14 +128,7 @@ function renderSidebarSection(
           <Text style={styles.sidebarSectionTitle}>Skills</Text>
           <View style={styles.sidebarSeparator} />
           {skills.map((skill) => (
-            <View
-              key={uuid()}
-              style={{
-                marginBottom: 2,
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
+            <View key={uuid()} style={styles.sidebarItemStack}>
               <Text style={styles.sidebarTextBold}>{skill.label}</Text>
               <Text style={styles.sidebarTextLight}>{skill.value}</Text>
             </View>
@@ -152,15 +145,7 @@ function renderSidebarSection(
           <Text style={styles.sidebarSectionTitle}>Languages</Text>
           <View style={styles.sidebarSeparator} />
           {languages.map((lang) => (
-            <View
-              key={lang.id}
-              style={{
-                gap: 6,
-                marginBottom: 2,
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
+            <View key={lang.id} style={styles.sidebarItemStackWithGap}>
               <Text style={styles.sidebarTextBold}>{lang.name}</Text>
               <Text style={styles.sidebarTextLighter}>
                 — {lang.description}
@@ -179,7 +164,7 @@ function renderSidebarSection(
           <Text style={styles.sidebarSectionTitle}>Certifications</Text>
           <View style={styles.sidebarSeparator} />
           {certifications.map((cert) => (
-            <View key={cert.id} style={{ marginBottom: 3 }}>
+            <View key={cert.id} style={styles.sidebarItemCompact}>
               <Text style={styles.sidebarTextBold}>{cert.name}</Text>
               <Text style={styles.sidebarTextSmMuted75}>
                 {cert.issuer} — {formatDate(cert.date)}
@@ -198,14 +183,7 @@ function renderSidebarSection(
           <Text style={styles.sidebarSectionTitle}>Education</Text>
           <View style={styles.sidebarSeparator} />
           {educations.map((edu) => (
-            <View
-              key={uuid()}
-              style={{
-                marginBottom: 4,
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
+            <View key={uuid()} style={styles.sidebarItemStackLg}>
               <Text style={styles.sidebarTextBold}>{edu.school}</Text>
               <Text style={styles.sidebarTextLight}>
                 {edu.major} — {edu.degree}

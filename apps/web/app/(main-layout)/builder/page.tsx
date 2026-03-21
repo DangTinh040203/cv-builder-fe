@@ -8,7 +8,6 @@ import { Loader2 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
 
-import { getLocalFontsCSS } from "@/configs/font.config";
 import EducationForm from "@/components/builder-screen/forms/education-form";
 import ExperienceForm from "@/components/builder-screen/forms/experience-form";
 import ExtraForm from "@/components/builder-screen/forms/extra-form";
@@ -83,15 +82,6 @@ const BuilderScreen = () => {
     };
     fetchResume();
   }, [dispatch, resume, resumeService, user, isLoaded]);
-
-  useEffect(() => {
-    const id = "builder-fonts";
-    if (document.getElementById(id)) return;
-    const style = document.createElement("style");
-    style.id = id;
-    style.textContent = getLocalFontsCSS();
-    document.head.appendChild(style);
-  }, []);
 
   useEffect(() => {
     const step = searchParams.get("step") as Section;
