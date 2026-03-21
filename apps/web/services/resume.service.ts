@@ -35,27 +35,6 @@ export class ResumeService extends HttpService {
     return data;
   }
 
-  async matchResume(
-    resumeId: string,
-    jobDescription?: string,
-    file?: File,
-  ): Promise<MatchResult> {
-    const formData = new FormData();
-    formData.append("resumeId", resumeId);
-
-    if (file) {
-      formData.append("file", file);
-    } else if (jobDescription) {
-      formData.append("jobDescription", jobDescription);
-    }
-
-    const { data } = await this.post<FormData, MatchResult>(
-      "/resumes/match",
-      formData,
-    );
-    return data;
-  }
-
   async generateEmail(
     resumeId: string,
     jobDescription: string,
@@ -74,6 +53,27 @@ export class ResumeService extends HttpService {
     const { data } = await this.post<typeof payload, GenerateEmailResponse>(
       "/resumes/generate-email",
       payload,
+    );
+    return data;
+  }
+
+  async matchResume(
+    resumeId: string,
+    jobDescription?: string,
+    file?: File,
+  ): Promise<MatchResult> {
+    const formData = new FormData();
+    formData.append("resumeId", resumeId);
+
+    if (file) {
+      formData.append("file", file);
+    } else if (jobDescription) {
+      formData.append("jobDescription", jobDescription);
+    }
+
+    const { data } = await this.post<FormData, MatchResult>(
+      "/resumes/match",
+      formData,
     );
     return data;
   }

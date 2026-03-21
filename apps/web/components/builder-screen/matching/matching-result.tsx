@@ -1,3 +1,10 @@
+"use client";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@shared/ui/components/accordion";
 import { Badge } from "@shared/ui/components/badge";
 import { Button } from "@shared/ui/components/button";
 import { Progress } from "@shared/ui/components/progress";
@@ -8,15 +15,17 @@ import {
   AlertCircle,
   Check,
   CheckCircle2,
-  ClipboardCopy,
   Lightbulb,
   Loader2,
   Mail,
+  RefreshCw,
   Search,
+  Sparkles,
   TrendingUp,
 } from "lucide-react";
 import React from "react";
 
+import { EmailPreviewDialog } from "@/components/builder-screen/matching/email-preview-dialog";
 import {
   getScoreColor,
   ScoreGauge,
@@ -44,8 +53,11 @@ export const MatchingResult = ({
   resumeId,
 }: MatchingResultProps) => {
   const [isGenerating, setIsGenerating] = React.useState(false);
+  const [isCopied, setIsCopied] = React.useState(false);
+  const [isSubjectCopied, setIsSubjectCopied] = React.useState(false);
   const [emailResult, setEmailResult] =
     React.useState<GenerateEmailResponse | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
 
   const resumeService = useService(ResumeService);
 
@@ -61,6 +73,7 @@ export const MatchingResult = ({
   const overallStatus = getScoreLabel(matchResult.overallScore);
 
   const handleGenerateEmail = async () => {
+    setIsDialogOpen(false);
     setIsGenerating(true);
     try {
       const result = await resumeService.generateEmail(
@@ -69,6 +82,7 @@ export const MatchingResult = ({
         matchResult,
       );
       setEmailResult(result);
+      setIsDialogOpen(true);
     } catch (e) {
       if (e instanceof AxiosError) {
         const error = e.response?.data as ErrorResponse;
@@ -84,21 +98,23 @@ export const MatchingResult = ({
   const handleCopyEmail = async () => {
     if (!emailResult) return;
 
-    const fullEmail = `Subject: ${emailResult.subject}\n\n${emailResult.body}`;
     try {
-      await navigator.clipboard.writeText(fullEmail);
-      toast.success("Email copied to clipboard!");
+      await navigator.clipboard.writeText(emailResult.body);
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
     } catch {
       toast.error("Failed to copy. Please select and copy manually.");
     }
   };
 
-  const handleCopyBody = async () => {
+  const handleCopySubject = async () => {
     if (!emailResult) return;
 
     try {
-      await navigator.clipboard.writeText(emailResult.body);
-      toast.success("Email body copied to clipboard!");
+      await navigator.clipboard.writeText(emailResult.subject);
+      setIsSubjectCopied(true);
+      toast.success("Subject copied to clipboard!");
+      setTimeout(() => setIsSubjectCopied(false), 2000);
     } catch {
       toast.error("Failed to copy. Please select and copy manually.");
     }
@@ -147,39 +163,65 @@ export const MatchingResult = ({
             </h4>
           </div>
 
-          <div className="space-y-6">
+          <Accordion type="single" collapsible className="w-full space-y-4">
             {matchResult.criteria.map((criterion) => {
               const colors = getScoreColor(criterion.score);
               return (
-                <div key={criterion.name} className="space-y-2.5">
-                  <div className="flex w-full items-center justify-between">
-                    <span className="text-foreground text-sm font-bold">
-                      {criterion.name}
-                    </span>
-                    <div className="flex items-center gap-3">
-                      <span
-                        className={`text-muted-foreground text-xs font-medium`}
-                      >
-                        wt. {criterion.weight}%
+                <AccordionItem
+                  key={criterion.name}
+                  value={criterion.name}
+                  className={`
+                    border-border/50 bg-background/50 rounded-xl border px-2
+                    shadow-sm
+                  `}
+                >
+                  <AccordionTrigger
+                    className={`
+                      px-3 py-4
+                      hover:no-underline
+                    `}
+                  >
+                    <div
+                      className={`flex w-full items-center justify-between pr-4`}
+                    >
+                      <span className="text-foreground text-[15px] font-bold">
+                        {criterion.name}
                       </span>
-                      <span
+                      <div className="flex items-center gap-3">
+                        <span
+                          className={`
+                            text-muted-foreground text-[13px] font-medium
+                          `}
+                        >
+                          wt. {criterion.weight}%
+                        </span>
+                        <span
+                          className={`
+                            text-sm font-bold
+                            ${colors.text}
+                          `}
+                        >
+                          {criterion.score}%
+                        </span>
+                      </div>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="px-3 pt-1 pb-5">
+                    <div className="space-y-4">
+                      <Progress value={criterion.score} className="h-2" />
+                      <p
                         className={`
-                          text-sm font-bold
-                          ${colors.text}
+                          text-muted-foreground text-sm leading-relaxed
                         `}
                       >
-                        {criterion.score}%
-                      </span>
+                        {criterion.explanation}
+                      </p>
                     </div>
-                  </div>
-                  <Progress value={criterion.score} className="h-2" />
-                  <p className="text-muted-foreground text-sm leading-relaxed">
-                    {criterion.explanation}
-                  </p>
-                </div>
+                  </AccordionContent>
+                </AccordionItem>
               );
             })}
-          </div>
+          </Accordion>
         </div>
 
         {/* 2-Column Grid: Strengths & Missing Keywords */}
@@ -328,137 +370,97 @@ export const MatchingResult = ({
           </div>
         )}
 
-        {/* Generated Email Result */}
-        {emailResult && (
-          <div
-            className={`
-              rounded-xl border border-blue-200/60 bg-blue-50/50 p-5
-              dark:border-blue-900/50 dark:bg-blue-950/20
-            `}
-          >
-            <div className="flex items-center justify-between pb-4">
-              <div className="flex items-center gap-2">
-                <Mail
-                  size={18}
-                  className={`
-                    text-blue-600
-                    dark:text-blue-400
-                  `}
-                />
-                <h4
-                  className={`
-                    text-xs font-bold tracking-wider text-blue-700 uppercase
-                    dark:text-blue-400
-                  `}
-                >
-                  Generated Application Email
-                </h4>
-              </div>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleCopyEmail}
-                className="h-8 gap-1.5 text-xs"
-              >
-                <ClipboardCopy size={14} />
-                Copy All
-              </Button>
-            </div>
-
-            <div className="space-y-3">
-              <div>
-                <p
-                  className={`
-                    mb-1 text-xs font-semibold text-blue-600 uppercase
-                    dark:text-blue-400
-                  `}
-                >
-                  Subject
-                </p>
-                <p
-                  className={`
-                    text-sm font-medium text-blue-900
-                    dark:text-blue-100
-                  `}
-                >
-                  {emailResult.subject}
-                </p>
-              </div>
-
-              <div
-                className={`
-                  border-t border-blue-200/60
-                  dark:border-blue-800/40
-                `}
-              />
-
-              <div>
-                <div className="mb-1 flex items-center justify-between">
-                  <p
-                    className={`
-                      text-xs font-semibold text-blue-600 uppercase
-                      dark:text-blue-400
-                    `}
-                  >
-                    Body
-                  </p>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleCopyBody}
-                    className="h-6 gap-1 px-2 text-[10px]"
-                  >
-                    <ClipboardCopy size={12} />
-                    Copy Body
-                  </Button>
-                </div>
-                <div
-                  className={`
-                    rounded-lg bg-white/60 p-4 text-sm leading-relaxed
-                    whitespace-pre-wrap text-blue-900
-                    dark:bg-blue-950/30 dark:text-blue-100
-                  `}
-                >
-                  {emailResult.body}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+        <EmailPreviewDialog
+          isOpen={isDialogOpen}
+          onOpenChange={setIsDialogOpen}
+          emailResult={emailResult}
+          isGenerating={isGenerating}
+          onRegenerate={handleGenerateEmail}
+          onCopy={handleCopyEmail}
+          isCopied={isCopied}
+          onCopySubject={handleCopySubject}
+          isSubjectCopied={isSubjectCopied}
+        />
 
         {/* Action Buttons */}
-        <div className="flex gap-3 pt-2">
+        <div
+          className={`
+            flex flex-col gap-3 pt-2
+            sm:flex-row
+          `}
+        >
           <Button
             variant="outline"
             className={`
-              text-foreground flex-1 py-6 shadow-sm
-              hover:bg-muted/50
+              text-foreground group h-12 flex-1 gap-2.5 rounded-xl border
+              shadow-sm transition-all duration-200
+              hover:border-border hover:bg-muted/50 hover:shadow-md
             `}
             onClick={onReset}
           >
-            <Search size={18} className="mr-2" />
-            Analyze Another JD
+            <Search
+              size={17}
+              className={`
+                text-muted-foreground transition-colors
+                group-hover:text-foreground
+              `}
+            />
+            <span className="text-sm font-medium">Analyze Another JD</span>
           </Button>
 
-          {!emailResult && (
-            <Button
-              className={`flex-1 gap-2 py-6 shadow-sm`}
-              onClick={handleGenerateEmail}
-              disabled={isGenerating || matchResult.overallScore === 0}
-            >
-              {isGenerating ? (
-                <>
-                  <Loader2 size={18} className="animate-spin" />
-                  Generating...
-                </>
-              ) : (
-                <>
-                  <Mail size={18} />
+          <Button
+            className={`
+              group relative h-12 flex-1 gap-2.5 overflow-hidden rounded-xl
+              shadow-md transition-all duration-200
+              hover:shadow-lg
+              active:scale-[0.98]
+            `}
+            onClick={() => {
+              if (emailResult) {
+                setIsDialogOpen(true);
+              } else {
+                handleGenerateEmail();
+              }
+            }}
+            disabled={isGenerating || matchResult.overallScore === 0}
+          >
+            {/* Shimmer effect on initial state */}
+            {!emailResult && !isGenerating && (
+              <span
+                className={`
+                  pointer-events-none absolute inset-0 -translate-x-full
+                  animate-[btn-shine_3s_ease-in-out_infinite] bg-linear-to-r
+                  from-transparent via-white/15 to-transparent
+                `}
+              />
+            )}
+            {isGenerating ? (
+              <>
+                <Loader2 size={17} className="animate-spin" />
+                <span className="text-sm font-medium">Generating...</span>
+              </>
+            ) : emailResult ? (
+              <>
+                <Mail
+                  size={17}
+                  className={`
+                    mt-0.5 transition-transform
+                    group-hover:translate-x-0.5 group-hover:-translate-y-0.5
+                  `}
+                />
+                <span className="text-sm font-medium">
+                  View Application Email
+                </span>
+              </>
+            ) : (
+              <>
+                <Sparkles size={17} />
+                <span className="text-sm font-medium">
                   Generate Application Email
-                </>
-              )}
-            </Button>
-          )}
+                </span>
+              </>
+            )}
+          </Button>
         </div>
       </div>
     </ScrollArea>
