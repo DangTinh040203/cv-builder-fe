@@ -116,6 +116,29 @@ export const useTemplate03Style = (templateFormat: Format) => {
         opacity: 0.75,
       },
 
+      sidebarItemStack: {
+        marginBottom: 2,
+        display: "flex",
+        flexDirection: "column",
+      },
+
+      sidebarItemStackWithGap: {
+        gap: 6,
+        marginBottom: 2,
+        display: "flex",
+        flexDirection: "column",
+      },
+
+      sidebarItemStackLg: {
+        marginBottom: 4,
+        display: "flex",
+        flexDirection: "column",
+      },
+
+      sidebarItemCompact: {
+        marginBottom: 3,
+      },
+
       // ── Main content (right column) ──
       main: {
         flex: 1,
