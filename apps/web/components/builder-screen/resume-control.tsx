@@ -37,10 +37,9 @@ import { type ErrorResponse } from "@/types/error.response";
 import { toastErrorMessage } from "@/utils/toast-error-message.util";
 
 const ResumeControl = () => {
-  const { resume } = useSyncResume();
+  const { resume, sync, isSyncing } = useSyncResume();
   const { previewMode } = useAppSelector(templateConfigSelector);
   const dispatch = useAppDispatch();
-  const { sync, isSyncing } = useSyncResume();
   const resumeService = useService(ResumeService);
   const parseFileInputRef = React.useRef<HTMLInputElement>(null);
   const [isParsing, setIsParsing] = React.useState(false);

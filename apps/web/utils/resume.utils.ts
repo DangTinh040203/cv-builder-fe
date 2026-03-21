@@ -28,8 +28,23 @@ function toISOSafe(value: string | null | undefined): string | null {
 }
 
 /**
+ * Deduplicates an array by a key function.
+ * Keeps only the first occurrence of each unique key.
+ */
+function dedup<T>(items: T[], keyFn: (item: T) => string): T[] {
+  const seen = new Set<string>();
+  return items.filter((item) => {
+    const key = keyFn(item);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+/**
  * Converts Redux resume state to UpdateResumeDto for backend sync.
  * Strips out id and resumeId from relation arrays.
+ * Deduplicates all relation arrays to prevent corrupt data from propagating.
  */
 export function resumeToUpdateDto(resume: Resume): UpdateResumeDto {
   return {
@@ -37,72 +52,89 @@ export function resumeToUpdateDto(resume: Resume): UpdateResumeDto {
     subTitle: resume.subTitle,
     overview: resume.overview,
     avatar: resume.avatar,
-    // Filter out empty information items
-    information: resume.information
-      .filter((item) => item.label.trim() && item.value.trim())
-      .map(({ label, value }) => ({
-        label,
-        value,
-      })),
-    educations: resume.educations
-      .filter((edu) => edu.school.trim() || edu.degree.trim())
-      .map(({ school, degree, major, startDate, endDate }) => ({
-        school,
-        degree,
-        major,
-        startDate: toISOSafe(startDate) ?? startDate,
-        endDate: toISOSafe(endDate),
-      })),
-    skills: resume.skills
-      .filter((skill) => skill.label.trim() || skill.value.trim())
-      .map(({ label, value }) => ({
-        label,
-        value,
-      })),
-    workExperiences: resume.workExperiences
-      .filter((exp) => exp.company.trim() || exp.position.trim())
-      .map(({ company, position, description, startDate, endDate }) => ({
-        company,
-        position,
-        description,
-        startDate: toISOSafe(startDate) ?? startDate,
-        endDate: toISOSafe(endDate),
-      })),
-    projects: resume.projects
-      .filter((proj) => proj.title.trim() || proj.details.trim())
-      .map(
-        ({
-          title,
-          subTitle,
-          details,
-          technologies,
-          position,
-          responsibilities,
-          domain,
-          demo,
-        }) => ({
-          title,
-          subTitle,
-          details,
-          technologies,
-          position,
-          responsibilities,
-          domain,
-          demo,
-        }),
+    // Filter out empty information items + deduplicate by label+value
+    information: dedup(
+      resume.information.filter(
+        (item) => item.label.trim() && item.value.trim(),
       ),
-    certifications: resume.certifications
-      .filter((cert) => cert.name.trim() || cert.issuer.trim())
-      .map(({ name, issuer, date }) => ({
-        name,
-        issuer,
-        date: toISOSafe(date) ?? new Date().toISOString(),
-      })),
-    languages: resume.languages
-      .filter((lang) => lang.name.trim() || lang.description.trim())
-      .map(({ name, description }) => ({
-        name,
-        description,
-      })),
+      (item) => `${item.label}::${item.value}`,
+    ).map(({ label, value }) => ({
+      label,
+      value,
+    })),
+    educations: dedup(
+      resume.educations.filter((edu) => edu.school.trim() || edu.degree.trim()),
+      (edu) => `${edu.school}::${edu.degree}::${edu.major}::${edu.startDate}`,
+    ).map(({ school, degree, major, startDate, endDate }) => ({
+      school,
+      degree,
+      major,
+      startDate: toISOSafe(startDate) ?? startDate,
+      endDate: toISOSafe(endDate),
+    })),
+    skills: dedup(
+      resume.skills.filter((skill) => skill.label.trim() || skill.value.trim()),
+      (skill) => `${skill.label}::${skill.value}`,
+    ).map(({ label, value }) => ({
+      label,
+      value,
+    })),
+    workExperiences: dedup(
+      resume.workExperiences.filter(
+        (exp) => exp.company.trim() || exp.position.trim(),
+      ),
+      (exp) => `${exp.company}::${exp.position}::${exp.startDate}`,
+    ).map(({ company, position, description, startDate, endDate }) => ({
+      company,
+      position,
+      description,
+      startDate: toISOSafe(startDate) ?? startDate,
+      endDate: toISOSafe(endDate),
+    })),
+    projects: dedup(
+      resume.projects.filter(
+        (proj) => proj.title.trim() || proj.details.trim(),
+      ),
+      (proj) => `${proj.title}::${proj.subTitle}::${proj.domain}`,
+    ).map(
+      ({
+        title,
+        subTitle,
+        details,
+        technologies,
+        position,
+        responsibilities,
+        domain,
+        demo,
+      }) => ({
+        title,
+        subTitle,
+        details,
+        technologies: technologies ?? "",
+        position,
+        responsibilities,
+        domain,
+        demo,
+      }),
+    ),
+    certifications: dedup(
+      resume.certifications.filter(
+        (cert) => cert.name.trim() || cert.issuer.trim(),
+      ),
+      (cert) => `${cert.name}::${cert.issuer}::${cert.date}`,
+    ).map(({ name, issuer, date }) => ({
+      name,
+      issuer,
+      date: toISOSafe(date) ?? new Date().toISOString(),
+    })),
+    languages: dedup(
+      resume.languages.filter(
+        (lang) => lang.name.trim() || lang.description.trim(),
+      ),
+      (lang) => `${lang.name}::${lang.description}`,
+    ).map(({ name, description }) => ({
+      name,
+      description,
+    })),
   };
 }

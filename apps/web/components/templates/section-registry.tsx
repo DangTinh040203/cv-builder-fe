@@ -25,10 +25,6 @@ export interface SectionRendererProps {
 
 type SectionRenderer = (props: SectionRendererProps) => React.ReactNode | null;
 
-// ──────────────────────────────────────────────
-// Section Renderers
-// ──────────────────────────────────────────────
-
 function renderPersonalSection({
   resume,
   styles,
@@ -259,7 +255,10 @@ function renderProjectsSection({
               </TableRow>
 
               <TableRow label="Responsibilities">
-                <HtmlToPdf style={styles.text} content={project.details} />
+                <HtmlToPdf
+                  style={styles.text}
+                  content={project.responsibilities}
+                />
               </TableRow>
 
               <TableRow label="Technologies">

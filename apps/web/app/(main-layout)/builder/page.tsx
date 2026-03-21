@@ -6,7 +6,7 @@ import { cn } from "@shared/ui/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 
 import EducationForm from "@/components/builder-screen/forms/education-form";
 import ExperienceForm from "@/components/builder-screen/forms/experience-form";
@@ -44,7 +44,25 @@ const BuilderScreen = () => {
       : Section.Personal,
   );
 
-  const { resume } = useSyncResume();
+  const { resume, sync } = useSyncResume();
+
+  // Ctrl+S / Cmd+S global save shortcut
+  const syncRef = useRef(sync);
+  useEffect(() => {
+    syncRef.current = sync;
+  }, [sync]);
+
+  const handleSaveShortcut = useCallback((e: KeyboardEvent) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === "s") {
+      e.preventDefault();
+      syncRef.current();
+    }
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleSaveShortcut);
+    return () => window.removeEventListener("keydown", handleSaveShortcut);
+  }, [handleSaveShortcut]);
   const { previewMode } = useAppSelector(templateConfigSelector);
   const templateSelected = useAppSelector(templateSelectedSelector);
 
