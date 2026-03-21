@@ -116,7 +116,12 @@ const MatchingDialog = () => {
         {isAnalyzing ? (
           <MatchingLoading />
         ) : matchResult ? (
-          <MatchingResult matchResult={matchResult} onReset={handleReset} />
+          <MatchingResult
+            matchResult={matchResult}
+            onReset={handleReset}
+            jdText={jdText}
+            resumeId={resume?.id ?? ""}
+          />
         ) : (
           <MatchingForm
             jdText={jdText}

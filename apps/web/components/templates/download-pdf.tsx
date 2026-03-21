@@ -76,8 +76,7 @@ const DownloadPdf: React.FC<DownloadPdfProps> = ({ resume }) => {
         link.click();
 
         URL.revokeObjectURL(blobUrl);
-      } catch (error) {
-        console.error("PDF generation error:", error);
+      } catch {
         toast.error("Failed to download PDF");
       } finally {
         setHtml(true);

@@ -2,11 +2,16 @@ import { Badge } from "@shared/ui/components/badge";
 import { Button } from "@shared/ui/components/button";
 import { Progress } from "@shared/ui/components/progress";
 import { ScrollArea } from "@shared/ui/components/scroll-area";
+import { toast } from "@shared/ui/components/sonner";
+import { AxiosError } from "axios";
 import {
   AlertCircle,
   Check,
   CheckCircle2,
+  ClipboardCopy,
   Lightbulb,
+  Loader2,
+  Mail,
   Search,
   TrendingUp,
 } from "lucide-react";
@@ -16,17 +21,34 @@ import {
   getScoreColor,
   ScoreGauge,
 } from "@/components/builder-screen/score-gauge";
-import { type MatchResult } from "@/types/resume.type";
+import { useService } from "@/hooks/use-http";
+import { ResumeService } from "@/services/resume.service";
+import { type ErrorResponse } from "@/types/error.response";
+import {
+  type GenerateEmailResponse,
+  type MatchResult,
+} from "@/types/resume.type";
+import { toastErrorMessage } from "@/utils/toast-error-message.util";
 
 interface MatchingResultProps {
   matchResult: MatchResult;
   onReset: () => void;
+  jdText: string;
+  resumeId: string;
 }
 
 export const MatchingResult = ({
   matchResult,
   onReset,
+  jdText,
+  resumeId,
 }: MatchingResultProps) => {
+  const [isGenerating, setIsGenerating] = React.useState(false);
+  const [emailResult, setEmailResult] =
+    React.useState<GenerateEmailResponse | null>(null);
+
+  const resumeService = useService(ResumeService);
+
   const getScoreLabel = (score: number) => {
     if (score >= 80) {
       return { label: "Excellent Match", color: "text-green-500" };
@@ -37,6 +59,50 @@ export const MatchingResult = ({
   };
 
   const overallStatus = getScoreLabel(matchResult.overallScore);
+
+  const handleGenerateEmail = async () => {
+    setIsGenerating(true);
+    try {
+      const result = await resumeService.generateEmail(
+        resumeId,
+        jdText,
+        matchResult,
+      );
+      setEmailResult(result);
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        const error = e.response?.data as ErrorResponse;
+        toastErrorMessage(error.message);
+      } else {
+        toast.error("Failed to generate email. Please try again.");
+      }
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handleCopyEmail = async () => {
+    if (!emailResult) return;
+
+    const fullEmail = `Subject: ${emailResult.subject}\n\n${emailResult.body}`;
+    try {
+      await navigator.clipboard.writeText(fullEmail);
+      toast.success("Email copied to clipboard!");
+    } catch {
+      toast.error("Failed to copy. Please select and copy manually.");
+    }
+  };
+
+  const handleCopyBody = async () => {
+    if (!emailResult) return;
+
+    try {
+      await navigator.clipboard.writeText(emailResult.body);
+      toast.success("Email body copied to clipboard!");
+    } catch {
+      toast.error("Failed to copy. Please select and copy manually.");
+    }
+  };
 
   return (
     <ScrollArea className="scrollbar-thin max-h-[80vh] pr-4">
@@ -262,12 +328,110 @@ export const MatchingResult = ({
           </div>
         )}
 
-        {/* Analyze Again Action */}
-        <div className="pt-2">
+        {/* Generated Email Result */}
+        {emailResult && (
+          <div
+            className={`
+              rounded-xl border border-blue-200/60 bg-blue-50/50 p-5
+              dark:border-blue-900/50 dark:bg-blue-950/20
+            `}
+          >
+            <div className="flex items-center justify-between pb-4">
+              <div className="flex items-center gap-2">
+                <Mail
+                  size={18}
+                  className={`
+                    text-blue-600
+                    dark:text-blue-400
+                  `}
+                />
+                <h4
+                  className={`
+                    text-xs font-bold tracking-wider text-blue-700 uppercase
+                    dark:text-blue-400
+                  `}
+                >
+                  Generated Application Email
+                </h4>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleCopyEmail}
+                className="h-8 gap-1.5 text-xs"
+              >
+                <ClipboardCopy size={14} />
+                Copy All
+              </Button>
+            </div>
+
+            <div className="space-y-3">
+              <div>
+                <p
+                  className={`
+                    mb-1 text-xs font-semibold text-blue-600 uppercase
+                    dark:text-blue-400
+                  `}
+                >
+                  Subject
+                </p>
+                <p
+                  className={`
+                    text-sm font-medium text-blue-900
+                    dark:text-blue-100
+                  `}
+                >
+                  {emailResult.subject}
+                </p>
+              </div>
+
+              <div
+                className={`
+                  border-t border-blue-200/60
+                  dark:border-blue-800/40
+                `}
+              />
+
+              <div>
+                <div className="mb-1 flex items-center justify-between">
+                  <p
+                    className={`
+                      text-xs font-semibold text-blue-600 uppercase
+                      dark:text-blue-400
+                    `}
+                  >
+                    Body
+                  </p>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleCopyBody}
+                    className="h-6 gap-1 px-2 text-[10px]"
+                  >
+                    <ClipboardCopy size={12} />
+                    Copy Body
+                  </Button>
+                </div>
+                <div
+                  className={`
+                    rounded-lg bg-white/60 p-4 text-sm leading-relaxed
+                    whitespace-pre-wrap text-blue-900
+                    dark:bg-blue-950/30 dark:text-blue-100
+                  `}
+                >
+                  {emailResult.body}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Action Buttons */}
+        <div className="flex gap-3 pt-2">
           <Button
             variant="outline"
             className={`
-              text-foreground w-full py-6 shadow-sm
+              text-foreground flex-1 py-6 shadow-sm
               hover:bg-muted/50
             `}
             onClick={onReset}
@@ -275,6 +439,26 @@ export const MatchingResult = ({
             <Search size={18} className="mr-2" />
             Analyze Another JD
           </Button>
+
+          {!emailResult && (
+            <Button
+              className={`flex-1 gap-2 py-6 shadow-sm`}
+              onClick={handleGenerateEmail}
+              disabled={isGenerating || matchResult.overallScore === 0}
+            >
+              {isGenerating ? (
+                <>
+                  <Loader2 size={18} className="animate-spin" />
+                  Generating...
+                </>
+              ) : (
+                <>
+                  <Mail size={18} />
+                  Generate Application Email
+                </>
+              )}
+            </Button>
+          )}
         </div>
       </div>
     </ScrollArea>

@@ -129,3 +129,8 @@ export interface MatchResult {
   strengths: string[];
   suggestions: string[];
 }
+
+export interface GenerateEmailResponse {
+  subject: string;
+  body: string;
+}

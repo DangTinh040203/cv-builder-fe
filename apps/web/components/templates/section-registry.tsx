@@ -39,7 +39,7 @@ function renderPersonalSection({
   return (
     <React.Fragment key="personal">
       {/* HEADER */}
-      <View style={styles.col}>
+      <View style={{ ...styles.col, gap: 4 }}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.subTitle}>{subTitle}</Text>
       </View>

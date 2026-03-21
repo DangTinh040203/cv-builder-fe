@@ -1,5 +1,6 @@
 import { HttpService, type HttpServiceOptions } from "@/services/http.service";
 import {
+  type GenerateEmailResponse,
   type MatchResult,
   type ParseResumeResponse,
   type Resume,
@@ -51,6 +52,28 @@ export class ResumeService extends HttpService {
     const { data } = await this.post<FormData, MatchResult>(
       "/resumes/match",
       formData,
+    );
+    return data;
+  }
+
+  async generateEmail(
+    resumeId: string,
+    jobDescription: string,
+    matchResult: MatchResult,
+  ): Promise<GenerateEmailResponse> {
+    const payload = {
+      resumeId,
+      jobDescription,
+      matchContext: {
+        strengths: matchResult.strengths,
+        suggestions: matchResult.suggestions,
+        overallScore: matchResult.overallScore,
+      },
+    };
+
+    const { data } = await this.post<typeof payload, GenerateEmailResponse>(
+      "/resumes/generate-email",
+      payload,
     );
     return data;
   }

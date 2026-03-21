@@ -140,6 +140,7 @@ export const useTemplateStyle = (templateFormat: Format) => {
       },
 
       col: {
+        display: "flex",
         flexDirection: "column",
       },
 

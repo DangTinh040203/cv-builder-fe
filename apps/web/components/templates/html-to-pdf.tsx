@@ -50,7 +50,7 @@ const HtmlToPdf = ({ content = "", style = {} }: HtmlToPdfProps) => {
 
   // Reset default browser styles that react-pdf-html might apply
   const resetStylesheet = {
-    p: { margin: 0, padding: 0 },
+    p: { margin: 0, padding: 0, lineHeight: 1 },
     h1: { margin: 0, padding: 0 },
     h2: { margin: 0, padding: 0 },
     h3: { margin: 0, padding: 0 },
@@ -60,8 +60,8 @@ const HtmlToPdf = ({ content = "", style = {} }: HtmlToPdfProps) => {
     ul: { margin: 0, padding: 0 },
     ol: { margin: 0, padding: 0 },
     li: { margin: 0, padding: 0 },
-    div: { margin: 0, padding: 0 },
-    body: { margin: 0, padding: 0 },
+    div: { margin: 0, padding: 0, lineHeight: 1 },
+    body: { margin: 0, padding: 0, lineHeight: 1 },
   };
 
   return (
