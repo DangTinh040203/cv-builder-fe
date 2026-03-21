@@ -33,6 +33,12 @@ export const FONT_OPTIONS: FontOption[] = [
     googleFontName: "Lato",
     weights: [400, 700],
   },
+  {
+    value: "Lobster Two",
+    label: "Lobster Two",
+    googleFontName: "Lobster+Two",
+    weights: [400, 500, 700],
+  },
 ];
 
 interface FontFile {
@@ -65,6 +71,12 @@ const FONT_FILES: Record<string, FontFile[]> = {
     { src: "/fonts/lato/Lato-Bold.ttf", fontWeight: 600 },
     { src: "/fonts/lato/Lato-Bold.ttf", fontWeight: 700 },
   ],
+  "Lobster Two": [
+    { src: "/fonts/lobster-two/LobsterTwo-Regular.ttf", fontWeight: 400 },
+    { src: "/fonts/lobster-two/LobsterTwo-Regular.ttf", fontWeight: 500 },
+    { src: "/fonts/lobster-two/LobsterTwo-Bold.ttf", fontWeight: 600 },
+    { src: "/fonts/lobster-two/LobsterTwo-Bold.ttf", fontWeight: 700 },
+  ],
 };
 
 let fontsRegistered = false;
@@ -90,14 +102,4 @@ export function registerFonts() {
       ]),
     });
   }
-}
-
-/**
- * Build a Google Fonts URL for loading the font in the HTML preview.
- */
-export function getGoogleFontUrl(fontFamily: string): string {
-  const font = FONT_OPTIONS.find((f) => f.value === fontFamily);
-  if (!font) return "";
-  const weights = font.weights.join(";");
-  return `https://fonts.googleapis.com/css2?family=${font.googleFontName}:wght@${weights}&display=swap`;
 }

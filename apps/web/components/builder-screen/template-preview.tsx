@@ -5,7 +5,6 @@ import React, { useMemo } from "react";
 
 import TemplateWrapper from "@/components/templates/template-wrapper";
 import { TEMPLATES } from "@/configs/template.config";
-import { useGoogleFont } from "@/hooks/use-google-font";
 import { useSyncResume } from "@/hooks/use-sync-resume";
 import {
   templateConfigSelector,
@@ -21,9 +20,6 @@ const TemplatePreview = () => {
   const { resume } = useSyncResume();
   const { previewMode } = useAppSelector(templateConfigSelector);
   const dispatch = useAppDispatch();
-
-  // Load Google Font for HTML preview
-  useGoogleFont(templateFormat.fontFamily);
 
   const Template = useMemo(() => {
     return TEMPLATES[templateSelected!]?.component;
