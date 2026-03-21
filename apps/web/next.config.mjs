@@ -4,18 +4,19 @@ const nextConfig = {
   transpilePackages: ["@shared/ui"],
   serverExternalPackages: ["@react-pdf/renderer", "@rawwee/react-pdf-html"],
 
-  // Optimize package imports - tree shake heavy libraries
-  optimizePackageImports: [
-    "lucide-react",
-    "framer-motion",
-    "@clerk/nextjs",
-    "react-hook-form",
-    "@hookform/resolvers",
-    "@reduxjs/toolkit",
-    "react-redux",
-    "zod",
-    "@shared/ui",
-  ],
+  experimental: {
+    optimizePackageImports: [
+      "lucide-react",
+      "framer-motion",
+      "@clerk/nextjs",
+      "react-hook-form",
+      "@hookform/resolvers",
+      "@reduxjs/toolkit",
+      "react-redux",
+      "zod",
+      "@shared/ui",
+    ],
+  },
 
   images: {
     remotePatterns: [
@@ -54,9 +55,6 @@ const nextConfig = {
     ];
   },
 
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   typescript: {
     ignoreBuildErrors: true,
   },
