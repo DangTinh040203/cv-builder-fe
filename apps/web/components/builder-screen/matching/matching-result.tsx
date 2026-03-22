@@ -84,6 +84,7 @@ export const MatchingResult = ({
       setEmailResult(result);
       setIsDialogOpen(true);
     } catch (e) {
+      console.log(e)
       if (e instanceof AxiosError) {
         const error = e.response?.data as ErrorResponse;
         toastErrorMessage(error.message);

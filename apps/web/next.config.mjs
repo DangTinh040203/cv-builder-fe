@@ -4,17 +4,19 @@ const nextConfig = {
   transpilePackages: ["@shared/ui"],
   serverExternalPackages: ["@react-pdf/renderer", "@rawwee/react-pdf-html"],
 
-  optimizePackageImports: [
-    "lucide-react",
-    "framer-motion",
-    "@clerk/nextjs",
-    "react-hook-form",
-    "@hookform/resolvers",
-    "@reduxjs/toolkit",
-    "react-redux",
-    "zod",
-    "@shared/ui",
-  ],
+  experimental: {
+    // Optimize package imports - tree shake heavy libraries
+    optimizePackageImports: [
+      "lucide-react",
+      "framer-motion",
+      "@clerk/nextjs",
+      "react-hook-form",
+      "@hookform/resolvers",
+      "@reduxjs/toolkit",
+      "react-redux",
+      "zod",
+    ],
+  },
 
   images: {
     remotePatterns: [

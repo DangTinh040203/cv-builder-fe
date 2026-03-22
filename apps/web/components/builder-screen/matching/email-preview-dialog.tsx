@@ -5,6 +5,7 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
   DialogTitle,
 } from "@shared/ui/components/dialog";
 import {
@@ -130,6 +131,9 @@ export const EmailPreviewDialog = ({
                 >
                   Application Email
                 </DialogTitle>
+                <DialogDescription className="sr-only">
+                  Preview and copy your AI-generated application email.
+                </DialogDescription>
                 <p
                   className={`
                     mt-0.5 text-xs font-medium text-white/70
