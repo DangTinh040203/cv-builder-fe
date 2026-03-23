@@ -15,8 +15,10 @@ import {
   TooltipTrigger,
 } from "@shared/ui/components/tooltip";
 import {
+  Check,
   ClipboardCheck,
   ClipboardCopy,
+  Pencil,
   RefreshCw,
   Sparkles,
 } from "lucide-react";
@@ -34,6 +36,7 @@ interface EmailPreviewDialogProps {
   isCopied: boolean;
   onCopySubject: () => void;
   isSubjectCopied: boolean;
+  onEmailUpdate?: (updated: GenerateEmailResponse) => void;
 }
 
 const splitIntoParagraphs = (body: string): string[] => {
@@ -60,10 +63,56 @@ export const EmailPreviewDialog = ({
   isCopied,
   onCopySubject,
   isSubjectCopied,
+  onEmailUpdate,
 }: EmailPreviewDialogProps) => {
+  const [isEditing, setIsEditing] = React.useState(false);
+  const [editedSubject, setEditedSubject] = React.useState("");
+  const [editedBody, setEditedBody] = React.useState("");
+  const bodyRef = React.useRef<HTMLTextAreaElement>(null);
+
+  // Sync local edit state when emailResult changes
+  React.useEffect(() => {
+    if (emailResult) {
+      setEditedSubject(emailResult.subject);
+      setEditedBody(emailResult.body);
+    }
+  }, [emailResult]);
+
+  // Reset edit mode when dialog closes
+  React.useEffect(() => {
+    if (!isOpen) setIsEditing(false);
+  }, [isOpen]);
+
+  // Auto-resize textarea
+  React.useEffect(() => {
+    if (isEditing && bodyRef.current) {
+      bodyRef.current.style.height = "auto";
+      bodyRef.current.style.height = `${bodyRef.current.scrollHeight}px`;
+    }
+  }, [isEditing, editedBody]);
+
+  const handleSaveEdit = () => {
+    setIsEditing(false);
+    onEmailUpdate?.({ subject: editedSubject, body: editedBody });
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    if (emailResult) {
+      setEditedSubject(emailResult.subject);
+      setEditedBody(emailResult.body);
+    }
+  };
+
+  // Use edited content for display
+  const displaySubject = isEditing
+    ? editedSubject
+    : (emailResult?.subject ?? "");
+  const displayBody = isEditing ? editedBody : (emailResult?.body ?? "");
+
   const paragraphs = React.useMemo(
-    () => (emailResult ? splitIntoParagraphs(emailResult.body) : []),
-    [emailResult],
+    () => (displayBody ? splitIntoParagraphs(displayBody) : []),
+    [displayBody],
   );
 
   return (
@@ -155,13 +204,38 @@ export const EmailPreviewDialog = ({
                     sm:gap-2
                   `}
                 >
+                  {/* Edit / Save toggle */}
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={
+                          isEditing ? handleSaveEdit : () => setIsEditing(true)
+                        }
+                        disabled={isGenerating}
+                        className={`
+                          h-8 w-8 rounded-lg text-white
+                          hover:bg-white/20
+                          sm:h-10 sm:w-10
+                          ${isEditing ? "bg-white/20" : ""}
+                        `}
+                      >
+                        {isEditing ? <Check size={16} /> : <Pencil size={16} />}
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      {isEditing ? "Save Changes" : "Edit Email"}
+                    </TooltipContent>
+                  </Tooltip>
+
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button
                         variant="ghost"
                         size="icon"
                         onClick={onRegenerate}
-                        disabled={isGenerating}
+                        disabled={isGenerating || isEditing}
                         className={`
                           h-8 w-8 rounded-lg text-white
                           hover:bg-white/20
@@ -199,40 +273,58 @@ export const EmailPreviewDialog = ({
                 >
                   Subject
                 </span>
-                <span className={`flex-1 font-semibold`}>
-                  {emailResult.subject}
-                </span>
-                <TooltipProvider delayDuration={200}>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={onCopySubject}
-                        className={`
-                          h-7 w-7 shrink-0 rounded-md transition-all
-                          ${
-                            isSubjectCopied
-                              ? "bg-white/30 text-white"
-                              : `
-                                text-white
-                                hover:bg-white/20
-                              `
-                          }
-                        `}
-                      >
-                        {isSubjectCopied ? (
-                          <ClipboardCheck size={14} />
-                        ) : (
-                          <ClipboardCopy size={14} />
-                        )}
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      {isSubjectCopied ? "Copied!" : "Copy Subject"}
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editedSubject}
+                    onChange={(e) => setEditedSubject(e.target.value)}
+                    className={`
+                      flex-1 rounded-lg border border-white/20 bg-white/10 px-3
+                      py-1.5 font-semibold text-white backdrop-blur-sm
+                      outline-none
+                      placeholder:text-white/40
+                      focus:border-white/40 focus:ring-1 focus:ring-white/30
+                    `}
+                    placeholder="Email subject..."
+                  />
+                ) : (
+                  <span className={`flex-1 font-semibold`}>
+                    {displaySubject}
+                  </span>
+                )}
+                {!isEditing && (
+                  <TooltipProvider delayDuration={200}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={onCopySubject}
+                          className={`
+                            h-7 w-7 shrink-0 rounded-md transition-all
+                            ${
+                              isSubjectCopied
+                                ? "bg-white/30 text-white"
+                                : `
+                                  text-white
+                                  hover:bg-white/20
+                                `
+                            }
+                          `}
+                        >
+                          {isSubjectCopied ? (
+                            <ClipboardCheck size={14} />
+                          ) : (
+                            <ClipboardCopy size={14} />
+                          )}
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        {isSubjectCopied ? "Copied!" : "Copy Subject"}
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                )}
               </div>
             </div>
           )}
@@ -254,19 +346,33 @@ export const EmailPreviewDialog = ({
                   sm:px-8 sm:py-8
                 `}
               >
-                <div className="space-y-5">
-                  {paragraphs.map((paragraph, i) => (
-                    <p
-                      key={i}
-                      className={`
-                        text-foreground/80 text-[15px] leading-relaxed
-                        whitespace-pre-wrap
-                      `}
-                    >
-                      {paragraph}
-                    </p>
-                  ))}
-                </div>
+                {isEditing ? (
+                  <textarea
+                    ref={bodyRef}
+                    value={editedBody}
+                    onChange={(e) => setEditedBody(e.target.value)}
+                    className={`
+                      text-foreground/80 min-h-[300px] w-full resize-none
+                      border-none bg-transparent p-0 text-[15px] leading-relaxed
+                      outline-none
+                    `}
+                    placeholder="Write your email body here..."
+                  />
+                ) : (
+                  <div className="space-y-5">
+                    {paragraphs.map((paragraph, i) => (
+                      <p
+                        key={i}
+                        className={`
+                          text-foreground/80 text-[15px] leading-relaxed
+                          whitespace-pre-wrap
+                        `}
+                      >
+                        {paragraph}
+                      </p>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Footer */}
@@ -277,47 +383,75 @@ export const EmailPreviewDialog = ({
                   sm:flex-row sm:gap-4 sm:px-8
                 `}
               >
-                <DialogClose asChild>
-                  <Button
-                    variant={"outline"}
-                    className={`
-                      h-12 w-full gap-2 px-8 shadow-md transition-all
-                      sm:w-auto
-                    `}
-                  >
-                    Close
-                  </Button>
-                </DialogClose>
-                <Button
-                  onClick={onCopy}
-                  className={`
-                    h-12 w-full gap-2 px-8 shadow-md transition-all
-                    sm:w-auto
-                    ${
-                      isCopied
-                        ? `
-                          bg-green-600! text-white!
-                          hover:bg-green-700!
-                        `
-                        : `
-                          bg-primary! text-primary-foreground!
-                          hover:bg-primary/90!
-                        `
-                    }
-                  `}
-                >
-                  {isCopied ? (
-                    <>
-                      <ClipboardCheck size={18} />
-                      Copied!
-                    </>
-                  ) : (
-                    <>
-                      <ClipboardCopy size={18} />
-                      Copy to Clipboard
-                    </>
-                  )}
-                </Button>
+                {isEditing ? (
+                  <>
+                    <Button
+                      variant="outline"
+                      onClick={handleCancelEdit}
+                      className={`
+                        h-12 w-full gap-2 px-8 shadow-md transition-all
+                        sm:w-auto
+                      `}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={handleSaveEdit}
+                      className={`
+                        h-12 w-full gap-2 px-8 shadow-md transition-all
+                        sm:w-auto
+                      `}
+                    >
+                      <Check size={18} />
+                      Save Changes
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <DialogClose asChild>
+                      <Button
+                        variant="outline"
+                        className={`
+                          h-12 w-full gap-2 px-8 shadow-md transition-all
+                          sm:w-auto
+                        `}
+                      >
+                        Close
+                      </Button>
+                    </DialogClose>
+
+                    <Button
+                      onClick={onCopy}
+                      className={`
+                        h-12 w-full gap-2 px-8 shadow-md transition-all
+                        sm:w-auto
+                        ${
+                          isCopied
+                            ? `
+                              bg-green-600! text-white!
+                              hover:bg-green-700!
+                            `
+                            : `
+                              bg-primary! text-primary-foreground!
+                              hover:bg-primary/90!
+                            `
+                        }
+                      `}
+                    >
+                      {isCopied ? (
+                        <>
+                          <ClipboardCheck size={18} />
+                          Copied!
+                        </>
+                      ) : (
+                        <>
+                          <ClipboardCopy size={18} />
+                          Copy to Clipboard
+                        </>
+                      )}
+                    </Button>
+                  </>
+                )}
               </div>
             </>
           ) : (

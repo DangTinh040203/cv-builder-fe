@@ -427,6 +427,7 @@ export const MatchingResult = ({
           isCopied={isCopied}
           onCopySubject={handleCopySubject}
           isSubjectCopied={isSubjectCopied}
+          onEmailUpdate={(updated) => setEmailResult(updated)}
         />
 
         {/* Action Buttons */}

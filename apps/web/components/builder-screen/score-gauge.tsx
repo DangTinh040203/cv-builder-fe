@@ -85,7 +85,7 @@ const ScoreGauge: React.FC<ScoreGaugeProps> = ({ score, size = 140 }) => {
         >
           <span
             className={`
-              text-4xl font-bold
+              text-3xl font-bold
               ${colors.text}
             `}
           >
