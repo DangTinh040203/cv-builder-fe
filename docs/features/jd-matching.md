@@ -25,6 +25,7 @@ The JD Matching feature is accessible from the CV Builder page via a dialog butt
 ### Step 1: `MatchingForm`
 
 The user provides a job description via:
+
 - **Text input** — Paste JD text directly
 - **File upload** — Upload a JD file (PDF/DOCX)
 
@@ -36,14 +37,14 @@ A loading state displayed while the backend AI analyzes the resume against the J
 
 Displays the complete match report:
 
-| Section | Description |
-| ------- | ----------- |
-| **Overall Score** | Percentage match (0–100) |
-| **Summary** | Text summary of the match |
+| Section                | Description                                                       |
+| ---------------------- | ----------------------------------------------------------------- |
+| **Overall Score**      | Percentage match (0–100)                                          |
+| **Summary**            | Text summary of the match                                         |
 | **Criteria Breakdown** | Weighted scoring per criterion (name, weight, score, explanation) |
-| **Missing Keywords** | Keywords from the JD not found in the resume |
-| **Strengths** | Resume strengths relative to the JD |
-| **Suggestions** | Actionable improvement recommendations |
+| **Missing Keywords**   | Keywords from the JD not found in the resume                      |
+| **Strengths**          | Resume strengths relative to the JD                               |
+| **Suggestions**        | Actionable improvement recommendations                            |
 
 ---
 
@@ -81,8 +82,8 @@ interface MatchCriterion {
 
 ## Component Files
 
-| Component | File | Purpose |
-| --------- | ---- | ------- |
-| `MatchingForm` | `components/builder-screen/matching/matching-form.tsx` | JD input (text/file) |
-| `MatchingLoading` | `components/builder-screen/matching/matching-loading.tsx` | Loading state |
-| `MatchingResult` | `components/builder-screen/matching/matching-result.tsx` | Result display |
+| Component         | File                                                      | Purpose              |
+| ----------------- | --------------------------------------------------------- | -------------------- |
+| `MatchingForm`    | `components/builder-screen/matching/matching-form.tsx`    | JD input (text/file) |
+| `MatchingLoading` | `components/builder-screen/matching/matching-loading.tsx` | Loading state        |
+| `MatchingResult`  | `components/builder-screen/matching/matching-result.tsx`  | Result display       |

@@ -38,10 +38,10 @@ Resume Data (Redux) ────┤
 
 ## Templates
 
-| Template | ID | Style | Key Characteristics |
-| -------- | -- | ----- | ------------------- |
-| Classic | `template-01` | Traditional | Left-aligned header, full-width separator lines, bordered project tables |
-| Modern | `template-02` | Contemporary | Centered header, uppercase titles, wide letter-spacing, accent bar separators, borderless project cards, soft background colors |
+| Template | ID            | Style        | Key Characteristics                                                                                                             |
+| -------- | ------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------- |
+| Classic  | `template-01` | Traditional  | Left-aligned header, full-width separator lines, bordered project tables                                                        |
+| Modern   | `template-02` | Contemporary | Centered header, uppercase titles, wide letter-spacing, accent bar separators, borderless project cards, soft background colors |
 
 ### Template Configuration (`configs/template.config.ts`)
 
@@ -60,12 +60,13 @@ export const TEMPLATES: Record<string, TemplateProfile> = {
 
 Each template has a dedicated style hook that generates `@react-pdf/renderer` `StyleSheet` objects based on the current `Format` configuration:
 
-| Hook | Template | Located In |
-| ---- | -------- | ---------- |
-| `useTemplateStyle(format)` | Classic (01) | Template 01 directory |
-| `useTemplate02Style(format)` | Modern (02) | Template 02 directory |
+| Hook                         | Template     | Located In            |
+| ---------------------------- | ------------ | --------------------- |
+| `useTemplateStyle(format)`   | Classic (01) | Template 01 directory |
+| `useTemplate02Style(format)` | Modern (02)  | Template 02 directory |
 
 Both hooks return:
+
 - `styles` — Complete `StyleSheet` object for react-pdf
 - `TableRow` — A React component for rendering table rows
 
@@ -88,6 +89,7 @@ interface SectionRendererProps {
 Registered sections: `personal`, `summary`, `skills`, `education`, `experience`, `projects`, `certifications`, `languages`
 
 The registry enables:
+
 - **Section ordering** — Rendered in the order defined by `format.sectionOrder`
 - **Section hiding** — Sections in `format.hiddenSections` are skipped
 - **Template agnostic** — Both templates use the same registry interface
@@ -96,19 +98,19 @@ The registry enables:
 
 ## PDF Components
 
-| Component | File | Purpose |
-| --------- | ---- | ------- |
-| `DocumentPDF` | `document-pdf.tsx` | Wraps template in `<Document>` for react-pdf rendering |
-| `TemplateWrapper` | `template-wrapper.tsx` | Responsive PDF viewer with A4 aspect ratio scaling |
-| `DownloadPdf` | `download-pdf.tsx` | Triggers PDF generation and file download via `file-saver` |
-| `HtmlToPdf` | `html-to-pdf.tsx` | Converts HTML content (from rich text editor) to react-pdf `<Text>` elements |
+| Component         | File                   | Purpose                                                                      |
+| ----------------- | ---------------------- | ---------------------------------------------------------------------------- |
+| `DocumentPDF`     | `document-pdf.tsx`     | Wraps template in `<Document>` for react-pdf rendering                       |
+| `TemplateWrapper` | `template-wrapper.tsx` | Responsive PDF viewer with A4 aspect ratio scaling                           |
+| `DownloadPdf`     | `download-pdf.tsx`     | Triggers PDF generation and file download via `file-saver`                   |
+| `HtmlToPdf`       | `html-to-pdf.tsx`      | Converts HTML content (from rich text editor) to react-pdf `<Text>` elements |
 
 ---
 
 ## A4 Dimensions
 
 ```typescript
-const A4_SIZE = { width: 21, height: 29.7 };         // cm
+const A4_SIZE = { width: 21, height: 29.7 }; // cm
 const A4_PX_SIZE = { width: 595.28, height: 841.89 }; // px at 72 DPI
 ```
 
@@ -118,13 +120,13 @@ const A4_PX_SIZE = { width: 595.28, height: 841.89 }; // px at 72 DPI
 
 Global PDF style defaults for `@react-pdf/renderer`:
 
-| Category | Available Options |
-| -------- | ----------------- |
-| Gap spacing | `gapSm`, `gapMd`, `gapLg`, `gapXl`, `gap2xl` |
-| Font weights | 300–900, with italic variants |
-| Heading sizes | h1–h5 |
-| Text alignment | left, center, right, justify |
-| Page layout | Default margins, padding |
+| Category       | Available Options                            |
+| -------------- | -------------------------------------------- |
+| Gap spacing    | `gapSm`, `gapMd`, `gapLg`, `gapXl`, `gap2xl` |
+| Font weights   | 300–900, with italic variants                |
+| Heading sizes  | h1–h5                                        |
+| Text alignment | left, center, right, justify                 |
+| Page layout    | Default margins, padding                     |
 
 ---
 

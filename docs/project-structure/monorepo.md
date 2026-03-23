@@ -9,18 +9,18 @@ The frontend uses **Turborepo + pnpm workspaces** for monorepo management.
 ```yaml
 # pnpm-workspace.yaml
 packages:
-  - "apps/*"      # Application packages
-  - "shared/*"    # Shared library packages
+  - "apps/*" # Application packages
+  - "shared/*" # Shared library packages
 ```
 
 ## Packages
 
-| Package | Path | Description |
-| ------- | ---- | ----------- |
-| `web` | `apps/web/` | Main Next.js web application |
-| `@shared/ui` | `shared/ui/` | Shared UI component library (48+ shadcn/Radix components) |
-| `@shared/eslint-config` | `shared/eslint-config/` | Shared ESLint configurations |
-| `@shared/typescript-config` | `shared/typescript-config/` | Shared TypeScript configurations |
+| Package                     | Path                        | Description                                               |
+| --------------------------- | --------------------------- | --------------------------------------------------------- |
+| `web`                       | `apps/web/`                 | Main Next.js web application                              |
+| `@shared/ui`                | `shared/ui/`                | Shared UI component library (48+ shadcn/Radix components) |
+| `@shared/eslint-config`     | `shared/eslint-config/`     | Shared ESLint configurations                              |
+| `@shared/typescript-config` | `shared/typescript-config/` | Shared TypeScript configurations                          |
 
 ---
 
@@ -34,12 +34,12 @@ packages:
 └──────────┘     └────────┘     └──────────────┘     └─────────┘
 ```
 
-| Task | Caching | Dependencies | Outputs |
-| ---- | ------- | ------------ | ------- |
-| `build` | ✅ Cached | Depends on upstream `^build` | `.next/**`, `!.next/cache/**` |
-| `lint` | ✅ Cached | Depends on upstream `^lint` | — |
-| `check-types` | ✅ Cached | — | — |
-| `dev` | ❌ No cache | — | Persistent (dev server) |
+| Task          | Caching     | Dependencies                 | Outputs                       |
+| ------------- | ----------- | ---------------------------- | ----------------------------- |
+| `build`       | ✅ Cached   | Depends on upstream `^build` | `.next/**`, `!.next/cache/**` |
+| `lint`        | ✅ Cached   | Depends on upstream `^lint`  | —                             |
+| `check-types` | ✅ Cached   | —                            | —                             |
+| `dev`         | ❌ No cache | —                            | Persistent (dev server)       |
 
 **Global env vars** affecting cache: `NODE_ENV`, `CLERK_SECRET_KEY`
 
@@ -58,16 +58,16 @@ apps/web
 
 ## Commands
 
-| Command | Scope | Description |
-| ------- | ----- | ----------- |
-| `pnpm dev` | Root | Start all apps in dev mode |
-| `pnpm build` | Root | Build all packages (cached by Turborepo) |
-| `pnpm lint` | Root | Lint all packages |
-| `pnpm format` | Root | Format with Prettier |
-| `pnpm dev` | `apps/web` | Start Next.js dev server with Turbopack |
-| `pnpm build` | `apps/web` | Production build |
-| `pnpm test` | `apps/web` | Run Vitest tests |
-| `pnpm typecheck` | `apps/web` | TypeScript type checking |
+| Command          | Scope      | Description                              |
+| ---------------- | ---------- | ---------------------------------------- |
+| `pnpm dev`       | Root       | Start all apps in dev mode               |
+| `pnpm build`     | Root       | Build all packages (cached by Turborepo) |
+| `pnpm lint`      | Root       | Lint all packages                        |
+| `pnpm format`    | Root       | Format with Prettier                     |
+| `pnpm dev`       | `apps/web` | Start Next.js dev server with Turbopack  |
+| `pnpm build`     | `apps/web` | Production build                         |
+| `pnpm test`      | `apps/web` | Run Vitest tests                         |
+| `pnpm typecheck` | `apps/web` | TypeScript type checking                 |
 
 ---
 

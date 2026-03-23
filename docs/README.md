@@ -18,20 +18,20 @@
 
 ## Tech Stack
 
-| Category | Technology | Version |
-| -------- | ---------- | ------- |
-| Framework | Next.js (App Router, Turbopack) | 16.0 |
-| Language | TypeScript | 5.9 |
-| UI Library | React | 19.2 |
-| Monorepo | Turborepo + pnpm workspaces | 2.6 |
-| State | Redux Toolkit + Redux Persist | 2.11 |
-| Auth | Clerk (`@clerk/nextjs`) | 6.36 |
-| Styling | Tailwind CSS 4 + shadcn/ui (Radix) | 4.x |
-| PDF | @react-pdf/renderer | 4.3 |
-| Forms | React Hook Form + Zod | 7.69 |
-| Animation | Framer Motion | 12.23 |
-| HTTP | Axios | 1.13 |
-| Testing | Vitest + Testing Library | 4.0 |
+| Category   | Technology                         | Version |
+| ---------- | ---------------------------------- | ------- |
+| Framework  | Next.js (App Router, Turbopack)    | 16.0    |
+| Language   | TypeScript                         | 5.9     |
+| UI Library | React                              | 19.2    |
+| Monorepo   | Turborepo + pnpm workspaces        | 2.6     |
+| State      | Redux Toolkit + Redux Persist      | 2.11    |
+| Auth       | Clerk (`@clerk/nextjs`)            | 6.36    |
+| Styling    | Tailwind CSS 4 + shadcn/ui (Radix) | 4.x     |
+| PDF        | @react-pdf/renderer                | 4.3     |
+| Forms      | React Hook Form + Zod              | 7.69    |
+| Animation  | Framer Motion                      | 12.23   |
+| HTTP       | Axios                              | 1.13    |
+| Testing    | Vitest + Testing Library           | 4.0     |
 
 ## Quick Links
 

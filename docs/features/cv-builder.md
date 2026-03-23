@@ -34,15 +34,15 @@ The builder page consists of three main areas:
 
 Navigation through 7 sections:
 
-| # | Section | Icon | Description |
-| - | ------- | ---- | ----------- |
-| 1 | Personal | User | Name, title, contact information |
-| 2 | Summary | FileText | Professional overview/summary |
-| 3 | Skills | Code | Technical and soft skills |
-| 4 | Education | GraduationCap | Educational background |
-| 5 | Experience | Briefcase | Work experience history |
-| 6 | Projects | FolderGit2 | Project portfolio |
-| 7 | Extra | Plus | Certifications & languages |
+| #   | Section    | Icon          | Description                      |
+| --- | ---------- | ------------- | -------------------------------- |
+| 1   | Personal   | User          | Name, title, contact information |
+| 2   | Summary    | FileText      | Professional overview/summary    |
+| 3   | Skills     | Code          | Technical and soft skills        |
+| 4   | Education  | GraduationCap | Educational background           |
+| 5   | Experience | Briefcase     | Work experience history          |
+| 6   | Projects   | FolderGit2    | Project portfolio                |
+| 7   | Extra      | Plus          | Certifications & languages       |
 
 ---
 
@@ -50,15 +50,15 @@ Navigation through 7 sections:
 
 Each section has a dedicated form component in `components/builder-screen/forms/`:
 
-| Form | File | Field Types |
-| ---- | ---- | ----------- |
-| Personal | `personal-form.tsx` | Name, title, avatar, dynamic key-value contact info |
-| Summary | `summary-form.tsx` | Rich text editor (React Quill) |
-| Skills | `skills-form.tsx` | Dynamic list of skill categories with values |
-| Education | `education-form.tsx` | Repeatable entries: school, degree, major, dates |
-| Experience | `experience-form.tsx` | Repeatable entries: company, position, description (rich text), dates |
-| Projects | `projects-form.tsx` | Repeatable entries: title, subtitle, technologies, responsibilities, domain, demo |
-| Extra | `extra-form.tsx` | Certifications (name, issuer, date) + Languages (name, description) combined |
+| Form       | File                  | Field Types                                                                       |
+| ---------- | --------------------- | --------------------------------------------------------------------------------- |
+| Personal   | `personal-form.tsx`   | Name, title, avatar, dynamic key-value contact info                               |
+| Summary    | `summary-form.tsx`    | Rich text editor (React Quill)                                                    |
+| Skills     | `skills-form.tsx`     | Dynamic list of skill categories with values                                      |
+| Education  | `education-form.tsx`  | Repeatable entries: school, degree, major, dates                                  |
+| Experience | `experience-form.tsx` | Repeatable entries: company, position, description (rich text), dates             |
+| Projects   | `projects-form.tsx`   | Repeatable entries: title, subtitle, technologies, responsibilities, domain, demo |
+| Extra      | `extra-form.tsx`      | Certifications (name, issuer, date) + Languages (name, description) combined      |
 
 ### Form Architecture
 
@@ -73,12 +73,12 @@ Each section has a dedicated form component in `components/builder-screen/forms/
 
 Action bar at the top of the builder:
 
-| Control | Description |
-| ------- | ----------- |
-| **Save** | Persists resume to backend via `useSyncResume().sync()`. Keyboard shortcut: `Ctrl+S` / `Cmd+S` |
-| **Preview Mode** | Toggles full-screen PDF preview (hides form). Dispatches `updatePreviewMode()` |
-| **Download PDF** | Triggers PDF generation and file download via `DownloadPdf` component |
-| **JD Matching** | Opens the JD Matching dialog. See [JD Matching](jd-matching.md) |
+| Control          | Description                                                                                    |
+| ---------------- | ---------------------------------------------------------------------------------------------- |
+| **Save**         | Persists resume to backend via `useSyncResume().sync()`. Keyboard shortcut: `Ctrl+S` / `Cmd+S` |
+| **Preview Mode** | Toggles full-screen PDF preview (hides form). Dispatches `updatePreviewMode()`                 |
+| **Download PDF** | Triggers PDF generation and file download via `DownloadPdf` component                          |
+| **JD Matching**  | Opens the JD Matching dialog. See [JD Matching](jd-matching.md)                                |
 
 ---
 

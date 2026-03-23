@@ -6,12 +6,12 @@ Application configuration, environment variables, and build setup.
 
 ## Environment Variables
 
-| Variable | Type | Required | Description |
-| -------- | ---- | -------- | ----------- |
-| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Client | ✅ | Clerk authentication publishable key |
-| `NEXT_PUBLIC_BASE_URL` | Client | ✅ | Backend API base URL (e.g., `http://localhost:4000/api/v1`) |
-| `CLERK_SECRET_KEY` | Server | ✅ | Clerk server-side secret key |
-| `NODE_ENV` | Global | — | Environment mode (`development`, `production`) |
+| Variable                            | Type   | Required | Description                                                 |
+| ----------------------------------- | ------ | -------- | ----------------------------------------------------------- |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Client | ✅       | Clerk authentication publishable key                        |
+| `NEXT_PUBLIC_BASE_URL`              | Client | ✅       | Backend API base URL (e.g., `http://localhost:4000/api/v1`) |
+| `CLERK_SECRET_KEY`                  | Server | ✅       | Clerk server-side secret key                                |
+| `NODE_ENV`                          | Global | —        | Environment mode (`development`, `production`)              |
 
 ### Validation
 
@@ -34,24 +34,25 @@ export const Env = createEnv({
 
 ```javascript
 const nextConfig = {
-  transpilePackages: ["@shared/ui"],           // Transpile shared UI package
-  serverExternalPackages: [                     // Exclude from server bundle
+  transpilePackages: ["@shared/ui"], // Transpile shared UI package
+  serverExternalPackages: [
+    // Exclude from server bundle
     "@react-pdf/renderer",
-    "@rawwee/react-pdf-html"
+    "@rawwee/react-pdf-html",
   ],
   images: {
-    remotePatterns: [{ protocol: "https", hostname: "**" }]
+    remotePatterns: [{ protocol: "https", hostname: "**" }],
   },
 };
 ```
 
 ### Key Decisions
 
-| Config | Reason |
-| ------ | ------ |
-| `transpilePackages` | Shared UI package uses JSX/TS that needs transpilation |
+| Config                   | Reason                                                   |
+| ------------------------ | -------------------------------------------------------- |
+| `transpilePackages`      | Shared UI package uses JSX/TS that needs transpilation   |
 | `serverExternalPackages` | PDF libraries are client-only, must be excluded from SSR |
-| `images.remotePatterns` | Allow all HTTPS images for user avatars |
+| `images.remotePatterns`  | Allow all HTTPS images for user avatars                  |
 
 ---
 
@@ -76,16 +77,16 @@ export const axiosConfig = {
 
 ## Build & Development Commands
 
-| Command | Scope | Description |
-| ------- | ----- | ----------- |
-| `pnpm dev` | Root | Start all apps with Turborepo |
-| `pnpm build` | Root | Build all packages (cached) |
-| `pnpm lint` | Root | Lint all packages |
-| `pnpm format` | Root | Format with Prettier |
-| `pnpm dev` | `apps/web` | Next.js dev server with Turbopack |
-| `pnpm build` | `apps/web` | Production build → `.next/` |
-| `pnpm test` | `apps/web` | Run Vitest tests |
-| `pnpm typecheck` | `apps/web` | TypeScript type checking |
+| Command          | Scope      | Description                       |
+| ---------------- | ---------- | --------------------------------- |
+| `pnpm dev`       | Root       | Start all apps with Turborepo     |
+| `pnpm build`     | Root       | Build all packages (cached)       |
+| `pnpm lint`      | Root       | Lint all packages                 |
+| `pnpm format`    | Root       | Format with Prettier              |
+| `pnpm dev`       | `apps/web` | Next.js dev server with Turbopack |
+| `pnpm build`     | `apps/web` | Production build → `.next/`       |
+| `pnpm test`      | `apps/web` | Run Vitest tests                  |
+| `pnpm typecheck` | `apps/web` | TypeScript type checking          |
 
 ---
 

@@ -7,7 +7,6 @@ import {
 } from "@shared/ui/components/accordion";
 import { Badge } from "@shared/ui/components/badge";
 import { Button } from "@shared/ui/components/button";
-import { Progress } from "@shared/ui/components/progress";
 import { ScrollArea } from "@shared/ui/components/scroll-area";
 import { toast } from "@shared/ui/components/sonner";
 import {
@@ -32,10 +31,7 @@ import {
 import React from "react";
 
 import { EmailPreviewDialog } from "@/components/builder-screen/matching/email-preview-dialog";
-import {
-  getScoreColor,
-  ScoreGauge,
-} from "@/components/builder-screen/score-gauge";
+import { ScoreGauge } from "@/components/builder-screen/score-gauge";
 import { useService } from "@/hooks/use-http";
 import { ResumeService } from "@/services/resume.service";
 import { type ErrorResponse } from "@/types/error.response";
@@ -132,12 +128,14 @@ export const MatchingResult = ({
         {/* Overall Score Summary - Always visible */}
         <div
           className={`
-            border-border/50 bg-background flex flex-col items-center
-            justify-center gap-4 rounded-xl border p-8 text-center
+            border-border/50 bg-background flex items-center gap-5 gap-6
+            rounded-xl border p-5
           `}
         >
-          <ScoreGauge score={matchResult.overallScore} />
-          <div className="space-y-2">
+          <div className="shrink-0">
+            <ScoreGauge score={matchResult.overallScore} />
+          </div>
+          <div className="flex-1 space-y-1.5">
             <h3
               className={`
                 text-lg font-bold tracking-tight
@@ -146,11 +144,7 @@ export const MatchingResult = ({
             >
               {overallStatus.label}
             </h3>
-            <p
-              className={`
-                text-muted-foreground mx-auto max-w-lg text-sm leading-relaxed
-              `}
-            >
+            <p className={`text-muted-foreground text-sm leading-relaxed`}>
               {matchResult.summary}
             </p>
           </div>
@@ -174,74 +168,98 @@ export const MatchingResult = ({
           </TabsList>
 
           {/* Tab 1: Score Breakdown */}
-          <TabsContent value="breakdown" className="space-y-4 pt-2">
-            <div
-              className={`border-border/60 bg-background rounded-xl border p-5`}
-            >
-              <Accordion type="single" collapsible className="w-full space-y-4">
-                {matchResult.criteria.map((criterion) => {
-                  const colors = getScoreColor(criterion.score);
-                  return (
-                    <AccordionItem
-                      key={criterion.name}
-                      value={criterion.name}
+          <TabsContent value="breakdown" className="space-y-3 pt-2">
+            <Accordion type="single" collapsible className="w-full space-y-3">
+              {matchResult.criteria.map((criterion) => {
+                const scoreColor =
+                  criterion.score < 50
+                    ? "border-l-red-500"
+                    : criterion.score <= 80
+                      ? "border-l-yellow-500"
+                      : "border-l-green-500";
+                const scoreBg =
+                  criterion.score < 50
+                    ? "bg-red-500/10 text-red-600 dark:text-red-400"
+                    : criterion.score <= 80
+                      ? "bg-yellow-500/10 text-yellow-600 dark:text-yellow-400"
+                      : "bg-green-500/10 text-green-600 dark:text-green-400";
+
+                return (
+                  <AccordionItem
+                    key={criterion.name}
+                    value={criterion.name}
+                    className={`
+                      border-primary/20 overflow-hidden rounded-xl border
+                      border-l-[3px] shadow-sm transition-all
+                      hover:border-primary/40 hover:shadow-md
+                      ${scoreColor}
+                    `}
+                  >
+                    <AccordionTrigger
                       className={`
-                        border-border/50 bg-background/50 rounded-xl border px-2
-                        shadow-sm
+                        px-4 py-4
+                        hover:no-underline
                       `}
                     >
-                      <AccordionTrigger
-                        className={`
-                          px-3 py-4
-                          hover:no-underline
-                        `}
-                      >
-                        <div
-                          className={`
-                            flex w-full items-center justify-between pr-4
-                          `}
-                        >
+                      <div className="flex w-full flex-col gap-3 pr-4">
+                        <div className="flex items-center justify-between">
                           <span
-                            className={`text-foreground text-[15px] font-bold`}
+                            className={`text-foreground text-sm font-semibold`}
                           >
                             {criterion.name}
                           </span>
-                          <div className="flex items-center gap-3">
-                            <span
-                              className={`
-                                text-muted-foreground text-[13px] font-medium
-                              `}
-                            >
+                          <div className="flex items-center gap-2">
+                            <span className={`text-muted-foreground text-xs`}>
                               wt. {criterion.weight}%
                             </span>
                             <span
                               className={`
-                                text-sm font-bold
-                                ${colors.text}
+                                rounded-full px-2.5 py-0.5 text-xs font-bold
+                                ${scoreBg}
                               `}
                             >
                               {criterion.score}%
                             </span>
                           </div>
                         </div>
-                      </AccordionTrigger>
-                      <AccordionContent className="px-3 pt-1 pb-5">
-                        <div className="space-y-4">
-                          <Progress value={criterion.score} className="h-2" />
-                          <p
+                        {/* Inline mini progress bar */}
+                        <div
+                          className={`
+                            bg-primary/10 h-1.5 w-full overflow-hidden
+                            rounded-full
+                          `}
+                        >
+                          <div
                             className={`
-                              text-muted-foreground text-sm leading-relaxed
+                              h-full rounded-full transition-all duration-500
                             `}
-                          >
-                            {criterion.explanation}
-                          </p>
+                            style={{
+                              width: `${criterion.score}%`,
+                              backgroundColor:
+                                criterion.score < 50
+                                  ? "#ef4444"
+                                  : criterion.score <= 80
+                                    ? "#eab308"
+                                    : "#22c55e",
+                            }}
+                          />
                         </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  );
-                })}
-              </Accordion>
-            </div>
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent className="px-4 pt-0 pb-4">
+                      <p
+                        className={`
+                          text-muted-foreground border-primary/15 border-t pt-3
+                          text-sm leading-relaxed
+                        `}
+                      >
+                        {criterion.explanation}
+                      </p>
+                    </AccordionContent>
+                  </AccordionItem>
+                );
+              })}
+            </Accordion>
           </TabsContent>
 
           {/* Tab 2: Strengths & Missing Keywords */}
@@ -371,9 +389,9 @@ export const MatchingResult = ({
                     >
                       <div
                         className={`
-                          flex h-5 w-5 shrink-0 items-center justify-center
-                          rounded-full bg-amber-200/60 text-[10px] font-bold
-                          text-amber-700
+                          mt-1.5 flex h-5 w-5 shrink-0 items-center
+                          justify-center rounded-full bg-amber-200/60
+                          text-[10px] font-bold text-amber-700
                           dark:bg-amber-900/60 dark:text-amber-400
                         `}
                       >

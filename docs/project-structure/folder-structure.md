@@ -176,6 +176,7 @@ shared/ui/
 ### `@shared/eslint-config`
 
 Shared ESLint configurations for different project types:
+
 - `base.js` — Base rules
 - `next.js` — Next.js specific rules
 - `react-internal.js` — React library rules
@@ -183,6 +184,7 @@ Shared ESLint configurations for different project types:
 ### `@shared/typescript-config`
 
 Shared TypeScript configurations:
+
 - `base.json` — Base compiler options
 - `nextjs.json` — Next.js specific options
 - `react-library.json` — React library options
@@ -204,9 +206,9 @@ Shared TypeScript configurations:
 
 ```typescript
 // ✅ Good
-import { Button } from '@shared/ui/components/button';
-import { ResumeService } from '@/services/resume.service';
+import { Button } from "@shared/ui/components/button";
+import { ResumeService } from "@/services/resume.service";
 
 // ❌ Bad
-import { Button } from '../../../shared/ui/src/components/button';
+import { Button } from "../../../shared/ui/src/components/button";
 ```

@@ -28,12 +28,12 @@ Located at `services/http.service.ts`.
 
 Located at `services/resume.service.ts`.
 
-| Method | HTTP | Endpoint | Description |
-| ------ | ---- | -------- | ----------- |
-| `getResume()` | GET | `/resumes` | Fetch the authenticated user's resume |
-| `updateResume(id, payload)` | POST | `/resumes/:id` | Update resume data |
-| `resumeParse(file)` | POST | `/resumes/parse` | Upload and AI-parse a resume file (PDF/DOCX) |
-| `matchResume(resumeId, jd?, file?)` | POST | `/resumes/match` | Match resume against a job description |
+| Method                              | HTTP | Endpoint         | Description                                  |
+| ----------------------------------- | ---- | ---------------- | -------------------------------------------- |
+| `getResume()`                       | GET  | `/resumes`       | Fetch the authenticated user's resume        |
+| `updateResume(id, payload)`         | POST | `/resumes/:id`   | Update resume data                           |
+| `resumeParse(file)`                 | POST | `/resumes/parse` | Upload and AI-parse a resume file (PDF/DOCX) |
+| `matchResume(resumeId, jd?, file?)` | POST | `/resumes/match` | Match resume against a job description       |
 
 ---
 
@@ -97,7 +97,7 @@ Response
 ```typescript
 // configs/axios.config.ts
 export const axiosConfig = {
-  baseURL: Env.NEXT_PUBLIC_BASE_URL,  // e.g., http://localhost:4000/api/v1
-  withCredentials: true,               // Include cookies
+  baseURL: Env.NEXT_PUBLIC_BASE_URL, // e.g., http://localhost:4000/api/v1
+  withCredentials: true, // Include cookies
 };
 ```

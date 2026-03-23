@@ -6,13 +6,13 @@ Testing setup and conventions for the frontend application.
 
 ## Stack
 
-| Tool | Version | Purpose |
-| ---- | ------- | ------- |
-| Vitest | 4.0.18 | Test runner |
-| @testing-library/react | 16.3.2 | React component testing |
-| @testing-library/jest-dom | — | DOM assertion matchers |
-| @testing-library/user-event | — | User interaction simulation |
-| jsdom | — | Browser environment simulation |
+| Tool                        | Version | Purpose                        |
+| --------------------------- | ------- | ------------------------------ |
+| Vitest                      | 4.0.18  | Test runner                    |
+| @testing-library/react      | 16.3.2  | React component testing        |
+| @testing-library/jest-dom   | —       | DOM assertion matchers         |
+| @testing-library/user-event | —       | User interaction simulation    |
+| jsdom                       | —       | Browser environment simulation |
 
 ---
 

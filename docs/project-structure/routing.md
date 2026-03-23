@@ -6,15 +6,15 @@ The application uses the **Next.js App Router** with route groups and nested lay
 
 ## Route Map
 
-| Path | Page | Auth Required | Layout |
-| ---- | ---- | ------------- | ------ |
-| `/` | Home / Landing page | No | Main (Header + Footer) |
-| `/templates` | Template selection | No | Main |
-| `/builder` | CV Builder | ✅ Yes | Main |
-| `/auth/sign-in` | Sign-in form | No (redirects if authed) | Auth |
-| `/auth/sign-up` | Sign-up form | No (redirects if authed) | Auth |
-| `/auth/verify-otp` | OTP email verification | No | Auth |
-| `/not-found` | 404 page | No | None |
+| Path               | Page                   | Auth Required            | Layout                 |
+| ------------------ | ---------------------- | ------------------------ | ---------------------- |
+| `/`                | Home / Landing page    | No                       | Main (Header + Footer) |
+| `/templates`       | Template selection     | No                       | Main                   |
+| `/builder`         | CV Builder             | ✅ Yes                   | Main                   |
+| `/auth/sign-in`    | Sign-in form           | No (redirects if authed) | Auth                   |
+| `/auth/sign-up`    | Sign-up form           | No (redirects if authed) | Auth                   |
+| `/auth/verify-otp` | OTP email verification | No                       | Auth                   |
+| `/not-found`       | 404 page               | No                       | None                   |
 
 ---
 
@@ -48,11 +48,11 @@ RootLayout (app/layout.tsx)
 
 ## Root Layout Features
 
-| Feature | Implementation |
-| ------- | -------------- |
-| **Fonts** | Plus Jakarta Sans (primary), Geist Mono (monospace) |
-| **Providers** | ClerkProvider → StoreProvider → children |
-| **Global CSS** | Custom theme (`styles/theme.css`) + shared UI globals |
+| Feature          | Implementation                                                            |
+| ---------------- | ------------------------------------------------------------------------- |
+| **Fonts**        | Plus Jakarta Sans (primary), Geist Mono (monospace)                       |
+| **Providers**    | ClerkProvider → StoreProvider → children                                  |
+| **Global CSS**   | Custom theme (`styles/theme.css`) + shared UI globals                     |
 | **Clerk Config** | `signInFallbackRedirectUrl="/builder"`, `afterSignOutUrl="/auth/sign-in"` |
 
 ---
@@ -68,11 +68,11 @@ Request → Clerk Middleware
   └── Otherwise → Allow through
 ```
 
-| Route Pattern | Behavior |
-| ------------- | -------- |
-| `/auth(.*)` | Redirects authenticated users away |
-| `/builder(.*)` | Requires authentication (redirects to sign-in) |
-| All other routes | Public access |
+| Route Pattern    | Behavior                                       |
+| ---------------- | ---------------------------------------------- |
+| `/auth(.*)`      | Redirects authenticated users away             |
+| `/builder(.*)`   | Requires authentication (redirects to sign-in) |
+| All other routes | Public access                                  |
 
 ---
 
@@ -87,6 +87,7 @@ A full marketing landing page composed of modular sections:
 ### Template Page (`/templates`)
 
 Displays template preview cards with mock data. Selection dialog offers:
+
 - **Start from scratch** — Navigate to empty builder
 - **Upload existing resume** — AI-parse and pre-populate the builder
 

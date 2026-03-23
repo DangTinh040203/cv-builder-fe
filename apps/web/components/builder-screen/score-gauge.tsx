@@ -20,7 +20,7 @@ const getScoreColor = (score: number) => {
   return { stroke: "#22c55e", text: "text-green-500", bg: "bg-green-500/10" };
 };
 
-const ScoreGauge: React.FC<ScoreGaugeProps> = ({ score, size = 160 }) => {
+const ScoreGauge: React.FC<ScoreGaugeProps> = ({ score, size = 140 }) => {
   const [animatedScore, setAnimatedScore] = useState(0);
   const strokeWidth = 12;
   const radius = (size - strokeWidth) / 2;

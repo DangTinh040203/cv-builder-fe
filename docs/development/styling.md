@@ -26,21 +26,21 @@ Custom CSS variables using the **oklch** color space:
 
 ### Custom Gradients
 
-| Variable | Usage |
-| -------- | ----- |
-| `--gradient-primary` | Primary accent gradient |
-| `--gradient-hero` | Hero section background |
-| `--gradient-card` | Card hover effects |
-| `--gradient-subtle` | Subtle background accents |
+| Variable             | Usage                     |
+| -------------------- | ------------------------- |
+| `--gradient-primary` | Primary accent gradient   |
+| `--gradient-hero`    | Hero section background   |
+| `--gradient-card`    | Card hover effects        |
+| `--gradient-subtle`  | Subtle background accents |
 
 ### Custom Shadows
 
-| Variable | Level |
-| -------- | ----- |
-| `--shadow-sm` | Subtle elevation |
-| `--shadow-md` | Card elevation |
-| `--shadow-lg` | Modal elevation |
-| `--shadow-xl` | Dropdown elevation |
+| Variable        | Level                       |
+| --------------- | --------------------------- |
+| `--shadow-sm`   | Subtle elevation            |
+| `--shadow-md`   | Card elevation              |
+| `--shadow-lg`   | Modal elevation             |
+| `--shadow-xl`   | Dropdown elevation          |
 | `--shadow-glow` | Glow effect (purple tinted) |
 
 ### Utility Classes
@@ -55,27 +55,27 @@ Custom CSS variables using the **oklch** color space:
 
 Pre-defined Framer Motion animation variants:
 
-| Variant | Effect | Usage |
-| ------- | ------ | ----- |
-| `fadeInUp` | Fade in + slide up | Section entrances |
-| `fadeInDown` | Fade in + slide down | Header animations |
-| `fadeInLeft` | Fade in + slide left | Sidebar items |
-| `fadeInRight` | Fade in + slide right | Content reveals |
-| `scaleIn` | Fade in + scale up | Cards, buttons |
-| `staggerContainer` | Stagger children | List containers |
-| `formContainerVariants` | Form-specific stagger | Builder forms |
-| `formItemVariants` | Individual form field | Form inputs |
-| `buttonScaleVariants` | Button entrance | CTA buttons |
+| Variant                 | Effect                | Usage             |
+| ----------------------- | --------------------- | ----------------- |
+| `fadeInUp`              | Fade in + slide up    | Section entrances |
+| `fadeInDown`            | Fade in + slide down  | Header animations |
+| `fadeInLeft`            | Fade in + slide left  | Sidebar items     |
+| `fadeInRight`           | Fade in + slide right | Content reveals   |
+| `scaleIn`               | Fade in + scale up    | Cards, buttons    |
+| `staggerContainer`      | Stagger children      | List containers   |
+| `formContainerVariants` | Form-specific stagger | Builder forms     |
+| `formItemVariants`      | Individual form field | Form inputs       |
+| `buttonScaleVariants`   | Button entrance       | CTA buttons       |
 
 ### Usage Pattern
 
 ```tsx
-import { motion } from 'framer-motion';
-import { fadeInUp, staggerContainer } from '@/styles/animation';
+import { motion } from "framer-motion";
+import { fadeInUp, staggerContainer } from "@/styles/animation";
 
 <motion.div variants={staggerContainer} initial="initial" animate="animate">
   <motion.p variants={fadeInUp}>Animated content</motion.p>
-</motion.div>
+</motion.div>;
 ```
 
 ---

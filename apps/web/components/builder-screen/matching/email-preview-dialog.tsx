@@ -185,16 +185,21 @@ export const EmailPreviewDialog = ({
                 px-4 py-3 backdrop-blur-sm
               `}
             >
-              <div className="flex items-center gap-3">
+              <div
+                className={`
+                  flex items-center gap-3 text-sm
+                  md:text-base
+                `}
+              >
                 <span
                   className={`
-                    hidden shrink-0 text-sm text-white/60 uppercase
+                    hidden shrink-0 text-white/60
                     md:block
                   `}
                 >
                   Subject
                 </span>
-                <span className={`flex-1 text-sm text-white`}>
+                <span className={`flex-1 font-semibold`}>
                   {emailResult.subject}
                 </span>
                 <TooltipProvider delayDuration={200}>

@@ -6,13 +6,13 @@ Authentication is handled by **Clerk** with custom UI forms (not Clerk's hosted 
 
 ## Overview
 
-| Aspect | Detail |
-| ------ | ------ |
-| Provider | Clerk (`@clerk/nextjs`) |
-| Strategy | Email + Password with OTP email verification |
-| Route Protection | Clerk middleware in `proxy.ts` |
-| Token Injection | Via `useService` hook → Axios interceptor |
-| UI | Custom sign-in/sign-up forms (not Clerk components) |
+| Aspect           | Detail                                              |
+| ---------------- | --------------------------------------------------- |
+| Provider         | Clerk (`@clerk/nextjs`)                             |
+| Strategy         | Email + Password with OTP email verification        |
+| Route Protection | Clerk middleware in `proxy.ts`                      |
+| Token Injection  | Via `useService` hook → Axios interceptor           |
+| UI               | Custom sign-in/sign-up forms (not Clerk components) |
 
 ---
 
@@ -79,13 +79,13 @@ this.axiosInstance.interceptors.request.use(async (config) => {
 
 Dedicated utilities for handling Clerk API errors as toast notifications:
 
-| Function | Description |
-| -------- | ----------- |
-| `isClerkAPIError(error)` | Type guard for Clerk API errors |
-| `getClerkErrorMessage(error)` | Extract first error message |
-| `getClerkErrorMessages(error)` | Extract all error messages |
-| `showClerkError(error)` | Display single error as toast |
-| `showClerkErrors(error)` | Display all errors as toasts |
+| Function                            | Description                           |
+| ----------------------------------- | ------------------------------------- |
+| `isClerkAPIError(error)`            | Type guard for Clerk API errors       |
+| `getClerkErrorMessage(error)`       | Extract first error message           |
+| `getClerkErrorMessages(error)`      | Extract all error messages            |
+| `showClerkError(error)`             | Display single error as toast         |
+| `showClerkErrors(error)`            | Display all errors as toasts          |
 | `handleClerkError(error, options?)` | Unified handler with fallback support |
 
 ---

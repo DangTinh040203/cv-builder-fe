@@ -30,22 +30,22 @@ interface Resume {
 
 ### Related Models
 
-| Model | Key Fields |
-| ----- | ---------- |
-| `ResumeInformation` | `label`, `value` |
-| `Education` | `school`, `degree`, `major`, `startDate`, `endDate` |
-| `Skill` | `label`, `value` |
-| `WorkExperience` | `company`, `position`, `description`, `startDate`, `endDate` |
-| `Project` | `title`, `subTitle`, `details`, `technologies`, `position`, `responsibilities`, `domain`, `demo` |
-| `Certification` | `name`, `issuer`, `date` |
-| `Language` | `name`, `description` |
+| Model               | Key Fields                                                                                       |
+| ------------------- | ------------------------------------------------------------------------------------------------ |
+| `ResumeInformation` | `label`, `value`                                                                                 |
+| `Education`         | `school`, `degree`, `major`, `startDate`, `endDate`                                              |
+| `Skill`             | `label`, `value`                                                                                 |
+| `WorkExperience`    | `company`, `position`, `description`, `startDate`, `endDate`                                     |
+| `Project`           | `title`, `subTitle`, `details`, `technologies`, `position`, `responsibilities`, `domain`, `demo` |
+| `Certification`     | `name`, `issuer`, `date`                                                                         |
+| `Language`          | `name`, `description`                                                                            |
 
 ### DTO Types
 
-| Type | Purpose |
-| ---- | ------- |
-| `UpdateResumeDto` | API payload — omits `id` and `resumeId` from all relation arrays |
-| `ParseResumeResponse` | AI parse result — same structure as `UpdateResumeDto` |
+| Type                  | Purpose                                                          |
+| --------------------- | ---------------------------------------------------------------- |
+| `UpdateResumeDto`     | API payload — omits `id` and `resumeId` from all relation arrays |
+| `ParseResumeResponse` | AI parse result — same structure as `UpdateResumeDto`            |
 
 ### Match Types
 
@@ -85,14 +85,14 @@ interface ErrorResponse {
 
 ## Template Types
 
-| Type | Values | Description |
-| ---- | ------ | ----------- |
-| `SectionType` | `personal`, `summary`, `skills`, `education`, `experience`, `projects`, `certifications`, `languages` | Resume section identifiers |
-| `FontWeight` | `"normal"`, `"medium"`, `"semibold"`, `"bold"` | PDF font weight |
-| `ColumnLayout` | `"single"`, `"double"` | PDF column layout |
-| `HeaderStyle` | `"left"`, `"center"` | PDF header alignment |
-| `BorderStyle` | `"none"`, `"simple"`, `"double"`, `"accent"` | PDF border style |
-| `Theme` | `"light"`, `"dark"`, `"auto"` | App theme preference |
+| Type           | Values                                                                                                | Description                |
+| -------------- | ----------------------------------------------------------------------------------------------------- | -------------------------- |
+| `SectionType`  | `personal`, `summary`, `skills`, `education`, `experience`, `projects`, `certifications`, `languages` | Resume section identifiers |
+| `FontWeight`   | `"normal"`, `"medium"`, `"semibold"`, `"bold"`                                                        | PDF font weight            |
+| `ColumnLayout` | `"single"`, `"double"`                                                                                | PDF column layout          |
+| `HeaderStyle`  | `"left"`, `"center"`                                                                                  | PDF header alignment       |
+| `BorderStyle`  | `"none"`, `"simple"`, `"double"`, `"accent"`                                                          | PDF border style           |
+| `Theme`        | `"light"`, `"dark"`, `"auto"`                                                                         | App theme preference       |
 
 ---
 
