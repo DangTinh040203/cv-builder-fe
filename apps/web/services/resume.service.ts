@@ -41,7 +41,6 @@ export class ResumeService extends HttpService {
     matchResult: MatchResult,
   ): Promise<GenerateEmailResponse> {
     const payload = {
-      resumeId,
       jobDescription,
       matchContext: {
         strengths: matchResult.strengths,
@@ -51,7 +50,7 @@ export class ResumeService extends HttpService {
     };
 
     const { data } = await this.post<typeof payload, GenerateEmailResponse>(
-      "/resumes/generate-email",
+      `/resumes/${resumeId}/generate-email`,
       payload,
     );
     return data;
