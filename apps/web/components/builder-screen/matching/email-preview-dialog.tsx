@@ -188,18 +188,13 @@ export const EmailPreviewDialog = ({
               <div className="flex items-center gap-3">
                 <span
                   className={`
-                    hidden shrink-0 text-[11px] font-bold tracking-widest
-                    text-white/60 uppercase
+                    hidden shrink-0 text-sm text-white/60 uppercase
                     md:block
                   `}
                 >
                   Subject
                 </span>
-                <span
-                  className={`
-                    flex-1 text-sm leading-snug font-semibold text-white
-                  `}
-                >
+                <span className={`flex-1 text-sm text-white`}>
                   {emailResult.subject}
                 </span>
                 <TooltipProvider delayDuration={200}>
