@@ -1,6 +1,9 @@
 import { Brain, ScanSearch, Sparkles } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export const MatchingLoading = () => {
+  const t = useTranslations("Matching");
+
   return (
     <div className="flex flex-col items-center justify-center gap-8 py-24">
       <div className="relative flex h-32 w-32 items-center justify-center">
@@ -43,7 +46,7 @@ export const MatchingLoading = () => {
             font-bold tracking-tight text-transparent
           `}
         >
-          AI Engines Processing
+          {t("loading.title")}
         </h3>
         <div className="text-muted-foreground flex items-center gap-2">
           <ScanSearch
@@ -51,7 +54,7 @@ export const MatchingLoading = () => {
             style={{ animationDuration: "4s" }}
           />
           <p className="animate-pulse text-sm font-medium">
-            Deep scanning CV against Job Details...
+            {t("loading.description")}
           </p>
         </div>
         <div className="mt-2 flex items-center gap-1.5">

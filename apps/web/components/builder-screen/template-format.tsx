@@ -57,6 +57,7 @@ import {
   RotateCcw,
   Type,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { createPortal } from "react-dom";
 
@@ -73,32 +74,32 @@ import {
 import { useAppDispatch, useAppSelector } from "@/stores/store";
 
 const COLOR_OPTIONS = [
-  { value: "#3b82f6", label: "Blue", color: "#3b82f6" },
-  { value: "#06b6d4", label: "Cyan", color: "#06b6d4" },
-  { value: "#14b8a6", label: "Teal", color: "#14b8a6" },
-  { value: "#10b981", label: "Emerald", color: "#10b981" },
-  { value: "#22c55e", label: "Green", color: "#22c55e" },
-  { value: "#84cc16", label: "Lime", color: "#84cc16" },
-  { value: "#eab308", label: "Yellow", color: "#eab308" },
-  { value: "#f59e0b", label: "Amber", color: "#f59e0b" },
-  { value: "#f97316", label: "Orange", color: "#f97316" },
-  { value: "#ef4444", label: "Red", color: "#ef4444" },
-  { value: "#f43f5e", label: "Rose", color: "#f43f5e" },
-  { value: "#ec4899", label: "Pink", color: "#ec4899" },
-  { value: "#d946ef", label: "Fuchsia", color: "#d946ef" },
-  { value: "#8b5cf6", label: "Purple", color: "#8b5cf6" },
-  { value: "#7c3aed", label: "Violet", color: "#7c3aed" },
-  { value: "#6366f1", label: "Indigo", color: "#6366f1" },
-  { value: "#1e3a8a", label: "Navy", color: "#1e3a8a" },
-  { value: "#64748b", label: "Slate", color: "#64748b" },
-  { value: "#1f2937", label: "Black", color: "#1f2937" },
+  { value: "#3b82f6", labelKey: "colors.blue", color: "#3b82f6" },
+  { value: "#06b6d4", labelKey: "colors.cyan", color: "#06b6d4" },
+  { value: "#14b8a6", labelKey: "colors.teal", color: "#14b8a6" },
+  { value: "#10b981", labelKey: "colors.emerald", color: "#10b981" },
+  { value: "#22c55e", labelKey: "colors.green", color: "#22c55e" },
+  { value: "#84cc16", labelKey: "colors.lime", color: "#84cc16" },
+  { value: "#eab308", labelKey: "colors.yellow", color: "#eab308" },
+  { value: "#f59e0b", labelKey: "colors.amber", color: "#f59e0b" },
+  { value: "#f97316", labelKey: "colors.orange", color: "#f97316" },
+  { value: "#ef4444", labelKey: "colors.red", color: "#ef4444" },
+  { value: "#f43f5e", labelKey: "colors.rose", color: "#f43f5e" },
+  { value: "#ec4899", labelKey: "colors.pink", color: "#ec4899" },
+  { value: "#d946ef", labelKey: "colors.fuchsia", color: "#d946ef" },
+  { value: "#8b5cf6", labelKey: "colors.purple", color: "#8b5cf6" },
+  { value: "#7c3aed", labelKey: "colors.violet", color: "#7c3aed" },
+  { value: "#6366f1", labelKey: "colors.indigo", color: "#6366f1" },
+  { value: "#1e3a8a", labelKey: "colors.navy", color: "#1e3a8a" },
+  { value: "#64748b", labelKey: "colors.slate", color: "#64748b" },
+  { value: "#1f2937", labelKey: "colors.black", color: "#1f2937" },
 ];
 
-const FONT_WEIGHT_OPTIONS: { value: FontWeight; label: string }[] = [
-  { value: "normal", label: "Normal" },
-  { value: "medium", label: "Medium" },
-  { value: "semibold", label: "Semibold" },
-  { value: "bold", label: "Bold" },
+const FONT_WEIGHT_OPTIONS: { value: FontWeight; labelKey: string }[] = [
+  { value: "normal", labelKey: "fontWeights.normal" },
+  { value: "medium", labelKey: "fontWeights.medium" },
+  { value: "semibold", labelKey: "fontWeights.semibold" },
+  { value: "bold", labelKey: "fontWeights.bold" },
 ];
 
 interface FormatSliderProps {
@@ -180,15 +181,15 @@ const FormatSelectRow = ({ icon, label, children }: FormatSelectRowProps) => {
   );
 };
 
-const SECTION_LABELS: Record<SectionType, string> = {
-  personal: "Personal Info",
-  summary: "Overview",
-  skills: "Skills",
-  education: "Education",
-  certifications: "Certifications",
-  languages: "Languages",
-  experience: "Experience",
-  projects: "Projects",
+const SECTION_LABEL_KEYS: Record<SectionType, string> = {
+  personal: "sections.personal",
+  summary: "sections.summary",
+  skills: "sections.skills",
+  education: "sections.education",
+  certifications: "sections.certifications",
+  languages: "sections.languages",
+  experience: "sections.experience",
+  projects: "sections.projects",
 };
 
 function SortableSectionItem({
@@ -200,6 +201,7 @@ function SortableSectionItem({
   isHidden: boolean;
   onToggleVisibility: (type: SectionType) => void;
 }) {
+  const t = useTranslations("TemplateFormat");
   const {
     attributes,
     listeners,
@@ -248,7 +250,7 @@ function SortableSectionItem({
       <span
         className={cn("flex-1 text-sm font-medium", isHidden && "line-through")}
       >
-        {SECTION_LABELS[sectionType]}
+        {t(SECTION_LABEL_KEYS[sectionType])}
       </span>
 
       <button
@@ -278,6 +280,7 @@ const SectionOrderPanel = ({
   format: Format;
   updateFormat: (updates: Partial<Format>) => void;
 }) => {
+  const t = useTranslations("TemplateFormat");
   const [activeId, setActiveId] = useState<string | null>(null);
 
   const sensors = useSensors(
@@ -332,6 +335,9 @@ const SectionOrderPanel = ({
             <List className="h-4 w-4" />
           </div>
           <Label className="text-sm font-medium">Section Order</Label>
+          <Label className="text-sm font-medium">
+            {t("sectionOrder.title")}
+          </Label>
         </div>
         <Button
           variant="ghost"
@@ -340,7 +346,7 @@ const SectionOrderPanel = ({
           className="h-7 px-2 text-xs"
         >
           <RotateCcw className="mr-1 h-3 w-3" />
-          Reset
+          {t("reset")}
         </Button>
       </div>
 
@@ -380,7 +386,7 @@ const SectionOrderPanel = ({
                 >
                   <GripVertical className="h-3.5 w-3.5 text-slate-400" />
                   <span className="flex-1 text-sm font-medium">
-                    {SECTION_LABELS[activeSection]}
+                    {t(SECTION_LABEL_KEYS[activeSection])}
                   </span>
                   {(format.hiddenSections || []).includes(activeSection) ? (
                     <EyeOff className="h-3.5 w-3.5 text-slate-300" />

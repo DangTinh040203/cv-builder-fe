@@ -14,6 +14,7 @@ import { Input } from "@shared/ui/components/input";
 import { Separator } from "@shared/ui/components/separator";
 import { motion } from "framer-motion";
 import { ArrowRight, Eye, EyeOff, Loader2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useRouter } from "nextjs-toploader/app";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -28,31 +29,38 @@ import {
   formItemVariants,
 } from "@/styles/animation";
 
-const formSchema = z
-  .object({
-    email: z
-      .string()
-      .min(1, "Please enter your email address")
-      .email("Please enter a valid email address"),
-    password: z
-      .string()
-      .min(1, "Please enter your password")
-      .min(8, "Password must be at least 8 characters")
-      .max(50, "Password must be less than 50 characters"),
-    confirmPassword: z.string().min(1, "Please confirm your password"),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  });
-
 const SignUp = () => {
+  const t = useTranslations("Auth");
   const [isLoading, setIsLoading] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
 
   const { isLoaded, signUp } = useSignUp();
   const router = useRouter();
+
+  const formSchema = React.useMemo(
+    () =>
+      z
+        .object({
+          email: z
+            .string()
+            .min(1, t("validation.emailRequired"))
+            .email(t("validation.emailInvalid")),
+          password: z
+            .string()
+            .min(1, t("validation.passwordRequired"))
+            .min(8, t("validation.passwordMin"))
+            .max(50, t("validation.passwordMax")),
+          confirmPassword: z
+            .string()
+            .min(1, t("validation.confirmPasswordRequired")),
+        })
+        .refine((data) => data.password === data.confirmPassword, {
+          message: t("validation.passwordsDoNotMatch"),
+          path: ["confirmPassword"],
+        }),
+    [t],
+  );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -83,7 +91,7 @@ const SignUp = () => {
       router.push(`/auth/verify-otp?email=${encodeURIComponent(values.email)}`);
     } catch (error) {
       handleClerkError(error, {
-        fallbackMessage: "Something went wrong, please try again.",
+        fallbackMessage: t("errors.generic"),
       });
     } finally {
       setIsLoading(false);
@@ -104,14 +112,14 @@ const SignUp = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{t("fields.email")}</FormLabel>
                   <FormControl>
                     <motion.div
                       whileFocus={{ scale: 1.01 }}
                       transition={{ type: "spring", stiffness: 300 }}
                     >
                       <Input
-                        placeholder="Enter your email"
+                        placeholder={t("placeholders.email")}
                         disabled={isLoading}
                         {...field}
                       />
@@ -129,7 +137,7 @@ const SignUp = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>{t("fields.password")}</FormLabel>
                   <FormControl>
                     <motion.div
                       whileFocus={{ scale: 1.01 }}
@@ -138,7 +146,7 @@ const SignUp = () => {
                     >
                       <Input
                         {...field}
-                        placeholder="Create a password"
+                        placeholder={t("placeholders.createPassword")}
                         type={showPassword ? "text" : "password"}
                         disabled={isLoading}
                         className="pr-10"
@@ -166,7 +174,7 @@ const SignUp = () => {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Confirm Password</FormLabel>
+                  <FormLabel>{t("fields.confirmPassword")}</FormLabel>
                   <FormControl>
                     <motion.div
                       whileFocus={{ scale: 1.01 }}
@@ -175,7 +183,7 @@ const SignUp = () => {
                     >
                       <Input
                         {...field}
-                        placeholder="Confirm your password"
+                        placeholder={t("placeholders.confirmPassword")}
                         type={showConfirmPassword ? "text" : "password"}
                         disabled={isLoading}
                         className="pr-10"
@@ -220,11 +228,11 @@ const SignUp = () => {
               {isLoading ? (
                 <>
                   <Loader2 className="h-5 w-5 animate-spin" />
-                  Creating account
+                  {t("signUp.loading")}
                 </>
               ) : (
                 <>
-                  Create Account
+                  {t("signUp.submit")}
                   <motion.span
                     initial={{ x: 0 }}
                     whileHover={{ x: 5 }}
@@ -243,7 +251,7 @@ const SignUp = () => {
           >
             <Separator className="my-2 flex-1" />
             <p className="text-muted-foreground text-center text-xs">
-              Or continue with
+              {t("continueWith")}
             </p>
             <Separator className="my-2 flex-1" />
           </motion.div>
@@ -254,7 +262,7 @@ const SignUp = () => {
             variants={formItemVariants}
             className="text-muted-foreground text-center text-sm"
           >
-            Already have an account?{" "}
+            {t("signUp.hasAccount")}{" "}
             <Link
               href="/auth/sign-in"
               className={`
@@ -266,7 +274,7 @@ const SignUp = () => {
                 whileHover={{ scale: 1.05 }}
                 className="inline-block"
               >
-                Sign In
+                {t("signUp.signInLink")}
               </motion.span>
             </Link>
           </motion.p>

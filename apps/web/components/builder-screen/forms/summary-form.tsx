@@ -10,6 +10,7 @@ import { Label } from "@shared/ui/components/label";
 import { cn } from "@shared/ui/lib/utils";
 import { motion } from "framer-motion";
 import { FileText, Sparkles } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 import BuilderNavigation from "@/components/builder-screen/builder-navigation";
@@ -24,6 +25,7 @@ interface SummaryFormProps {
 }
 
 const SummaryForm = ({ onNext, onBack }: SummaryFormProps) => {
+  const t = useTranslations("BuilderForms");
   const dispatch = useAppDispatch();
   const { resume } = useSyncResume();
   const [value, setValue] = useState(resume?.overview || "");
@@ -95,10 +97,10 @@ const SummaryForm = ({ onNext, onBack }: SummaryFormProps) => {
                   dark:from-white dark:to-gray-400
                 `}
               >
-                Professional Summary
+                {t("summary.title")}
               </span>
               <span className="text-muted-foreground text-xs font-normal">
-                Tell employers about your experience and skills
+                {t("summary.subtitle")}
               </span>
             </div>
           </CardTitle>
@@ -134,12 +136,14 @@ const SummaryForm = ({ onNext, onBack }: SummaryFormProps) => {
                     isFocused && "bg-purple-500 shadow-sm shadow-purple-500/50",
                   )}
                 />
-                Professional Summary
+                {t("summary.title")}
               </Label>
 
               {value && (
                 <span className="animate-fade-in text-muted-foreground text-xs">
-                  {value.replace(/<[^>]*>/g, "").length} characters
+                  {t("summary.characters", {
+                    count: value.replace(/<[^>]*>/g, "").length,
+                  })}
                 </span>
               )}
             </div>
@@ -167,7 +171,7 @@ const SummaryForm = ({ onNext, onBack }: SummaryFormProps) => {
               <Editor
                 value={value}
                 onChange={handleChange}
-                placeholder="Write a brief summary about yourself..."
+                placeholder={t("summary.placeholder")}
               />
             </div>
 
@@ -192,9 +196,8 @@ const SummaryForm = ({ onNext, onBack }: SummaryFormProps) => {
                   dark:text-amber-300
                 `}
               >
-                <span className="font-medium">Pro tip:</span> Use formatting to
-                highlight key achievements and skills. Keep your summary between
-                2-4 sentences for maximum impact.
+                <span className="font-medium">{t("summary.proTipLabel")}</span>{" "}
+                {t("summary.proTip")}
               </p>
             </div>
           </motion.div>

@@ -2,6 +2,7 @@
 
 import { Button } from "@shared/ui/components/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 interface BuilderNavigationProps {
@@ -19,8 +20,10 @@ const BuilderNavigation = ({
   disableBack,
   disableNext,
   loading,
-  nextLabel = "Next",
+  nextLabel,
 }: BuilderNavigationProps) => {
+  const t = useTranslations("Common");
+
   return (
     <div
       className={`
@@ -35,7 +38,7 @@ const BuilderNavigation = ({
         type="button"
       >
         <ChevronLeft className="h-4 w-4" />
-        Back
+        {t("back")}
       </Button>
 
       <Button
@@ -44,7 +47,7 @@ const BuilderNavigation = ({
         className="min-w-32 gap-2"
         type="submit" // Default to submit for forms
       >
-        {loading ? "Saving..." : nextLabel}
+        {loading ? t("saving") : (nextLabel ?? t("next"))}
         <ChevronRight className="h-4 w-4" />
       </Button>
     </div>

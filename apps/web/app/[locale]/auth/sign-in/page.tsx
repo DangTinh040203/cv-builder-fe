@@ -16,6 +16,7 @@ import { toast } from "@shared/ui/components/sonner";
 import { motion } from "framer-motion";
 import { ArrowRight, Eye, EyeOff, Loader2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useRouter } from "nextjs-toploader/app";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -30,24 +31,29 @@ import {
   formItemVariants,
 } from "@/styles/animation";
 
-const formSchema = z.object({
-  email: z
-    .string()
-    .min(1, "Please enter your email address")
-    .email("Please enter a valid email address"),
-  password: z
-    .string()
-    .min(1, "Please enter your password")
-    .min(8, "Password must be at least 8 characters")
-    .max(50, "Password must be less than 50 characters"),
-});
-
 const SignIn = () => {
+  const t = useTranslations("Auth");
   const { isLoaded, signIn, setActive } = useSignIn();
   const [isLoading, setIsLoading] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  const formSchema = React.useMemo(
+    () =>
+      z.object({
+        email: z
+          .string()
+          .min(1, t("validation.emailRequired"))
+          .email(t("validation.emailInvalid")),
+        password: z
+          .string()
+          .min(1, t("validation.passwordRequired"))
+          .min(8, t("validation.passwordMin"))
+          .max(50, t("validation.passwordMax")),
+      }),
+    [t],
+  );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -70,14 +76,14 @@ const SignIn = () => {
 
       if (result.status === "complete") {
         await setActive({ session: result.createdSessionId });
-        toast.success("Welcome back!");
+        toast.success(t("signIn.success"));
 
         const callbackUrl = searchParams.get("callbackUrl");
         router.push(callbackUrl || "/");
       }
     } catch (error) {
       handleClerkError(error, {
-        fallbackMessage: "Invalid email or password. Please try again.",
+        fallbackMessage: t("signIn.invalidCredentials"),
       });
     } finally {
       setIsLoading(false);
@@ -99,14 +105,14 @@ const SignIn = () => {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>{t("fields.email")}</FormLabel>
                 <FormControl>
                   <motion.div
                     whileFocus={{ scale: 1.01 }}
                     transition={{ type: "spring", stiffness: 300 }}
                   >
                     <Input
-                      placeholder="Enter your email"
+                      placeholder={t("placeholders.email")}
                       disabled={isLoading}
                       {...field}
                     />
@@ -124,7 +130,7 @@ const SignIn = () => {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel>{t("fields.password")}</FormLabel>
                 <FormControl>
                   <motion.div
                     whileFocus={{ scale: 1.01 }}
@@ -133,7 +139,7 @@ const SignIn = () => {
                   >
                     <Input
                       {...field}
-                      placeholder="Enter your password"
+                      placeholder={t("placeholders.password")}
                       type={showPassword ? "text" : "password"}
                       disabled={isLoading}
                       className="pr-10"
@@ -170,11 +176,11 @@ const SignIn = () => {
             {isLoading ? (
               <>
                 <Loader2 className="h-5 w-5 animate-spin" />
-                Signing in
+                {t("signIn.loading")}
               </>
             ) : (
               <>
-                Sign In
+                {t("signIn.submit")}
                 <motion.span
                   initial={{ x: 0 }}
                   whileHover={{ x: 5 }}
@@ -193,7 +199,7 @@ const SignIn = () => {
         >
           <Separator className="my-2 flex-1" />
           <p className="text-muted-foreground text-center text-xs">
-            Or continue with
+            {t("continueWith")}
           </p>
           <Separator className="my-2 flex-1" />
         </motion.div>
@@ -204,7 +210,7 @@ const SignIn = () => {
           variants={formItemVariants}
           className="text-muted-foreground text-center text-sm"
         >
-          Don&apos;t have an account?{" "}
+          {t("signIn.noAccount")}{" "}
           <Link
             href="/auth/sign-up"
             className={`
@@ -213,7 +219,7 @@ const SignIn = () => {
             `}
           >
             <motion.span whileHover={{ scale: 1.05 }} className="inline-block">
-              Sign Up
+              {t("signIn.signUpLink")}
             </motion.span>
           </Link>
         </motion.p>

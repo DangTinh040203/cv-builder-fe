@@ -19,6 +19,7 @@ import {
   Save,
   Upload,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 import InterviewDialog from "@/components/builder-screen/interview-dialog";
@@ -37,6 +38,7 @@ import { type ErrorResponse } from "@/types/error.response";
 import { toastErrorMessage } from "@/utils/toast-error-message.util";
 
 const ResumeControl = () => {
+  const t = useTranslations("Builder");
   const { resume, sync, isSyncing } = useSyncResume();
   const { previewMode } = useAppSelector(templateConfigSelector);
   const dispatch = useAppDispatch();
@@ -104,13 +106,13 @@ const ResumeControl = () => {
       };
 
       dispatch(setResume(updatedResume));
-      toast.success("Resume parsed successfully!");
+      toast.success(t("resumeControl.parseSuccess"));
     } catch (e) {
       if (e instanceof AxiosError) {
         const error = e.response?.data as ErrorResponse;
         toastErrorMessage(error.message);
       } else {
-        toast.error("Failed to parse resume. Please try again.");
+        toast.error(t("resumeControl.parseFailed"));
       }
     } finally {
       setIsParsing(false);
@@ -152,7 +154,7 @@ const ResumeControl = () => {
               lg:text-3xl
             `}
           >
-            CV Builder
+            {t("resumeControl.title")}
           </h1>
           <p
             className={`
@@ -160,7 +162,7 @@ const ResumeControl = () => {
               md:text-sm
             `}
           >
-            Craft your professional story
+            {t("resumeControl.subtitle")}
           </p>
         </div>
       </div>
@@ -196,11 +198,11 @@ const ResumeControl = () => {
                   ) : (
                     <Save className="h-4 w-4" />
                   )}
-                  Save
+                  {t("resumeControl.save")}
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Save changes (Ctrl + S)</p>
+                <p>{t("resumeControl.saveTooltip")}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -235,7 +237,9 @@ const ResumeControl = () => {
                 <Eye className="h-4 w-4" />
               )}
             </motion.div>
-            {previewMode ? "Edit" : "Customize"}
+            {previewMode
+              ? t("resumeControl.edit")
+              : t("resumeControl.customize")}
           </Button>
         </motion.div>
 
@@ -273,11 +277,13 @@ const ResumeControl = () => {
                   ) : (
                     <Upload className="mr-2 h-4 w-4" />
                   )}
-                  {isParsing ? "Parsing..." : "Parse Resume"}
+                  {isParsing
+                    ? t("resumeControl.parsing")
+                    : t("resumeControl.parseResume")}
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Upload a PDF resume to auto-fill your CV</p>
+                <p>{t("resumeControl.parseTooltip")}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -306,7 +312,7 @@ const ResumeControl = () => {
             `}
             onClick={() => setShowInterview(true)}
           >
-            <Mic className="mr-2 h-4 w-4" /> Mock Interview
+            <Mic className="mr-2 h-4 w-4" /> {t("resumeControl.mockInterview")}
           </Button>
           <InterviewDialog
             open={showInterview}

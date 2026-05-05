@@ -1,15 +1,16 @@
 "use client";
 
 import { Brain, Mic, Sparkles } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 interface InterviewLoadingProps {
   text?: string;
 }
 
-export const InterviewLoading = ({
-  text = "AI is evaluating your interview...",
-}: InterviewLoadingProps) => {
+export const InterviewLoading = ({ text }: InterviewLoadingProps) => {
+  const t = useTranslations("Interview");
+
   return (
     <div className="flex flex-col items-center justify-center gap-8 py-24">
       {/* Animated Rings */}
@@ -50,14 +51,16 @@ export const InterviewLoading = ({
             font-bold tracking-tight text-transparent
           `}
         >
-          Processing Interview
+          {t("loading.title")}
         </h3>
         <div className="text-muted-foreground flex items-center gap-2">
           <Brain
             className="text-primary/70 h-5 w-5 animate-spin"
             style={{ animationDuration: "4s" }}
           />
-          <p className="animate-pulse text-sm font-medium">{text}</p>
+          <p className="animate-pulse text-sm font-medium">
+            {text ?? t("loading.evaluating")}
+          </p>
         </div>
         <div className="mt-2 flex items-center gap-1.5">
           <span

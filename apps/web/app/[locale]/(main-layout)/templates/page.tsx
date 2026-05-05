@@ -5,6 +5,7 @@ import { toast } from "@shared/ui/components/sonner";
 import { AxiosError } from "axios";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 
 import BlurText from "@/components/common/blur-text";
@@ -26,6 +27,7 @@ import { type ErrorResponse } from "@/types/error.response";
 import { toastErrorMessage } from "@/utils/toast-error-message.util";
 
 const Templates = () => {
+  const t = useTranslations("TemplatesPage");
   const [isSelectionOpen, setIsSelectionOpen] = useState(false);
   const [selectedTemplateForBuilder, setSelectedTemplateForBuilder] = useState<
     string | null
@@ -113,7 +115,7 @@ const Templates = () => {
           const error = e.response?.data as ErrorResponse;
           toastErrorMessage(error.message);
         } else {
-          toast.error("Something went wrong, please try again.");
+          toast.error(t("errors.generic"));
         }
 
         return false;
@@ -166,7 +168,7 @@ const Templates = () => {
           className="mb-12 text-center"
         >
           <BlurText
-            text="Choose Your Perfect Template"
+            text={t("title")}
             delay={80}
             animateBy="words"
             direction="top"
@@ -179,8 +181,7 @@ const Templates = () => {
             variants={fadeInUp}
             className="text-muted-foreground mx-auto max-w-2xl text-lg"
           >
-            Browse our collection of professionally designed CV templates. Each
-            template is ATS-friendly and fully customizable.
+            {t("description")}
           </motion.p>
         </motion.div>
 
@@ -249,7 +250,7 @@ const Templates = () => {
                     `}
                     size={"lg"}
                   >
-                    Use Template
+                    {t("useTemplate")}
                   </Button>
                 </div>
 
@@ -267,7 +268,7 @@ const Templates = () => {
                     className={`mb-4 w-full rounded-full transition-opacity`}
                     size={"sm"}
                   >
-                    Use Template
+                    {t("useTemplate")}
                   </Button>
                 </div>
               </motion.div>

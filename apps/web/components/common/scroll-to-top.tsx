@@ -1,9 +1,11 @@
 "use client";
 
 import { ArrowUp } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 export const ScrollToTop = () => {
+  const t = useTranslations("Common");
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -41,7 +43,7 @@ export const ScrollToTop = () => {
           hover:bg-primary/90 hover:shadow-xl
           focus:ring-2 focus:ring-offset-2 focus:outline-none
         `}
-        aria-label="Scroll to top"
+        aria-label={t("scrollToTop")}
       >
         <ArrowUp className="size-6" />
       </button>

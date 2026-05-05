@@ -1,5 +1,6 @@
 import { toast } from "@shared/ui/components/sonner";
 import { AxiosError } from "axios";
+import { useTranslations } from "next-intl";
 import { useCallback, useRef, useState } from "react";
 
 import { useService } from "@/hooks/use-http";
@@ -18,6 +19,7 @@ import { toastErrorMessage } from "@/utils/toast-error-message.util";
  * Do NOT register keyboard listeners here to avoid duplicate requests.
  */
 export function useSyncResume() {
+  const t = useTranslations("Builder");
   const dispatch = useAppDispatch();
   const { resume } = useAppSelector(resumeSelector);
   const resumeService = useService(ResumeService);
@@ -26,7 +28,7 @@ export function useSyncResume() {
 
   const sync = useCallback(async () => {
     if (!resume) {
-      toast.error("No resume to save");
+      toast.error(t("sync.noResume"));
       return false;
     }
 
@@ -49,7 +51,7 @@ export function useSyncResume() {
         const error = e.response?.data as ErrorResponse;
         toastErrorMessage(error.message);
       } else {
-        toast.error("Something went wrong, please try again.");
+        toast.error(t("sync.genericError"));
       }
 
       return false;
@@ -57,7 +59,7 @@ export function useSyncResume() {
       isSyncingRef.current = false;
       setIsSyncing(false);
     }
-  }, [dispatch, resume, resumeService]);
+  }, [dispatch, resume, resumeService, t]);
 
   return { sync, isSyncing, resume };
 }

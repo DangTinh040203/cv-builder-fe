@@ -18,20 +18,15 @@ import { toast } from "@shared/ui/components/sonner";
 import { motion } from "framer-motion";
 import { ArrowRight, Loader2, Mail, RefreshCw } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import React, { Suspense, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { getClerkErrorMessage, handleClerkError } from "@/libs/clerk-toast";
 
-const formSchema = z.object({
-  code: z
-    .string()
-    .min(6, "Please enter the complete verification code")
-    .max(6, "Verification code must be 6 digits"),
-});
-
 function VerifyOTPContent() {
+  const t = useTranslations("Auth");
   const [isLoading, setIsLoading] = React.useState(false);
   const [isResending, setIsResending] = React.useState(false);
   const [resendCooldown, setResendCooldown] = React.useState(60);
@@ -41,6 +36,17 @@ function VerifyOTPContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const email = searchParams.get("email") || "";
+
+  const formSchema = React.useMemo(
+    () =>
+      z.object({
+        code: z
+          .string()
+          .min(6, t("validation.codeIncomplete"))
+          .max(6, t("validation.codeSixDigits")),
+      }),
+    [t],
+  );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -73,10 +79,10 @@ function VerifyOTPContent() {
 
       if (completeSignUp.status === "complete") {
         await setActive({ session: completeSignUp.createdSessionId });
-        toast.success("Email verified successfully! Welcome to CVCraft.");
+        toast.success(t("verify.success"));
         router.push("/");
       } else {
-        setError("Verification incomplete. Please try again.");
+        setError(t("verify.incomplete"));
       }
     } catch (error) {
       setError(getClerkErrorMessage(error));
@@ -93,10 +99,10 @@ function VerifyOTPContent() {
 
     try {
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
-      toast.success("A new verification code has been sent to your email.");
+      toast.success(t("verify.resendSuccess"));
       setResendCooldown(60);
     } catch (error) {
-      handleClerkError(error, { fallbackMessage: "Failed to resend code" });
+      handleClerkError(error, { fallbackMessage: t("verify.resendFailed") });
     } finally {
       setIsResending(false);
     }
@@ -129,13 +135,11 @@ function VerifyOTPContent() {
           <Mail className="text-primary h-8 w-8" />
         </motion.div>
         <h2 className="font-display mb-2 text-3xl font-bold">
-          Verify Your Email
+          {t("verify.title")}
         </h2>
-        <p className="text-muted-foreground">
-          We&apos;ve sent a 6-digit verification code to
-        </p>
+        <p className="text-muted-foreground">{t("verify.sentTo")}</p>
         <p className="text-foreground mt-1 font-medium">
-          {email || "your email"}
+          {email || t("verify.emailFallback")}
         </p>
       </motion.div>
 
@@ -202,11 +206,11 @@ function VerifyOTPContent() {
               {isLoading ? (
                 <>
                   <Loader2 className="h-5 w-5 animate-spin" />
-                  Verifying...
+                  {t("verify.verifying")}
                 </>
               ) : (
                 <>
-                  Verify Email
+                  {t("verify.submit")}
                   <ArrowRight className="h-5 w-5" />
                 </>
               )}
@@ -221,7 +225,7 @@ function VerifyOTPContent() {
             transition={{ delay: 0.4 }}
           >
             <div className="text-muted-foreground text-sm">
-              <p>Didn&apos;t receive the code?</p>{" "}
+              <p>{t("verify.didNotReceive")}</p>{" "}
               <Button
                 variant={"ghost"}
                 type="button"
@@ -240,8 +244,8 @@ function VerifyOTPContent() {
                   `}
                 />
                 {resendCooldown > 0
-                  ? `Resend in ${resendCooldown}s`
-                  : "Resend code"}
+                  ? t("verify.resendIn", { seconds: resendCooldown })
+                  : t("verify.resendCode")}
               </Button>
             </div>
           </motion.div>

@@ -19,6 +19,7 @@ import {
 import { cn } from "@shared/ui/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { Mic, Sparkles } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React, { useCallback, useState } from "react";
 
 import { InterviewActive } from "@/components/builder-screen/interview/interview-active";
@@ -33,19 +34,19 @@ interface InterviewDialogProps {
   onOpenChange: (open: boolean) => void;
 }
 
-const stateDescriptions: Record<InterviewState, string> = {
-  idle: "Set up your mock interview with AI.",
-  setup: "Set up your mock interview with AI.",
-  connecting: "Connecting to interview session...",
-  active: "Interview in progress — speak clearly into your microphone.",
-  evaluating: "AI is evaluating your performance...",
-  result: "Here's your interview performance analysis.",
-  error: "Something went wrong. Please try again.",
-};
-
 const InterviewDialog = ({ open, onOpenChange }: InterviewDialogProps) => {
+  const t = useTranslations("Interview");
   const interview = useInterview();
   const [showCloseConfirm, setShowCloseConfirm] = useState(false);
+  const stateDescriptions: Record<InterviewState, string> = {
+    idle: t("dialog.states.setup"),
+    setup: t("dialog.states.setup"),
+    connecting: t("dialog.states.connecting"),
+    active: t("dialog.states.active"),
+    evaluating: t("dialog.states.evaluating"),
+    result: t("dialog.states.result"),
+    error: t("dialog.states.error"),
+  };
 
   const handleOpenChange = useCallback(
     (nextOpen: boolean) => {
@@ -110,7 +111,7 @@ const InterviewDialog = ({ open, onOpenChange }: InterviewDialogProps) => {
           <div className="shrink-0 space-y-2">
             <DialogTitle className="flex items-center gap-2">
               <Mic size={20} className="text-primary" />
-              Mock Interview
+              {t("dialog.title")}
               <Sparkles size={16} className="text-amber-500" />
             </DialogTitle>
             <DialogDescription>
@@ -144,7 +145,7 @@ const InterviewDialog = ({ open, onOpenChange }: InterviewDialogProps) => {
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <InterviewLoading text="Connecting to AI interviewer..." />
+                  <InterviewLoading text={t("loading.connecting")} />
                 </motion.div>
               )}
 
@@ -177,7 +178,7 @@ const InterviewDialog = ({ open, onOpenChange }: InterviewDialogProps) => {
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <InterviewLoading text="AI is evaluating your interview..." />
+                  <InterviewLoading text={t("loading.evaluating")} />
                 </motion.div>
               )}
 
@@ -204,16 +205,15 @@ const InterviewDialog = ({ open, onOpenChange }: InterviewDialogProps) => {
       <AlertDialog open={showCloseConfirm} onOpenChange={setShowCloseConfirm}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>End Interview?</AlertDialogTitle>
+            <AlertDialogTitle>{t("dialog.endTitle")}</AlertDialogTitle>
             <AlertDialogDescription>
-              Your interview is still in progress. Closing will end the session
-              and you will lose your current progress.
+              {t("dialog.endDescription")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Continue Interview</AlertDialogCancel>
+            <AlertDialogCancel>{t("dialog.continue")}</AlertDialogCancel>
             <AlertDialogAction onClick={handleConfirmClose}>
-              End Interview
+              {t("dialog.end")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

@@ -37,6 +37,7 @@ import {
   Plus,
   Trash2,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 import BuilderNavigation from "@/components/builder-screen/builder-navigation";
@@ -81,6 +82,7 @@ function SortableExperienceItem({
     transition,
     isDragging,
   } = useSortable({ id: item.id });
+  const t = useTranslations("BuilderForms");
 
   const style = {
     transform: CSS.Translate.toString(transform),
@@ -153,7 +155,7 @@ function SortableExperienceItem({
             <Input
               value={item.company}
               onChange={(e) => onUpdate(item.id, "company", e.target.value)}
-              placeholder="Company Name"
+              placeholder={t("experience.placeholders.company")}
               className={cn(
                 "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
                 "focus:bg-white focus:ring-2 focus:ring-orange-500/20",
@@ -172,7 +174,7 @@ function SortableExperienceItem({
             <Input
               value={item.position}
               onChange={(e) => onUpdate(item.id, "position", e.target.value)}
-              placeholder="Job Title / Position"
+              placeholder={t("experience.placeholders.position")}
               className={cn(
                 "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
                 "focus:bg-white focus:ring-2 focus:ring-orange-500/20",
@@ -196,7 +198,7 @@ function SortableExperienceItem({
         >
           <div>
             <Label className="mb-1.5 block text-xs text-slate-500">
-              Start Date
+              {t("fields.startDate")}
             </Label>
             <DatePicker
               date={safeDate(item.startDate)}
@@ -211,20 +213,20 @@ function SortableExperienceItem({
           </div>
           <div>
             <Label className="mb-1.5 block text-xs text-slate-500">
-              End Date (leave empty if current)
+              {t("experience.endDate")}
             </Label>
             <DatePicker
               date={safeDate(item.endDate)}
               setDate={(date) =>
                 onUpdate(item.id, "endDate", date ? date.toISOString() : null)
               }
-              placeholder="Present"
+              placeholder={t("fields.present")}
             />
           </div>
         </div>
         <div>
           <Label className="mb-1.5 block text-xs text-slate-500">
-            Description & Achievements
+            {t("experience.descriptionAchievements")}
           </Label>
           <Editor
             className="[&_.ql-editor]:min-h-[100px]"
@@ -239,6 +241,7 @@ function SortableExperienceItem({
 }
 
 const ExperienceForm = ({ onNext, onBack }: ExperienceFormProps) => {
+  const t = useTranslations("BuilderForms");
   const dispatch = useAppDispatch();
   const { resume } = useSyncResume();
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -268,11 +271,11 @@ const ExperienceForm = ({ onNext, onBack }: ExperienceFormProps) => {
     experienceItems.forEach((item) => {
       const itemErrors: { company?: string; position?: string } = {};
       if (!item.company.trim()) {
-        itemErrors.company = "Company name is required";
+        itemErrors.company = t("experience.validation.companyRequired");
         isValid = false;
       }
       if (!item.position.trim()) {
-        itemErrors.position = "Job title is required";
+        itemErrors.position = t("experience.validation.positionRequired");
         isValid = false;
       }
       if (Object.keys(itemErrors).length > 0) {
@@ -374,7 +377,7 @@ const ExperienceForm = ({ onNext, onBack }: ExperienceFormProps) => {
                     dark:text-white
                   `}
                 >
-                  Work Experience
+                  {t("experience.title")}
                 </span>
                 <span
                   className={`
@@ -382,7 +385,7 @@ const ExperienceForm = ({ onNext, onBack }: ExperienceFormProps) => {
                     dark:text-slate-400
                   `}
                 >
-                  Your professional journey
+                  {t("experience.subtitle")}
                 </span>
               </div>
             </CardTitle>
@@ -404,7 +407,7 @@ const ExperienceForm = ({ onNext, onBack }: ExperienceFormProps) => {
                       uppercase
                     `}
                   >
-                    Work History
+                    {t("experience.history")}
                   </Label>
                   {experienceItems.length > 0 && (
                     <span
@@ -434,10 +437,10 @@ const ExperienceForm = ({ onNext, onBack }: ExperienceFormProps) => {
                   >
                     <Briefcase className="mb-2 h-8 w-8 text-slate-300" />
                     <p className="text-sm font-medium text-slate-500">
-                      No work experience added yet
+                      {t("experience.emptyTitle")}
                     </p>
                     <p className="mt-1 text-xs text-slate-400">
-                      Add your jobs, internships, and freelance work
+                      {t("experience.emptyDescription")}
                     </p>
                   </div>
                 ) : (
@@ -493,7 +496,7 @@ const ExperienceForm = ({ onNext, onBack }: ExperienceFormProps) => {
                 type="button"
               >
                 <Plus className="h-3.5 w-3.5" />
-                Add Experience
+                {t("experience.add")}
               </Button>
             </motion.div>
 

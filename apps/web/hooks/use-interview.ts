@@ -2,6 +2,7 @@
 
 import { useSession } from "@clerk/nextjs";
 import { toast } from "@shared/ui/components/sonner";
+import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { AUDIO_CONFIG } from "@/constants/interview.constant";
@@ -36,6 +37,7 @@ export interface UseInterviewReturn {
 }
 
 export function useInterview(): UseInterviewReturn {
+  const t = useTranslations("Interview");
   const { session: clerkSession } = useSession();
 
   // ─── State ────────────────────────────────────────────
@@ -240,12 +242,10 @@ export function useInterview(): UseInterviewReturn {
 
       return true;
     } catch {
-      toast.error(
-        "Microphone access denied. Please allow microphone access to start the interview.",
-      );
+      toast.error(t("errors.microphoneDenied"));
       return false;
     }
-  }, []);
+  }, [t]);
 
   const stopAudioCapture = useCallback(() => {
     processorRef.current?.disconnect();
@@ -308,7 +308,7 @@ export function useInterview(): UseInterviewReturn {
   const startInterview = useCallback(
     async (config: InterviewConfig) => {
       if (!clerkSession) {
-        toast.error("Please sign in to start an interview.");
+        toast.error(t("errors.signInRequired"));
         return;
       }
 
@@ -350,7 +350,7 @@ export function useInterview(): UseInterviewReturn {
         });
 
         socket.on("connect_error", () => {
-          setError("Failed to connect. Please try again.");
+          setError(t("errors.connectFailed"));
           setState("error");
           cleanup();
         });
@@ -406,15 +406,14 @@ export function useInterview(): UseInterviewReturn {
         });
 
         service.onSessionLost(({ message }) => {
-          toast.error(
-            message || "Interview session was lost. Please try again.",
-          );
-          setError(message);
+          const fallbackMessage = t("errors.sessionLost");
+          toast.error(message || fallbackMessage);
+          setError(message || fallbackMessage);
           setState("error");
           cleanup();
         });
       } catch {
-        setError("Failed to start interview. Please try again.");
+        setError(t("errors.startFailed"));
         setState("error");
         cleanup();
       }
@@ -427,6 +426,7 @@ export function useInterview(): UseInterviewReturn {
       stopAudioCapture,
       stopTimer,
       cleanup,
+      t,
     ],
   );
 

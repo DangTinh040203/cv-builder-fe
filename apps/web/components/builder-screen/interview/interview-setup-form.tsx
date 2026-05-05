@@ -30,6 +30,7 @@ import {
   Users,
   Volume2,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 
 import {
@@ -52,21 +53,21 @@ import { type InterviewConfig, InterviewType } from "@/types/interview.type";
 const INTERVIEW_TYPE_CARDS = [
   {
     value: InterviewType.ALL,
-    label: "All (Mixed)",
+    labelKey: "setup.types.all.label",
     icon: Shuffle,
-    description: "Technical & behavioral",
+    descriptionKey: "setup.types.all.description",
   },
   {
     value: InterviewType.BEHAVIORAL,
-    label: "Behavioral",
+    labelKey: "setup.types.behavioral.label",
     icon: Users,
-    description: "STAR method questions",
+    descriptionKey: "setup.types.behavioral.description",
   },
   {
     value: InterviewType.TECHNICAL,
-    label: "Technical",
+    labelKey: "setup.types.technical.label",
     icon: Code,
-    description: "System design & coding",
+    descriptionKey: "setup.types.technical.description",
   },
 ] as const;
 
@@ -81,6 +82,7 @@ export const InterviewSetupForm = ({
   error,
   onRetry,
 }: InterviewSetupFormProps) => {
+  const t = useTranslations("Interview");
   const [jdText, setJdText] = useState("");
   const [questionCount, setQuestionCount] = useState(QUESTION_COUNT_DEFAULT);
   const [interviewType, setInterviewType] = useState<InterviewType>(
@@ -152,7 +154,7 @@ export const InterviewSetupForm = ({
                 `}
                 onClick={onRetry}
               >
-                Try again
+                {t("setup.tryAgain")}
               </Button>
             </div>
           </div>
@@ -160,16 +162,18 @@ export const InterviewSetupForm = ({
 
         {/* Job Description */}
         <div className="space-y-1.5">
-          <Label className="text-sm font-medium">Job Description</Label>
+          <Label className="text-sm font-medium">
+            {t("setup.jobDescription")}
+          </Label>
           <Textarea
             className="scrollbar-thin h-32 resize-none overflow-y-auto text-sm"
-            placeholder="Paste the job description here..."
+            placeholder={t("setup.jobDescriptionPlaceholder")}
             value={jdText}
             onChange={(e) => setJdText(e.target.value)}
             disabled={isLoading}
           />
           <p className="text-muted-foreground text-xs">
-            The AI will tailor questions based on this JD and your resume.
+            {t("setup.jobDescriptionHelp")}
           </p>
         </div>
 
@@ -177,7 +181,9 @@ export const InterviewSetupForm = ({
 
         {/* Interview Type — Card Selection */}
         <div className="space-y-2">
-          <Label className="text-sm font-medium">Interview Type</Label>
+          <Label className="text-sm font-medium">
+            {t("setup.interviewType")}
+          </Label>
           <div className="grid grid-cols-3 gap-2">
             {INTERVIEW_TYPE_CARDS.map((card) => {
               const Icon = card.icon;
@@ -206,7 +212,9 @@ export const InterviewSetupForm = ({
                       isSelected ? "text-primary" : "text-muted-foreground",
                     )}
                   />
-                  <span className="text-xs font-semibold">{card.label}</span>
+                  <span className="text-xs font-semibold">
+                    {t(card.labelKey)}
+                  </span>
                   <span
                     className={cn(
                       "text-[10px] leading-tight",
@@ -215,7 +223,7 @@ export const InterviewSetupForm = ({
                         : "text-muted-foreground/70",
                     )}
                   >
-                    {card.description}
+                    {t(card.descriptionKey)}
                   </span>
                 </button>
               );
@@ -228,7 +236,9 @@ export const InterviewSetupForm = ({
           {/* Number of Questions */}
           <div className="space-y-2.5">
             <div className="flex items-center justify-between">
-              <Label className="text-sm font-medium">Questions</Label>
+              <Label className="text-sm font-medium">
+                {t("setup.questions")}
+              </Label>
               <span
                 className={`
                   bg-primary/10 text-primary rounded-full px-2 py-0.5 text-xs
@@ -262,13 +272,15 @@ export const InterviewSetupForm = ({
           <div className="space-y-2.5">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1">
-                <Label className="text-sm font-medium">Speed</Label>
+                <Label className="text-sm font-medium">
+                  {t("setup.speed")}
+                </Label>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Info size={12} className="text-muted-foreground" />
                   </TooltipTrigger>
                   <TooltipContent side="top" className="max-w-52 text-xs">
-                    Controls how fast the AI interviewer speaks.
+                    {t("setup.speedTooltip")}
                   </TooltipContent>
                 </Tooltip>
               </div>
@@ -296,8 +308,8 @@ export const InterviewSetupForm = ({
                 text-muted-foreground flex justify-between text-[10px]
               `}
             >
-              <span>Slow</span>
-              <span>Fast</span>
+              <span>{t("setup.slow")}</span>
+              <span>{t("setup.fast")}</span>
             </div>
           </div>
         </div>
@@ -310,7 +322,9 @@ export const InterviewSetupForm = ({
           <div className="space-y-1.5">
             <div className="flex items-center gap-1.5">
               <Globe size={14} className="text-muted-foreground" />
-              <Label className="text-sm font-medium">Language</Label>
+              <Label className="text-sm font-medium">
+                {t("setup.language")}
+              </Label>
             </div>
             <Select
               value={language}
@@ -323,7 +337,7 @@ export const InterviewSetupForm = ({
                   h-9 w-full text-sm
                 `}
               >
-                <SelectValue placeholder="Select language" />
+                <SelectValue placeholder={t("setup.selectLanguage")} />
               </SelectTrigger>
               <SelectContent align="start" side="bottom">
                 {LANGUAGE_OPTIONS.map((option) => (
@@ -332,7 +346,7 @@ export const InterviewSetupForm = ({
                     value={option.value}
                     className="focus:bg-primary/10 focus:text-primary"
                   >
-                    {option.label}
+                    {t(`setup.languages.${option.value}`)}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -343,7 +357,7 @@ export const InterviewSetupForm = ({
           <div className="space-y-1.5">
             <div className="flex items-center gap-1.5">
               <Volume2 size={14} className="text-muted-foreground" />
-              <Label className="text-sm font-medium">Voice</Label>
+              <Label className="text-sm font-medium">{t("setup.voice")}</Label>
             </div>
             <Select
               value={voiceName}
@@ -356,7 +370,7 @@ export const InterviewSetupForm = ({
                   h-9 w-full text-sm
                 `}
               >
-                <SelectValue placeholder="Select voice" />
+                <SelectValue placeholder={t("setup.selectVoice")} />
               </SelectTrigger>
               <SelectContent align="start" className="max-h-40">
                 {VOICE_OPTIONS.map((option) => (
@@ -365,7 +379,7 @@ export const InterviewSetupForm = ({
                     value={option.value}
                     className="focus:bg-primary/10 focus:text-primary"
                   >
-                    {option.label}
+                    {t(`setup.voices.${option.value}`)}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -387,10 +401,10 @@ export const InterviewSetupForm = ({
               <Mic className="mr-2 h-4 w-4" />
             )}
             {isSyncing
-              ? "Saving Resume..."
+              ? t("setup.savingResume")
               : isStarting
-                ? "Starting..."
-                : "Start Interview"}
+                ? t("setup.starting")
+                : t("setup.start")}
           </Button>
         </div>
       </div>

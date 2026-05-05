@@ -6,6 +6,7 @@ import { cn } from "@shared/ui/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import React, { useCallback, useEffect, useRef } from "react";
 
 import EducationForm from "@/components/builder-screen/forms/education-form";
@@ -34,6 +35,7 @@ import {
 import { useAppDispatch, useAppSelector } from "@/stores/store";
 
 const BuilderScreen = () => {
+  const t = useTranslations("Builder");
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentStep = searchParams.get("step") as Section;
@@ -74,12 +76,12 @@ const BuilderScreen = () => {
 
   useEffect(() => {
     if (!templateSelected) {
-      toast.warning("Please select a template to continue", {
+      toast.warning(t("selectTemplateWarning"), {
         id: "no-template-selected",
       });
       router.push("/templates");
     }
-  }, [templateSelected, router]);
+  }, [templateSelected, router, t]);
 
   useEffect(() => {
     if (!isLoaded) return; // Wait until Clerk auth is fully loaded

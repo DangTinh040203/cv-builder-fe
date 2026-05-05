@@ -38,6 +38,7 @@ import { Label } from "@shared/ui/components/label";
 import { cn } from "@shared/ui/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { GripVertical, Plus, Trash2, User } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -71,6 +72,7 @@ function SortableContactItem({
     transition,
     isDragging,
   } = useSortable({ id: item.id });
+  const t = useTranslations("BuilderForms");
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -109,7 +111,7 @@ function SortableContactItem({
       <Input
         value={item.label}
         onChange={(e) => onUpdate(item.id, "label", e.target.value)}
-        placeholder="Label (e.g. Email)"
+        placeholder={t("personal.placeholders.contactLabel")}
         className={cn(
           `
             h-9 w-32 shrink-0 rounded-md border-0 bg-slate-50 text-sm
@@ -124,7 +126,7 @@ function SortableContactItem({
       <Input
         value={item.value}
         onChange={(e) => onUpdate(item.id, "value", e.target.value)}
-        placeholder="Value"
+        placeholder={t("personal.placeholders.contactValue")}
         className={cn(
           "h-9 flex-1 rounded-md border-0 bg-slate-50 text-sm",
           "focus:bg-white focus:ring-2 focus:ring-blue-500/20",
@@ -153,6 +155,7 @@ function SortableContactItem({
 }
 
 const PersonalForm = ({ onNext, onBack }: PersonalFormProps) => {
+  const t = useTranslations("BuilderForms");
   const dispatch = useAppDispatch();
   const { resume } = useSyncResume();
   const [isVisible, setIsVisible] = useState(false);
@@ -271,7 +274,7 @@ const PersonalForm = ({ onNext, onBack }: PersonalFormProps) => {
                     dark:text-white
                   `}
                 >
-                  Personal Information
+                  {t("personal.title")}
                 </span>
                 <span
                   className={`
@@ -279,7 +282,7 @@ const PersonalForm = ({ onNext, onBack }: PersonalFormProps) => {
                     dark:text-slate-400
                   `}
                 >
-                  Tell employers about yourself
+                  {t("personal.subtitle")}
                 </span>
               </div>
             </CardTitle>
@@ -305,7 +308,7 @@ const PersonalForm = ({ onNext, onBack }: PersonalFormProps) => {
                         uppercase
                       `}
                     >
-                      Basic Details
+                      {t("personal.basicDetails")}
                     </span>
                   </div>
                   <div
@@ -325,11 +328,11 @@ const PersonalForm = ({ onNext, onBack }: PersonalFormProps) => {
                               dark:text-slate-300
                             `}
                           >
-                            Your Name
+                            {t("personal.nameLabel")}
                           </FormLabel>
                           <FormControl>
                             <Input
-                              placeholder="John Doe"
+                              placeholder={t("personal.placeholders.name")}
                               className={cn(
                                 "h-11 rounded-lg border-slate-200 bg-slate-50",
                                 "transition-all duration-200",
@@ -363,11 +366,11 @@ const PersonalForm = ({ onNext, onBack }: PersonalFormProps) => {
                               dark:text-slate-300
                             `}
                           >
-                            Job Title / Headline
+                            {t("personal.headlineLabel")}
                           </FormLabel>
                           <FormControl>
                             <Input
-                              placeholder="Senior Software Engineer"
+                              placeholder={t("personal.placeholders.headline")}
                               className={cn(
                                 "h-11 rounded-lg border-slate-200 bg-slate-50",
                                 "transition-all duration-200",
@@ -409,7 +412,7 @@ const PersonalForm = ({ onNext, onBack }: PersonalFormProps) => {
                           uppercase
                         `}
                       >
-                        Contact Information
+                        {t("personal.contactInformation")}
                       </Label>
                       {contactItems.length > 0 && (
                         <span
@@ -439,7 +442,7 @@ const PersonalForm = ({ onNext, onBack }: PersonalFormProps) => {
                       type="button"
                     >
                       <Plus className="h-3.5 w-3.5" />
-                      Add
+                      {t("actions.add")}
                     </Button>
                   </div>
 
@@ -457,10 +460,10 @@ const PersonalForm = ({ onNext, onBack }: PersonalFormProps) => {
                         `}
                       >
                         <p className="text-sm font-medium text-slate-500">
-                          No contact details yet
+                          {t("personal.emptyTitle")}
                         </p>
                         <p className="mt-1 text-xs text-slate-400">
-                          Add your email, phone, location, etc.
+                          {t("personal.emptyDescription")}
                         </p>
                       </div>
                     ) : (

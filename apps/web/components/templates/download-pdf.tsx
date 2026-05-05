@@ -6,6 +6,7 @@ import { Button } from "@shared/ui/components/button";
 import { toast } from "@shared/ui/components/sonner";
 import dayjs from "dayjs";
 import { Download } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import slugify from "slugify";
 
@@ -27,6 +28,7 @@ interface DownloadPdfProps {
 }
 
 const DownloadPdf: React.FC<DownloadPdfProps> = ({ resume }) => {
+  const t = useTranslations("Builder");
   const [isProcessing, setIsProcessing] = useState(false);
   const [shouldRender, setShouldRender] = useState(false);
   const { isHTML, setHtml } = usePDFComponentsAreHTML();
@@ -36,7 +38,7 @@ const DownloadPdf: React.FC<DownloadPdfProps> = ({ resume }) => {
 
   const handleDownload = async () => {
     if (!templateSelected) {
-      toast.error("Please select a template");
+      toast.error(t("downloadPdf.selectTemplate"));
       return;
     }
 
@@ -77,7 +79,7 @@ const DownloadPdf: React.FC<DownloadPdfProps> = ({ resume }) => {
 
         URL.revokeObjectURL(blobUrl);
       } catch {
-        toast.error("Failed to download PDF");
+        toast.error(t("downloadPdf.failed"));
       } finally {
         setHtml(true);
         setIsProcessing(false);
@@ -86,7 +88,7 @@ const DownloadPdf: React.FC<DownloadPdfProps> = ({ resume }) => {
     };
 
     void generate();
-  }, [shouldRender, templateFormat, setHtml, resume, templateSelected]);
+  }, [shouldRender, templateFormat, setHtml, resume, templateSelected, t]);
 
   return (
     <Button
@@ -99,7 +101,7 @@ const DownloadPdf: React.FC<DownloadPdfProps> = ({ resume }) => {
       `}
     >
       <Download className="h-4 w-4" />
-      Export PDF
+      {t("downloadPdf.export")}
     </Button>
   );
 };
