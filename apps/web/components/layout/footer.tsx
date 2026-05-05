@@ -1,11 +1,24 @@
 "use client";
 import { m } from "framer-motion";
 import { FileText } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 import { fadeInUp, staggerContainer } from "@/styles/animation";
 
 const Footer = () => {
+  const t = useTranslations("Footer");
+
+  const productLinks = [0, 1, 2, 3].map((i) => t(`productLinks.${i}`));
+  const companyLinks = [0, 1, 2, 3].map((i) => t(`companyLinks.${i}`));
+  const legalLinks = [0, 1, 2].map((i) => t(`legalLinks.${i}`));
+
+  const sections = [
+    { title: t("product"), links: productLinks },
+    { title: t("company"), links: companyLinks },
+    { title: t("legal"), links: legalLinks },
+  ];
+
   return (
     <footer className="border-border bg-muted/30 border-t px-4 py-12">
       <div className="container mx-auto">
@@ -39,25 +52,10 @@ const Footer = () => {
               </m.div>
               <span className="font-display text-xl font-bold">CVCraft</span>
             </div>
-            <p className="text-muted-foreground text-sm">
-              The AI-powered CV builder that helps you land your dream job.
-            </p>
+            <p className="text-muted-foreground text-sm">{t("tagline")}</p>
           </m.div>
 
-          {[
-            {
-              title: "Product",
-              links: ["Templates", "CV Builder", "Mock Interviews", "Pricing"],
-            },
-            {
-              title: "Company",
-              links: ["About", "Blog", "Careers", "Contact"],
-            },
-            {
-              title: "Legal",
-              links: ["Privacy Policy", "Terms of Service", "Cookie Policy"],
-            },
-          ].map((section) => (
+          {sections.map((section) => (
             <m.div key={section.title} variants={fadeInUp}>
               <h4 className="mb-4 font-semibold">{section.title}</h4>
               <ul className="space-y-2">
@@ -89,7 +87,7 @@ const Footer = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
         >
-          © 2026 CVCraft - Cao Dang Tinh. All rights reserved.
+          {t("copyright")}
         </m.div>
       </div>
     </footer>

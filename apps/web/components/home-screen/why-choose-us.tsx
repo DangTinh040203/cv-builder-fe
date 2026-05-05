@@ -2,6 +2,7 @@
 import { CardContent } from "@shared/ui/components/card";
 import { m } from "framer-motion";
 import { Award, Clock, Shield, Target, TrendingUp, Zap } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 import BlurText from "@/components/common/blur-text";
@@ -9,44 +10,12 @@ import ShinyText from "@/components/common/shiny-text";
 import SpotlightCard from "@/components/common/spotlight-card";
 import { fadeInUp, staggerContainer } from "@/styles/animation";
 
-const whyChooseUs = [
-  {
-    icon: Zap,
-    title: "Lightning Fast",
-    description:
-      "Create a professional CV in under 10 minutes with our intuitive builder.",
-  },
-  {
-    icon: Shield,
-    title: "ATS-Friendly",
-    description:
-      "All templates are optimized to pass Applicant Tracking Systems.",
-  },
-  {
-    icon: Clock,
-    title: "Save Time",
-    description:
-      "AI writes compelling content so you can focus on what matters.",
-  },
-  {
-    icon: Target,
-    title: "Job-Targeted",
-    description:
-      "Tailor your CV to specific job descriptions for higher success rates.",
-  },
-  {
-    icon: Award,
-    title: "Expert Approved",
-    description: "Templates designed by hiring managers and career coaches.",
-  },
-  {
-    icon: TrendingUp,
-    title: "Proven Results",
-    description: "95% of users report getting more interview callbacks.",
-  },
-];
+const whyIcons = [Zap, Shield, Clock, Target, Award, TrendingUp];
+const whyIndices = ["0", "1", "2", "3", "4", "5"] as const;
 
 const WhyChooseUsSection = () => {
+  const t = useTranslations("WhyChooseUs");
+
   return (
     <section
       className={`
@@ -88,13 +57,13 @@ const WhyChooseUsSection = () => {
             `}
           >
             <ShinyText
-              text="The CVCraft Edge"
+              text={t("badge")}
               speed={3}
               className="text-sm font-semibold tracking-wider uppercase"
             />
           </m.div>
           <BlurText
-            text="Why Choose CVCraft?"
+            text={t("title")}
             delay={80}
             animateBy="words"
             direction="top"
@@ -110,8 +79,7 @@ const WhyChooseUsSection = () => {
               md:text-lg
             `}
           >
-            We combined recruitment expertise with cutting-edge AI to build the
-            ultimate career growth toolkit.
+            {t("subtitle")}
           </p>
         </m.div>
 
@@ -126,59 +94,62 @@ const WhyChooseUsSection = () => {
           whileInView="visible"
           viewport={{ once: true }}
         >
-          {whyChooseUs.map((item) => (
-            <m.div key={item.title} variants={fadeInUp}>
-              <SpotlightCard
-                className={`
-                  border-border/50 group bg-card/40 h-full rounded-3xl
-                  backdrop-blur-sm transition-all duration-500
-                  hover:border-primary/20 hover:shadow-2xl
-                `}
-                spotlightColor="rgba(var(--primary-rgb, 124 58 237) / 0.12)"
-              >
-                <CardContent
+          {whyIndices.map((idx, index) => {
+            const Icon = whyIcons[index]!;
+            return (
+              <m.div key={idx} variants={fadeInUp}>
+                <SpotlightCard
                   className={`
-                    relative flex flex-col items-center p-8 text-center
+                    border-border/50 group bg-card/40 h-full rounded-3xl
+                    backdrop-blur-sm transition-all duration-500
+                    hover:border-primary/20 hover:shadow-2xl
                   `}
+                  spotlightColor="rgba(var(--primary-rgb, 124 58 237) / 0.12)"
                 >
-                  <m.div
+                  <CardContent
                     className={`
-                      from-primary/5 absolute inset-0 bg-linear-to-br
-                      to-transparent opacity-0 transition-opacity duration-500
-                      group-hover:opacity-100
-                    `}
-                  />
-                  <m.div
-                    className={`
-                      bg-primary/10 text-primary relative z-10 mb-8 flex h-16
-                      w-16 items-center justify-center rounded-2xl shadow-inner
-                      transition-transform duration-500
-                      group-hover:scale-110 group-hover:rotate-3
-                    `}
-                    whileHover={{ scale: 1.15 }}
-                  >
-                    <item.icon className="h-8 w-8" />
-                  </m.div>
-                  <h3
-                    className={`
-                      font-display relative z-10 mb-4 text-lg font-bold
-                      md:text-xl
+                      relative flex flex-col items-center p-8 text-center
                     `}
                   >
-                    {item.title}
-                  </h3>
-                  <p
-                    className={`
-                      text-muted-foreground relative z-10 text-base
-                      leading-relaxed
-                    `}
-                  >
-                    {item.description}
-                  </p>
-                </CardContent>
-              </SpotlightCard>
-            </m.div>
-          ))}
+                    <m.div
+                      className={`
+                        from-primary/5 absolute inset-0 bg-linear-to-br
+                        to-transparent opacity-0 transition-opacity duration-500
+                        group-hover:opacity-100
+                      `}
+                    />
+                    <m.div
+                      className={`
+                        bg-primary/10 text-primary relative z-10 mb-8 flex h-16
+                        w-16 items-center justify-center rounded-2xl
+                        shadow-inner transition-transform duration-500
+                        group-hover:scale-110 group-hover:rotate-3
+                      `}
+                      whileHover={{ scale: 1.15 }}
+                    >
+                      <Icon className="h-8 w-8" />
+                    </m.div>
+                    <h3
+                      className={`
+                        font-display relative z-10 mb-4 text-lg font-bold
+                        md:text-xl
+                      `}
+                    >
+                      {t(`items.${idx}.title`)}
+                    </h3>
+                    <p
+                      className={`
+                        text-muted-foreground relative z-10 text-base
+                        leading-relaxed
+                      `}
+                    >
+                      {t(`items.${idx}.description`)}
+                    </p>
+                  </CardContent>
+                </SpotlightCard>
+              </m.div>
+            );
+          })}
         </m.div>
       </div>
     </section>

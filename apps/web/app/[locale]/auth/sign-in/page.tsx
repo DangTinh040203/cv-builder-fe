@@ -15,7 +15,6 @@ import { Separator } from "@shared/ui/components/separator";
 import { toast } from "@shared/ui/components/sonner";
 import { motion } from "framer-motion";
 import { ArrowRight, Eye, EyeOff, Loader2 } from "lucide-react";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
 import React from "react";
@@ -23,6 +22,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import SSOButtons from "@/components/auth-screens/sso-buttons";
+import { Link } from "@/i18n/navigation";
 import { handleClerkError } from "@/libs/clerk-toast";
 import {
   buttonScaleVariants,

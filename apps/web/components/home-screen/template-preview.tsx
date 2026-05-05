@@ -2,19 +2,34 @@
 import { Button } from "@shared/ui/components/button";
 import { m } from "framer-motion";
 import { ChevronRight } from "lucide-react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import React from "react";
 
+import { Link } from "@/i18n/navigation";
 import { fadeInUp, scaleIn, staggerContainer } from "@/styles/animation";
 
-const templateCategories = [
-  { name: "Professional", count: 4, color: "bg-primary/10 text-primary" },
-  { name: "Modern", count: 2, color: "bg-secondary/10 text-primary" },
-  { name: "Creative", count: 2, color: "bg-destructive/10 text-destructive" },
-  { name: "Minimal", count: 2, color: "bg-muted text-muted-foreground" },
+const categoryKeys = [
+  {
+    key: "professional" as const,
+    count: 4,
+    color: "bg-primary/10 text-primary",
+  },
+  { key: "modern" as const, count: 2, color: "bg-secondary/10 text-primary" },
+  {
+    key: "creative" as const,
+    count: 2,
+    color: "bg-destructive/10 text-destructive",
+  },
+  {
+    key: "minimal" as const,
+    count: 2,
+    color: "bg-muted text-muted-foreground",
+  },
 ];
 
 const TemplatePreviewSection = () => {
+  const t = useTranslations("TemplatePreview");
+
   return (
     <section
       className={`
@@ -44,7 +59,7 @@ const TemplatePreviewSection = () => {
                 py-1.5 text-sm font-semibold tracking-wider uppercase
               `}
             >
-              Premium Designs
+              {t("badge")}
             </m.div>
             <h2
               className={`
@@ -52,8 +67,10 @@ const TemplatePreviewSection = () => {
                 md:text-5xl
               `}
             >
-              Choose from{" "}
-              <span className="gradient-text">10+ Professional</span> Templates
+              {t("titleBefore")}
+              {t("titleBefore") ? " " : ""}
+              <span className="gradient-text">{t("titleHighlight")}</span>{" "}
+              {t("titleAfter")}
             </h2>
             <p
               className={`
@@ -61,9 +78,7 @@ const TemplatePreviewSection = () => {
                 md:text-xl
               `}
             >
-              Our collection of high-performance templates is meticulously
-              crafted to meet the standards of top-tier companies and
-              recruitment agencies.
+              {t("description")}
             </p>
 
             <m.div
@@ -73,9 +88,9 @@ const TemplatePreviewSection = () => {
               whileInView="visible"
               viewport={{ once: true }}
             >
-              {templateCategories.map((cat) => (
+              {categoryKeys.map((cat) => (
                 <m.span
-                  key={cat.name}
+                  key={cat.key}
                   className={`
                     cursor-pointer rounded-xl px-5 py-2.5 text-sm font-bold
                     tracking-tight shadow-sm transition-all duration-300
@@ -89,7 +104,7 @@ const TemplatePreviewSection = () => {
                   }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  {cat.name}
+                  {t(`categories.${cat.key}`)}
                   <span className="ml-2 text-xs font-medium opacity-60">
                     ({cat.count})
                   </span>
@@ -110,7 +125,7 @@ const TemplatePreviewSection = () => {
                     lg:text-lg
                   `}
                 >
-                  Explore All Templates
+                  {t("explore")}
                   <ChevronRight
                     className={`
                       ml-2 h-5 w-5 transition-transform duration-300
@@ -235,7 +250,7 @@ const TemplatePreviewSection = () => {
                           uppercase
                         `}
                       >
-                        Preview Design
+                        {t("previewDesign")}
                       </div>
                     </div>
                   </div>

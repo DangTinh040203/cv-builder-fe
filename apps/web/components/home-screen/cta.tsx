@@ -2,12 +2,15 @@
 import { Button } from "@shared/ui/components/button";
 import { m } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 import BlurText from "@/components/common/blur-text";
+import { Link } from "@/i18n/navigation";
 
 const CTASection = () => {
+  const t = useTranslations("CTA");
+
   return (
     <section className="px-4 py-24 pb-32">
       <div className="container mx-auto">
@@ -24,7 +27,6 @@ const CTASection = () => {
           viewport={{ once: true }}
           transition={{ duration: 1, type: "spring", bounce: 0.3 }}
         >
-          {/* Animated background elements */}
           <div
             className={`
               absolute top-0 left-0 h-64 w-64 rounded-full bg-white/10 blur-3xl
@@ -57,10 +59,10 @@ const CTASection = () => {
                 uppercase backdrop-blur-md
               `}
             >
-              Take the next step
+              {t("badge")}
             </m.div>
             <BlurText
-              text="Ready to Land Your Dream Job?"
+              text={t("title")}
               delay={100}
               animateBy="words"
               direction="top"
@@ -82,8 +84,7 @@ const CTASection = () => {
               viewport={{ once: true }}
               transition={{ delay: 0.5 }}
             >
-              Join 10,000+ professionals who have already transformed their
-              careers with our AI-powered toolkit.
+              {t("description")}
             </m.p>
             <m.div
               initial={{ opacity: 0, y: 30 }}
@@ -109,7 +110,7 @@ const CTASection = () => {
                       md:text-xl
                     `}
                   >
-                    Get Started Free
+                    {t("button")}
                     <ArrowRight className="ml-3 h-6 w-6" />
                   </Button>
                 </m.div>

@@ -1,9 +1,12 @@
 "use client";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 const companies = ["Google", "Microsoft", "Amazon", "Meta", "Apple", "Netflix"];
 
 const Marquee = () => {
+  const t = useTranslations("Marquee");
+
   return (
     <section
       className={`
@@ -32,7 +35,7 @@ const Marquee = () => {
             tracking-[0.2em] uppercase opacity-70
           `}
         >
-          Trusted by professionals worldwide
+          {t("title")}
         </p>
 
         <div className="flex overflow-hidden">

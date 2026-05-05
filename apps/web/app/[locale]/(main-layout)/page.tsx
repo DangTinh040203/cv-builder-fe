@@ -1,8 +1,8 @@
 import dynamic from "next/dynamic";
+import { setRequestLocale } from "next-intl/server";
 
 import HeroSection from "@/components/home-screen/hero";
 
-// Lazy load below-the-fold sections to reduce initial JS bundle (~1,856 KiB savings)
 const Marquee = dynamic(() => import("@/components/home-screen/marquee"));
 const FeaturesSection = dynamic(
   () => import("@/components/home-screen/features-section"),
@@ -26,7 +26,14 @@ const TestimonialsSection = dynamic(
 const FAQSection = dynamic(() => import("@/components/home-screen/faq"));
 const CTASection = dynamic(() => import("@/components/home-screen/cta"));
 
-export default function Page() {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   return (
     <>
       <HeroSection />

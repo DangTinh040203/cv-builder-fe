@@ -2,23 +2,19 @@
 import { Button } from "@shared/ui/components/button";
 import { m } from "framer-motion";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 import BlurText from "@/components/common/blur-text";
 import ShinyText from "@/components/common/shiny-text";
+import { Link } from "@/i18n/navigation";
 import { fadeInLeft, staggerContainer } from "@/styles/animation";
 
-const benefits = [
-  "ATS-optimized formatting",
-  "Real-time preview",
-  "Export to PDF & Word",
-  "Job-specific tailoring",
-  "Grammar & spelling check",
-  "Unlimited revisions",
-];
+const benefitIndices = ["0", "1", "2", "3", "4", "5"] as const;
 
 const BenefitsSection = () => {
+  const t = useTranslations("Benefits");
+
   return (
     <section
       className={`
@@ -49,13 +45,13 @@ const BenefitsSection = () => {
               `}
             >
               <ShinyText
-                text="Built for Success"
+                text={t("badge")}
                 speed={3}
                 className="text-sm font-semibold tracking-wider uppercase"
               />
             </m.div>
             <BlurText
-              text="Stand Out from the Massive Competition"
+              text={t("title")}
               delay={80}
               animateBy="words"
               direction="top"
@@ -71,8 +67,7 @@ const BenefitsSection = () => {
                 md:text-xl
               `}
             >
-              Our CV builder is designed by industry experts to ensure your
-              profile gets the attention it deserves from modern hiring systems.
+              {t("description")}
             </p>
 
             <m.div
@@ -85,9 +80,9 @@ const BenefitsSection = () => {
               whileInView="visible"
               viewport={{ once: true }}
             >
-              {benefits.map((benefit, index) => (
+              {benefitIndices.map((idx, index) => (
                 <m.div
-                  key={benefit}
+                  key={idx}
                   className="group flex items-center gap-4"
                   variants={fadeInLeft}
                 >
@@ -114,7 +109,7 @@ const BenefitsSection = () => {
                       md:text-lg
                     `}
                   >
-                    {benefit}
+                    {t(`items.${idx}`)}
                   </span>
                 </m.div>
               ))}
@@ -133,7 +128,7 @@ const BenefitsSection = () => {
                     lg:text-lg
                   `}
                 >
-                  Get Started Now for Free
+                  {t("cta")}
                   <ArrowRight className="ml-3 h-5 w-5" />
                 </Button>
               </m.div>
@@ -260,7 +255,6 @@ const BenefitsSection = () => {
               </div>
             </m.div>
 
-            {/* Background decorative elements */}
             <div
               className={`
                 gradient-bg absolute -bottom-10 -left-10 -z-10 h-48 w-48

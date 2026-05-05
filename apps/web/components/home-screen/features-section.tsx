@@ -1,6 +1,7 @@
 "use client";
 import { m } from "framer-motion";
 import { FileText, MessageSquare, Sparkles } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 import BlurText from "@/components/common/blur-text";
@@ -8,28 +9,12 @@ import ShinyText from "@/components/common/shiny-text";
 import SpotlightCard from "@/components/common/spotlight-card";
 import { fadeInUp, staggerContainer } from "@/styles/animation";
 
-const features = [
-  {
-    icon: FileText,
-    title: "10 Professional Templates",
-    description:
-      "Choose from beautifully designed templates that catch recruiters' attention.",
-  },
-  {
-    icon: Sparkles,
-    title: "AI-Powered Writing",
-    description:
-      "Generate and refine your CV content with AI. Just paste a job description.",
-  },
-  {
-    icon: MessageSquare,
-    title: "Mock Interviews",
-    description:
-      "Practice with AI interviews tailored to your target role and industry.",
-  },
-];
+const featureKeys = ["templates", "ai", "interview"] as const;
+const icons = [FileText, Sparkles, MessageSquare];
 
 const FeaturesSection = () => {
+  const t = useTranslations("Features");
+
   return (
     <section
       className={`
@@ -56,13 +41,13 @@ const FeaturesSection = () => {
             `}
           >
             <ShinyText
-              text="Powerful Features"
+              text={t("badge")}
               speed={3}
               className="text-sm font-semibold tracking-wider uppercase"
             />
           </m.div>
           <BlurText
-            text="Everything You Need to Build a Winning Career"
+            text={t("title")}
             delay={80}
             animateBy="words"
             direction="top"
@@ -78,9 +63,7 @@ const FeaturesSection = () => {
               md:text-lg
             `}
           >
-            From professional templates to AI-powered content generation and
-            mock interviews, CVCraft provides the end-to-end toolkit for your
-            job search.
+            {t("description")}
           </p>
         </m.div>
 
@@ -94,75 +77,58 @@ const FeaturesSection = () => {
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
         >
-          {features.map((feature) => (
-            <m.div
-              key={feature.title}
-              variants={fadeInUp}
-              whileHover={{
-                y: -12,
-                transition: { duration: 0.4, ease: "easeOut" },
-              }}
-            >
-              <SpotlightCard
-                className={`
-                  group bg-card border-border/50 shadow-card relative h-full
-                  rounded-3xl border p-10 transition-all duration-500
-                  hover:border-primary/20 hover:shadow-2xl
-                `}
-                spotlightColor="rgba(var(--primary-rgb, 124 58 237) / 0.15)"
+          {featureKeys.map((key, index) => {
+            const Icon = icons[index]!;
+            return (
+              <m.div
+                key={key}
+                variants={fadeInUp}
+                whileHover={{
+                  y: -12,
+                  transition: { duration: 0.4, ease: "easeOut" },
+                }}
               >
-                <div
+                <SpotlightCard
                   className={`
-                    absolute top-0 right-0 p-8 opacity-[0.03] transition-opacity
-                    group-hover:opacity-[0.08]
+                    group bg-card border-border/50 shadow-card relative h-full
+                    rounded-3xl border p-10 transition-all duration-500
+                    hover:border-primary/20 hover:shadow-2xl
                   `}
+                  spotlightColor="rgba(var(--primary-rgb, 124 58 237) / 0.15)"
                 >
-                  <feature.icon size={120} />
-                </div>
-
-                <m.div
-                  className={`
-                    gradient-bg mb-8 flex h-16 w-16 items-center justify-center
-                    rounded-2xl transition-all duration-500
-                    group-hover:shadow-glow group-hover:scale-110
-                    group-hover:rotate-6
-                  `}
-                  whileHover={{ rotate: [0, -10, 10, 0] }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <feature.icon className="text-primary-foreground h-8 w-8" />
-                </m.div>
-                <h3
-                  className={`
-                    font-display mb-4 text-xl font-bold
-                    md:text-2xl
-                  `}
-                >
-                  {feature.title}
-                </h3>
-                <p
-                  className={`
-                    text-muted-foreground text-base leading-relaxed
-                    md:text-lg
-                  `}
-                >
-                  {feature.description}
-                </p>
-
-                <m.div
-                  className={`
-                    text-primary mt-8 flex items-center gap-2 font-semibold
-                    opacity-0 transition-opacity
-                    group-hover:opacity-100
-                  `}
-                  initial={{ x: -10 }}
-                  whileHover={{ x: 0 }}
-                >
-                  Learn more <Sparkles size={16} />
-                </m.div>
-              </SpotlightCard>
-            </m.div>
-          ))}
+                  <div
+                    className={`
+                      absolute top-0 right-0 p-8 opacity-[0.03]
+                      transition-opacity
+                      group-hover:opacity-[0.08]
+                    `}
+                  >
+                    <Icon size={120} />
+                  </div>
+                  <div className="relative z-10">
+                    <div
+                      className={`
+                        bg-primary/10 mb-6 inline-flex rounded-2xl p-4
+                      `}
+                    >
+                      <Icon className="text-primary h-8 w-8" />
+                    </div>
+                    <h3
+                      className={`
+                        font-display mb-4 text-xl font-bold
+                        md:text-2xl
+                      `}
+                    >
+                      {t(`items.${key}.title`)}
+                    </h3>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {t(`items.${key}.description`)}
+                    </p>
+                  </div>
+                </SpotlightCard>
+              </m.div>
+            );
+          })}
         </m.div>
       </div>
     </section>

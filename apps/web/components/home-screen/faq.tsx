@@ -6,40 +6,17 @@ import {
   AccordionTrigger,
 } from "@shared/ui/components/accordion";
 import { m } from "framer-motion";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 import BlurText from "@/components/common/blur-text";
 import ShinyText from "@/components/common/shiny-text";
 
-const faqs = [
-  {
-    question: "Is CVCraft really free to use?",
-    answer:
-      "Yes! You can create and download your CV for free. We offer premium templates and advanced AI features for users who want extra polish.",
-  },
-  {
-    question: "How does the AI CV writing work?",
-    answer:
-      "Our AI analyzes your experience and the job description you're targeting. It then suggests impactful bullet points, optimizes keywords, and ensures your CV is tailored for the role.",
-  },
-  {
-    question: "Are the templates ATS-friendly?",
-    answer:
-      "Absolutely. All our templates are designed to pass Applicant Tracking Systems while still looking professional and modern.",
-  },
-  {
-    question: "Can I edit my CV after downloading?",
-    answer:
-      "Yes! Your CVs are saved to your account. You can come back anytime to make edits and download updated versions.",
-  },
-  {
-    question: "How does the mock interview feature work?",
-    answer:
-      "Our AI interviewer asks you common questions for your target role. You can practice answering verbally, and the AI provides feedback on your responses.",
-  },
-];
+const faqIndices = ["0", "1", "2", "3", "4"] as const;
 
 const FAQSection = () => {
+  const t = useTranslations("FAQ");
+
   return (
     <section
       className={`
@@ -65,13 +42,13 @@ const FAQSection = () => {
             `}
           >
             <ShinyText
-              text="Support Center"
+              text={t("badge")}
               speed={3}
               className="text-sm font-semibold tracking-wider uppercase"
             />
           </m.div>
           <BlurText
-            text="Frequently Asked Questions"
+            text={t("title")}
             delay={80}
             animateBy="words"
             direction="top"
@@ -87,8 +64,7 @@ const FAQSection = () => {
               md:text-lg
             `}
           >
-            Everything you need to know about CVCraft and how it can help you
-            land your dream job.
+            {t("description")}
           </p>
         </m.div>
 
@@ -98,16 +74,16 @@ const FAQSection = () => {
           viewport={{ once: true, margin: "-100px" }}
         >
           <Accordion type="single" collapsible className="w-full space-y-4">
-            {faqs.map((faq, index) => (
+            {faqIndices.map((idx, index) => (
               <m.div
-                key={index}
+                key={idx}
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
               >
                 <AccordionItem
-                  value={`item-${index}`}
+                  value={`item-${idx}`}
                   className={`
                     bg-card/40 border-border/50 rounded-2xl border px-6
                     backdrop-blur-sm transition-all duration-300
@@ -121,14 +97,14 @@ const FAQSection = () => {
                       md:text-lg
                     `}
                   >
-                    {faq.question}
+                    {t(`items.${idx}.q`)}
                   </AccordionTrigger>
                   <AccordionContent
                     className={`
                       text-muted-foreground pb-6 text-base leading-relaxed
                     `}
                   >
-                    {faq.answer}
+                    {t(`items.${idx}.a`)}
                   </AccordionContent>
                 </AccordionItem>
               </m.div>

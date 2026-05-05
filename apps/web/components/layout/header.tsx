@@ -27,13 +27,15 @@ import {
   User,
   X,
 } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
+import { LanguageSwitcher } from "@/components/layout/language-switcher";
+import { Link, usePathname } from "@/i18n/navigation";
+
 const navLinks = [
-  { href: "/", label: "Home", icon: Home },
-  { href: "/templates", label: "Templates", icon: FileText },
+  { href: "/", labelKey: "home" as const, icon: Home },
+  { href: "/templates", labelKey: "templates" as const, icon: FileText },
 ];
 
 // Animation variants
@@ -94,6 +96,7 @@ const mobileItemVariants = {
 };
 
 const Header = () => {
+  const t = useTranslations("Nav");
   const { user, isLoaded } = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -190,7 +193,7 @@ const Header = () => {
                       >
                         <link.icon className="h-4 w-4" />
                       </m.span>
-                      {link.label}
+                      {t(link.labelKey)}
                     </Button>
                   </m.div>
                 </Link>
@@ -205,6 +208,7 @@ const Header = () => {
               md:flex
             `}
           >
+            <LanguageSwitcher />
             {/* Loading placeholder handled by Clerk's internal loading state or we can use ClerkLoading if needed */}
             {!isLoaded ? (
               <div className="h-10 w-24"></div>
@@ -237,13 +241,13 @@ const Header = () => {
                         <DropdownMenuItem asChild disabled>
                           <Link href="/profile" className="cursor-pointer">
                             <User className="mr-2 h-4 w-4" />
-                            Profile
+                            {t("profile")}
                           </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild disabled>
                           <Link href="/subscription" className="cursor-pointer">
                             <CreditCard className="mr-2 h-4 w-4" />
-                            Subscription
+                            {t("subscription")}
                           </Link>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
@@ -255,7 +259,7 @@ const Header = () => {
                               `}
                             >
                               <LogOut className="mr-2 h-4 w-4" />
-                              Sign out
+                              {t("signOut")}
                             </div>
                           </SignOutButton>
                         </DropdownMenuItem>
@@ -276,7 +280,7 @@ const Header = () => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
-                        <Button variant="ghost">Sign In</Button>
+                        <Button variant="ghost">{t("signIn")}</Button>
                       </m.div>
                     </Link>
                   </m.div>
@@ -298,7 +302,7 @@ const Header = () => {
                           damping: 17,
                         }}
                       >
-                        <Button variant="gradient">Get Started</Button>
+                        <Button variant="gradient">{t("getStarted")}</Button>
                       </m.div>
                     </Link>
                   </m.div>
@@ -356,6 +360,9 @@ const Header = () => {
               exit="exit"
             >
               <div className="flex flex-col gap-1 py-4">
+                <div className="flex justify-center px-2 pb-3">
+                  <LanguageSwitcher />
+                </div>
                 {navLinks.map((link, i) => (
                   <m.div
                     key={link.href}
@@ -372,7 +379,7 @@ const Header = () => {
                           className="w-full justify-start gap-3"
                         >
                           <link.icon className="h-4 w-4" />
-                          {link.label}
+                          {t(link.labelKey)}
                         </Button>
                       </m.div>
                     </Link>
@@ -392,7 +399,7 @@ const Header = () => {
                         className="w-full justify-start gap-3"
                       >
                         <CreditCard className="h-4 w-4" />
-                        Subscription
+                        {t("subscription")}
                       </Button>
                     </Link>
                     <Link href="/profile" onClick={() => setIsOpen(false)}>
@@ -401,7 +408,7 @@ const Header = () => {
                         className="w-full justify-start gap-3"
                       >
                         <User className="h-4 w-4" />
-                        Profile
+                        {t("profile")}
                       </Button>
                     </Link>
 
@@ -429,7 +436,7 @@ const Header = () => {
                             `}
                           >
                             <LogOut className="h-4 w-4" />
-                            Sign out
+                            {t("signOut")}
                           </Button>
                         </SignOutButton>
                       </div>
@@ -439,7 +446,7 @@ const Header = () => {
                     <Link href="/auth/sign-in" onClick={() => setIsOpen(false)}>
                       <m.div whileTap={{ scale: 0.98 }} whileHover={{}}>
                         <Button variant="gradient" className="mt-2 w-full">
-                          Sign In / Sign Up
+                          {t("signInSignUp")}
                         </Button>
                       </m.div>
                     </Link>

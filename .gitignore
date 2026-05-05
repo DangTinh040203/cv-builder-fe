@@ -34,3 +34,6 @@ npm-debug.log*
 *.pem
 .agent
 .env.prod
+
+# Local Python venv for i18n translation scripts
+apps/web/.i18n-venv

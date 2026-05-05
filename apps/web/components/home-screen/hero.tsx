@@ -3,13 +3,24 @@ import { Badge } from "@shared/ui/components/badge";
 import { Button } from "@shared/ui/components/button";
 import { m } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 import FloatingParticles from "@/components/common/floating-particles";
+import { Link } from "@/i18n/navigation";
 import { fadeInUp, staggerContainer } from "@/styles/animation";
 
+const statMeta = [
+  { color: "bg-green-500", count: "50k+" },
+  { color: "bg-yellow-500", count: "120k+" },
+  { color: "bg-blue-500", count: "15k+" },
+  { color: "bg-purple-500", count: "200k+" },
+];
+
 const HeroSection = () => {
+  const t = useTranslations("Hero");
+  const subLines = t("sub").split("\n");
+
   return (
     <section
       className={`
@@ -20,7 +31,6 @@ const HeroSection = () => {
     >
       <FloatingParticles />
 
-      {/* Background blobs - CSS animations instead of framer-motion */}
       <div className="absolute inset-0 overflow-hidden">
         <div
           className={`
@@ -46,7 +56,6 @@ const HeroSection = () => {
 
       <div className="relative z-10 container mx-auto">
         <div className="mx-auto max-w-4xl text-center">
-          {/* Badge */}
           <m.div
             className={`
               bg-primary/10 border-primary/20 mb-8 inline-flex items-center
@@ -64,15 +73,14 @@ const HeroSection = () => {
               className="text-primary h-4 w-4 animate-spin"
               style={{ animationDuration: "4s" }}
             />
-            <span className="text-sm font-medium">AI-Powered CV Builder</span>
+            <span className="text-sm font-medium">{t("badge")}</span>
             <Badge
               className={`bg-primary/20 text-primary border-none text-[10px]`}
             >
-              NEW
+              {t("new")}
             </Badge>
           </m.div>
 
-          {/* Main headline - static for faster LCP */}
           <div className="overflow-hidden">
             <m.h1
               className={`
@@ -85,7 +93,7 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              Discover, connect,
+              {t("headline1")}
             </m.h1>
             <m.h1
               className={`
@@ -98,7 +106,7 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.15 }}
             >
-              grow.
+              {t("headline2")}
             </m.h1>
           </div>
 
@@ -112,17 +120,16 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            Welcome to CVCraft, the largest professional CV building platform.
+            {subLines[0]}
             <br
               className={`
                 hidden
                 md:block
               `}
             />
-            Craft stunning, ATS-friendly resumes in minutes with AI.
+            {subLines[1] ?? ""}
           </m.p>
 
-          {/* CTA Buttons */}
           <m.div
             className={`
               flex flex-col justify-center gap-4
@@ -153,7 +160,7 @@ const HeroSection = () => {
                   }}
                 />
                 <span className="relative flex items-center gap-2">
-                  Build your profile
+                  {t("buildProfile")}
                   <ArrowRight
                     className={`
                       h-5 w-5 transition-transform duration-300
@@ -175,12 +182,11 @@ const HeroSection = () => {
                   lg:text-lg
                 `}
               >
-                View Templates
+                {t("viewTemplates")}
               </Button>
             </Link>
           </m.div>
 
-          {/* Stats Cards */}
           <m.div
             className={`
               mt-20 grid grid-cols-2 gap-4
@@ -190,14 +196,9 @@ const HeroSection = () => {
             initial="hidden"
             animate="visible"
           >
-            {[
-              { label: "Professionals", color: "bg-green-500", count: "50k+" },
-              { label: "Connections", color: "bg-yellow-500", count: "120k+" },
-              { label: "Job listings", color: "bg-blue-500", count: "15k+" },
-              { label: "Applications", color: "bg-purple-500", count: "200k+" },
-            ].map((item) => (
+            {statMeta.map((item, idx) => (
               <m.div
-                key={item.label}
+                key={idx}
                 className={`
                   bg-card/50 border-border/50 group relative cursor-pointer
                   overflow-hidden rounded-2xl border p-4 backdrop-blur-md
@@ -220,7 +221,7 @@ const HeroSection = () => {
                       uppercase
                     `}
                   >
-                    {item.label}
+                    {t(`statLabels.${idx}`)}
                   </span>
                 </div>
                 <div className="text-2xl font-bold">{item.count}</div>
@@ -228,7 +229,6 @@ const HeroSection = () => {
             ))}
           </m.div>
 
-          {/* Scroll indicator - CSS animation */}
           <div
             className="animate-fade-in mt-20 flex flex-col items-center gap-3"
             style={{ animationDelay: "1.5s" }}
@@ -239,7 +239,7 @@ const HeroSection = () => {
                 uppercase
               `}
             >
-              Scroll to explore
+              {t("scrollHint")}
             </span>
             <div
               className={`

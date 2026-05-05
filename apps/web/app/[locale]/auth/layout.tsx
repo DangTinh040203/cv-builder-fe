@@ -1,10 +1,10 @@
 "use client";
 import { motion } from "framer-motion";
 import { FileText, Sparkles, Target, Zap } from "lucide-react";
-import Link from "next/link";
 import React, { type PropsWithChildren } from "react";
 
 import FloatingElements from "@/components/auth-screens/floating-elements";
+import { Link } from "@/i18n/navigation";
 
 const features = [
   { icon: FileText, text: "10+ Professional Templates", delay: 0 },

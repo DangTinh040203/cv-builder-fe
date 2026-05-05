@@ -1,36 +1,21 @@
 "use client";
 import { m } from "framer-motion";
 import { Download, Upload, Wand2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 import BlurText from "@/components/common/blur-text";
 import ShinyText from "@/components/common/shiny-text";
 
-const howItWorks = [
-  {
-    step: "01",
-    icon: Upload,
-    title: "Upload Your Info",
-    description:
-      "Start fresh or import your existing CV. Add your experience, education, and skills.",
-  },
-  {
-    step: "02",
-    icon: Wand2,
-    title: "AI Enhancement",
-    description:
-      "Let AI optimize your content for the job you want. Paste a job description for tailored suggestions.",
-  },
-  {
-    step: "03",
-    icon: Download,
-    title: "Download & Apply",
-    description:
-      "Export your polished CV in PDF or Word format. Ready to land your dream job!",
-  },
+const stepsConfig = [
+  { step: "01", icon: Upload, index: "0" as const },
+  { step: "02", icon: Wand2, index: "1" as const },
+  { step: "03", icon: Download, index: "2" as const },
 ];
 
 const HowItWorksSection = () => {
+  const t = useTranslations("HowItWorks");
+
   return (
     <section
       className={`
@@ -63,13 +48,13 @@ const HowItWorksSection = () => {
             `}
           >
             <ShinyText
-              text="Simple 3-Step Process"
+              text={t("badge")}
               speed={3}
               className="text-sm font-semibold tracking-wider uppercase"
             />
           </m.div>
           <BlurText
-            text="Start Your Journey in Minutes"
+            text={t("title")}
             delay={80}
             animateBy="words"
             direction="top"
@@ -85,8 +70,7 @@ const HowItWorksSection = () => {
               md:text-lg
             `}
           >
-            We&apos;ve streamlined the CV building process so you can focus on
-            what matters: telling your professional story.
+            {t("description")}
           </p>
         </m.div>
 
@@ -96,7 +80,6 @@ const HowItWorksSection = () => {
             md:grid-cols-3
           `}
         >
-          {/* Connection Line */}
           <m.div
             className={`
               from-primary via-accent to-primary absolute top-10 right-1/4
@@ -109,7 +92,7 @@ const HowItWorksSection = () => {
             transition={{ duration: 1.5, delay: 0.5, ease: "easeInOut" }}
           />
 
-          {howItWorks.map((item, index) => (
+          {stepsConfig.map((item, index) => (
             <m.div
               key={item.step}
               className="group relative text-center"
@@ -154,7 +137,7 @@ const HowItWorksSection = () => {
                   md:text-2xl
                 `}
               >
-                {item.title}
+                {t(`steps.${item.index}.title`)}
               </h3>
               <p
                 className={`
@@ -163,7 +146,7 @@ const HowItWorksSection = () => {
                   md:text-lg
                 `}
               >
-                {item.description}
+                {t(`steps.${item.index}.description`)}
               </p>
 
               <div

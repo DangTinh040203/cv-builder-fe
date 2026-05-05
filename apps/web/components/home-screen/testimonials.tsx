@@ -2,40 +2,19 @@
 import { Card, CardContent } from "@shared/ui/components/card";
 import { m } from "framer-motion";
 import { Star } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 import BlurText from "@/components/common/blur-text";
 import ShinyText from "@/components/common/shiny-text";
 import { fadeInUp, staggerContainer } from "@/styles/animation";
 
-const testimonials = [
-  {
-    name: "Sarah Chen",
-    role: "Software Engineer at Google",
-    image: "SC",
-    content:
-      "CVCraft helped me land my dream job at Google. The AI suggestions made my resume stand out from hundreds of applicants.",
-    rating: 5,
-  },
-  {
-    name: "Michael Roberts",
-    role: "Product Manager at Meta",
-    image: "MR",
-    content:
-      "The mock interview feature was a game-changer. I felt so prepared walking into my final round interviews.",
-    rating: 5,
-  },
-  {
-    name: "Emily Watson",
-    role: "Marketing Director",
-    image: "EW",
-    content:
-      "I tried many CV builders, but CVCraft's templates and AI writing are simply the best. Highly recommend!",
-    rating: 5,
-  },
-];
+const testimonialIndices = ["0", "1", "2"] as const;
+const initials = ["SC", "MR", "EW"];
 
 const TestimonialsSection = () => {
+  const t = useTranslations("Testimonials");
+
   return (
     <section
       className={`
@@ -61,13 +40,13 @@ const TestimonialsSection = () => {
             `}
           >
             <ShinyText
-              text="User Success Stories"
+              text={t("badge")}
               speed={3}
               className="text-sm font-semibold tracking-wider uppercase"
             />
           </m.div>
           <BlurText
-            text="Loved by Thousands of Job Seekers"
+            text={t("title")}
             delay={80}
             animateBy="words"
             direction="top"
@@ -83,8 +62,7 @@ const TestimonialsSection = () => {
               md:text-lg
             `}
           >
-            Discover how professionals from top companies are using CVCraft to
-            accelerate their career growth.
+            {t("description")}
           </p>
         </m.div>
 
@@ -98,9 +76,9 @@ const TestimonialsSection = () => {
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
         >
-          {testimonials.map((testimonial) => (
+          {testimonialIndices.map((idx, index) => (
             <m.div
-              key={testimonial.name}
+              key={idx}
               variants={fadeInUp}
               whileHover={{ y: -12 }}
               transition={{ duration: 0.4 }}
@@ -114,7 +92,7 @@ const TestimonialsSection = () => {
               >
                 <CardContent className="p-8">
                   <div className="mb-6 flex gap-1">
-                    {[...Array(testimonial.rating)].map((_, i) => (
+                    {[...Array(5)].map((_, i) => (
                       <m.div
                         key={i}
                         initial={{ opacity: 0, scale: 0 }}
@@ -134,7 +112,7 @@ const TestimonialsSection = () => {
                       md:text-lg
                     `}
                   >
-                    &quot;{testimonial.content}&quot;
+                    &quot;{t(`items.${idx}.content`)}&quot;
                   </p>
                   <div
                     className={`
@@ -150,7 +128,7 @@ const TestimonialsSection = () => {
                       `}
                       whileHover={{ scale: 1.1, rotate: 5 }}
                     >
-                      {testimonial.image}
+                      {initials[index]}
                     </m.div>
                     <div>
                       <div
@@ -159,10 +137,10 @@ const TestimonialsSection = () => {
                           md:text-lg
                         `}
                       >
-                        {testimonial.name}
+                        {t(`items.${idx}.name`)}
                       </div>
                       <div className="text-primary text-sm font-medium">
-                        {testimonial.role}
+                        {t(`items.${idx}.role`)}
                       </div>
                     </div>
                   </div>

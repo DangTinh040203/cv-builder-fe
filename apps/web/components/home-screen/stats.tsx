@@ -1,17 +1,20 @@
 "use client";
 import { m } from "framer-motion";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 import CountUp from "@/components/common/count-up";
 import { scaleIn, staggerContainer } from "@/styles/animation";
 
-const stats = [
-  { value: "50", suffix: "K+", label: "CVs Created" },
-  { value: "10", suffix: "K+", label: "Users Hired" },
-  { value: "95", suffix: "%", label: "Success Rate" },
+const statsMeta = [
+  { value: "50", suffix: "K+" },
+  { value: "10", suffix: "K+" },
+  { value: "95", suffix: "%" },
 ];
 
 const StatsSection = () => {
+  const t = useTranslations("Stats");
+
   return (
     <section
       className={`
@@ -44,12 +47,8 @@ const StatsSection = () => {
           whileInView="visible"
           viewport={{ once: true }}
         >
-          {stats.map((stat) => (
-            <m.div
-              key={stat.label}
-              className="group text-center"
-              variants={scaleIn}
-            >
+          {statsMeta.map((stat, index) => (
+            <m.div key={index} className="group text-center" variants={scaleIn}>
               <m.div
                 className={`
                   font-display gradient-text mb-2 text-4xl font-extrabold
@@ -74,7 +73,7 @@ const StatsSection = () => {
                   group-hover:opacity-100
                 `}
               >
-                {stat.label}
+                {t(`${index}.label`)}
               </div>
             </m.div>
           ))}

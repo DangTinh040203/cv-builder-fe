@@ -1,7 +1,5 @@
 import NotFound from "@/components/common/not-found";
 
-const NotFoundScreen = () => {
+export default function NotFoundPage() {
   return <NotFound />;
-};
-
-export default NotFoundScreen;
+}

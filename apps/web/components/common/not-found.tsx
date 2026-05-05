@@ -2,9 +2,14 @@
 import { Button } from "@shared/ui/components/button";
 import { motion } from "framer-motion";
 import { ArrowLeft, Home } from "lucide-react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import React from "react";
+
+import { Link } from "@/i18n/navigation";
 
 const NotFound = () => {
+  const t = useTranslations("NotFound");
+
   return (
     <div
       className={`
@@ -27,11 +32,9 @@ const NotFound = () => {
           transition={{ delay: 0.2, duration: 0.5 }}
         >
           <h2 className="text-foreground mb-2 text-2xl font-semibold">
-            Page not found
+            {t("title")}
           </h2>
-          <p className="text-muted-foreground mb-8">
-            The page you are looking for does not exist or has been moved.
-          </p>
+          <p className="text-muted-foreground mb-8">{t("description")}</p>
         </motion.div>
 
         <motion.div
@@ -45,12 +48,12 @@ const NotFound = () => {
         >
           <Button variant="outline" onClick={() => window.history.back()}>
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back
+            {t("back")}
           </Button>
           <Button asChild>
             <Link href="/">
               <Home className="mr-2 h-4 w-4" />
-              Home
+              {t("home")}
             </Link>
           </Button>
         </motion.div>
