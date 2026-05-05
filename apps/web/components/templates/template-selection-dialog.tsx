@@ -17,6 +17,7 @@ import {
 } from "@shared/ui/components/dialog";
 import { motion } from "framer-motion";
 import { PenLine, Upload } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React, { useRef } from "react";
 
 interface TemplateSelectionDialogProps {
@@ -32,7 +33,11 @@ export const TemplateSelectionDialog = ({
   onOpenChange,
   onSelect,
 }: TemplateSelectionDialogProps) => {
+  const t = useTranslations("TemplateSelectionDialog");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const loadingSteps = [0, 1, 2, 3, 0].map((index) =>
+    t(`loading.steps.${index}`),
+  );
 
   const handleUploadClick = () => {
     fileInputRef.current?.click();
@@ -65,10 +70,10 @@ export const TemplateSelectionDialog = ({
           >
             <DialogHeader className="text-center">
               <DialogTitle className="text-2xl font-bold">
-                Are you uploading an existing resume?
+                {t("title")}
               </DialogTitle>
               <DialogDescription className="text-lg">
-                Just review, edit, and update it with new information
+                {t("description")}
               </DialogDescription>
             </DialogHeader>
           </motion.div>
@@ -186,13 +191,7 @@ export const TemplateSelectionDialog = ({
                     }}
                     className="flex flex-col items-center"
                   >
-                    {[
-                      "Reading document...",
-                      "Extracting content...",
-                      "Analyzing skills...",
-                      "Structuring content...",
-                      "Reading document...",
-                    ].map((text, i) => (
+                    {loadingSteps.map((text, i) => (
                       <h3
                         key={i}
                         className={`
@@ -211,8 +210,7 @@ export const TemplateSelectionDialog = ({
                     text-muted-foreground mx-auto max-w-[300px] text-sm
                   `}
                 >
-                  Our AI is processing your resume to create a perfect profile
-                  structure.
+                  {t("loading.description")}
                 </p>
               </motion.div>
             </div>
@@ -246,10 +244,9 @@ export const TemplateSelectionDialog = ({
                       <Upload className="text-primary h-8 w-8" />
                     </div>
                     <div className="space-y-2">
-                      <CardTitle>Yes, upload from my resume</CardTitle>
+                      <CardTitle>{t("upload.title")}</CardTitle>
                       <CardDescription>
-                        We&apos;ll give you expert guidance to fill out your
-                        info and enhance your resume, from start to finish
+                        {t("upload.description")}
                       </CardDescription>
                     </div>
                   </CardContent>
@@ -279,10 +276,9 @@ export const TemplateSelectionDialog = ({
                       <PenLine className="text-primary h-8 w-8" />
                     </div>
                     <div className="space-y-2">
-                      <CardTitle>No, start from scratch</CardTitle>
+                      <CardTitle>{t("scratch.title")}</CardTitle>
                       <CardDescription>
-                        We&apos;ll guide you through the whole process so your
-                        skills can shine
+                        {t("scratch.description")}
                       </CardDescription>
                     </div>
                   </CardContent>
@@ -297,7 +293,7 @@ export const TemplateSelectionDialog = ({
               onClick={() => onOpenChange(false)}
               disabled={isLoading}
             >
-              Cancel
+              {t("cancel")}
             </Button>
           </DialogFooter>
         </DialogContent>

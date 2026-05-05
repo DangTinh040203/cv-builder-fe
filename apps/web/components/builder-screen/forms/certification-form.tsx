@@ -31,6 +31,7 @@ import { Label } from "@shared/ui/components/label";
 import { cn } from "@shared/ui/lib/utils";
 import { motion } from "framer-motion";
 import { AlertCircle, Award, GripVertical, Plus, Trash2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
 
 import BuilderNavigation from "@/components/builder-screen/builder-navigation";
@@ -69,6 +70,7 @@ function SortableCertificationItem({
     transition,
     isDragging,
   } = useSortable({ id: item.id });
+  const t = useTranslations("BuilderForms");
 
   const style = {
     transform: CSS.Translate.toString(transform),
@@ -127,7 +129,7 @@ function SortableCertificationItem({
           <Input
             value={item.name}
             onChange={(e) => onUpdate(item.id, "name", e.target.value)}
-            placeholder="Certification Name (e.g. AWS Certified Solutions Architect)"
+            placeholder={t("certifications.placeholders.name")}
             className={cn(
               "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
               "focus:bg-white focus:ring-2 focus:ring-violet-500/20",
@@ -153,7 +155,7 @@ function SortableCertificationItem({
             <Input
               value={item.issuer}
               onChange={(e) => onUpdate(item.id, "issuer", e.target.value)}
-              placeholder="Issuer (e.g. Amazon Web Services)"
+              placeholder={t("certifications.placeholders.issuer")}
               className={cn(
                 "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
                 "focus:bg-white focus:ring-2 focus:ring-violet-500/20",
@@ -178,7 +180,7 @@ function SortableCertificationItem({
                   date ? date.toISOString() : new Date().toISOString(),
                 )
               }
-              placeholder="Date"
+              placeholder={t("fields.date")}
             />
           </div>
         </div>
@@ -192,6 +194,7 @@ const CertificationForm = ({
   onBack,
   hideNavigation,
 }: CertificationFormProps) => {
+  const t = useTranslations("BuilderForms");
   const dispatch = useAppDispatch();
   const { resume } = useSyncResume();
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -221,11 +224,11 @@ const CertificationForm = ({
     certificationItems.forEach((item) => {
       const itemErrors: { name?: string; issuer?: string } = {};
       if (!item.name.trim()) {
-        itemErrors.name = "Certification name is required";
+        itemErrors.name = t("certifications.validation.nameRequired");
         isValid = false;
       }
       if (!item.issuer.trim()) {
-        itemErrors.issuer = "Issuer is required";
+        itemErrors.issuer = t("certifications.validation.issuerRequired");
         isValid = false;
       }
       if (Object.keys(itemErrors).length > 0) {
@@ -235,7 +238,7 @@ const CertificationForm = ({
 
     setValidationErrors(errors);
     return isValid;
-  }, [certificationItems]);
+  }, [certificationItems, t]);
 
   const onSubmit = () => {
     if (!validateItems()) {
@@ -329,7 +332,7 @@ const CertificationForm = ({
                     dark:text-white
                   `}
                 >
-                  Certifications
+                  {t("certifications.title")}
                 </span>
                 <span
                   className={`
@@ -337,7 +340,7 @@ const CertificationForm = ({
                     dark:text-slate-400
                   `}
                 >
-                  Licenses and certifications
+                  {t("certifications.subtitle")}
                 </span>
               </div>
             </CardTitle>
@@ -359,7 +362,7 @@ const CertificationForm = ({
                       uppercase
                     `}
                   >
-                    Certifications List
+                    {t("certifications.list")}
                   </Label>
                   {certificationItems.length > 0 && (
                     <span
@@ -389,10 +392,10 @@ const CertificationForm = ({
                   >
                     <Award className="mb-2 h-8 w-8 text-slate-300" />
                     <p className="text-sm font-medium text-slate-500">
-                      No certifications added yet
+                      {t("certifications.emptyTitle")}
                     </p>
                     <p className="mt-1 text-xs text-slate-400">
-                      Add your professional certifications
+                      {t("certifications.emptyDescription")}
                     </p>
                   </div>
                 ) : (
@@ -445,7 +448,7 @@ const CertificationForm = ({
                 type="button"
               >
                 <Plus className="h-3.5 w-3.5" />
-                Add Certification
+                {t("certifications.add")}
               </Button>
             </motion.div>
 

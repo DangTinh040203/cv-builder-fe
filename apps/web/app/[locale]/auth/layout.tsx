@@ -1,19 +1,30 @@
 "use client";
 import { motion } from "framer-motion";
 import { FileText, Sparkles, Target, Zap } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React, { type PropsWithChildren } from "react";
 
 import FloatingElements from "@/components/auth-screens/floating-elements";
 import { Link } from "@/i18n/navigation";
 
-const features = [
-  { icon: FileText, text: "10+ Professional Templates", delay: 0 },
-  { icon: Sparkles, text: "AI-Powered CV Writing", delay: 0.1 },
-  { icon: Target, text: "Mock Interview Practice", delay: 0.2 },
-  { icon: Zap, text: "ATS-Friendly Formats", delay: 0.3 },
+const featureIcons = [
+  { icon: FileText, delay: 0 },
+  { icon: Sparkles, delay: 0.1 },
+  { icon: Target, delay: 0.2 },
+  { icon: Zap, delay: 0.3 },
 ];
 
 const AuthLayout: React.FC<PropsWithChildren> = ({ children }) => {
+  const t = useTranslations("Auth");
+  const features = featureIcons.map((feature, index) => ({
+    ...feature,
+    text: t(`layout.features.${index}`),
+  }));
+  const stats = [0, 1, 2].map((index) => ({
+    value: t(`layout.stats.${index}.value`),
+    label: t(`layout.stats.${index}.label`),
+  }));
+
   return (
     <div className="bg-background flex min-h-screen">
       <div
@@ -106,19 +117,18 @@ const AuthLayout: React.FC<PropsWithChildren> = ({ children }) => {
                 lg:text-5xl
               `}
             >
-              Build Your Dream
+              {t("layout.heroLine1")}
               <br />
               <motion.span
                 className="text-white/90"
                 animate={{ opacity: [0.9, 1, 0.9] }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
-                Career with AI
+                {t("layout.heroLine2")}
               </motion.span>
             </h1>
             <p className="mb-12 max-w-md text-lg leading-relaxed text-white/70">
-              Create stunning, ATS-friendly resumes in minutes. Practice
-              interviews with AI and land your dream job.
+              {t("layout.heroDescription")}
             </p>
           </motion.div>
 
@@ -156,11 +166,7 @@ const AuthLayout: React.FC<PropsWithChildren> = ({ children }) => {
             animate={{ opacity: 1 }}
             transition={{ delay: 1 }}
           >
-            {[
-              { value: "50K+", label: "Users" },
-              { value: "95%", label: "Success" },
-              { value: "10+", label: "Templates" },
-            ].map((stat, i) => (
+            {stats.map((stat, i) => (
               <motion.div
                 key={stat.label}
                 initial={{ opacity: 0, y: 10 }}
@@ -217,11 +223,9 @@ const AuthLayout: React.FC<PropsWithChildren> = ({ children }) => {
             transition={{ delay: 0.2 }}
           >
             <h2 className="font-display mb-2 text-3xl font-bold">
-              Welcome Back
+              {t("layout.formTitle")}
             </h2>
-            <p className="text-muted-foreground">
-              Sign in to continue building your career
-            </p>
+            <p className="text-muted-foreground">{t("layout.formSubtitle")}</p>
           </motion.div>
 
           {children}
@@ -232,23 +236,23 @@ const AuthLayout: React.FC<PropsWithChildren> = ({ children }) => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
           >
-            By continuing, you agree to our <br />
+            {t("layout.termsPrefix")} <br />
             <span
               className={`
                 text-primary cursor-pointer
                 hover:underline
               `}
             >
-              Terms of Service
+              {t("layout.terms")}
             </span>{" "}
-            and{" "}
+            {t("layout.and")}{" "}
             <span
               className={`
                 text-primary cursor-pointer
                 hover:underline
               `}
             >
-              Privacy Policy
+              {t("layout.privacy")}
             </span>
           </motion.p>
         </motion.div>

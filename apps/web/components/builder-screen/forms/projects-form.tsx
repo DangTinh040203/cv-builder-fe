@@ -36,6 +36,7 @@ import {
   Plus,
   Trash2,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
 
 import BuilderNavigation from "@/components/builder-screen/builder-navigation";
@@ -70,6 +71,7 @@ function SortableProjectItem({
     transition,
     isDragging,
   } = useSortable({ id: item.id });
+  const t = useTranslations("BuilderForms");
 
   const style = {
     transform: CSS.Translate.toString(transform),
@@ -146,7 +148,7 @@ function SortableProjectItem({
             <Input
               value={item.title}
               onChange={(e) => onUpdate(item.id, "title", e.target.value)}
-              placeholder="Project Name"
+              placeholder={t("projects.placeholders.name")}
               className={cn(
                 "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
                 "focus:bg-white focus:ring-2 focus:ring-cyan-500/20",
@@ -164,7 +166,7 @@ function SortableProjectItem({
           <Input
             value={item.subTitle}
             onChange={(e) => onUpdate(item.id, "subTitle", e.target.value)}
-            placeholder="Tech Stack / Role"
+            placeholder={t("projects.placeholders.subtitle")}
             className={cn(
               "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
               "focus:bg-white focus:ring-2 focus:ring-cyan-500/20",
@@ -182,7 +184,7 @@ function SortableProjectItem({
           <Input
             value={item.position}
             onChange={(e) => onUpdate(item.id, "position", e.target.value)}
-            placeholder="Position (e.g. Frontend Developer)"
+            placeholder={t("projects.placeholders.position")}
             className={cn(
               "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
               "focus:bg-white focus:ring-2 focus:ring-cyan-500/20",
@@ -192,7 +194,7 @@ function SortableProjectItem({
           <Input
             value={item.domain}
             onChange={(e) => onUpdate(item.id, "domain", e.target.value)}
-            placeholder="Domain (e.g. E-commerce)"
+            placeholder={t("projects.placeholders.domain")}
             className={cn(
               "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
               "focus:bg-white focus:ring-2 focus:ring-cyan-500/20",
@@ -204,7 +206,7 @@ function SortableProjectItem({
         <Input
           value={item.technologies}
           onChange={(e) => onUpdate(item.id, "technologies", e.target.value)}
-          placeholder="Technologies (e.g. React, Node.js, AWS)"
+          placeholder={t("projects.placeholders.technologies")}
           className={cn(
             "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
             "focus:bg-white focus:ring-2 focus:ring-cyan-500/20",
@@ -215,7 +217,7 @@ function SortableProjectItem({
         <Input
           value={item.demo || ""}
           onChange={(e) => onUpdate(item.id, "demo", e.target.value)}
-          placeholder="Demo URL (Optional)"
+          placeholder={t("projects.placeholders.demo")}
           className={cn(
             "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
             "focus:bg-white focus:ring-2 focus:ring-cyan-500/20",
@@ -225,7 +227,7 @@ function SortableProjectItem({
 
         <div>
           <Label className="mb-1.5 block text-xs text-slate-500">
-            Description
+            {t("projects.description")}
           </Label>
           <Editor
             className="[&_.ql-editor]:min-h-[100px]"
@@ -237,7 +239,7 @@ function SortableProjectItem({
 
         <div>
           <Label className="mb-1.5 block text-xs text-slate-500">
-            Responsibilities
+            {t("projects.responsibilities")}
           </Label>
           <Editor
             className="[&_.ql-editor]:min-h-[100px]"
@@ -254,6 +256,7 @@ function SortableProjectItem({
 }
 
 const ProjectsForm = ({ onNext, onBack }: ProjectsFormProps) => {
+  const t = useTranslations("BuilderForms");
   const dispatch = useAppDispatch();
   const { resume } = useSyncResume();
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -282,14 +285,14 @@ const ProjectsForm = ({ onNext, onBack }: ProjectsFormProps) => {
 
     projectItems.forEach((item) => {
       if (!item.title.trim()) {
-        errors[item.id] = { title: "Project name is required" };
+        errors[item.id] = { title: t("projects.validation.nameRequired") };
         isValid = false;
       }
     });
 
     setValidationErrors(errors);
     return isValid;
-  }, [projectItems]);
+  }, [projectItems, t]);
 
   const onSubmit = () => {
     if (!validateItems()) {
@@ -382,7 +385,7 @@ const ProjectsForm = ({ onNext, onBack }: ProjectsFormProps) => {
                     dark:text-white
                   `}
                 >
-                  Projects
+                  {t("projects.title")}
                 </span>
                 <span
                   className={`
@@ -390,7 +393,7 @@ const ProjectsForm = ({ onNext, onBack }: ProjectsFormProps) => {
                     dark:text-slate-400
                   `}
                 >
-                  Showcase your best work
+                  {t("projects.subtitle")}
                 </span>
               </div>
             </CardTitle>
@@ -412,7 +415,7 @@ const ProjectsForm = ({ onNext, onBack }: ProjectsFormProps) => {
                       uppercase
                     `}
                   >
-                    Your Projects
+                    {t("projects.list")}
                   </Label>
                   {projectItems.length > 0 && (
                     <span
@@ -442,10 +445,10 @@ const ProjectsForm = ({ onNext, onBack }: ProjectsFormProps) => {
                   >
                     <FolderGit2 className="mb-2 h-8 w-8 text-slate-300" />
                     <p className="text-sm font-medium text-slate-500">
-                      No projects added yet
+                      {t("projects.emptyTitle")}
                     </p>
                     <p className="mt-1 text-xs text-slate-400">
-                      Add personal projects, open source, or side hustles
+                      {t("projects.emptyDescription")}
                     </p>
                   </div>
                 ) : (
@@ -498,7 +501,7 @@ const ProjectsForm = ({ onNext, onBack }: ProjectsFormProps) => {
                 type="button"
               >
                 <Plus className="h-3.5 w-3.5" />
-                Add Project
+                {t("projects.add")}
               </Button>
             </motion.div>
 

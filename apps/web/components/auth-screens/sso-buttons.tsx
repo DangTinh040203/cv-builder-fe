@@ -4,6 +4,7 @@ import { type OAuthStrategy } from "@clerk/shared/types";
 import { Button } from "@shared/ui/components/button";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 import { handleClerkError } from "@/libs/clerk-toast";
 import { buttonScaleVariants, formItemVariants } from "@/styles/animation";
@@ -11,6 +12,7 @@ import { buttonScaleVariants, formItemVariants } from "@/styles/animation";
 const redirectUrl = process.env.NEXT_PUBLIC_REDIRECT_URL || null;
 
 const SSOButtons = () => {
+  const t = useTranslations("Auth");
   const { isLoaded, signIn } = useSignIn();
 
   const signInWith = async (strategy: OAuthStrategy) => {
@@ -24,7 +26,7 @@ const SSOButtons = () => {
       });
     } catch (err: unknown) {
       handleClerkError(err, {
-        fallbackMessage: "Something went wrong, please try again.",
+        fallbackMessage: t("errors.generic"),
       });
     }
   };

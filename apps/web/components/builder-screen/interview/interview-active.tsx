@@ -15,6 +15,7 @@ import { Button } from "@shared/ui/components/button";
 import { Progress } from "@shared/ui/components/progress";
 import { motion } from "framer-motion";
 import { Mic, MicOff, Square } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React, { useCallback, useEffect, useRef } from "react";
 
 interface InterviewActiveProps {
@@ -44,6 +45,7 @@ export const InterviewActive = ({
   onStop,
   onToggleMute,
 }: InterviewActiveProps) => {
+  const t = useTranslations("Interview");
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number | null>(null);
 
@@ -192,10 +194,10 @@ export const InterviewActive = ({
           />
           <span className="text-sm font-medium">
             {isAISpeaking
-              ? "🤖 AI is speaking..."
+              ? t("active.aiSpeaking")
               : isMuted
-                ? "🔇 Microphone muted"
-                : "🎙 Listening..."}
+                ? t("active.muted")
+                : t("active.listening")}
           </span>
         </div>
       </motion.div>
@@ -203,9 +205,12 @@ export const InterviewActive = ({
       {/* Question Progress */}
       <div className="w-full max-w-sm space-y-2">
         <div className="flex items-center justify-between text-sm">
-          <span className="text-muted-foreground">Progress</span>
+          <span className="text-muted-foreground">{t("active.progress")}</span>
           <span className="font-semibold">
-            Question {questionProgress.current}/{questionProgress.total}
+            {t("active.questionProgress", {
+              current: questionProgress.current,
+              total: questionProgress.total,
+            })}
           </span>
         </div>
         <Progress value={progressPercent} className="h-2" />
@@ -217,7 +222,7 @@ export const InterviewActive = ({
           text-muted-foreground font-mono text-2xl font-light tracking-wider
         `}
       >
-        ⏱ {formatTime(elapsedTime)}
+        {formatTime(elapsedTime)}
       </div>
 
       {/* Controls */}
@@ -231,11 +236,11 @@ export const InterviewActive = ({
         >
           {isMuted ? (
             <>
-              <MicOff className="h-4 w-4" /> Unmute
+              <MicOff className="h-4 w-4" /> {t("active.unmute")}
             </>
           ) : (
             <>
-              <Mic className="h-4 w-4" /> Mute
+              <Mic className="h-4 w-4" /> {t("active.mute")}
             </>
           )}
         </Button>
@@ -243,21 +248,20 @@ export const InterviewActive = ({
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button size="lg" className="gap-2" variant={"default"}>
-              <Square className="h-4 w-4" /> Stop Interview
+              <Square className="h-4 w-4" /> {t("active.stopInterview")}
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Stop Interview?</AlertDialogTitle>
+              <AlertDialogTitle>{t("active.stopTitle")}</AlertDialogTitle>
               <AlertDialogDescription>
-                The AI will evaluate your answers based on the questions
-                answered so far.
+                {t("active.stopDescription")}
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Continue</AlertDialogCancel>
+              <AlertDialogCancel>{t("active.continue")}</AlertDialogCancel>
               <AlertDialogAction onClick={onStop}>
-                Stop & Evaluate
+                {t("active.stopAndEvaluate")}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>

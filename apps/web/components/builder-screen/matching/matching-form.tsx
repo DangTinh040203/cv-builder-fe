@@ -7,6 +7,7 @@ import {
 } from "@shared/ui/components/tabs";
 import { Textarea } from "@shared/ui/components/textarea";
 import { ClipboardList, ScanSearch, Upload } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 interface MatchingFormProps {
@@ -24,6 +25,7 @@ export const MatchingForm = ({
   setJdFile,
   onAnalyze,
 }: MatchingFormProps) => {
+  const t = useTranslations("Matching");
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,17 +44,17 @@ export const MatchingForm = ({
           className={`mx-auto flex w-fit items-center justify-center border`}
         >
           <TabsTrigger className="px-10" value="text">
-            <ClipboardList className="mr-2 h-4 w-4" /> Text JD
+            <ClipboardList className="mr-2 h-4 w-4" /> {t("form.textTab")}
           </TabsTrigger>
           <TabsTrigger className="px-10" value="file">
-            <Upload className="mr-2 h-4 w-4" /> Upload JD
+            <Upload className="mr-2 h-4 w-4" /> {t("form.fileTab")}
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="text" className="mt-4">
           <Textarea
             className="scrollbar-thin h-64 resize-none overflow-y-auto"
-            placeholder="Paste your JD here..."
+            placeholder={t("form.jdPlaceholder")}
             value={jdText}
             onChange={(e) => setJdText(e.target.value)}
           />
@@ -90,14 +92,14 @@ export const MatchingForm = ({
                     {jdFile.name}
                   </p>
                   <p className="text-muted-foreground mt-1 text-xs">
-                    Click to change file
+                    {t("form.changeFile")}
                   </p>
                 </>
               ) : (
                 <>
-                  <p className="text-sm font-medium">Click to upload JD file</p>
+                  <p className="text-sm font-medium">{t("form.uploadFile")}</p>
                   <p className="text-muted-foreground mt-1 text-xs">
-                    PDF file • Max 10MB
+                    {t("form.fileHint")}
                   </p>
                 </>
               )}
@@ -108,7 +110,7 @@ export const MatchingForm = ({
 
       <div className="pt-2">
         <Button onClick={onAnalyze} disabled={!hasInput} className="w-full">
-          <ScanSearch className="mr-2" /> Analyze Matching
+          <ScanSearch className="mr-2" /> {t("form.analyze")}
         </Button>
       </div>
     </>

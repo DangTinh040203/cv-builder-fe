@@ -43,6 +43,7 @@ import {
   Plus,
   Trash2,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
 
 import BuilderNavigation from "@/components/builder-screen/builder-navigation";
@@ -57,12 +58,24 @@ interface LanguageFormProps {
   hideNavigation?: boolean;
 }
 
-const LANGUAGE_LEVELS = [
-  "Elementary",
-  "Limited Working Proficiency",
-  "Professional Working Proficiency",
-  "Full Professional Proficiency",
-  "Native or Bilingual Proficiency",
+const LANGUAGE_LEVEL_OPTIONS = [
+  { value: "Elementary", labelKey: "languages.levels.elementary" },
+  {
+    value: "Limited Working Proficiency",
+    labelKey: "languages.levels.limitedWorking",
+  },
+  {
+    value: "Professional Working Proficiency",
+    labelKey: "languages.levels.professionalWorking",
+  },
+  {
+    value: "Full Professional Proficiency",
+    labelKey: "languages.levels.fullProfessional",
+  },
+  {
+    value: "Native or Bilingual Proficiency",
+    labelKey: "languages.levels.nativeOrBilingual",
+  },
 ];
 
 // Sortable language item component
@@ -85,6 +98,7 @@ function SortableLanguageItem({
     transition,
     isDragging,
   } = useSortable({ id: item.id });
+  const t = useTranslations("BuilderForms");
 
   const style = {
     transform: CSS.Translate.toString(transform),
@@ -148,7 +162,7 @@ function SortableLanguageItem({
           <Input
             value={item.name}
             onChange={(e) => onUpdate(item.id, "name", e.target.value)}
-            placeholder="Language (e.g. English)"
+            placeholder={t("languages.placeholders.name")}
             className={cn(
               "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
               "focus:bg-white focus:ring-2 focus:ring-violet-500/20",
@@ -176,12 +190,12 @@ function SortableLanguageItem({
                 errors?.description && "border-red-400 focus:ring-red-500/20",
               )}
             >
-              <SelectValue placeholder="Proficiency Level" />
+              <SelectValue placeholder={t("languages.placeholders.level")} />
             </SelectTrigger>
             <SelectContent>
-              {LANGUAGE_LEVELS.map((level) => (
-                <SelectItem key={level} value={level}>
-                  {level}
+              {LANGUAGE_LEVEL_OPTIONS.map((level) => (
+                <SelectItem key={level.value} value={level.value}>
+                  {t(level.labelKey)}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -203,6 +217,7 @@ const LanguageForm = ({
   onBack,
   hideNavigation,
 }: LanguageFormProps) => {
+  const t = useTranslations("BuilderForms");
   const dispatch = useAppDispatch();
   const { resume } = useSyncResume();
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -232,11 +247,11 @@ const LanguageForm = ({
     languageItems.forEach((item) => {
       const itemErrors: { name?: string; description?: string } = {};
       if (!item.name.trim()) {
-        itemErrors.name = "Language name is required";
+        itemErrors.name = t("languages.validation.nameRequired");
         isValid = false;
       }
       if (!item.description.trim()) {
-        itemErrors.description = "Proficiency level is required";
+        itemErrors.description = t("languages.validation.levelRequired");
         isValid = false;
       }
       if (Object.keys(itemErrors).length > 0) {
@@ -246,7 +261,7 @@ const LanguageForm = ({
 
     setValidationErrors(errors);
     return isValid;
-  }, [languageItems]);
+  }, [languageItems, t]);
 
   const onSubmit = () => {
     if (!validateItems()) {
@@ -333,7 +348,7 @@ const LanguageForm = ({
                     dark:text-white
                   `}
                 >
-                  Languages
+                  {t("languages.title")}
                 </span>
                 <span
                   className={`
@@ -341,7 +356,7 @@ const LanguageForm = ({
                     dark:text-slate-400
                   `}
                 >
-                  Languages you speak
+                  {t("languages.subtitle")}
                 </span>
               </div>
             </CardTitle>
@@ -363,7 +378,7 @@ const LanguageForm = ({
                       uppercase
                     `}
                   >
-                    Languages List
+                    {t("languages.list")}
                   </Label>
                   {languageItems.length > 0 && (
                     <span
@@ -393,10 +408,10 @@ const LanguageForm = ({
                   >
                     <Languages className="mb-2 h-8 w-8 text-slate-300" />
                     <p className="text-sm font-medium text-slate-500">
-                      No languages added yet
+                      {t("languages.emptyTitle")}
                     </p>
                     <p className="mt-1 text-xs text-slate-400">
-                      Add languages you are proficient in
+                      {t("languages.emptyDescription")}
                     </p>
                   </div>
                 ) : (
@@ -452,7 +467,7 @@ const LanguageForm = ({
                 type="button"
               >
                 <Plus className="h-3.5 w-3.5" />
-                Add Language
+                {t("languages.add")}
               </Button>
             </motion.div>
 

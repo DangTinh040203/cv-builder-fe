@@ -30,6 +30,7 @@ import { Label } from "@shared/ui/components/label";
 import { cn } from "@shared/ui/lib/utils";
 import { motion } from "framer-motion";
 import { Cpu, GripVertical, Plus, Trash2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 import BuilderNavigation from "@/components/builder-screen/builder-navigation";
@@ -61,6 +62,7 @@ function SortableSkillItem({
     transition,
     isDragging,
   } = useSortable({ id: item.id });
+  const t = useTranslations("BuilderForms");
 
   const style = {
     transform: CSS.Translate.toString(transform),
@@ -99,7 +101,7 @@ function SortableSkillItem({
       <Input
         value={item.label}
         onChange={(e) => onUpdate(item.id, "label", e.target.value)}
-        placeholder="Skill name (e.g. React)"
+        placeholder={t("skills.placeholders.name")}
         className={cn(
           `
             h-9 w-52 shrink-0 rounded-md border-0 bg-slate-50 text-sm
@@ -114,7 +116,7 @@ function SortableSkillItem({
       <Input
         value={item.value}
         onChange={(e) => onUpdate(item.id, "value", e.target.value)}
-        placeholder="Level (e.g. Expert, 5 years)"
+        placeholder={t("skills.placeholders.level")}
         className={cn(
           "h-9 flex-1 rounded-md border-0 bg-slate-50 text-sm",
           "focus:bg-white focus:ring-2 focus:ring-emerald-500/20",
@@ -143,6 +145,7 @@ function SortableSkillItem({
 }
 
 const SkillsForm = ({ onNext, onBack }: SkillsFormProps) => {
+  const t = useTranslations("BuilderForms");
   const dispatch = useAppDispatch();
   const { resume } = useSyncResume();
   const [isVisible, setIsVisible] = useState(false);
@@ -239,7 +242,7 @@ const SkillsForm = ({ onNext, onBack }: SkillsFormProps) => {
                     dark:text-white
                   `}
                 >
-                  Skills
+                  {t("skills.title")}
                 </span>
                 <span
                   className={`
@@ -247,7 +250,7 @@ const SkillsForm = ({ onNext, onBack }: SkillsFormProps) => {
                     dark:text-slate-400
                   `}
                 >
-                  Your technical expertise
+                  {t("skills.subtitle")}
                 </span>
               </div>
             </CardTitle>
@@ -269,7 +272,7 @@ const SkillsForm = ({ onNext, onBack }: SkillsFormProps) => {
                       uppercase
                     `}
                   >
-                    Skills List
+                    {t("skills.list")}
                   </Label>
                   {skillItems.length > 0 && (
                     <span
@@ -299,10 +302,10 @@ const SkillsForm = ({ onNext, onBack }: SkillsFormProps) => {
                   >
                     <Cpu className="mb-2 h-8 w-8 text-slate-300" />
                     <p className="text-sm font-medium text-slate-500">
-                      No skills added yet
+                      {t("skills.emptyTitle")}
                     </p>
                     <p className="mt-1 text-xs text-slate-400">
-                      Add your languages, frameworks, and tools
+                      {t("skills.emptyDescription")}
                     </p>
                   </div>
                 ) : (
@@ -356,7 +359,7 @@ const SkillsForm = ({ onNext, onBack }: SkillsFormProps) => {
                 type="button"
               >
                 <Plus className="h-3.5 w-3.5" />
-                Add Skill
+                {t("skills.add")}
               </Button>
             </motion.div>
 

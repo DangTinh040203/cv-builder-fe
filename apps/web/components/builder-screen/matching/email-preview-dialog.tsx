@@ -22,6 +22,7 @@ import {
   RefreshCw,
   Sparkles,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 import { type GenerateEmailResponse } from "@/types/resume.type";
@@ -65,6 +66,7 @@ export const EmailPreviewDialog = ({
   isSubjectCopied,
   onEmailUpdate,
 }: EmailPreviewDialogProps) => {
+  const t = useTranslations("Matching");
   const [isEditing, setIsEditing] = React.useState(false);
   const [editedSubject, setEditedSubject] = React.useState("");
   const [editedBody, setEditedBody] = React.useState("");
@@ -178,10 +180,10 @@ export const EmailPreviewDialog = ({
                     sm:text-2xl
                   `}
                 >
-                  Application Email
+                  {t("email.dialogTitle")}
                 </DialogTitle>
                 <DialogDescription className="sr-only">
-                  Preview and copy your AI-generated application email.
+                  {t("email.dialogDescription")}
                 </DialogDescription>
                 <p
                   className={`
@@ -189,7 +191,7 @@ export const EmailPreviewDialog = ({
                     sm:mt-1 sm:text-sm
                   `}
                 >
-                  Ready to be sent directly to the hiring manager.
+                  {t("email.ready")}
                 </p>
               </div>
             </div>
@@ -225,7 +227,7 @@ export const EmailPreviewDialog = ({
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
-                      {isEditing ? "Save Changes" : "Edit Email"}
+                      {isEditing ? t("email.saveChanges") : t("email.edit")}
                     </TooltipContent>
                   </Tooltip>
 
@@ -245,7 +247,7 @@ export const EmailPreviewDialog = ({
                         <RefreshCw size={16} />
                       </Button>
                     </TooltipTrigger>
-                    <TooltipContent>Regenerate</TooltipContent>
+                    <TooltipContent>{t("email.regenerate")}</TooltipContent>
                   </Tooltip>
                 </div>
               </TooltipProvider>
@@ -271,7 +273,7 @@ export const EmailPreviewDialog = ({
                     md:block
                   `}
                 >
-                  Subject
+                  {t("email.subject")}
                 </span>
                 {isEditing ? (
                   <input
@@ -285,7 +287,7 @@ export const EmailPreviewDialog = ({
                       placeholder:text-white/40
                       focus:border-white/40 focus:ring-1 focus:ring-white/30
                     `}
-                    placeholder="Email subject..."
+                    placeholder={t("email.subjectPlaceholder")}
                   />
                 ) : (
                   <span className={`flex-1 font-semibold`}>
@@ -320,7 +322,9 @@ export const EmailPreviewDialog = ({
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent>
-                        {isSubjectCopied ? "Copied!" : "Copy Subject"}
+                        {isSubjectCopied
+                          ? t("email.copied")
+                          : t("email.copySubject")}
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
@@ -356,7 +360,7 @@ export const EmailPreviewDialog = ({
                       border-none bg-transparent p-0 text-[15px] leading-relaxed
                       outline-none
                     `}
-                    placeholder="Write your email body here..."
+                    placeholder={t("email.bodyPlaceholder")}
                   />
                 ) : (
                   <div className="space-y-5">
@@ -393,7 +397,7 @@ export const EmailPreviewDialog = ({
                         sm:w-auto
                       `}
                     >
-                      Cancel
+                      {t("email.cancel")}
                     </Button>
                     <Button
                       onClick={handleSaveEdit}
@@ -403,7 +407,7 @@ export const EmailPreviewDialog = ({
                       `}
                     >
                       <Check size={18} />
-                      Save Changes
+                      {t("email.saveChanges")}
                     </Button>
                   </>
                 ) : (
@@ -416,7 +420,7 @@ export const EmailPreviewDialog = ({
                           sm:w-auto
                         `}
                       >
-                        Close
+                        {t("email.close")}
                       </Button>
                     </DialogClose>
 
@@ -441,12 +445,12 @@ export const EmailPreviewDialog = ({
                       {isCopied ? (
                         <>
                           <ClipboardCheck size={18} />
-                          Copied!
+                          {t("email.copied")}
                         </>
                       ) : (
                         <>
                           <ClipboardCopy size={18} />
-                          Copy to Clipboard
+                          {t("email.copyToClipboard")}
                         </>
                       )}
                     </Button>
@@ -461,7 +465,7 @@ export const EmailPreviewDialog = ({
               `}
             >
               <p className="text-muted-foreground text-sm">
-                Failed to display email.
+                {t("email.displayFailed")}
               </p>
             </div>
           )}

@@ -10,6 +10,7 @@ import {
 import { toast } from "@shared/ui/components/sonner";
 import { AxiosError } from "axios";
 import { Brain, Sparkles } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 import { MatchingForm } from "@/components/builder-screen/matching/matching-form";
@@ -23,6 +24,7 @@ import { type MatchResult } from "@/types/resume.type";
 import { toastErrorMessage } from "@/utils/toast-error-message.util";
 
 const MatchingDialog = () => {
+  const t = useTranslations("Matching");
   const [showDialog, setShowDialog] = React.useState(false);
   const [jdText, setJdText] = React.useState("");
   const [jdFile, setJdFile] = React.useState<File | null>(null);
@@ -36,12 +38,12 @@ const MatchingDialog = () => {
 
   const handleAnalyze = async () => {
     if (!resume) {
-      toast.error("No resume found. Please create a resume first.");
+      toast.error(t("errors.noResume"));
       return;
     }
 
     if (!jdText.trim() && !jdFile) {
-      toast.error("Please provide a Job Description (text or file).");
+      toast.error(t("errors.noJobDescription"));
       return;
     }
 
@@ -59,7 +61,7 @@ const MatchingDialog = () => {
         const error = e.response?.data as ErrorResponse;
         toastErrorMessage(error.message);
       } else {
-        toast.error("Something went wrong, please try again.");
+        toast.error(t("errors.generic"));
       }
 
       return false;
@@ -92,7 +94,7 @@ const MatchingDialog = () => {
             sm:w-auto
           `}
         >
-          <Brain className="mr-2 h-4 w-4" /> JD Matching
+          <Brain className="mr-2 h-4 w-4" /> {t("trigger")}
         </Button>
       </DialogTrigger>
 
@@ -104,12 +106,10 @@ const MatchingDialog = () => {
       >
         <div className="space-y-2">
           <DialogTitle className="flex items-center gap-2">
-            <Sparkles size={20} /> JD Matching Analysis
+            <Sparkles size={20} /> {t("title")}
           </DialogTitle>
           <DialogDescription>
-            {matchResult
-              ? "Here's how well your CV matches the job description."
-              : "Provide a job description to see how well your CV matches."}
+            {matchResult ? t("description.result") : t("description.form")}
           </DialogDescription>
         </div>
 

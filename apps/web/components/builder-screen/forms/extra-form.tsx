@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 import BuilderNavigation from "@/components/builder-screen/builder-navigation";
@@ -15,6 +16,7 @@ interface ExtraFormProps {
 }
 
 const ExtraForm = ({ onBack }: ExtraFormProps) => {
+  const t = useTranslations("BuilderForms");
   const { sync, isSyncing } = useSyncResume();
   const dispatch = useAppDispatch();
 
@@ -41,7 +43,7 @@ const ExtraForm = ({ onBack }: ExtraFormProps) => {
           onNext={onSubmit}
           disableBack={!onBack}
           loading={isSyncing}
-          nextLabel="Finished"
+          nextLabel={t("extra.finished")}
         />
       </motion.div>
     </div>

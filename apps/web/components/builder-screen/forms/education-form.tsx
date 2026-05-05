@@ -45,6 +45,7 @@ import {
   Trash2,
   X,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
 
 import BuilderNavigation from "@/components/builder-screen/builder-navigation";
@@ -64,23 +65,33 @@ interface EducationFormProps {
   onBack?: () => void;
 }
 
-const DEGREES = [
-  "High School Diploma",
-  "GED",
-  "Associate of Arts",
-  "Associate of Science",
-  "Associate of Applied Science",
-  "Bachelor of Arts",
-  "Bachelor of Science",
-  "BBA",
-  "Master of Arts",
-  "Master of Science",
-  "MBA",
-  "J.D.",
-  "M.D.",
-  "Ph.D",
-  "No Degree",
+const DEGREE_OPTIONS = [
+  { value: "High School Diploma", labelKey: "education.degrees.highSchool" },
+  { value: "GED", labelKey: "education.degrees.ged" },
+  { value: "Associate of Arts", labelKey: "education.degrees.associateArts" },
+  {
+    value: "Associate of Science",
+    labelKey: "education.degrees.associateScience",
+  },
+  {
+    value: "Associate of Applied Science",
+    labelKey: "education.degrees.associateAppliedScience",
+  },
+  { value: "Bachelor of Arts", labelKey: "education.degrees.bachelorArts" },
+  {
+    value: "Bachelor of Science",
+    labelKey: "education.degrees.bachelorScience",
+  },
+  { value: "BBA", labelKey: "education.degrees.bba" },
+  { value: "Master of Arts", labelKey: "education.degrees.masterArts" },
+  { value: "Master of Science", labelKey: "education.degrees.masterScience" },
+  { value: "MBA", labelKey: "education.degrees.mba" },
+  { value: "J.D.", labelKey: "education.degrees.jd" },
+  { value: "M.D.", labelKey: "education.degrees.md" },
+  { value: "Ph.D", labelKey: "education.degrees.phd" },
+  { value: "No Degree", labelKey: "education.degrees.noDegree" },
 ];
+const DEGREE_VALUES = DEGREE_OPTIONS.map((option) => option.value);
 
 // Sortable education item component
 function SortableEducationItem({
@@ -102,9 +113,10 @@ function SortableEducationItem({
     transition,
     isDragging,
   } = useSortable({ id: item.id });
+  const t = useTranslations("BuilderForms");
 
   const [isCustomDegree, setIsCustomDegree] = useState(
-    !!item.degree && !DEGREES.includes(item.degree),
+    !!item.degree && !DEGREE_VALUES.includes(item.degree),
   );
 
   const style = {
@@ -170,7 +182,7 @@ function SortableEducationItem({
             <Input
               value={item.school}
               onChange={(e) => onUpdate(item.id, "school", e.target.value)}
-              placeholder="School / University"
+              placeholder={t("education.placeholders.school")}
               className={cn(
                 "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
                 "focus:bg-white focus:ring-2 focus:ring-violet-500/20",
@@ -191,7 +203,7 @@ function SortableEducationItem({
                 <Input
                   value={item.degree}
                   onChange={(e) => onUpdate(item.id, "degree", e.target.value)}
-                  placeholder="Degree (e.g. Bachelor's)"
+                  placeholder={t("education.placeholders.degree")}
                   className={cn(
                     "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
                     "focus:bg-white focus:ring-2 focus:ring-violet-500/20",
@@ -217,7 +229,7 @@ function SortableEducationItem({
               </div>
             ) : (
               <Select
-                value={DEGREES.includes(item.degree) ? item.degree : ""}
+                value={DEGREE_VALUES.includes(item.degree) ? item.degree : ""}
                 onValueChange={(value) => {
                   if (value === "custom_degree_option") {
                     setIsCustomDegree(true);
@@ -238,16 +250,18 @@ function SortableEducationItem({
                     errors?.degree && "border-red-400 focus:ring-red-500/20",
                   )}
                 >
-                  <SelectValue placeholder="Degree (e.g. Bachelor's)" />
+                  <SelectValue
+                    placeholder={t("education.placeholders.degree")}
+                  />
                 </SelectTrigger>
                 <SelectContent>
-                  {DEGREES.map((degree) => (
-                    <SelectItem key={degree} value={degree}>
-                      {degree}
+                  {DEGREE_OPTIONS.map((degree) => (
+                    <SelectItem key={degree.value} value={degree.value}>
+                      {t(degree.labelKey)}
                     </SelectItem>
                   ))}
                   <SelectItem value="custom_degree_option">
-                    Enter a different degree
+                    {t("education.customDegree")}
                   </SelectItem>
                 </SelectContent>
               </Select>
@@ -263,7 +277,7 @@ function SortableEducationItem({
         <Input
           value={item.major}
           onChange={(e) => onUpdate(item.id, "major", e.target.value)}
-          placeholder="Major / Field of Study"
+          placeholder={t("education.placeholders.major")}
           className={cn(
             "h-10 rounded-lg border-slate-200 bg-slate-50 text-sm",
             "focus:bg-white focus:ring-2 focus:ring-violet-500/20",
@@ -278,7 +292,7 @@ function SortableEducationItem({
         >
           <div>
             <Label className="mb-1.5 block text-xs text-slate-500">
-              Start Date
+              {t("fields.startDate")}
             </Label>
             <DatePicker
               date={safeDate(item.startDate)}
@@ -293,14 +307,14 @@ function SortableEducationItem({
           </div>
           <div>
             <Label className="mb-1.5 block text-xs text-slate-500">
-              End Date (or expected)
+              {t("education.endDate")}
             </Label>
             <DatePicker
               date={safeDate(item.endDate)}
               setDate={(date) =>
                 onUpdate(item.id, "endDate", date ? date.toISOString() : null)
               }
-              placeholder="Present"
+              placeholder={t("fields.present")}
             />
           </div>
         </div>
@@ -310,6 +324,7 @@ function SortableEducationItem({
 }
 
 const EducationForm = ({ onNext, onBack }: EducationFormProps) => {
+  const t = useTranslations("BuilderForms");
   const dispatch = useAppDispatch();
   const { resume } = useSyncResume();
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -339,11 +354,11 @@ const EducationForm = ({ onNext, onBack }: EducationFormProps) => {
     educationItems.forEach((item) => {
       const itemErrors: { school?: string; degree?: string } = {};
       if (!item.school.trim()) {
-        itemErrors.school = "School name is required";
+        itemErrors.school = t("education.validation.schoolRequired");
         isValid = false;
       }
       if (!item.degree.trim()) {
-        itemErrors.degree = "Degree is required";
+        itemErrors.degree = t("education.validation.degreeRequired");
         isValid = false;
       }
       if (Object.keys(itemErrors).length > 0) {
@@ -353,7 +368,7 @@ const EducationForm = ({ onNext, onBack }: EducationFormProps) => {
 
     setValidationErrors(errors);
     return isValid;
-  }, [educationItems]);
+  }, [educationItems, t]);
 
   const onSubmit = () => {
     if (!validateItems()) {
@@ -445,7 +460,7 @@ const EducationForm = ({ onNext, onBack }: EducationFormProps) => {
                     dark:text-white
                   `}
                 >
-                  Education
+                  {t("education.title")}
                 </span>
                 <span
                   className={`
@@ -453,7 +468,7 @@ const EducationForm = ({ onNext, onBack }: EducationFormProps) => {
                     dark:text-slate-400
                   `}
                 >
-                  Your academic background
+                  {t("education.subtitle")}
                 </span>
               </div>
             </CardTitle>
@@ -475,7 +490,7 @@ const EducationForm = ({ onNext, onBack }: EducationFormProps) => {
                       uppercase
                     `}
                   >
-                    Education History
+                    {t("education.history")}
                   </Label>
                   {educationItems.length > 0 && (
                     <span
@@ -505,10 +520,10 @@ const EducationForm = ({ onNext, onBack }: EducationFormProps) => {
                   >
                     <GraduationCap className="mb-2 h-8 w-8 text-slate-300" />
                     <p className="text-sm font-medium text-slate-500">
-                      No education added yet
+                      {t("education.emptyTitle")}
                     </p>
                     <p className="mt-1 text-xs text-slate-400">
-                      Add your degrees, certifications, and courses
+                      {t("education.emptyDescription")}
                     </p>
                   </div>
                 ) : (
@@ -564,7 +579,7 @@ const EducationForm = ({ onNext, onBack }: EducationFormProps) => {
                 type="button"
               >
                 <Plus className="h-3.5 w-3.5" />
-                Add Education
+                {t("education.add")}
               </Button>
             </motion.div>
 

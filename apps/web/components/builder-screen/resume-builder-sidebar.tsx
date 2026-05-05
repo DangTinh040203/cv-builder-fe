@@ -12,6 +12,7 @@ import {
   Plus,
   User,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 export enum Section {
@@ -25,13 +26,17 @@ export enum Section {
 }
 
 const sectionConfig = [
-  { id: Section.Personal, label: "Personal", icon: User },
-  { id: Section.Summary, label: "Summary", icon: FileText },
-  { id: Section.Skills, label: "Skills", icon: Code },
-  { id: Section.Education, label: "Education", icon: GraduationCap },
-  { id: Section.Experience, label: "Experience", icon: Briefcase },
-  { id: Section.Projects, label: "Projects", icon: FolderGit2 },
-  { id: Section.Extra, label: "Extra", icon: Plus },
+  { id: Section.Personal, labelKey: "sections.personal", icon: User },
+  { id: Section.Summary, labelKey: "sections.summary", icon: FileText },
+  { id: Section.Skills, labelKey: "sections.skills", icon: Code },
+  {
+    id: Section.Education,
+    labelKey: "sections.education",
+    icon: GraduationCap,
+  },
+  { id: Section.Experience, labelKey: "sections.experience", icon: Briefcase },
+  { id: Section.Projects, labelKey: "sections.projects", icon: FolderGit2 },
+  { id: Section.Extra, labelKey: "sections.extra", icon: Plus },
 ];
 
 interface ResumeBuilderSidebarProps {
@@ -43,6 +48,8 @@ const ResumeBuilderSidebar = ({
   activeSection,
   onSectionChange,
 }: ResumeBuilderSidebarProps) => {
+  const t = useTranslations("Builder");
+
   return (
     <motion.div
       initial={{ opacity: 0, x: -20 }}
@@ -87,7 +94,9 @@ const ResumeBuilderSidebar = ({
               >
                 <span className="flex items-center gap-2">
                   <section.icon className="h-4 w-4" />
-                  <span className="whitespace-nowrap">{section.label}</span>
+                  <span className="whitespace-nowrap">
+                    {t(section.labelKey)}
+                  </span>
                 </span>
                 {activeSection === section.id && (
                   <ChevronRight

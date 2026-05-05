@@ -12,6 +12,7 @@ import {
   MessageSquare,
   RefreshCw,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 
 import { ScoreGauge } from "@/components/builder-screen/score-gauge";
@@ -22,12 +23,24 @@ interface InterviewResultProps {
   onReset: () => void;
 }
 
-const CRITERIA_LABELS: Record<string, { label: string; weight: string }> = {
-  technicalKnowledge: { label: "Technical Knowledge", weight: "25%" },
-  communicationSkills: { label: "Communication Skills", weight: "20%" },
-  problemSolving: { label: "Problem Solving", weight: "20%" },
-  relevanceToRole: { label: "Relevance to Role", weight: "15%" },
-  interviewConduct: { label: "Interview Conduct", weight: "20%" },
+const CRITERIA_LABELS: Record<string, { labelKey: string; weight: string }> = {
+  technicalKnowledge: {
+    labelKey: "result.criteria.technicalKnowledge",
+    weight: "25%",
+  },
+  communicationSkills: {
+    labelKey: "result.criteria.communicationSkills",
+    weight: "20%",
+  },
+  problemSolving: { labelKey: "result.criteria.problemSolving", weight: "20%" },
+  relevanceToRole: {
+    labelKey: "result.criteria.relevanceToRole",
+    weight: "15%",
+  },
+  interviewConduct: {
+    labelKey: "result.criteria.interviewConduct",
+    weight: "20%",
+  },
 };
 
 const getScoreColor = (score: number) => {
@@ -61,21 +74,28 @@ export const InterviewResult = ({
   feedback,
   onReset,
 }: InterviewResultProps) => {
+  const t = useTranslations("Interview");
   const [expandedQuestions, setExpandedQuestions] = useState<Set<number>>(
     new Set(),
   );
 
   const getScoreLabel = (score: number) => {
     if (score >= 80) {
-      return { label: "Excellent Performance", color: "text-green-500" };
+      return {
+        label: t("result.score.excellent"),
+        color: "text-green-500",
+      };
     }
     if (score >= 60) {
-      return { label: "Good Performance", color: "text-blue-500" };
+      return { label: t("result.score.good"), color: "text-blue-500" };
     }
     if (score >= 40) {
-      return { label: "Fair Performance", color: "text-yellow-500" };
+      return { label: t("result.score.fair"), color: "text-yellow-500" };
     }
-    return { label: "Needs Improvement", color: "text-red-500" };
+    return {
+      label: t("result.score.needsImprovement"),
+      color: "text-red-500",
+    };
   };
 
   const toggleQuestion = (num: number) => {
@@ -117,7 +137,7 @@ export const InterviewResult = ({
                     ${getVerdictStyle(feedback.verdict)}
                   `}
                 >
-                  {feedback.verdict}
+                  {t(`result.verdict.${feedback.verdict}`)}
                 </span>
               )}
             </div>
@@ -137,12 +157,12 @@ export const InterviewResult = ({
             <div className="flex items-center gap-2 pb-4">
               <Award size={18} className="text-primary" />
               <h4 className="text-xs font-bold tracking-wider uppercase">
-                Evaluation Criteria
+                {t("result.evaluationCriteria")}
               </h4>
             </div>
             <div className="space-y-3">
               {Object.entries(CRITERIA_LABELS).map(
-                ([key, { label, weight }]) => {
+                ([key, { labelKey, weight }]) => {
                   const score =
                     feedback.criteria[key as keyof typeof feedback.criteria] ??
                     0;
@@ -150,7 +170,7 @@ export const InterviewResult = ({
                     <div key={key} className="space-y-1">
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-foreground">
-                          {label}{" "}
+                          {t(labelKey)}{" "}
                           <span className="text-muted-foreground text-xs">
                             ({weight})
                           </span>
@@ -191,7 +211,7 @@ export const InterviewResult = ({
             <div className="flex items-center gap-2 pb-4">
               <MessageSquare size={18} className="text-primary" />
               <h4 className="text-xs font-bold tracking-wider uppercase">
-                Per-Question Feedback
+                {t("result.perQuestionFeedback")}
               </h4>
             </div>
             <div className="space-y-2">
@@ -263,7 +283,7 @@ export const InterviewResult = ({
                                 dark:text-blue-400
                               `}
                             >
-                              Suggestion
+                              {t("result.suggestion")}
                             </p>
                             <p
                               className={`
@@ -311,7 +331,7 @@ export const InterviewResult = ({
                   dark:text-green-400
                 `}
               >
-                Strengths
+                {t("result.strengths")}
               </h4>
             </div>
             <ul className="space-y-3">
@@ -333,7 +353,7 @@ export const InterviewResult = ({
                 ))
               ) : (
                 <li className="text-sm text-green-700/70 italic">
-                  No specific strengths highlighted.
+                  {t("result.noStrengths")}
                 </li>
               )}
             </ul>
@@ -354,7 +374,7 @@ export const InterviewResult = ({
                   dark:text-red-400
                 `}
               >
-                Areas for Improvement
+                {t("result.areasForImprovement")}
               </h4>
             </div>
             <ul className="space-y-3">
@@ -382,7 +402,7 @@ export const InterviewResult = ({
                 ))
               ) : (
                 <li className="text-sm text-red-700/70 italic">
-                  No specific improvements suggested.
+                  {t("result.noImprovements")}
                 </li>
               )}
             </ul>
@@ -400,7 +420,7 @@ export const InterviewResult = ({
             onClick={onReset}
           >
             <RefreshCw size={18} className="mr-2" />
-            Interview Again
+            {t("result.interviewAgain")}
           </Button>
         </div>
       </div>

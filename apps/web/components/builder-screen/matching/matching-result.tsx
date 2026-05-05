@@ -28,6 +28,7 @@ import {
   Sparkles,
   TrendingUp,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 import { EmailPreviewDialog } from "@/components/builder-screen/matching/email-preview-dialog";
@@ -54,6 +55,7 @@ export const MatchingResult = ({
   jdText,
   resumeId,
 }: MatchingResultProps) => {
+  const t = useTranslations("Matching");
   const [isGenerating, setIsGenerating] = React.useState(false);
   const [isCopied, setIsCopied] = React.useState(false);
   const [isSubjectCopied, setIsSubjectCopied] = React.useState(false);
@@ -65,11 +67,18 @@ export const MatchingResult = ({
 
   const getScoreLabel = (score: number) => {
     if (score >= 80) {
-      return { label: "Excellent Match", color: "text-green-500" };
+      return { label: t("result.score.excellent"), color: "text-green-500" };
     }
-    if (score >= 60) return { label: "Good Match", color: "text-blue-500" };
-    if (score >= 40) return { label: "Fair Match", color: "text-yellow-500" };
-    return { label: "Needs Improvement", color: "text-red-500" };
+    if (score >= 60) {
+      return { label: t("result.score.good"), color: "text-blue-500" };
+    }
+    if (score >= 40) {
+      return { label: t("result.score.fair"), color: "text-yellow-500" };
+    }
+    return {
+      label: t("result.score.needsImprovement"),
+      color: "text-red-500",
+    };
   };
 
   const overallStatus = getScoreLabel(matchResult.overallScore);
@@ -90,7 +99,7 @@ export const MatchingResult = ({
         const error = e.response?.data as ErrorResponse;
         toastErrorMessage(error.message);
       } else {
-        toast.error("Failed to generate email. Please try again.");
+        toast.error(t("email.generateFailed"));
       }
     } finally {
       setIsGenerating(false);
@@ -105,7 +114,7 @@ export const MatchingResult = ({
       setIsCopied(true);
       setTimeout(() => setIsCopied(false), 2000);
     } catch {
-      toast.error("Failed to copy. Please select and copy manually.");
+      toast.error(t("email.copyFailed"));
     }
   };
 
@@ -115,10 +124,10 @@ export const MatchingResult = ({
     try {
       await navigator.clipboard.writeText(emailResult.subject);
       setIsSubjectCopied(true);
-      toast.success("Subject copied to clipboard!");
+      toast.success(t("email.subjectCopied"));
       setTimeout(() => setIsSubjectCopied(false), 2000);
     } catch {
-      toast.error("Failed to copy. Please select and copy manually.");
+      toast.error(t("email.copyFailed"));
     }
   };
 
@@ -155,15 +164,15 @@ export const MatchingResult = ({
           <TabsList className="w-full">
             <TabsTrigger value="breakdown" className="gap-1.5">
               <TrendingUp size={15} />
-              Breakdown
+              {t("result.tabs.breakdown")}
             </TabsTrigger>
             <TabsTrigger value="analysis" className="gap-1.5">
               <Search size={15} />
-              Analysis
+              {t("result.tabs.analysis")}
             </TabsTrigger>
             <TabsTrigger value="improve" className="gap-1.5">
               <Lightbulb size={15} />
-              Improve
+              {t("result.tabs.improve")}
             </TabsTrigger>
           </TabsList>
 
@@ -210,7 +219,9 @@ export const MatchingResult = ({
                           </span>
                           <div className="flex items-center gap-2">
                             <span className={`text-muted-foreground text-xs`}>
-                              wt. {criterion.weight}%
+                              {t("result.weight", {
+                                weight: criterion.weight,
+                              })}
                             </span>
                             <span
                               className={`
@@ -285,7 +296,7 @@ export const MatchingResult = ({
                     dark:text-green-400
                   `}
                 >
-                  Strengths
+                  {t("result.strengths")}
                 </h4>
               </div>
               <ul className="space-y-3">
@@ -307,7 +318,7 @@ export const MatchingResult = ({
                   ))
                 ) : (
                   <li className="text-sm text-green-700/70 italic">
-                    No specific strengths highlighted.
+                    {t("result.noStrengths")}
                   </li>
                 )}
               </ul>
@@ -328,7 +339,7 @@ export const MatchingResult = ({
                     dark:text-red-400
                   `}
                 >
-                  Missing Keywords
+                  {t("result.missingKeywords")}
                 </h4>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -351,7 +362,7 @@ export const MatchingResult = ({
                     variant="secondary"
                     className="bg-red-100 font-normal text-red-700"
                   >
-                    N/A - Job Description is Invalid
+                    {t("result.invalidJobDescription")}
                   </Badge>
                 )}
               </div>
@@ -375,7 +386,7 @@ export const MatchingResult = ({
                       dark:text-amber-400
                     `}
                   >
-                    Suggestions To Improve
+                    {t("result.suggestionsToImprove")}
                   </h4>
                 </div>
                 <ul className="space-y-3">
@@ -411,7 +422,7 @@ export const MatchingResult = ({
                   justify-center rounded-xl border p-8 text-sm italic
                 `}
               >
-                No suggestions available.
+                {t("result.noSuggestions")}
               </div>
             )}
           </TabsContent>
@@ -453,7 +464,9 @@ export const MatchingResult = ({
                 group-hover:text-foreground
               `}
             />
-            <span className="text-sm font-medium">Analyze Another JD</span>
+            <span className="text-sm font-medium">
+              {t("result.analyzeAnother")}
+            </span>
           </Button>
 
           <Button
@@ -485,7 +498,9 @@ export const MatchingResult = ({
             {isGenerating ? (
               <>
                 <Loader2 size={17} className="animate-spin" />
-                <span className="text-sm font-medium">Generating...</span>
+                <span className="text-sm font-medium">
+                  {t("email.generating")}
+                </span>
               </>
             ) : emailResult ? (
               <>
@@ -496,15 +511,13 @@ export const MatchingResult = ({
                     group-hover:translate-x-0.5 group-hover:-translate-y-0.5
                   `}
                 />
-                <span className="text-sm font-medium">
-                  View Application Email
-                </span>
+                <span className="text-sm font-medium">{t("email.view")}</span>
               </>
             ) : (
               <>
                 <Sparkles size={17} />
                 <span className="text-sm font-medium">
-                  Generate Application Email
+                  {t("email.generate")}
                 </span>
               </>
             )}
