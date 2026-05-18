@@ -1,6 +1,10 @@
 "use client";
 
-import { domAnimation, LazyMotion } from "framer-motion";
+import {
+  LazyMotion,
+  MotionConfig,
+  domAnimation,
+} from "framer-motion";
 import { type PropsWithChildren } from "react";
 
 /**
@@ -8,7 +12,13 @@ import { type PropsWithChildren } from "react";
  * This reduces framer-motion bundle by ~60% compared to the full bundle.
  * Only includes: animate, exit, variants, whileHover, whileTap, whileInView
  * Does NOT include: layout animations, drag, path animations
+ *
+ * MotionConfig `reducedMotion="user"` honors prefers-reduced-motion (WCAG 2.3.3).
  */
 export default function MotionProvider({ children }: PropsWithChildren) {
-  return <LazyMotion features={domAnimation}>{children}</LazyMotion>;
+  return (
+    <MotionConfig reducedMotion="user">
+      <LazyMotion features={domAnimation}>{children}</LazyMotion>
+    </MotionConfig>
+  );
 }
