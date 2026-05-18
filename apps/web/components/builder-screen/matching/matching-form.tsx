@@ -68,13 +68,16 @@ export const MatchingForm = ({
             className="hidden"
             onChange={handleFileChange}
           />
-          <div
+          <button
+            type="button"
             onClick={() => fileInputRef.current?.click()}
             className={`
-              border-primary flex h-64 cursor-pointer flex-col items-center
-              justify-center gap-3 rounded-lg border-2 border-dashed px-3 py-2
-              transition-all
+              border-primary flex h-64 w-full cursor-pointer flex-col
+              items-center justify-center gap-3 rounded-lg border-2
+              border-dashed bg-transparent px-3 py-2 transition-all
               hover:bg-muted/50
+              focus-visible:ring-ring focus-visible:ring-2
+              focus-visible:ring-offset-2 focus-visible:outline-none
             `}
           >
             <div
@@ -104,7 +107,7 @@ export const MatchingForm = ({
                 </>
               )}
             </div>
-          </div>
+          </button>
         </TabsContent>
       </Tabs>
 
